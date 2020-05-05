@@ -1,0 +1,241 @@
+
+<html>
+<head>
+<!-- Test  -->
+ <!-- Format for Background image -->
+<style type="text/css">
+
+
+
+#full-screen-background-image {z-index: -999;min-height: 110%; min-width: 100%;width: 100%;height: 110%;position: fixed;top: ;  left: 0;}
+
+.multiple-borders {
+  -webkit-box-shadow:
+            0px 0px 0px 2px rgba(0,0,0,0.6),
+                0px 0px 0px 14px #fff,
+                0px 0px 0px 18px rgba(0,0,0,0.2),
+                6px 6px 8px 17px #555;
+   
+     -moz-box-shadow:
+            0px 0px 0px 2px rgba(0,0,0,0.6),
+                0px 0px 0px 14px #fff,
+                0px 0px 0px 18px rgba(0,0,0,0.2),
+                6px 6px 8px 17px #555;
+   
+          box-shadow:
+            0px 0px 0px 2px rgba(0,0,0,0.6),
+                0px 0px 0px 14px #fff,
+                0px 0px 0px 18px rgba(0,0,0,0.2),
+                6px 6px 8px 17px #555;
+}   
+
+
+.navbar-default {
+    background-color:#A1D490;
+    border-color:aqua;
+    
+}
+
+.dropdown-submenu {
+    position: relative;
+}
+
+.dropdown-submenu>.dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-top: -6px;
+    margin-left: -1px;
+    -webkit-border-radius: 0 6px 6px 6px;
+    -moz-border-radius: 0 6px 6px;
+    border-radius: 0 6px 6px 6px;
+}
+
+.dropdown-submenu:hover>.dropdown-menu {
+    display: block;
+}
+
+.dropdown-submenu>a:after {
+    display: block;
+    content: " ";
+    float: right;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-style: solid;
+    border-width: 5px 0 5px 5px;
+    border-left-color: #ccc;
+    margin-top: 5px;
+    margin-right: -10px;
+}
+
+.dropdown-submenu:hover>a:after {
+
+    border-left-color: #ffffff;
+
+    border-left-color: #ff;
+
+}
+
+.dropdown-submenu.pull-left {
+    float: none;
+}
+
+.dropdown-submenu.pull-left>.dropdown-menu {
+    left: -100%;
+    margin-left: 10px;
+    -webkit-border-radius: 6px 0 6px 6px;
+    -moz-border-radius: 6px 0 6px 6px;
+    border-radius: 6px 0 6px 6px;
+}
+</style>
+
+  <title>Management Page</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+	
+  <script src="/static/bootstrap/js/1.11.3/jquery.min.js"></script>
+  <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
+  
+
+
+# working on styling
+  <!-- <link rel="stylesheet" href="/static/style_1/grid_kiosk_job_production2.css?{{TCUR}}">    -->
+
+	<style type="text/css">
+		.mainset{color:black;text-align:center;float:left;width:100%}
+		.wrapper_main {background:chartreuse;width:90%;margin-left: 10px;}
+		.frame1 {color:black;text-align:center;float:left;width:51%;margin-bottom: 5px;}
+		.frame1_u {color:black;text-align:center;background:rgb(214, 214, 214);float:left;width:60%;margin: 20px;}
+		.frame2{color:black;text-align:center;background:rgb(83, 134, 202);float:left;width:49%;position:relative;left:5px;margin-bottom: 5px;}
+		.frame3 {color:black;text-align:center;background:rgb(60, 158, 65);float:left;width:51%;position:relative;}
+		.frame4 {color:black;text-align:center;background:rgb(235, 142, 89);float:left;width:49%;position:relative;left:5px;}
+		.frame5{color:black;text-align:center;background:rgb(168, 168, 168);float:right;width:40%}
+		.head1{color:black;text-align:center;border: .4px solid rgb(0, 0, 0);background:rgb(114, 159, 243);width:85%}
+		.head1_u{color:black;text-align:center;border: .4px solid rgb(0, 0, 0);background:rgb(226, 226, 226);width:100%}
+		.head2_u{color:black;text-align:center;float:left;font-size: 60%;border: .4px solid rgb(0, 0, 0);background: rgb(184, 167, 142);width:25%}
+		.body1_u{color:black;text-align:left;float: left;border: 1px solid rgb(0, 0, 0);width:25%}
+		.head2{color:black;text-align:center;float:left;font-size: 60%;border: .4px solid rgb(222, 231, 95);background: rgb(184, 167, 142);width:65%}
+		.body1{color:black;text-align:left;float: left;border: 1px solid rgb(0, 0, 0);width:85%}
+		.body2{color:black;text-align:left;float: left;border: 1px solid rgb(0, 0, 0);width:65%}
+		.body3{color:black;text-align:center;background:rgb(199, 187, 166);float:left;width:33%;border: .4px solid rgb(0, 0, 0)}
+		.body3h{color:black;text-align:center;background:rgb(187, 186, 184);float:left;width:33%;border: .4px solid rgb(0, 0, 0)}
+		.body3t{color:black;text-align:center;background:rgb(187, 186, 184);float:left;font-size:medium;width:99%;border: .4px solid rgb(0, 0, 0)}
+	</style>
+
+
+
+</head>
+{% block grid %}
+{% endblock %}
+<body>
+
+<img alt="full screen background image" src="/static/media/mgmt.jpeg?{{TCUR}}" id="full-screen-background-image"/>
+
+
+
+
+
+<div class="navbar navbar-default navbar-fixed-top" style="background-color:rgb(248, 228, 186);border-color: rgb(26, 24, 11);border-width:1px" role="navigation">
+
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+			
+            <a class="navbar-brand" href="#" style="position:absolute;left:0px;top:-10px;">
+                <img src="/static/media/JELogo.gif?{{TCUR}}"  style="border-radius: 25px;" height="40" width="150">
+            </a>
+
+        </div>
+        <div class="collapse navbar-collapse">
+			
+            <ul class="nav navbar-nav">
+                
+                {% if request.session.mgmt_login_password = 'bort' %}
+                <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+                <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+				<li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+
+
+                    <li><a href="{{request.session.local_toggle}}/mgmt"><span class="glyphicon glyphicon-home"></span> Main</a></li>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+
+                    <li><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-stats"></span> Production<b class="caret"></b></a>
+                         <ul class="dropdown-menu multi-level"  style="background-color:rgb(245, 237, 219)" >
+                            <li><a href="#">Production Reports</a></li>
+                             <li class="divider"   style="background-color:rgb(192, 178, 178)" ></li> 
+                            <li><a href="{{request.session.local_toggle}}/mgmt_production">Production Entries</a></li>
+                            <li><a href="{{request.session.local_toggle}}/mgmt_production_hourly">Hourly Entries</a></li>
+                            <li><a href="{{request.session.local_toggle}}/mgmt_cycletime">Cycle Times</a></li>
+                        </ul>
+                     </li>
+			    	<li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+
+
+				    <li><a href="#"><span class="glyphicon glyphicon-cog"></span> Assets</a></li>	
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+                    
+                    <li><a href="#"><span class="glyphicon glyphicon-user"></span> Manpower</a></li>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+
+                    <li><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-lock"></span> Administration<b class="caret"></b></a>
+                        <ul class="dropdown-menu multi-level"  style="background-color:rgb(245, 237, 219)" >
+                           <li><a href="{{request.session.local_toggle}}/mgmt_users_logins">Users Logins</a></li>
+                           <li><a href="{{request.session.local_toggle}}/mgmt_production_hourly">Hourly Entries</a></li>
+                           
+                       </ul>
+                    </li>
+                   <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+
+			        </ul>	
+			
+			         <ul class="nav navbar-nav navbar-right">	
+			         <li><font size ="2" style="color:rgb(100, 100, 100)">Welcome:<b>{{request.session.mgmt_login_name}}</b></li>
+                     <li><a href="{{request.session.local_toggle}}/mgmt_logout" style="color:rgb(100, 100, 100)"><span class="glyphicon glyphicon-log-out"></span> Log out</a></li>
+
+                    {% endif %}
+
+            </ul>
+			
+        </div><!--/.nav-collapse -->
+    </div>
+</div>
+<br><br>
+<br><br><br>
+
+
+
+{% block content %}
+    {% if request.session.mgmt_login_password_check = 0 %}  <!-- If login failed or required -->
+		<meta http-equiv="refresh" content="0; url={{request.session.local_toggle}}/mgmt_login_form" />
+	{% else %}  <!-- if Login passed and main start up screen -->
+		<div class="wrapper_main">
+			<div class="frame1">  <!-- Default is L24 hr Production-->
+				{% block frame1 %}
+				{% endblock %}
+			</div>
+			<div class="frame2">  <!-- Default is L24hr scrap -->
+				{% block frame2 %}
+				{% endblock %}
+			</div>
+			<div class="frame3">  <!-- Default is OA -->
+				{% block frame3 %}
+				{% endblock %}
+			</div>
+			<div class="frame4">  <!-- Default is Manpower -->
+				{% block frame4 %}
+				{% endblock %}
+			</div>
+		</div>
+
+    {% endif %}
+
+{% endblock %}
+
+</body></html>

@@ -1,0 +1,76 @@
+{% extends "mgmt.html" %}
+
+{% block grid %}
+
+
+{% endblock %}
+
+{% block content %}
+
+
+
+
+<div class ="mainset">
+    <div class="frame1_u"  bgcolor="{{request.session.main_body_menu_color}}">
+        <div class="head1_u">
+						<center><u><b><font color="#000000" style="font-size: 160%;">User Logins</u></b> 
+							&nbsp;&nbsp;&nbsp;&nbsp;
+							<button  style="text-align:center;width:95px;font-size: 50%;height:20px;border-style: solid;
+							border-color:#A1A1A1;border-radius: 10px;background-color:rgb(201, 201, 201);margin-bottom: 5px;"
+							type="button" onclick="window.location.href = '{{request.session.local_toggle}}/index_template/get/0';">
+							<b>+ New User</b>
+						</button>
+
+
+						</center>
+				</div>
+				<div class="head2_u">
+					Login Name
+				</div>
+				<div class="head2_u">
+					Password
+				</div>
+				<div class="head2_u">
+					Dept
+				</div>
+				<div class="head2_u">
+					Active
+				</div>
+        {% for i in tmp %}
+
+					<div class="body1_u">
+            <button  style="text-align:center;width:100%;font-size: 60%;border:0px solid rgb(0, 0, 0);
+            background-color: rgb(211, 191, 161);border:none;outline:none;"
+            type="button" onclick="window.location.href = '{{request.session.local_toggle}}/index_template/get/{{i.0}}';">
+            {{i.1}}
+						</button>
+					</div>
+					<div class="body1_u">
+            <button  style="text-align:center;width:100%;font-size: 60%;border:0px solid rgb(0, 0, 0);
+            background-color: rgb(211, 191, 161);border:none;outline:none;"
+            type="button" onclick="window.location.href = '{{request.session.local_toggle}}/index_template/get/{{i.0}}';">
+            *****
+						</button>
+					</div>
+					<div class="body1_u">
+            <button  style="text-align:center;width:100%;font-size: 60%;border:0px solid rgb(0, 0, 0);
+            background-color: rgb(211, 191, 161);border:none;outline:none;"
+            type="button" onclick="window.location.href = '{{request.session.local_toggle}}/index_template/get/{{i.0}}';">
+            {{i.3}}
+						</button>
+					</div>
+					<div class="body1_u">
+            <button  style="text-align:center;width:100%;font-size: 60%;border:0px solid rgb(0, 0, 0);
+            background-color: rgb(211, 191, 161);border:none;outline:none;"
+            type="button" onclick="window.location.href = '{{request.session.local_toggle}}/index_template/get/{{i.0}}';">
+            {{i.4}}
+						</button>
+					</div>
+   
+        {% endfor %}
+    </div>
+</div>
+
+
+
+{% endblock %}

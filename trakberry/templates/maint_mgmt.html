@@ -1,0 +1,116 @@
+{% extends "maint_mgmt_main.html" %}
+
+
+{% block content %}
+
+{% if request.session.maint_mgmt_login_password_check != 'True' %}
+<meta http-equiv="refresh" content="0; url={{request.session.local_toggle}}/maint_mgmt_login_form" />
+
+{% else %}
+	{% if request.session.maint_mgmt_main_switch = 0 %}
+		<meta http-equiv="refresh" content="15; url={{request.session.local_toggle}}/maint_mgmt" />
+	{% endif %}
+<form action="" method="post">{% csrf_token %}
+
+<div class ="mainset">
+    
+        <div class="frame1"  bgcolor="{{request.session.main_body_menu_color}}">
+            <div class="head1">
+                    <center><u><b><font color="#000000" style="font-size: 160%;">Maintenance Jobs</u></b></center>
+            </div>
+        {% for i in index %}
+
+        {% if i.4 = 'Electrician' %}
+            <div class="body1">
+            <button style="text-align: left;width:100%;font-size: 60%;border:0px solid rgb(0, 0, 0);
+            background-color: rgb(235,240,203);border:none;outline:none;"
+            type="submit" name="one" value="{{i.11}}" /><b><font color="#000000">[{{i.4}}] {{i.0}}:{{i.1}}</font></b></button>
+            </div>
+        {% else %}
+            <div class="body1">
+            <button style="text-align: left;width:100%;font-size: 60%;border:0px solid rgb(0, 0, 0);
+            background-color:rgb(204,208,173);border:none;outline:none;"
+            type="submit" name="one" value="{{i.11}}" /><b><font color="#000000">[{{i.4}}] {{i.0}}:{{i.1}}</font></</button>
+            </div>
+        {% endif %}
+				{% endfor %}
+
+        </div>
+
+			
+
+
+{% if request.session.maint_mgmt_main_switch = 1 %}
+    <div class="frame2"  bgcolor="{{request.session.main_body_menu_color}}">
+				<div class="head5"><b><font color="#000000" style="font-size: 60%;">Edit Current Maintenance</font></b>
+					&nbsp;&nbsp;
+
+					<button style="text-align: left;font-size: 50%;border:0px solid rgb(0, 0, 0);
+					background-color:rgb(158, 158, 158);border-radius: 10px;border:none;outline:none;"
+					type="submit" name="one" value="choose2" /><b><font color="#000000">  OK </font></button>
+
+					&nbsp;&nbsp;&nbsp;&nbsp;
+
+					<button style="text-align: left;font-size: 50%;border:0px solid rgb(0, 0, 0);
+					background-color:rgb(158, 158, 158);border-radius: 10px;border:none;outline:none;"
+					type="submit" name="one" value="choose3" /><b><font color="#000000">  Clear All </font></button>
+				</div>
+
+				{% for x in request.session.assigned %}
+					{% if x.4 = 1 %}
+						<div class="body5">
+							<!-- <input type="checkbox" name="{{x.0}}" checked><b> <font color="#000000" style="font-size: 50%;">{{x.1}}</font></b> -->
+							<input checked data-toggle="toggle" data-on='{{x.1}}' data-off='{{x.1}}' data-onstyle="dark" type="checkbox" data-size="mini" 
+							data-width="100%" name="{{x.0}}">
+						</div>
+					{% else %}
+						<div class="body6">
+							<!-- <input type="checkbox" name="{{x.0}}"><b> <font color="#000000" style="font-size: 50%;">{{x.1}}</font></b> -->
+							<input data-toggle="toggle" data-on='{{x.1}}' data-off='{{x.1}}' data-onstyle="secondary" type="checkbox" data-size="mini" 
+							data-width="100%" name="{{x.0}}">
+						</div>
+					{% endif %}
+				{% endfor %}
+
+				
+
+
+
+
+
+
+
+		</div>
+
+{% else %}
+<div class="frame2"  bgcolor="{{request.session.main_body_menu_color}}">
+	<div class="head3"><b><font color="#000000" style="font-size: 60%;">Current Maintenance</font></b>
+
+		<button style="text-align: left;font-size: 50%;border:0px solid rgb(0, 0, 0);
+		background-color:rgb(158, 158, 158);border-radius: 10px;border:none;outline:none;"
+		type="submit" name="one" value="choose1" /><b><font color="#000000">+/-</font></</button>
+		
+		</div>
+	<div class="head4"><b><font color="#000000" style="font-size: 52%;">On Job</font></b></div>
+	{% for x in request.session.assigned %}
+	<div class="body3"><b><font color="#000000" style="font-size: 60%;">{{x}}</font></div>
+	<div class="body3a"><b><font color="#000000" style="font-size: 60%;">yes</font></b></div>
+	{% endfor %}
+	{% for x in request.session.not_assigned %}
+	<div class="body4"><b><font color="#000000" style="font-size: 60%;">{{x}}</font></div>
+	<div class="body4a"><b><font color="#000000" style="font-size: 60%;">no</font></div>
+	{% endfor %}	
+</div>
+{% endif %}
+
+</div>
+
+</form>
+
+
+{% endif %}
+
+
+
+{% endblock %}
+

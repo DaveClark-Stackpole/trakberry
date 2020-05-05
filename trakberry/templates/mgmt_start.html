@@ -1,0 +1,66 @@
+<!-- This is the starting page for Mgmt and everything else will extend from here -->
+{% extends "mgmt.html" %}
+
+{% block grid %}
+{% endblock %}
+
+
+	{% block frame1 %}
+	<br>
+	<div class="body3t"><b>Last 24hr Production</b></div>
+	<div class="body3h">
+		&nbsp;&nbsp;&nbsp; <b>Part </b>&nbsp;&nbsp;&nbsp;
+	</div>
+	<div class="body3h">
+		&nbsp;&nbsp;&nbsp; <b>24 Hr Production </b>&nbsp;&nbsp;&nbsp;
+	</div>
+	<div class="body3h">
+		&nbsp;&nbsp;&nbsp;<b>Product Line</b> &nbsp;&nbsp;&nbsp;
+	</div>
+	<br>
+	{% for i in request.session.24hr_production_day %}
+		{% if i.1 = 7 %}
+		<div class="body3">
+				&nbsp;&nbsp;&nbsp; {{i.0.1}} &nbsp;&nbsp;&nbsp;
+			</div>
+			<div class="body3">
+				&nbsp;&nbsp;&nbsp; {{i.0.0}}&nbsp;&nbsp;&nbsp;
+			</div>
+			<div class="body3">
+				&nbsp;&nbsp;&nbsp;{{i.2}}&nbsp;&nbsp;&nbsp;
+			</div>
+			<br>
+		{% endif %} 
+
+
+
+
+
+{% endfor %}
+	<br><br><br>
+	{% endblock %}
+
+	{% block frame2 %}
+	<br><br><br>
+	{% for i in request.session.24hr_production_mid %}
+		{% if i.3 = 'None' %}
+		{% else %}
+			{{i.8}} | {{i.1}} | {{i.3}} Asset {{i.0}}<br>
+		{% endif %}
+	{% endfor %}
+
+
+		<br><br><br>
+	{% endblock %}
+
+	{% block frame3 %}
+		<br><br><br>
+		This is the section for the OA (last 24hr and to date month)
+		<br><br><br>
+	{% endblock %}
+
+	{% block frame4 %}
+		<br><br><br>
+		This is the section for the Manpower efficiency
+		<br><br><br>
+	{% endblock %}

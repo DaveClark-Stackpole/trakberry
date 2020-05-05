@@ -1,0 +1,35 @@
+
+.button {
+  width: 280px;
+  height: 150px;
+  text-align: center;
+  cursor: pointer;
+  outline: none;
+  color: #000000;
+  background-color: #D1CDC2;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 15px #999;
+}
+
+.button:hover {background-color: #BEB2A7}
+
+.button:active {
+  background-color: #BEB2A7;
+  box-shadow: 0 8px #666;
+  transform: translateY(8px);
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-gap: 25px;
+  padding: 10px;
+  align-content:start;
+}
+.grid-container > div {
+  text-align: center;
+  padding: 20px 0;
+}
+
+

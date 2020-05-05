@@ -1,0 +1,110 @@
+<html>
+    <head>
+        {% block tables2 %}
+   
+        
+<style type="text/css">
+.frame1 {color:black;text-align:center;background:rgb(214, 214, 214);float:left;width:40%}
+.frame2{color:black;text-align:center;background:rgb(253, 186, 186);float:left;width:30%;position:relative;left:5px;}
+.frame3{color:black;text-align:center;background:rgb(42, 165, 83);float:left;width:25%;position:relative;left:10px;}
+.frame4{color:black;text-align:center;background:rgb(165, 116, 42);float:left;width:15%}
+.frame5{color:black;text-align:center;background:rgb(168, 168, 168);float:right;width:40%}
+
+.head1{color:black;text-align:center;border: .4px solid rgb(0, 0, 0);background:rgb(226, 226, 226);width:100%}
+.head2{color:black;text-align:center;border: .4px solid rgb(0, 0, 0);background:rgb(255, 253, 241);width:100%}
+.head3{color:black;text-align:center;border: .4px solid rgb(0, 0, 0);float:left;background:rgb(226, 226, 226);width:80%;height: 30px;}
+.head4{color:black;text-align:center;border: .4px solid rgb(0, 0, 0);float:left;background:rgb(226, 226, 226);width:20%; height: 30px;padding: 7px;}
+.head5{color:black;text-align:center;border: .4px solid rgb(0, 0, 0);float:left;background:rgb(226, 226, 226);width:100%;height: 30px;}
+.body1{color:black;text-align:left;background:rgb(197, 253, 186);border: .4px solid rgb(0, 0, 0);width:100%}
+.body2{color:black;text-align:left;background:rgb(224, 174, 141);border: .4px solid rgb(0, 0, 0);width:100%}
+.body3{color:black;text-align:center;background:rgb(199, 187, 166);float:left;border: .4px solid rgb(0, 0, 0);width:80%}
+.body4{color:black;text-align:center;background:rgb(240, 227, 203);float:left;border: .4px solid rgb(0, 0, 0);width:80%}
+.body3a{color:black;text-align:center;background:rgb(199, 187, 166);float:left;border: .4px solid rgb(0, 0, 0);width:20%}
+.body4a{color:black;text-align:center;background:rgb(240, 227, 203);float:left;border: .4px solid rgb(0, 0, 0);width:20%}
+.body5{color:black;text-align:center;background:rgb(199, 187, 166);float:left;border: .4px solid rgb(0, 0, 0);position:relative;width:100%;}
+.body6{color:black;text-align:center;background:rgb(240, 227, 203);float:left;border: .4px solid rgb(0, 0, 0);position:relative;width:100%;}
+</style>
+
+
+        {% endblock %}
+        
+    <style type="text/css">
+        #full-screen-background-image {z-index: -999;min-height: 110%; min-width: 100%;width: 100%;height: 110%;position: fixed;top: ;  left: 0;}
+    </style>
+      <title>Main APP</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+      <script src="/static/bootstrap/js/1.11.3/jquery.min.js"></script>
+      <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+			<link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
+			
+			<link href="/static/bootstrap/css/bootstrap-toggle/bootstrap-toggle.min.css" rel="stylesheet">
+			<script src="/static/bootstrap/css/bootstrap-toggle/bootstrap-toggle.min.js"></script>
+
+
+      {% block grid %}
+      {% endblock %}
+    </head>
+    
+    <body style="background-color:{{request.session.main_screen_color}};"></body>
+    
+    <div class="navbar navbar-default navbar-fixed-top" style="background-color:{{request.session.main_menu_color}};border-color: rgb(26, 24, 11);border-width:1px" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#" style="position:absolute;left:0px;top:-10px;">
+                    <img src="/static/media/JELogo.gif?{{TCUR}}"  style="border-radius: 25px;" height="40" width="150">   <!-- This is the top left icon -->
+                </a>
+            </div>
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <!-- This is the indicator to not display menu if not logged in -->
+                    <!-- if request.session.main_login_department = request.session.login_department -->
+                    {% if request.session.maint_mgmt_login_password_check = 'True' %}  
+                    
+                    <!-- This is where the Menu Bar Goes.   It will be contained in the call to the App Page-->
+
+                    
+ 
+                        <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+                        <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+				        <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+                        <li><a href="{{request.session.local_toggle}}/maint_mgmt"><span class="glyphicon glyphicon-home"></span> Main</a></li>
+                        <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+                        <li><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-stats"></span> Manpower<b class="caret"></b></a>
+                         <ul class="dropdown-menu multi-level"  style="background-color:{{request.session.main_menu_color}}" >
+                            <li><a href="{{request.session.local_toggle}}/maint_mgmt">Set Current Shift</a></li>
+                            <li><a href="#">All Maintenance</a></li>
+                            <li><a href="#">Edit Names</a></li>                  
+                        </ul>        
+                        </li>
+			    	    <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+				        <li><a href="#"><span class="glyphicon glyphicon-cog"></span> Assets</a></li>
+			    	    <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+			    	    <li><a href="#"><span class="glyphicon glyphicon-folder-open"></span> Manpower</a></li>
+			            </ul>	
+			            <ul class="nav navbar-nav navbar-right">	
+			                <li><font size ="2" style="color:rgb(100, 100, 100)">Welcome: <b>{{request.session.maint_mgmt_login_name}}</b></li>
+                            <li><a href="{{request.session.local_toggle}}/maint_mgmt_login_form" style="color:rgb(100, 100, 100)"><span class="glyphicon glyphicon-log-out"></span> Log out</a></li>
+                    
+                    {% endif %}
+
+                </ul>	
+            </div>
+        </div>
+    </div>
+    <br><br><br><br><br>
+
+{% block refresh1 %}
+{% endblock %}
+
+{% block content %}
+{% endblock %}
+
+</body></html>
