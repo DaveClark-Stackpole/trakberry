@@ -2,6 +2,8 @@
 #***************  MODULE 1 CONTAINING REPEATED ALGORITHMS  ********************************************************
 #******************************************************************************************************************
 # add a comment 1
+# comment 2
+# comment 4
 
 from mysite.myapp.models import main, temp1
 
