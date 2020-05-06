@@ -1,7 +1,7 @@
 	
 	# This algorithm was designed 
-	#comment 2
-	# comment 3
+	#comment 4
+
 	while True:
 		tmp_ctr = tmp_ctr + 1
 		#if tmp_ctr > 10000:
