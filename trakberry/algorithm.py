@@ -1,7 +1,3 @@
-	
-	# This algorithm was designed 
-	#comment 2
-	# comment 3
 	while True:
 		tmp_ctr = tmp_ctr + 1
 		#if tmp_ctr > 10000:
@@ -28,3 +24,7 @@
 		if ptr > (qty_employee-1):
 			break
 	listX = zip(N,A)
+
+
+
+	
