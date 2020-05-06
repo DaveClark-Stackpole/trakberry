@@ -1,3 +1,5 @@
+	
+	# This algorithm was designed 
 	while True:
 		tmp_ctr = tmp_ctr + 1
 		#if tmp_ctr > 10000:
