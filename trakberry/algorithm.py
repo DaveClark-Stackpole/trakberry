@@ -24,3 +24,7 @@
 		if ptr > (qty_employee-1):
 			break
 	listX = zip(N,A)
+
+
+
+	

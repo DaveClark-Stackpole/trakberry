@@ -13,10 +13,10 @@ from mod1 import hyphon_fix, multi_name_breakdown
 import MySQLdb
 
 from trakberry.views_vacation import vacation_temp, vacation_set_current, vacation_set_current2
-import time 
+import time
 
 
-#import datetime as dt 
+#import datetime as dt
 from django.core.context_processors import csrf
 
 def maint_initialize_rv(request):
@@ -28,6 +28,7 @@ def maint_initialize_rv(request):
 	return
 
 def maint_mgmt(request):
+
 	maint_initialize_rv(request)  #initialize request variables
 
 
@@ -37,21 +38,21 @@ def maint_mgmt(request):
 	request.session["main_body_menu_color"] = "#D2D2D2"
 	request.session["bounce"] = 0
 
-	
+
 	# wildcard = int(request.session["wildcard1"])
-	
+
 	whoisonit1 = 'tech'
 	whoisonit2 = 'Engineering'
 	maint_login_check(request) #check if login table exists.   If not then create it
-	db, cursor = db_set(request)  
-	SQ_Sup = "SELECT * FROM pr_downtime1 where closed IS NULL and whoisonit != '%s' and whoisonit != '%s' ORDER BY priority ASC" % (whoisonit1,whoisonit2) 
+	db, cursor = db_set(request)
+	SQ_Sup = "SELECT * FROM pr_downtime1 where closed IS NULL and whoisonit != '%s' and whoisonit != '%s' ORDER BY priority ASC" % (whoisonit1,whoisonit2)
 	cursor.execute(SQ_Sup)
 	tmp = cursor.fetchall()
 
 	if request.session["maint_mgmt_main_switch"] == 0:
 		# Determine a list of names currently active
 		active1 = 0
-		SQ2 = "SELECT user_name FROM tkb_logins where active1 != '%d'" % (active1) 
+		SQ2 = "SELECT user_name FROM tkb_logins where active1 != '%d'" % (active1)
 		cursor.execute(SQ2)
 		tmp4 = cursor.fetchall()
 		tmp4 = list(tmp4)
@@ -69,7 +70,7 @@ def maint_mgmt(request):
 			else:
 				for ii in nm:
 					tmp3.append(ii)
-		# need to compare tmp4 and tmp3 and put into two different appends.   on1 and off1 
+		# need to compare tmp4 and tmp3 and put into two different appends.   on1 and off1
 		for i in tmp4:
 			t4.append(i[0])
 			found1 = 0
@@ -83,10 +84,10 @@ def maint_mgmt(request):
 				off1.append(i[0])
 		request.session["assigned"] = on1
 		request.session["not_assigned"] = off1
-	
+
 	else:
 		dep1 = 'Maintenance'
-		SQ2 = "SELECT * FROM tkb_logins where department = '%s' order by active1 DESC, user_name ASC" % (dep1) 
+		SQ2 = "SELECT * FROM tkb_logins where department = '%s' order by active1 DESC, user_name ASC" % (dep1)
 		cursor.execute(SQ2)
 		tmp4 = cursor.fetchall()
 		tmp4 = list(tmp4)
@@ -157,7 +158,7 @@ def maint_mgmt(request):
 	return render(request, "maint_mgmt.html",{'index':tmp,'args':args})
 
 # Login for Maintenance Manager App
-def maint_mgmt_login_form(request):	
+def maint_mgmt_login_form(request):
 
 	Maint_Mgmt_Manpower = []
 	request.session["login_department"] = 'Maintenance Manager'
@@ -177,7 +178,7 @@ def maint_mgmt_login_form(request):
 		check = request.session["login_password_check"]
 		request.session["maint_mgmt_login_password_check"]
 
-	
+
 		# if len(login_name) < 5:
 		# 	login_password = 'wrong'
 		if check != 'false':
@@ -189,10 +190,10 @@ def maint_mgmt_login_form(request):
 
 		ch2 = request.session["maint_mgmt_login_password_check"]
 		request.session["wildcard1"] = 1
-	
+
 		return render(request,'redirect_maint_mgmt.html')  # Need to bounce out to an html and redirect back into a module otherwise infinite loop
 
-		
+
 	elif 'button2' in request.POST:
 		request.session["password_lost_route1"] = "maint_mgmt.html"
 		return render(request,'login/reroute_lost_password.html')
@@ -206,10 +207,10 @@ def maint_mgmt_login_form(request):
 	request.session["maint_mgmt_login_password"] = ""
 
 
-	return render(request,'maint_mgmt_login_form.html', {'args':args,'MList':Maint_Mgmt_Manpower})	
+	return render(request,'maint_mgmt_login_form.html', {'args':args,'MList':Maint_Mgmt_Manpower})
 
 def maint_mgmt_manpower(request):
-	db, cursor = db_set(request)  
+	db, cursor = db_set(request)
 	dep = request.session['login_department']
 	cursor.execute("""CREATE TABLE IF NOT EXISTS tkb_logins(Id INT PRIMARY KEY AUTO_INCREMENT,user_name CHAR(50), password CHAR(50), department CHAR(50), active1 INT(10) default 0)""")
 	db.commit()
@@ -221,14 +222,14 @@ def maint_mgmt_manpower(request):
 	return tmp
 
 def maint_login_check(request):
-	db, cursor = db_set(request) 
+	db, cursor = db_set(request)
 	cursor.execute("""CREATE TABLE IF NOT EXISTS tkb_logins(Id INT PRIMARY KEY AUTO_INCREMENT,user_name CHAR(50), password CHAR(50), department CHAR(50),active1 INT(10) default 0)""")
 	db.commit()
 	db.close()
 	return
 
 def maint_manpower(request):
-	db, cursor = db_set(request)  
+	db, cursor = db_set(request)
 	dep = request.session['login_department']
 	cursor.execute("""CREATE TABLE IF NOT EXISTS tkb_logins(Id INT PRIMARY KEY AUTO_INCREMENT,user_name CHAR(50), password CHAR(50), department CHAR(50),active1 INT(10) default 0)""")
 	# cursor.execute("""CREATE TABLE IF NOT EXISTS tkb_maint_list LIKE tkb_tech_list""")
@@ -242,8 +243,8 @@ def maint_manpower(request):
 	db.close()
 	return tmp
 
-# Module to edit entry	
-def maintenance_edit(request):	
+# Module to edit entry
+def maintenance_edit(request):
 	index = request.session["index"]
 	Maint_Manpower = []
 	request.session["login_department"] = 'Maintenance'
@@ -262,16 +263,16 @@ def maintenance_edit(request):
 
 	nm = multi_name_breakdown(tmp2[4])  # put all the names in a list that are seperated by a   |
 
-	db.close()	
-	
+	db.close()
+
 
 	if request.POST:
-        			
+
 		machinenum = request.POST.get("machine")
 		problem = request.POST.get("reason")
 		manpower = request.POST.get("manpower")
 		whoisonit = 'tech'
-		
+
 		a = request.POST
 		try:
 			b=int(a.get("one"))
@@ -317,14 +318,14 @@ def maintenance_edit(request):
 			return render(request,'redirect_maint_edit.html')  # Need to bounce out to an html and redirect back into a module otherwise infinite loop
 
 		return render(request,'redirect_maint_mgmt.html')  # Need to bounce out to an html and redirect back into a module otherwise infinite loop
-		
-	else:	
+
+	else:
 		form = sup_downForm()
 	args = {}
 	args.update(csrf(request))
 	args['form'] = form
 
-	return render(request,'maintenance_edit.html',{'args':args,'MList':Maint_Manpower})	
+	return render(request,'maintenance_edit.html',{'args':args,'MList':Maint_Manpower})
 
 def maintenance_close(request):
 	index = request.session["index"]
@@ -375,7 +376,7 @@ def hour_check():
 	if hour >= h and min > m:
 		ch = 1
 
-	db, cursor = db_set(request)  
+	db, cursor = db_set(request)
 	try:
 		sql = "SELECT checking FROM tkb_email_conf where date='%s'" %(current_date)
 		cursor.execute(sql)
@@ -403,10 +404,10 @@ def hour_check():
 			rql =( 'update tkb_email_conf SET sent="%s" WHERE date="%s"' % (sent,current_date))
 			cursor.execute(rql)
 			db.commit()
-			send_email = 1				
-	db.close()	
+			send_email = 1
+	db.close()
 	return send_email
-	
+
 def reset_call_route(request):
 	request.session["call_route"] = 'supervisor'
 	return render(request, "out.html")
@@ -415,9 +416,9 @@ def tech_email_test(request):
 	send_email = hour_check()
 	if send_email == 1:
 		return render(request, "email_downtime.html")
-		
+
 	return render(request, "email_downtime_cycle.html")
-		
+
 def maint(request):
 	# Initialize Request Sessions if they don't exist
 	try:
@@ -425,15 +426,15 @@ def maint(request):
 	except:
 		request.session["bounce2_switch"] = 0
 	try:
-		request.session["bounce2"] 
+		request.session["bounce2"]
 	except:
 		request.session["bounce2"] = 0
 	try:
-		request.session["login_maint"] 
+		request.session["login_maint"]
 	except:
 		request.session["login_maint"] = "none"
 	try:
-		request.session["maint_ctr"] 
+		request.session["maint_ctr"]
 	except:
 		request.session["maint_ctr"] = 0
 
@@ -450,9 +451,9 @@ def maint(request):
 
 	elif request.session["bounce2_switch"] == 0:
 		request.session["bounce2"] = 0
-  
 
-  
+
+
 	request.session["refresh_maint"] = 0
   # initialize current time and set 'u' to shift start time
 	t=int(time.time())
@@ -475,10 +476,10 @@ def maint(request):
 
 
 
-	
+
 
 	# Select prodrptdb db located in views_db
-	db, cursor = db_set(request)   
+	db, cursor = db_set(request)
 	dep = "Maintenance"
 	sql = "SELECT user_name FROM tkb_logins WHERE department = '%s' ORDER BY user_name ASC" %(dep)  # Select only those in the department  (dep)
 	cursor.execute(sql)
@@ -491,9 +492,9 @@ def maint(request):
 
 
 	#sqlA = "SELECT SUM(qty) FROM tkb_prodtrak where machine = '%s' AND time >= '%d'" %(machine_list[i], u)
-	  # Select the Qty of entries for selected machine table from the current shift only 
+	  # Select the Qty of entries for selected machine table from the current shift only
 	  # and assign it to 'count'
-	
+
 	# Retrieve information from Database and put 2 columns in array {list}
 	# then send array to Template machinery.html
 	c = ["tech","Jim Barker"]
@@ -509,13 +510,13 @@ def maint(request):
 	a8 = "-------"
 	a9 =  "-------"
 	a10 = "-------"
-	
+
 	sqlT = "Select * From pr_downtime1 where closed IS NULL"
 	cursor.execute(sqlT)
 	tmp = cursor.fetchall()
 
 
-	
+
 
 
 	# d1 = '2015-05-01'
@@ -524,7 +525,7 @@ def maint(request):
 
 	# cursor.execute(sqlT)
 	# tmp = cursor.fetchall()
-	
+
 	ctr = 0
 	ctr2 = 0
 	for x in tmp:
@@ -546,18 +547,18 @@ def maint(request):
 		# 	tp = 4
 		# elif temp_pr =="E":
 		# 	tp = 5
-		
-		
+
+
 		tmp3 = tmp2[4]
 
 		if tmp3 == "Electrician":
-			
+
 			tmp3 = "Maintenance"
 			# kkkk = request.session["opopop"]
 			add_job = 1
 		if tmp3 == "Millwright":
 			tmp3 = "Maintenance"
-			# kkkk = request.session["opopop"]	
+			# kkkk = request.session["opopop"]
 			add_job = 1
 
 		nm = seperate_string(tmp2[4])
@@ -566,7 +567,7 @@ def maint(request):
 			for h2 in maint:
 				if h1[0] == h2[0]:
 					add_job = 1
-					break 
+					break
 			if add_job == 1:
 				break
 		# Do this if we need to assign to display tuple
@@ -604,7 +605,7 @@ def maint(request):
 		request.session["maint_alarm"] = "/media/clock.wav"
 		request.session["maint_ctr"] = ctr
 	LList = zip(job,prob,id,tch,priority)
-	
+
 	db.close()
 	n = "none"
 	if request.session["login_maint"] == "Chris Dufton":
@@ -624,31 +625,31 @@ def maint(request):
 		request.session["login_back"] = "/static/media/back_woodrow.jpg"
 	elif request.session["login_maint"] == "Jeff Jacobs":
 		request.session["login_image"] = "/static/media/tech_training.jpg"
-		request.session["login_back"] = "/static/media/back_tech_training.jpg"			
+		request.session["login_back"] = "/static/media/back_tech_training.jpg"
 	elif request.session["login_maint"] == "Steven Niu":
 		request.session["login_image"] = "/static/media/tech_training.jpg"
-		request.session["login_back"] = "/static/media/back_tech_training.jpg"			
+		request.session["login_back"] = "/static/media/back_tech_training.jpg"
 	elif request.session["login_maint"] == "-----":
 		request.session["login_image"] = "/static/media/tech_training.jpg"
-		request.session["login_back"] = "/static/media/back_tech_training.jpg"				
+		request.session["login_back"] = "/static/media/back_tech_training.jpg"
 	else:
 		request.session["login_image"] = "/static/media/tech_rick.jpg"
 		request.session["login_back"] = "/static/media/back_rick.jpg"
-		
-		
+
+
 	request.session["login_back"] = "/static/media/back_maint.jpg"
 	request.session["login_image"] = "/static/media/maint.jpg"
-	
-  # call up 'display.html' template and transfer appropriate variables.  
-  
+
+  # call up 'display.html' template and transfer appropriate variables.
+
   # *********************************************************************************************************
   # ******     Messaging portion of the Maint App  *********************  TODO  *****************************
   # *********************************************************************************************************
 #	N = request.session["login_maint"]
 #	R = 0
-#	db, cur = db_set(request) 
+#	db, cur = db_set(request)
 #	try:
-#		sql = "SELECT * FROM tkb_message WHERE Receiver_Name = '%s' and Complete = '%s'" %(N,R)	
+#		sql = "SELECT * FROM tkb_message WHERE Receiver_Name = '%s' and Complete = '%s'" %(N,R)
 #		cur.execute(sql)
 #		tmp44 = cur.fetchall()
 #		tmp4 = tmp44[0]
@@ -672,15 +673,15 @@ def maint(request):
 #		cnt = 1
 #		request.session["refresh_tech"] = 3
 	# ********************************************************************************************************
-	
+
 	M = 'Need Millwright'
 	E = 'Maintenance'
-	
+
 	return render(request,"maint.html",{'L':LList,'N':n,'M':M,'E':E})
 
 def maint_close_item(request):
 	index=request.session["index"]
-	db, cur = db_set(request)  		
+	db, cur = db_set(request)
 	tc = "Closed by Maintenance"
 	request.session["tech_comment"] = tc
 	t = vacation_temp()
@@ -712,12 +713,12 @@ def tech_message_reply1(request):
 	cur.execute(sql)
 	db.commit()
 	return tech_message_reply2(request)
-	
-	
-def maint_call(request, index):	
-    
+
+
+def maint_call(request, index):
+
 	tec = request.session["login_maint"]
-	db, cur = db_set(request)  
+	db, cur = db_set(request)
 	sql1 = "SELECT whoisonit FROM pr_downtime1 where idnumber='%s'" %(index)
 	cur.execute(sql1)
 	tmp = cur.fetchall()
@@ -750,24 +751,24 @@ def maint_names(request):
 	args['form'] = form
 	return render(request,"maint_names_form.html",{'Maint_Manpower':Maint_Manpower,'args':args})
 
-		
-def maint_logout(request):	
+
+def maint_logout(request):
 	Maint_Manpower = []
 	request.session["login_department"] = 'Maintenance'
 	Maint_Manpower = maint_manpower(request)
 
 	if request.POST:
-        			
+
 		tec = request.POST.get("user")
 		pwd = request.POST.get("pwd")
 
-	
+
 		request.session["login_maint"] = tec
 		request.session["login_maint_check"] = 1
-		
+
 
 		return maint(request)
-		
+
 	else:
 		form = tech_loginForm()
 	args = {}
@@ -777,12 +778,12 @@ def maint_logout(request):
 	request.session["login_maint_check"] = 0
 	request.session["bounce2"] = 0
 	request.session["bounce2_switch"] = 0
-	return render(request,'maint_login.html',{'args':args,'MList':Maint_Manpower})	
+	return render(request,'maint_login.html',{'args':args,'MList':Maint_Manpower})
 
-	
-def maint_pass(request, index):	
-	
-	db, cursor = db_set(request)  
+
+def maint_pass(request, index):
+
+	db, cursor = db_set(request)
 	sql = "SELECT whoisonit FROM pr_downtime1 where idnumber='%s'" %(index)
 	cursor.execute(sql)
 	tmp = cursor.fetchall()
@@ -793,7 +794,7 @@ def maint_pass(request, index):
 	except:
 		request.session["tech_comment"] = ""
 
-		
+
 	if request.POST:
 
 		tc = request.POST.get("comment")
@@ -801,7 +802,7 @@ def maint_pass(request, index):
 		tp = request.POST.get("pass")
 		request.session["tech_pass"] = tp
 		t = datetime.datetime.now()
-		
+
 		# Select prodrptdb db located in views_db
 		db, cur = db_set(request)
 
@@ -809,27 +810,27 @@ def maint_pass(request, index):
 		cur.execute(sql)
 		db.commit()
 		db.close()
-		
-		db, cur = db_set(request)  
+
+		db, cur = db_set(request)
 		tql =( 'update pr_downtime1 SET whoisonit="%s" WHERE idnumber="%s"' % (tp,index))
 		cur.execute(tql)
 		db.commit()
 		db.close()
 
 		return tech(request)
-		
+
 	else:
 		form = tech_closeForm()
 	args = {}
 	args.update(csrf(request))
 	args['form'] = form
-	return render(request,'tech_pass.html', args)		
+	return render(request,'tech_pass.html', args)
 
-							  
+
 def maint_job_history(request):
 
 	name = request.session["login_maint"]
-	db, cursor = db_set(request)  		
+	db, cursor = db_set(request)
 	sql = "SELECT * FROM pr_downtime1 WHERE whoisonit = '%s' ORDER BY called4helptime DESC limit 60" %(name)
 	cursor.execute(sql)
 	tmp = cursor.fetchall()
@@ -842,9 +843,9 @@ def maint_job_history(request):
 	b = []
 	c = []
 	d = []
-	
-	
-	
+
+
+
 	for x in tmp:
 		# assign job date and time to dt
 		dt = x[2]
@@ -861,14 +862,14 @@ def maint_job_history(request):
 			b.append(x[4])
 			c.append(x[7])
 			d.append(x[9])
-			
-			
+
+
 			job_diff.append(str(d_dif))
-		
+
 	job_history = zip(job_assn,a,job_date,b,c,d)
 
 
-	
+
 	machine="Recent Machine Breakdowns"
 	request.session["machine_search"] = machine
 	request.session["maint_display"] = 1
@@ -876,48 +877,48 @@ def maint_job_history(request):
 
 def maint_map(request):
 
-	return render(request,"maint_map.html")	
+	return render(request,"maint_map.html")
 
-def tech_history(request):	
+def tech_history(request):
 
 	if request.POST:
-        			
+
 		machine = request.POST.get("machine")
 		request.session["machine_search"] = machine
-		db, cur = db_set(request)  		
+		db, cur = db_set(request)
 		sql = "SELECT * FROM pr_downtime1 where LEFT(machinenum,3) = '%s' ORDER BY called4helptime DESC limit 20" %(machine)
 		cur.execute(sql)
 		tmp = cur.fetchall()
 		db.close
 		request.session["tech_display"] = 0
 		return render(request,"tech_search_display.html",{'machine':tmp})
-		
+
 	else:
-		
+
 		form = tech_searchForm()
 	args = {}
 	args.update(csrf(request))
 	args['form'] = form
-	return render(request,'tech_search.html', args)		
+	return render(request,'tech_search.html', args)
 
 def maint_call_call(request):
-	if request.POST:	
+	if request.POST:
 		machinenum = request.POST.get("machine")
 		problem = request.POST.get("reason")
 		priority = request.POST.get("priority")
 		name_who = request.POST.get["whoisonit"]
-		
+
 		# call external function to produce datetime.datetime.now()
 		t = vacation_temp()
-		
+
 		# Select prodrptdb db located in views_db
 		db, cur = db_set(request)
 		cur.execute('''INSERT INTO pr_downtime1(machinenum,problem,priority,whoisonit,called4helptime) VALUES(%s,%s,%s,%s,%s)''', (machinenum,problem,priority,name_who,t))
 		db.commit()
 		db.close()
-		
+
 		return done_maint_app(request)
-		
+
 	else:
 		request.session["machinenum"] = "692"
 		form = sup_downForm()
@@ -926,12 +927,12 @@ def maint_call_call(request):
 	args['form'] = form
 	rlist = machine_list_display()
 	request.session["refresh_maint"] = 3
-	return render(request,'maint_call.html', {'List':rlist,'args':args})	
-	
-	return render(request,'maint_call.html')	
-						  
+	return render(request,'maint_call.html', {'List':rlist,'args':args})
 
-def tech_message(request):	
+	return render(request,'maint_call.html')
+
+
+def tech_message(request):
 	A = 'Chris Strutton'
 	db, cur = db_set(request)
 	sql = "SELECT * FROM tkb_tech_list"
@@ -941,33 +942,33 @@ def tech_message(request):
 	db.close()
 
 	if request.POST:
-        			
+
 		a = request.session["login_tech"]
 		b = request.POST.get("name")
 		c = request.POST.get("message")
-		
-		
 
-		
+
+
+
 		# Select prodrptdb db located in views_db
 		db, cur = db_set(request)
 		cur.execute('''INSERT INTO tkb_message(Sender_Name,Receiver_Name,Info) VALUES(%s,%s,%s)''', (a,b,c))
 
 		db.commit()
 		db.close()
-		
+
 		return tech(request)
 		#return done(request)
-		
+
 	else:
 		form = tech_message_Form()
 	args = {}
 	args.update(csrf(request))
 	args['form'] = form
-	
-	return render(request,'tech_message_form.html', {'List':tmp,'A':A,'args':args})	
 
-def tech_message_reply2(request):	
+	return render(request,'tech_message_form.html', {'List':tmp,'A':A,'args':args})
+
+def tech_message_reply2(request):
 	db, cur = db_set(request)
 	sql = "SELECT * FROM tkb_tech_list"
 	cur.execute(sql)
@@ -975,34 +976,34 @@ def tech_message_reply2(request):
 	db.close()
 
 	if request.POST:
-        			
+
 		a = request.session["login_tech"]
 		b = request.POST.get("name")
 		b = request.session["sender_name"]
 		c = request.POST.get("message")
-		
-		
 
-		
+
+
+
 		# Select prodrptdb db located in views_db
 		db, cur = db_set(request)
 		cur.execute('''INSERT INTO tkb_message(Sender_Name,Receiver_Name,Info) VALUES(%s,%s,%s)''', (a,b,c))
 
 		db.commit()
 		db.close()
-		
+
 		return tech(request)
 		#return done(request)
-		
+
 	else:
 		form = tech_message_Form()
 	args = {}
 	args.update(csrf(request))
 	args['form'] = form
-	
-	return render(request,'tech_message_reply_form.html', {'List':tmp,'args':args})	
-	
-def modal_test(request):	
+
+	return render(request,'tech_message_reply_form.html', {'List':tmp,'args':args})
+
+def modal_test(request):
 	a = 1
 	b = 1
 	request.session["modal_1"] = a

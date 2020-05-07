@@ -9,8 +9,7 @@ from datetime import datetime
 import MySQLdb
 import time
 
-
-	  
+# Test a push
 def fix_time(request):
 	db, cursor = db_set(request)
 	a = 2268996
