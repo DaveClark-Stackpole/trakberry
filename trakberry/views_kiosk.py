@@ -2095,3 +2095,8 @@ def set_test1(request):
 
 	return render(request,"done_update2.html")
 
+# This will be the Scrap Entry section in the Kiosk
+def scrap(request):
+
+	return render(request,"scrap.html")
+
