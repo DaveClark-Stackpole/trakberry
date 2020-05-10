@@ -1,2 +1,1 @@
-*.pyc
-hello.py
+test_hello.py
