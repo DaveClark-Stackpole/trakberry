@@ -1,3 +1,3 @@
-print 'helow wurld'
+print 'hello wurld'
 print 
 print
