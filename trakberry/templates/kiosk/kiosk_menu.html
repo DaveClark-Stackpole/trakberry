@@ -21,8 +21,8 @@
 	.banner2_bg{position:absolute;background-color: #000000;opacity: 0.8;filter:alpha(opacity=80);width:auto; height:auto;z-index:-440;	border-radius: 25px;;}
 
 	
-	.button2 {
-  width: 50%;
+.button2 {
+  width: 80%;
   height: 210px;
   text-align: center;
   cursor: pointer;
@@ -33,16 +33,33 @@
   border-radius: 15px;
   box-shadow: 0 15px #999;
 }
-
 .button2:hover {background-color: rgb(211, 193, 144)}
-
 .button2:active {
+  background-color: rgb(211, 193, 144);
+  box-shadow: 0 8px #666;
+  transform: translateY(8px);
+}
+.button3 {
+  width: 80%;
+  height: 210px;
+  text-align: center;
+  cursor: pointer;
+  outline: none;
+  color: #000000;
+  background-color: rgb(233, 179, 135);
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 15px #999;
+}
+.button3:hover {background-color: rgb(241, 162, 98)}
+.button3:active {
   background-color: rgb(211, 193, 144);
   box-shadow: 0 8px #666;
   transform: translateY(8px);
 }
 
 .frame1 {color:black;text-align:center;float:left;width:50%}
+.frame3 {color:black;text-align:center;float:left;width:33%}
 .frame2 {color:black;text-align:center;float:left;width:100%}
 </style>
 
@@ -84,12 +101,18 @@
 		<button class="button2" type="submit" name="kiosk_button1" value="-4"><font size="6"><b>Jim's Mail</b></font></button>
 	</div> -->
 
-	<div class="frame1"><br><br><br><br><br><br><br>
+	<div class="frame3"><br><br><br><br><br><br><br>
 		<button class="button2" type="button" onclick="window.location.href = '{{request.session.local_toggle}}/kiosk_help_form';">
 			<font size="6"><b>Help</b></font>
 		</button>
 		</div>
-	<div class="frame1"><br><br><br><br><br><br><br>
+	<div class="frame3"><br><br><br><br><br><br><br>
+		<button class="button3" type="button" onclick="window.location.href = '{{request.session.local_toggle}}/kiosk_scrap';">
+			<font size="6"><b>Scrap</b></font>
+		</button>
+	</div>
+
+	<div class="frame3"><br><br><br><br><br><br><br>
 		<button class="button2" type="button" onclick="window.location.href = '{{request.session.local_toggle}}/kiosk_forklift_form';">
 			<font size="6"><b>Call Forklift</b></font>
 		</button>
