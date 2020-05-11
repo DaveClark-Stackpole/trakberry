@@ -28,6 +28,8 @@ def maint_initialize_rv(request):
 	return
 
 def maint_mgmt(request):
+	request.session["dave_test1"] = 'hey'
+
 
 	maint_initialize_rv(request)  #initialize request variables
 
@@ -1007,4 +1009,7 @@ def modal_test(request):
 	a = 1
 	b = 1
 	request.session["modal_1"] = a
+
+
+	
 	return render(request,'modal_test.html',{'b':b})
