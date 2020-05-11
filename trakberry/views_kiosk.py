@@ -2098,5 +2098,18 @@ def set_test1(request):
 # This will be the Scrap Entry section in the Kiosk
 def kiosk_scrap(request):
 
+	db, cursor = db_set(request)
+	# cursor.execute("""DROP TABLE IF EXISTS tkb_scrap_test""")
+	cursor.execute("""CREATE TABLE IF NOT EXISTS tkb_scrap_test(Id INT PRIMARY KEY AUTO_INCREMENT,user_name CHAR(50),total INT(20))""")
+
+	d = "Dave Clark"
+	t = 25
+
+	cursor.execute('''INSERT INTO tkb_scrap_test(user_name,total) VALUES(%s,%s)''', (d,t))
+	db.commit()
+
+	db.close()
+
+
 	return render(request,"kiosk_scrap.html")
 

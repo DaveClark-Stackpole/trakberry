@@ -418,6 +418,7 @@ urlpatterns = [
 
 	url(r'^kiosk_help_form/', kiosk_help_form),
 	url(r'^kiosk_forklift_form/', kiosk_forklift_form),
+	
 
 
 	url(r'^tenr2/', tenr2),
