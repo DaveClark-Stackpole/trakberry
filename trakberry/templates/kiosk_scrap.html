@@ -8,6 +8,8 @@
       body{font-family: 'Montserrat'; color: #FDFFFC; text-align: center; background-color: #011627; border: 60px solid #2EC4B6; border-top: 0px; margin: 0px;}
       form{display: inline-block;}
       #sub{border-radius: 25px; background: #FF9F1C; height: 90px; width: 180px; font-family: "Montserrat"; font-size: 1.2em; margin-bottom: 4px;}
+      #res{border-radius: 25px; background: rgb(235, 224, 208); height: 90px; width: 180px; font-family: "Montserrat"; font-size: 1.2em; margin-bottom: 4px;}
+      #can{border-radius: 25px; background: rgb(236, 78, 15); height: 90px; width: 180px; font-family: "Montserrat"; font-size: 1.2em; margin-bottom: 4px;}
       #select-choice{font-size: 1.2em;}
       #day{font-size: 1.2em;}
   </style>
@@ -220,7 +222,10 @@
         </div>
 
         <div>
-        <input type="submit" id= "sub" value="Submit Request" />
+        <p><button type="submit" id= "sub" value="Submit">Submit Request</button>
+        <button type="reset" id= "res" value="Reset">Reset</button>
+        <button type="cancel" id= "can" onclick="http://localhost:8080/kiosk_menu/">Cancel</button></p>
+
         </div>
     </form>  
   </div>
