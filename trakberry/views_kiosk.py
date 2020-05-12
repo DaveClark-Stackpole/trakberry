@@ -2109,6 +2109,7 @@ def kiosk_scrap(request):
 	tmp = cursor.fetchall()
 	tmp2 = tmp
 	request.session["machine_temp"] = tmp
+	db.close()
 	# ******************************************************************************
 
 	# m_name = "1507"
@@ -2118,8 +2119,29 @@ def kiosk_scrap(request):
 	# db.commit()
 
 
-	db.close()
+	# Use Asset Number  (Machine Number)
+	# Use Job Description (example Sintering, Secondary, Finishing, Compacting)
+	# Use Scrap Description (will use a drop down for this and will be retrieved from Table eventually.  Dropped, Damaged, Oversize, Undersize)
+	# Use Scrap Quantity (amount)
 
 
-	return render(request,"kiosk_scrap.html")
+
+	if request.POST:
+		machine = request.POST.get("select-choice")
+		db, cursor = db_set(request)
+		cursor.execute('''INSERT INTO tkb_scrap_test(machine_num) VALUES(%s)''', (machine))
+		db.commit()
+		db.close()
+		# return render(request,"done_update2.html")
+		return render(request, "redirect_kiosk.html")
+
+	else:
+		form = sup_downForm()
+	args = {}
+	args.update(csrf(request))
+	args['form'] = form
+
+	return render(request,'kiosk_scrap.html',{'args':args})
+
+
 
