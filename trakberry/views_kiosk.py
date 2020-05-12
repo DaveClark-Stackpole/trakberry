@@ -2101,12 +2101,22 @@ def kiosk_scrap(request):
 	db, cursor = db_set(request)
 	# cursor.execute("""DROP TABLE IF EXISTS tkb_scrap_test""")
 	cursor.execute("""CREATE TABLE IF NOT EXISTS tkb_scrap_test(Id INT PRIMARY KEY AUTO_INCREMENT,machine_name INT(50),machine_num INT(20), machine_hours INT(20))""")
-
-	m_name = "1507"
-	m_num = 25
-	m_hours = 12
-	cursor.execute('''INSERT INTO tkb_trash_scrap(machine_name,machine_num, machine_hours) VALUES(%s,%s)''', (m_name,m_num,m_hours))
 	db.commit()
+
+	# This will assign all the values of machines into session variable machine_temp
+	sql = "SELECT asset FROM tkb_cycletime"
+	cursor.execute(sql)
+	tmp = cursor.fetchall()
+	tmp2 = tmp
+	request.session["machine_temp"] = tmp
+	# ******************************************************************************
+
+	# m_name = "1507"
+	# m_num = 25
+	# m_hours = 12
+	# cursor.execute('''INSERT INTO tkb_trash_scrap(machine_name,machine_num, machine_hours) VALUES(%s,%s)''', (m_name,m_num,m_hours))
+	# db.commit()
+
 
 	db.close()
 

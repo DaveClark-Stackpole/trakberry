@@ -25,14 +25,22 @@
      </div>
 
 
+	 <input style="font-size:23px;width:124px;height:60px;" list="browsers" name="job1" type="number">	
+	 <datalist id="browsers">{% for item in tmp %} <option value={{item.0}}>{{item.0}}</option> {% endfor %} </datalist>
+
 
   
     <div>
       
       <label for="select-choice">Machine Name:</label>
       <select name="select-choice" id="select-choice">
-        <option value="0" selected disabled>Machine Name:</option>
-        <option value="a">1507</option>
+		<option value="0" selected disabled>Machine Name:</option>
+		{% for item in request.session.machine_temp %}
+			<option value={{item.0}}>{{item.0}}</option>
+		{% endfor %}
+	  </select>
+
+        <!-- <option value="a">1507</option>
         <option value="b">1506</option>
         <option value="c">1324</option>
         <option value="d">1456</option>
@@ -44,7 +52,7 @@
         <option value="j">1324</option>
         <option value="k">1243</option>
         <option value="l">1423</option>
-      </select>
+      </select> -->
       
       <select name="machine-num" id="day">
         <option value="0" selected disabled>Machine Num:</option>
