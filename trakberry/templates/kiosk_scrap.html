@@ -2,117 +2,98 @@
 <html>
 <head>
   <title>Trash Form</title>
-  <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
-  <style>
-      h1{color: rgb(197, 145, 99);}
-      body{font-family: 'Montserrat'; color: #FDFFFC; text-align: center; background-color: #011627; border: 60px solid #2EC4B6; border-top: 0px; margin: 0px;}
-      form{display: inline-block;}
-      #sub{border-radius: 25px; background: #FF9F1C; height: 90px; width: 180px; font-family: "Montserrat"; font-size: 1.2em; margin-bottom: 4px;}
-      #res{border-radius: 25px; background: rgb(235, 224, 208); height: 90px; width: 180px; font-family: "Montserrat"; font-size: 1.2em; margin-bottom: 4px;}
-      #can{border-radius: 25px; background: rgb(236, 78, 15); height: 90px; width: 180px; font-family: "Montserrat"; font-size: 1.2em; margin-bottom: 4px;}
-      #select-choice{font-size: 1.2em;}
-      #day{font-size: 1.2em;}
-  </style>
+	<!-- ********************************* BootStrap Local*******************************-->
+	<script src="/static/bootstrap/js/1.11.3/jquery.min.js"></script>
+	<script src="/static/bootstrap/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
+	<!-- ***********************************************************************************-->
+
+	<link rel="stylesheet" href="/static/style_1/grid_kiosk_job_assign.css">
+    
+
+
+
+
+<style>
+
+
+#full-screen-background-image {z-index: -999;min-height: 110%; min-width: 100%;width: 100%;height: 110%;position: fixed;top: 0;  left: 0;}
+	.banner2_bg{position:absolute;background-color: #000000;opacity: 0.8;filter:alpha(opacity=80);width:auto; height:auto;z-index:-440;	border-radius: 25px;;}
+    h1{text-align: center; color: rgb(216, 211, 211);}
+    #select-choice{position: relative; font-family: Arial; background-color: bisque;}
+    .same-line{margin: 15px 0 0 0; display: inline-block; float: left;  width: 30%;}
+</style>
 
 </head>
 <body>
 
+    <img alt="full screen background image" src="/static/media/kiosk.jpeg?" id="full-screen-background-image"/>
+
   <h1>Scrap</h1>
   <div>
 	<form action="" method="post">{% csrf_token %}
-        <div>
-        <label for="first-name">Name:</label>
-        <input type="text" name="first-name" id="first-name" placeholder="XYZ" required />
-        </div> <br>
+        <center>
+        <div class="grid-container">
+            <div class="item1">
+                <input style="background-color: #AAA00A;border-radius: 10px;width:140px;height:60px;font-weight: 700;font-size:23px;align=left;" type="submit" value="Enter">
+            </div>
+            <div class="item2">
+                <button style="background-color: #AAAAAA;border-radius: 10px;width:120px;height:60px;font-weight: 700;font-size:23px;align=left;" type="submit" name="kiosk_assign_button1" value="-1">Reset</button>
+            </div>
+            <div class="item3">
+                <button style="background-color: #AAAAAA;border-radius: 10px;width:120px;height:60px;font-weight: 700;font-size:23px;align=right;" type="submit" name="kiosk_assign_button2" value="-2">Cancel</button>
+            </div> 
         
-        <div>
-            <label for="radio-choice-1">Male</label>
-            <input type="radio" name="radio-choice" id="radio-choice-1" value="choice-1" />
-
-            <label for="radio-choice-2">Female</label>
-            <input type="radio" name="radio-choice" id="radio-choice-2" value="choice-2" />
-
-        <label for="radio-choice-3">Other</label>
-            <input type="radio" name="radio-choice" id="radio-choice-3" value="choice-3" />
-        </div><br>
+        <br>
 
         <input style="font-size:23px;width:124px;height:60px;" list="browsers" name="job1" type="number">
         <datalist id="browsers">{% for item in tmp %} <option value={{item.0}}>{{item.0}}</option> {% endfor %} </datalist><br>	
-        <br>
+    
 
     
-        <div>
+        <div class="same-line">
         
         <label for="select-choice"></label>
         <select name="select-choice" id="select-choice">
-            <option value="0" selected disabled>Machine Name:</option>
+            <option value="0" selected disabled>Asset Num:</option>
             {% for item in request.session.machine_temp %}
                 <option value={{item.0}}>{{item.0}}</option>
             {% endfor %}
-        </select>
+        </select></div>
 
-            <!-- <option value="a">1507</option>
-            <option value="b">1506</option>
-            <option value="c">1324</option>
-            <option value="d">1456</option>
-            <option value="e">15657</option>
-            <option value="f">1302</option>
-            <option value="g">1756</option>
-            <option value="h">1234</option>
-            <option value="i">4321</option>
-            <option value="j">1324</option>
-            <option value="k">1243</option>
-            <option value="l">1423</option>
-        </select> -->
-        
-        <select name="machine-num" id="day">
-            <option value="0" selected disabled>Machine Num:</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-            <option value="7">7</option>
-            <option value="8">8</option>
-            <option value="9">9</option>
-            <option value="10">10</option>
-            <option value="11">11</option>
-            <option value="12">12</option>
-            <option value="13">13</option>
-            <option value="14">14</option>
-            <option value="15">15</option>
-            <option value="16">16</option>
-            <option value="17">17</option>
-            <option value="18">18</option>
-            <option value="19">19</option>
-            <option value="20">20</option>
-            <option value="21">21</option>
-            <option value="22">22</option>
-            <option value="23">23</option>
-            <option value="24">24</option>
-            <option value="25">25</option>
-            <option value="26">26</option>
-            <option value="27">27</option>
-            <option value="28">28</option>
-            <option value="29">29</option>
-            <option value="30">30</option>
-            <option value="31">31</option>
-        </select>
-        
-        </div>
+        <div class="same-line">
+        <select name="job-desc" id="day">
+            <option value="0" selected disabled>Job Description:</option>
+            <option value="1">Sintering</option>
+            <option value="2">Secondary</option>
+            <option value="3">Finishing</option>
+            <option value="4">Compacting</option>
+        </select></div>
 
-        <div>
+        <div class="new-line">
+            <select name="scrap-desc" id="scrap-descr">
+                <option value="0" selected disabled>Scrap Description:</option>
+                <option value="1">Dropped</option>
+                <option value="2">Damaged</option>
+                <option value="3">Oversize</option>
+                <option value="4">Undersize</option>
+            </select></div>
+        
+        
+
+        <!-- <div>
         <label for="checkbox">I agree to the terms and conditions</label>
         <input type="checkbox" name="checkbox" id="checkbox" />
-        </div>
+        </div> -->
 
-        <div>
+        <!-- <div>
         <p><button type="submit" id= "sub" value="Submit">Submit Request</button>
         <button type="reset" id= "res" value="Reset">Reset</button>
         <button type="cancel" id= "can" onclick="http://localhost:8080/kiosk_menu/">Cancel</button></p>
 
-        </div>
+        </div> -->
+    </div><br>
+    </center>
     </form>  
   </div>
 
