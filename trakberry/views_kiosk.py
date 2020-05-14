@@ -2096,12 +2096,10 @@ def set_test1(request):
 	return render(request,"done_update2.html")
 
 # This will be the Scrap Entry section in the Kiosk
-def kiosk_scrap_entry(request):
-
-
-	return render(request,'kiosk_scrap_entry.html',{'args':args})
-
 def kiosk_scrap(request):
+	return render(request,'kiosk_scrap.html')
+
+def kiosk_scrap_entry(request):
 
 	db, cursor = db_set(request)
 	# cursor.execute("""DROP TABLE IF EXISTS tkb_scrap_test""")
@@ -2138,7 +2136,7 @@ def kiosk_scrap(request):
 		db.commit()
 		db.close()
 		# return render(request,"done_update2.html")
-		return render(request, "redirect_kiosk.html")
+		return render(request, "redirect_kiosk_scrap.html")
 
 	else:
 		form = sup_downForm()
@@ -2146,7 +2144,7 @@ def kiosk_scrap(request):
 	args.update(csrf(request))
 	args['form'] = form
 
-	return render(request,'kiosk_scrap.html',{'args':args})
+	return render(request,'kiosk_scrap_entry.html',{'args':args})
 
 
 

@@ -96,7 +96,7 @@ from views_kiosk import kiosk,kiosk_job,kiosk_job_assign, kiosk_job_leave,kiosk_
 from views_kiosk import kiosk_production, kiosk_production_entry,flex_test,manual_production_entry,manual_production_entry2
 from views_kiosk import entry_recent, manual_cycletime_table, tenr_fix2, tenr_fix3,kiosk_hourly_entry,kiosk_initial_9HP,kiosk_initial_6L_Output
 from views_kiosk import kiosk_initial_GF9,kiosk_initial_6L_IN,kiosk_initial_AB1V, kiosk_sub_menu, kiosk_manual, kiosk_kiosk
-from views_kiosk import kiosk_help_form, kiosk_forklift_form, kiosk_scrap
+from views_kiosk import kiosk_help_form, kiosk_forklift_form, kiosk_scrap, kiosk_scrap_entry
 
 
 # ***********************************************************************************************************************************************************
@@ -415,6 +415,7 @@ urlpatterns = [
 	url(r'^kiosk_manual/', kiosk_manual),
 	url(r'^kiosk_kiosk/', kiosk_kiosk),
 	url(r'^kiosk_scrap/', kiosk_scrap), # The Kiosk Scrap Module
+	url(r'^kiosk_scrap_entry/', kiosk_scrap_entry), 
 
 	url(r'^kiosk_help_form/', kiosk_help_form),
 	url(r'^kiosk_forklift_form/', kiosk_forklift_form),
