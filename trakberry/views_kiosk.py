@@ -1650,8 +1650,9 @@ def kiosk_menu(request):
 	args = {}
 	args.update(csrf(request))
 	args['form'] = form
-
-	return render(request,"kiosk/kiosk_menu.html",{'args':args})
+	
+	tcur=int(time.time())
+	return render(request,"kiosk/kiosk_menu.html",{'args':args,'TCUR':tcur})
 
 
 def ab1v_manpower(request):
