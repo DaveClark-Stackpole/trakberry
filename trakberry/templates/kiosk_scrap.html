@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Trash Form</title>
+  <title>Kiosk Scrap Form</title>
 	<!-- ********************************* BootStrap Local*******************************-->
 	<script src="/static/bootstrap/js/1.11.3/jquery.min.js"></script>
 	<script src="/static/bootstrap/js/bootstrap.min.js"></script>
@@ -22,6 +22,27 @@
     h1{text-align: center; color: rgb(216, 211, 211);}
     #select-choice{position: relative; font-family: Arial; background-color: bisque;}
     .same-line{margin: 15px 0 0 0; display: inline-block; float: left;  width: 30%;}
+
+	.frame1 {color:black;text-align:center;margin-left: 20%;width:50%}
+	.button3 {
+  width: 80%;
+  height: 350px;
+  text-align: center;
+  cursor: pointer;
+  outline: none;
+  color: #000000;
+  background-color: rgb(233, 179, 135);
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 15px #999;
+}
+	.button3:hover {background-color: rgb(241, 143, 98)}
+	.button3:active {
+	  background-color: rgb(235, 213, 154);
+	  box-shadow: 0 8px #666;
+	  transform: translateY(8px);
+	}
+
 </style>
 
 </head>
@@ -29,73 +50,17 @@
 
     <img alt="full screen background image" src="/static/media/kiosk.jpeg?" id="full-screen-background-image"/>
 
-  <h1>Scrap</h1>
-  <div>
-	<form action="" method="post">{% csrf_token %}
-        <center>
-        <div class="grid-container">
-            <div class="item1">
-                <input style="background-color: #AAA00A;border-radius: 10px;width:140px;height:60px;font-weight: 700;font-size:23px;align=left;" type="submit" value="Enter">
-            </div>
-            <div class="item2">
-                <button style="background-color: #AAAAAA;border-radius: 10px;width:120px;height:60px;font-weight: 700;font-size:23px;align=left;" type="submit" name="kiosk_assign_button1" value="-1">Reset</button>
-            </div>
-            <div class="item3">
-                <button style="background-color: #AAAAAA;border-radius: 10px;width:120px;height:60px;font-weight: 700;font-size:23px;align=right;" type="submit" name="kiosk_assign_button2" value="-2">Cancel</button>
-            </div> 
-        
-        <br>
+{% block content %}
 
-        <input style="font-size:23px;width:124px;height:60px;" list="browsers" name="job1" type="number">
-        <datalist id="browsers">{% for item in tmp %} <option value={{item.0}}>{{item.0}}</option> {% endfor %} </datalist><br>	
-    
 
-    
-        <div class="same-line">
-        
-        <label for="select-choice"></label>
-        <select name="select-choice" id="select-choice">
-            <option value="0" selected disabled>Asset Num:</option>
-            {% for item in request.session.machine_temp %}
-                <option value={{item.0}}>{{item.0}}</option>
-            {% endfor %}
-        </select></div>
+<div class="frame1"><br><br><br><br><br><br><br>
 
-        <div class="same-line">
-        <select name="job-desc" id="day">
-            <option value="0" selected disabled>Job Description:</option>
-            <option value="1">Sintering</option>
-            <option value="2">Secondary</option>
-            <option value="3">Finishing</option>
-            <option value="4">Compacting</option>
-        </select></div>
+	<button class="button3" type="button" onclick="window.location.href = '{{request.session.local_toggle}}/kiosk_scrap_entry';"><font size="7"><b>Scrap Entry</b></font></button>
 
-        <div class="new-line">
-            <select name="scrap-desc" id="scrap-descr">
-                <option value="0" selected disabled>Scrap Description:</option>
-                <option value="1">Dropped</option>
-                <option value="2">Damaged</option>
-                <option value="3">Oversize</option>
-                <option value="4">Undersize</option>
-            </select></div>
-        
-        
+</div>
 
-        <!-- <div>
-        <label for="checkbox">I agree to the terms and conditions</label>
-        <input type="checkbox" name="checkbox" id="checkbox" />
-        </div> -->
 
-        <!-- <div>
-        <p><button type="submit" id= "sub" value="Submit">Submit Request</button>
-        <button type="reset" id= "res" value="Reset">Reset</button>
-        <button type="cancel" id= "can" onclick="http://localhost:8080/kiosk_menu/">Cancel</button></p>
-
-        </div> -->
-    </div><br>
-    </center>
-    </form>  
-  </div>
+{% endblock %}
 
 
 </body>
