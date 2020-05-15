@@ -2123,9 +2123,10 @@ def kiosk_scrap_entry(request):
 
 
 	if request.POST:
-		asset = request.POST.get("dd-menu")
-		job = request.POST.get("day")
-		scrap = request.POST.get("scrap-descr")
+		asset = request.POST.get("a-menu")
+		job = request.POST.get("job-descr")
+		scrap = request.POST.get("scr-descr")
+		#amount = request.POST.get("amount")
 		db, cursor = db_set(request)
 		cursor.execute('''INSERT INTO tkb_scrap_test(asset_num,job_description,scrap_description) VALUES(%s,%s,%s)''', (asset,job,scrap))
 		db.commit()
