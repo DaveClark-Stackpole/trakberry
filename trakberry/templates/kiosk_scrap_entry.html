@@ -15,15 +15,15 @@
         
 
         <div class="item1">
-            <select id="a-menu" style="font-size:15px;width:124px;height:60px;" list="browsers" name="a-menu"  autofocus >	
-                <option value="1" selected disabled>Asset Num:</option>
+            <select id="a-menu" style="font-size:15px;width:124px;height:60px;" list="browsers" name="a-menu"  {{request.session.scrap1}}>	
+                <option value="1" selected disabled>{{request.session.asset}}</option>
                 {% for item in request.session.machine_temp %}
                 <option value={{item.0}}>{{item.0}}</option>
                 {% endfor %}
             </select>
         </div>
         <div class="item2">
-            <select id="job-descr" style="font-size:15px;width:124px;height:60px;" list="browsers" name="job-descr" type="number">	
+            <select id="job-descr" style="font-size:15px;width:124px;height:60px;" list="browsers" name="job-descr" type="number" {{request.session.scrap2}}>	
                 <option value="0" selected disabled>Job Description:</option>
                 <option value="Sintering">Sintering</option>
                 <option value="Secondary">Secondary</option>

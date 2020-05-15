@@ -2098,10 +2098,15 @@ def set_test1(request):
 
 # This will be the Scrap Entry section in the Kiosk
 def kiosk_scrap(request):
+	request.session["scrap_entry"] = 0
+	request.session["asset"] = "Asset Num:"
+	request.session["scrap1"] =""
+	request.session["scrap2"] ='''disabled="true"'''
 	return render(request,'kiosk_scrap.html')
 
 def kiosk_scrap_entry(request):
 
+	
 	db, cursor = db_set(request)
 	cursor.execute("""DROP TABLE IF EXISTS tkb_scrap_test""")
 	cursor.execute("""CREATE TABLE IF NOT EXISTS tkb_scrap_test(Id INT PRIMARY KEY AUTO_INCREMENT,asset_num INT(50),job_description CHAR(50), scrap_description CHAR(50))""")
@@ -2121,12 +2126,49 @@ def kiosk_scrap_entry(request):
 	# Use Scrap Description (will use a drop down for this and will be retrieved from Table eventually.  Dropped, Damaged, Oversize, Undersize)
 	# Use Scrap Quantity (amount)
 
+	# s1 = "SELECT * From sc_production1 WHERE length(partno) < '%s' and id > '%d'" %(ml,id1)
 
-	if request.POST:
+	# sql = select job_description from scrap_categories where asset_num =  ' %s' %(asset)
+	# cursor.execute(sql)
+	# tmp = cursor.fetchall()
+	# tmp2 = tmp
+	# request.session["description_temp"] = tmp
+
+
+ 	if request.POST:
 		asset = request.POST.get("a-menu")
 		job = request.POST.get("job-descr")
 		scrap = request.POST.get("scr-descr")
-		#amount = request.POST.get("amount")
+
+
+		if request.session["scrap_entry"] == 0:
+			request.session["asset"] = asset
+			request.session["scrap_entry"] = 1
+			request.session["scrap1"] =''
+			request.session["scrap2"] =''
+			return render(request, "redirect_kiosk_scrap_entry.html")
+		
+
+
+			#amount = request.POST.get("amount")
+
+
+		# on first pass make request.session["asset"] = asset
+		# and then increment scrap_entry
+
+
+		# on second pass make request.session["job"] = job
+		# and then increment scrap_entry
+
+
+
+
+
+
+
+
+
+
 		db, cursor = db_set(request)
 		cursor.execute('''INSERT INTO tkb_scrap_test(asset_num,job_description,scrap_description) VALUES(%s,%s,%s)''', (asset,job,scrap))
 		db.commit()
