@@ -2122,7 +2122,6 @@ def kiosk_scrap_entry(request):
 	# Use Scrap Quantity (amount)
 
 
-
 	if request.POST:
 		asset = request.POST.get("a-menu")
 		job = request.POST.get("job-descr")
