@@ -33,26 +33,27 @@
     
 
     
-        <div class="same-line">
+        <div class="dropdown">
         
         <label for="select-choice"></label>
-        <select name="select-choice" id="select-choice">
+        
+        <select name="select-choice" id="dd-menu" style="width: 125px; height: 60px; background-color: rgb(255, 255, 255);">
             <option value="0" selected disabled>Asset Num:</option>
             {% for item in request.session.machine_temp %}
                 <option value={{item.0}}>{{item.0}}</option>
             {% endfor %}
         </select></div>
 
-        <div class="same-line">
+        <div id="same-line">
         <select name="job-desc" id="day">
             <option value="0" selected disabled>Job Description:</option>
             <option value="1">Sintering</option>
             <option value="2">Secondary</option>
             <option value="3">Finishing</option>
             <option value="4">Compacting</option>
-        </select></div>
+        </select>
 
-        <div class="new-line">
+        
             <select name="scrap-desc" id="scrap-descr">
                 <option value="0" selected disabled>Scrap Description:</option>
                 <option value="1">Dropped</option>
@@ -60,19 +61,6 @@
                 <option value="3">Oversize</option>
                 <option value="4">Undersize</option>
             </select></div>
-        
-        
-
-        <!-- <div>
-        <label for="checkbox">I agree to the terms and conditions</label>
-        <input type="checkbox" name="checkbox" id="checkbox" />
-        </div> -->
-
-        <!-- <div>
-        <p><button type="submit" id= "sub" value="Submit">Submit Request</button>
-        <button type="reset" id= "res" value="Reset">Reset</button>
-        <button type="cancel" id= "can" onclick="http://localhost:8080/kiosk_menu/">Cancel</button></p>
-
         </div> -->
     </div><br>
     </center>

@@ -2103,8 +2103,8 @@ def kiosk_scrap(request):
 def kiosk_scrap_entry(request):
 
 	db, cursor = db_set(request)
-	# cursor.execute("""DROP TABLE IF EXISTS tkb_scrap_test""")
-	cursor.execute("""CREATE TABLE IF NOT EXISTS tkb_scrap_test(Id INT PRIMARY KEY AUTO_INCREMENT,machine_name INT(50),machine_num INT(20), machine_hours INT(20))""")
+	#cursor.execute("""DROP TABLE IF EXISTS tkb_scrap_test""")
+	cursor.execute("""CREATE TABLE IF NOT EXISTS tkb_scrap_test(Id INT PRIMARY KEY AUTO_INCREMENT,asset_num INT(50),job_description CHAR(50), scrap_description CHAR(50))""")
 	db.commit()
 
 	# This will assign all the values of machines into session variable machine_temp
@@ -2116,13 +2116,6 @@ def kiosk_scrap_entry(request):
 	db.close()
 	# ******************************************************************************
 
-	# m_name = "1507"
-	# m_num = 25
-	# m_hours = 12
-	# cursor.execute('''INSERT INTO tkb_trash_scrap(machine_name,machine_num, machine_hours) VALUES(%s,%s)''', (m_name,m_num,m_hours))
-	# db.commit()
-
-
 	# Use Asset Number  (Machine Number)
 	# Use Job Description (example Sintering, Secondary, Finishing, Compacting)
 	# Use Scrap Description (will use a drop down for this and will be retrieved from Table eventually.  Dropped, Damaged, Oversize, Undersize)
@@ -2131,9 +2124,11 @@ def kiosk_scrap_entry(request):
 
 
 	if request.POST:
-		machine = request.POST.get("select-choice")
+		asset = request.POST.get("dd-menu")
+		job = request.POST.get("day")
+		scrap = request.POST.get("scrap-descr")
 		db, cursor = db_set(request)
-		cursor.execute('''INSERT INTO tkb_scrap_test(machine_num) VALUES(%s)''', (machine))
+		cursor.execute('''INSERT INTO tkb_scrap_test(asset_num,job_description,scrap_description) VALUES(%s,%s,%s)''', (asset,job,scrap))
 		db.commit()
 		db.close()
 		# return render(request,"done_update2.html")
