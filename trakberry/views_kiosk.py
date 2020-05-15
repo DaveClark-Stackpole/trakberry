@@ -2103,7 +2103,7 @@ def kiosk_scrap(request):
 def kiosk_scrap_entry(request):
 
 	db, cursor = db_set(request)
-	#cursor.execute("""DROP TABLE IF EXISTS tkb_scrap_test""")
+	cursor.execute("""DROP TABLE IF EXISTS tkb_scrap_test""")
 	cursor.execute("""CREATE TABLE IF NOT EXISTS tkb_scrap_test(Id INT PRIMARY KEY AUTO_INCREMENT,asset_num INT(50),job_description CHAR(50), scrap_description CHAR(50))""")
 	db.commit()
 
