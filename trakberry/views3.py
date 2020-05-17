@@ -50,12 +50,10 @@ def excel_dump(request):
 	cur.execute(s1)
 	db.commit()
 
-	# s1 = ("""CREATE TABLE IF NOT EXISTS xx1(Id INT PRIMARY KEY AUTO_INCREMENT,xx2 CHAR(50),xx3 CHAR(50), xx4 CHAR(50))""")
 	for i in ss:
 		yy = yy + ',xx2 CHAR(50)'
 		index = yy.find('xx2')
 		yy = yy[:index] + i + yy[index+3:]
-
 
 	s1 = ("""CREATE TABLE IF NOT EXISTS xx1(Id INT PRIMARY KEY AUTO_INCREMENT xyz)""")
 	index = s1.find('xx1')
@@ -66,12 +64,44 @@ def excel_dump(request):
 	db.commit()
 
 	# Next step is read in each row and insert into table.
-	
+	row_ptr = 2
+	while True:
+		row_entries = []
+		row_empty = 0
+		for i in range(0,ss_len):
+			try:
+				entry1 = str(working.cell(row_ptr,i).value)
+				row_empty = 1
+			except:
+				entry1 = ''
 
+			row_entries.append(entry1)
+			# Develop the SQL String
+		if row_empty == 0:
+			break
+
+		entry2 = ''
+		for ii in row_entries:
+			var1 =''
+			var2 = ''
+			for i in ss:
+				var1 = var1 + i + ','
+				var2 = var2 + '%s,'
+			var1 = var1[:-1]
+			var2 = var2[:-1]
+			s2 = "INSERT INTO xx1(xx2) VALUES(xx3)"
+			index = s2.find('xx1')
+			s2 = s2[:index] + table_name + s2[index+3:]
+			index = s2.find('xx2')
+			s2 = s2[:index] + var1 + s2[index+3:]
+			index = s2.find('xx3')
+			s2 = s2[:index] + var2 + s2[index+3:]
+		cur.execute(s2,row_entries)
+		db.commit()
+		row_ptr = row_ptr + 1
 	db.close()
 
-
-	return render(request,"master.html")
+	return render(request,"master_excel_message1.html")
 
 #  Testing View for Excel Reading
 

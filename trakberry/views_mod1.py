@@ -128,6 +128,7 @@ def mgmt_display(request):
 	# Template that will include filtering in every column
 	if direction_id == 1:
 		s1 = ("""SELECT xx1 FROM xx2 where xx3<%s ORDER BY xx4 DESC limit 20""")%(min_id)
+		
 		# s1 = ("""SELECT xx1 FROM xx2 where xx3<%s AND w10=%s OR w11=%s OR w12=%s OR w13=%s OR w14=%s OR w15=%s OR w16=%s ORDER BY xx4 DESC limit 20""")%(min_id,zz[0],zz[1],zz[2],zz[3],zz[4],zz[5],zz[6])
 	else:
 		# uu = request.session["eee"]
@@ -138,7 +139,7 @@ def mgmt_display(request):
 	# This part is a test part
 	# s1 = ("""SELECT xx1 FROM xx2 where xx3<%s xxy ORDER BY xx4 DESC limit 20""")%(min_id)
 	
-
+	
 	index = s1.find('xx1')
 	s1 = s1[:index] + s2 + s1[index+3:]
 	index = s1.find('xx2')
@@ -147,6 +148,8 @@ def mgmt_display(request):
 	s1 = s1[:index] + id_name + s1[index+3:]
 	index = s1.find('xx4')
 	s1 = s1[:index] + id_name + s1[index+3:]
+
+	ee=3/0
 
 
 # Uncomment below block to put filtering trial back in play
