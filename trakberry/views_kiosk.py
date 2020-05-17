@@ -2100,8 +2100,13 @@ def set_test1(request):
 def kiosk_scrap(request):
 	request.session["scrap_entry"] = 0
 	request.session["asset"] = "Asset Num:"
+	request.session["job"] = "Job Description:"
+	request.session["scrap"] = "Scrap Description:"
+	request.session["amount"] = "Asset Num:"
 	request.session["scrap1"] =""
 	request.session["scrap2"] ='''disabled="true"'''
+	request.session["scrap3"] ='''disabled="true"'''
+	request.session["scrap4"] ='''disabled="true"'''
 	return render(request,'kiosk_scrap.html')
 
 def kiosk_scrap_entry(request):
@@ -2139,35 +2144,44 @@ def kiosk_scrap_entry(request):
 		asset = request.POST.get("a-menu")
 		job = request.POST.get("job-descr")
 		scrap = request.POST.get("scr-descr")
+		amount = request.POST.get("amount")
+
+		if asset != request.session["asset"]:
+			request.session["scrap_entry"] = 0
+		if job != request.session["job"]:
+			request.session["scrap_entry"] = 1
+		if scrap != request.session["scrap"]:
+			request.session["scrap_entry"] = 2
 
 
 		if request.session["scrap_entry"] == 0:
 			request.session["asset"] = asset
 			request.session["scrap_entry"] = 1
-			request.session["scrap1"] =''
 			request.session["scrap2"] =''
+			request.session["scrap3"] ='''disabled="true"'''
+			request.session["scrap4"] ='''disabled="true"'''
+			request.session["scrap"] = "Scrap Description:"
+			request.session["amount"] = "Asset Num:"
 			return render(request, "redirect_kiosk_scrap_entry.html")
-		
 
+		elif request.session["scrap_entry"] == 1:
+			request.session["job"] = job
+			request.session["scrap_entry"] = 2
+			request.session["scrap3"] =''
+			request.session["scrap4"] ='''disabled="true"'''
+			request.session["amount"] = "Asset Num:"
+			return render(request, "redirect_kiosk_scrap_entry.html")
 
-			#amount = request.POST.get("amount")
-
-
-		# on first pass make request.session["asset"] = asset
-		# and then increment scrap_entry
-
-
-		# on second pass make request.session["job"] = job
-		# and then increment scrap_entry
-
-
-
-
-
-
-
-
-
+		elif request.session["scrap_entry"] == 2:
+			request.session["scrap"] = scrap
+			request.session["scrap_entry"] = 3
+			request.session["scrap4"] =''
+			return render(request, "redirect_kiosk_scrap_entry.html")
+			
+		elif request.session["scrap_entry"] == 3:
+			request.session["amount"] = amount
+			request.session["scrap_entry"] = 4
+			request.session["scrap4"] =''
 
 		db, cursor = db_set(request)
 		cursor.execute('''INSERT INTO tkb_scrap_test(asset_num,job_description,scrap_description) VALUES(%s,%s,%s)''', (asset,job,scrap))
