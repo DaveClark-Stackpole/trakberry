@@ -15,14 +15,31 @@ import xlrd
 from views_vacation import vacation_temp, vacation_set_current, vacation_set_current2,vacation_set_current6, vacation_set_current4
 
 def excel_dump(request):
+	excel_table_create("excel_dump.xlsx",request)
+	return render(request,"master_excel_message1.html")
+
+def excel_scrap_dump(request):
+	
+	excel_table_create("scrap_line_operation_category.xlsx",request)
+	excel_table_create("scrap_operation_dept.xlsx",request)
+	excel_table_create("scrap_part_dept_cost.xlsx",request)
+	excel_table_create("scrap_part_line.xlsx",request)
+	return render(request,"master_excel_message1.html")
+
+def excel_table_create(sheet,request):
 	# Read in Excel Sheet  .  Top corner is name of table.  Top row is column name and below that is data for each column
 	# Read it in as a tuple
 	# Create a table with that structure.
 	# Write it to Database
-	label_link = 'c:/Programming/Stackpole'
-	sheet = 'excel_dump.xlsx'
+
+	# if different folder otherwise root
+	# label_link = 'c:/Programming/Stackpole'
+	# sheet = 'excel_dump.xlsx'
 	sheet_name = 'Sheet1'
-	os.chdir(label_link)
+
+	# use this if excel sheet is in a different folder
+	# os.chdir(label_link)
+	
 	book = xlrd.open_workbook(sheet)
 	working = book.sheet_by_name(sheet_name)
 
@@ -100,8 +117,8 @@ def excel_dump(request):
 		db.commit()
 		row_ptr = row_ptr + 1
 	db.close()
-
-	return render(request,"master_excel_message1.html")
+	return
+	# return render(request,"master_excel_message1.html")
 
 #  Testing View for Excel Reading
 

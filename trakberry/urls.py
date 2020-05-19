@@ -131,7 +131,7 @@ from views_barcode import barcode_check_10R,barcode_input_10R,barcode_initial_10
 
 # *******************************************  Admin Section ********************************************************************************************
 from views_admin import master
-from views3 import excel_dump
+from views3 import excel_dump, excel_scrap_dump
 # ***********************************************************************************************************************************************************
 
 urlpatterns = [
@@ -482,6 +482,7 @@ urlpatterns = [
 	# **************  Admin Section ***************************************
 	url(r'^master/', master),
 	url(r'^excel_dump/', excel_dump),
+	url(r'^excel_scrap_dump/', excel_scrap_dump),
 
 	# ************************************************************************
 
