@@ -2099,7 +2099,7 @@ def set_test1(request):
 # This will be the Scrap Entry section in the Kiosk
 def kiosk_scrap(request):
 	request.session["scrap_entry"] = 0
-	request.session["asset"] = "Asset Num:"
+	request.session["asset"] = "Part Num:"
 	request.session["job"] = "Job Description:"
 	request.session["scrap"] = "Scrap Description:"
 	request.session["amount"] = "Asset Num:"
@@ -2118,7 +2118,7 @@ def kiosk_scrap_entry(request):
 	db.commit()
 
 	# This will assign all the values of machines into session variable machine_temp
-	sql = "SELECT asset FROM tkb_cycletime"
+	sql = "SELECT part FROM scrap_part_line"
 	cursor.execute(sql)
 	tmp = cursor.fetchall()
 	tmp2 = tmp

@@ -56,60 +56,7 @@
 		</div>
 
 
-  <!-- <div>
-	<form action="" method="post">{% csrf_token %}
-        <center>
-        <div class="grid-container">
-            <div class="item1">
-                <input style="background-color: #AAA00A;border-radius: 10px;width:140px;height:60px;font-weight: 700;font-size:23px;align=left;" type="submit" value="Enter">
-            </div>
-            <div class="item2">
-                <button style="background-color: #AAAAAA;border-radius: 10px;width:120px;height:60px;font-weight: 700;font-size:23px;align=left;" type="submit" name="kiosk_assign_button1" value="-1">Reset</button>
-			</div>
-			
-            <div class="item3">
-				<button style="background-color: #AAAAAA;border-radius: 10px;width:120px;height:60px;font-weight: 700;font-size:23px;align=right;" 
-					type="button" onclick="window.location.href = '{{request.session.local_toggle}}/kiosk_scrap';">
-					<font size="5"><b>Cancel</b></font>
-				</button>
-            </div> 
-        
-        <br>
-
-        <input style="font-size:23px;width:124px;height:60px;" list="browsers" name="job1" type="number">
-        <datalist id="browsers">{% for item in tmp %} <option value={{item.0}}>{{item.0}}</option> {% endfor %} </datalist><br>	
-    
-
-    
-        <div class="dropdown">
-        
-        <label for="select-choice"></label>
-        
-        <select name="select-choice" id="dd-menu" style="width: 125px; height: 60px; background-color: rgb(255, 255, 255);">
-            <option value="0" selected disabled>Asset Num:</option>
-            {% for item in request.session.machine_temp %}
-                <option value={{item.0}}>{{item.0}}</option>
-            {% endfor %}
-        </select></div>
-
-        <div id="same-line">
-        <select name="job-desc" id="day">
-            <option value="0" selected disabled>Job Description:</option>
-            <option value="1">Sintering</option>
-            <option value="2">Secondary</option>
-            <option value="3">Finishing</option>
-            <option value="4">Compacting</option>
-        </select>
-
-        
-            <select name="scrap-desc" id="scrap-descr">
-                <option value="0" selected disabled>Scrap Description:</option>
-                <option value="1">Dropped</option>
-                <option value="2">Damaged</option>
-                <option value="3">Oversize</option>
-                <option value="4">Undersize</option>
-            </select></div>
-        </div> -->
+  
     </div><br>
     </center>
     </form>  
