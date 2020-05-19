@@ -2146,12 +2146,12 @@ def kiosk_scrap_entry(request):
 		scrap = request.POST.get("scr-descr")
 		amount = request.POST.get("amount")
 
-		if asset != request.session["asset"]:
-			request.session["scrap_entry"] = 0
-		if job != request.session["job"]:
-			request.session["scrap_entry"] = 1
-		if scrap != request.session["scrap"]:
-			request.session["scrap_entry"] = 2
+		# if asset != request.session["asset"]:
+		# 	request.session["scrap_entry"] = 0
+		# if job != request.session["job"]:
+		# 	request.session["scrap_entry"] = 1
+		# if scrap != request.session["scrap"]:
+		# 	request.session["scrap_entry"] = 2
 
 
 		if request.session["scrap_entry"] == 0:
