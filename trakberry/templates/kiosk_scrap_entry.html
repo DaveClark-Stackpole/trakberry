@@ -25,10 +25,12 @@
         <div class="item2">
             <select id="job-descr" style="font-size:15px;width:124px;height:60px;" onchange="myFunction();" list="browsers" name="job-descr" type="number" {{request.session.scrap2}}>	
                 <option value="0" selected disabled>{{request.session.job}}</option>
-                <option value="Sintering">Sintering</option>
-                <option value="Secondary">Secondary</option>
+                {% for item in request.session.machine_operation %}
+                <option value={{item.0}}>{{item.0}}</option>
+                {% endfor %}
+                <!-- <option value="Secondary">Secondary</option>
                 <option value="Finishing">Finishing</option>
-                <option value="Compacting">Compacting</option>
+                <option value="Compacting">Compacting</option> -->
             </select>
         </div>
         <div class="item3">
