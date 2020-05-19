@@ -2129,7 +2129,7 @@ def kiosk_scrap_entry(request):
 	cursor.execute(sql1)
 	tmp1 = cursor.fetchall()
 	tmp3 = tmp1[0]
-	request.session["machine_operation"] = tmp3
+	request.session["machine_operation"] = tmp3 #i think the problem is either here or kiosk_scrap_entry line 28
 	db.close()
 	# ******************************************************************************
 
