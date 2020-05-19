@@ -2123,9 +2123,9 @@ def kiosk_scrap_entry(request):
 	tmp = cursor.fetchall()
 	tmp2 = tmp
 	request.session["machine_temp"] = tmp
-	db.close()
+	# db.close()
 
-	sql1 = "SELECT line FROM scrap_part_line"
+	sql1 = "SELECT Line FROM scrap_part_line"
 	cursor.execute(sql1)
 	tmp1 = cursor.fetchall()
 	tmp3 = tmp1[0]
