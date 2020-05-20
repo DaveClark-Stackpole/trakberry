@@ -2099,8 +2099,8 @@ def set_test1(request):
 # This will be the Scrap Entry section in the Kiosk
 def kiosk_scrap(request):
 	db, cursor = db_set(request)
-	cursor.execute("""DROP TABLE IF EXISTS tkb_scrap_test""")
-	cursor.execute("""CREATE TABLE IF NOT EXISTS tkb_scrap_test(Id INT PRIMARY KEY AUTO_INCREMENT,asset_num INT(50),job_description CHAR(50), scrap_description CHAR(50))""")
+	# cursor.execute("""DROP TABLE IF EXISTS tkb_scrap""")   # only uncomment this line if you need to re generate the table structure or start new
+	cursor.execute("""CREATE TABLE IF NOT EXISTS tkb_scrap(Id INT PRIMARY KEY AUTO_INCREMENT,scrap_part CHAR(50),scrap_operation CHAR(50), scrap_category CHAR(50), scrap_amount INT(20), scrap_line CHAR(50))""")
 	db.commit()
 	db.close()
 
@@ -2109,6 +2109,7 @@ def kiosk_scrap(request):
 	request.session["scrap_operation"] = "Operation:"
 	request.session["scrap_category"] = "Category:"
 	request.session["scrap_part"] = "Part No:"
+	request.session["scrap_amount"] = 0
 	request.session["scrap1"] =""
 	request.session["scrap2"] ='''disabled="true"'''
 	request.session["scrap3"] ='''disabled="true"'''
@@ -2164,8 +2165,8 @@ def kiosk_scrap_entry(request):
  	if request.POST:
 		scrap_part = request.POST.get("scrap_part")
 		scrap_operation = request.POST.get("scrap_operation")
-		scrap = request.POST.get("scrap_category")
-		amount = request.POST.get("amount")
+		scrap_category = request.POST.get("scrap_category")
+		scrap_amount = request.POST.get("scrap_amount")
 
 		# if asset != request.session["asset"]:
 		# 	request.session["scrap_entry"] = 0
@@ -2204,28 +2205,31 @@ def kiosk_scrap_entry(request):
 			request.session["scrap4"] ='''disabled="true"'''
 			line = request.session["scrap_part_line"]
 			db, cursor = db_set(request)
-			sql = "SELECT Category FROM scrap_line_operation_category WHERE Line = '%s'" %(line)
+			sql = "SELECT Category FROM scrap_line_operation_category WHERE Line = '%s' and Operation ='%s'" %(line,scrap_operation)
 			cursor.execute(sql)
 			tmp = cursor.fetchall()
 			request.session["scrap_category_selection"] = tmp
 			return render(request, "redirect_kiosk_scrap_entry.html")
 
 		if request.session["scrap_entry"] == 2:
-			AAA = 
-			request.session["scrap"] = scrap
+			request.session["scrap_category"] = scrap_category
 			request.session["scrap_entry"] = 3
 			request.session["scrap4"] =''
 			return render(request, "redirect_kiosk_scrap_entry.html")
 			
-		if request.session["scrap_entry"] == 3:
-			request.session["amount"] = amount
-			request.session["scrap_entry"] = 4
-			request.session["scrap4"] =''
+		# will execute bottom section if all other scrap_entry passes are missed.   ie scrap_entry = 3
+		request.session["scrap_amount"] = scrap_amount
+		category = request.session["scrap_category"]
+		operation = request.session["scrap_operation"]
+		part = request.session["scrap_part"]
+		amount = scrap_amount
+		line = request.session["scrap_part_line"]
 
-		# db, cursor = db_set(request)
-		# cursor.execute('''INSERT INTO tkb_scrap_test(asset_num,job_description,scrap_description) VALUES(%s,%s,%s)''', (asset,job,scrap))
-		# db.commit()
-		# db.close()
+		db, cursor = db_set(request)
+		cursor.execute('''INSERT INTO tkb_scrap(scrap_part,scrap_operation,scrap_category,scrap_amount,scrap_line) VALUES(%s,%s,%s,%s,%s)''', (part,operation,category,amount,line))
+		db.commit()
+		db.close()
+
 		# return render(request,"done_update2.html")
 		return render(request, "redirect_kiosk_scrap.html")
 
