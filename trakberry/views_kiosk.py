@@ -2100,8 +2100,8 @@ def set_test1(request):
 def kiosk_scrap(request):
 	request.session["scrap_entry"] = 0
 	request.session["asset"] = "Part Num:"
-	request.session["job"] = "Job Description:"
-	request.session["scrap"] = "Scrap Description:"
+	request.session["job"] = "Operation:"
+	request.session["scrap"] = "Category:"
 	request.session["amount"] = "Asset Num:"
 	request.session["scrap1"] =""
 	request.session["scrap2"] ='''disabled="true"'''
@@ -2125,12 +2125,19 @@ def kiosk_scrap_entry(request):
 	request.session["machine_temp"] = tmp
 	# db.close()
 
-	sql1 = "SELECT Line FROM scrap_part_line"
+	sql1 = "SELECT line FROM scrap_part_line"
 	cursor.execute(sql1)
 	tmp1 = cursor.fetchall()
-	tmp3 = tmp1[0]
+	tmp3 = tmp1
 	request.session["machine_operation"] = tmp3 #i think the problem is either here or kiosk_scrap_entry line 28
-	db.close()
+	#db.close()
+
+	sql2 = "SELECT category FROM scrap_line_operation_category"
+	cursor.execute(sql2)
+	tmp4 = cursor.fetchall()
+	tmp5 = tmp4
+	request.session["machine_category"] = tmp5 
+	db.close()	
 	# ******************************************************************************
 
 

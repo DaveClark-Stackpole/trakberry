@@ -36,10 +36,13 @@
         <div class="item3">
             <select id="scr-descr" style="font-size:15px;width:124px;height:60px;" onchange="myFunction();"  list="browsers" name="scr-descr" type="number" {{request.session.scrap3}}>	
                 <option value="0" selected disabled>{{request.session.scrap}}</option>
-                <option value="Dropped">Dropped</option>
+                {% for item in request.session.machine_category %}
+                <option value={{item.0}}>{{item.0}}</option>
+                {% endfor %}
+                <!-- <option value="Dropped">Dropped</option>
                 <option value="Damaged">Damaged</option>
                 <option value="Oversize">Oversize</option>
-                <option value="Undersize">Undersize</option>
+                <option value="Undersize">Undersize</option> -->
             </select>
 				</div>
 				<div class="item4">
