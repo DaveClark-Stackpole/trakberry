@@ -2096,8 +2096,8 @@ def set_test1(request):
 # This will be the Scrap Entry section in the Kiosk
 def kiosk_scrap(request):
 	db, cursor = db_set(request)
-	# cursor.execute("""DROP TABLE IF EXISTS tkb_scrap""")   # only uncomment this line if you need to re generate the table structure or start new
-	cursor.execute("""CREATE TABLE IF NOT EXISTS tkb_scrap(Id INT PRIMARY KEY AUTO_INCREMENT,scrap_part CHAR(50),scrap_operation CHAR(50), scrap_category CHAR(50), scrap_amount INT(20), scrap_line CHAR(50), date CHAR(50))""")
+	#cursor.execute("""DROP TABLE IF EXISTS tkb_scrap""")   # only uncomment this line if you need to re generate the table structure or start new
+	cursor.execute("""CREATE TABLE IF NOT EXISTS tkb_scrap(Id INT PRIMARY KEY AUTO_INCREMENT,scrap_part CHAR(50),scrap_operation CHAR(50), scrap_category CHAR(50), scrap_amount INT(20), scrap_line CHAR(50), total_cost CHAR(50), date CHAR(50))""")
 	db.commit()
 	db.close()
 
@@ -2256,10 +2256,10 @@ def kiosk_scrap_entry(request):
 
 
 		# Take out below line to run through to write but you will need to add total cost below
-		e=9/0
+		#e=9/0
 
 		
-		cursor.execute('''INSERT INTO tkb_scrap(scrap_part,scrap_operation,scrap_category,scrap_amount,scrap_line,date) VALUES(%s,%s,%s,%s,%s,%s)''', (part,operation,category,amount,line,date))
+		cursor.execute('''INSERT INTO tkb_scrap(scrap_part,scrap_operation,scrap_category,scrap_amount,scrap_line,total_cost,date) VALUES(%s,%s,%s,%s,%s,%s,%s)''', (part,operation,category,amount,line,total_cost,date))
 		db.commit()
 		db.close()
 
