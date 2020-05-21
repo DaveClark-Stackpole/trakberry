@@ -2221,6 +2221,8 @@ def kiosk_scrap_entry(request):
 		part = request.session["scrap_part"]
 		amount = scrap_amount
 		line = request.session["scrap_part_line"]
+
+
 		# sql= "SELECT Dept FROM scrap_operation_dept WHERE Operation = '%s'" % (scrap_operation)
 		# cursor.execute(sql)
 		# tmp = cursor.fetchall()
@@ -2232,10 +2234,31 @@ def kiosk_scrap_entry(request):
 		# request.session["scrap_cost"] = cost
 		# ####what goes in here#######
 		# cost = cost*amount
+
+		# redid the above attempt.   scrap_operation wasn't assigned.  Need operation
+		# cost will need to be retrieved from cursor.fetchall() [0][0].
+		# need to assign cost and amount as float variables before multiplying to get total_cost
+
+		db, cursor = db_set(request)
+		sql2 = "SELECT Dept FROM scrap_operation_dept WHERE Operation = '%s'" % (operation)
+		cursor.execute(sql2)
+		tmp = cursor.fetchall()
+		department = tmp[0][0]
+
+		sql3 = "SELECT Cost FROM scrap_part_dept_cost WHERE Part = '%s' and Dept = '%s'" % (part,department)
+		cursor.execute(sql3)
+		tmp = cursor.fetchall()
+		cost = tmp[0][0]
+
+		total_cost = float(cost) * float(amount)
+
 		date = datetime.datetime.now()
 
 
-		db, cursor = db_set(request)
+		# Take out below line to run through to write but you will need to add total cost below
+		e=9/0
+
+		
 		cursor.execute('''INSERT INTO tkb_scrap(scrap_part,scrap_operation,scrap_category,scrap_amount,scrap_line,date) VALUES(%s,%s,%s,%s,%s,%s)''', (part,operation,category,amount,line,date))
 		db.commit()
 		db.close()
