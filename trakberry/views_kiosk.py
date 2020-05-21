@@ -23,6 +23,7 @@ from datetime import datetime, date
 from views_db import db_open, db_set
 from views_mod1 import kiosk_lastpart_find, kiosk_email_initial
 from datetime import datetime
+import datetime
 
 # *********************************************************************************************************
 # MAIN KIOSK PAGE
@@ -1021,15 +1022,11 @@ def kiosk_defaults(request):
 		request.session[b3] = 8
 	return
 
-def kiosk_help(request):
-	return render(request, "kiosk/kiosk_help.html")
+
 
 def flex_test(request):
 	return render(request, "kiosk/flex_test.html")
 	
-def kiosk_scrap(request):
-	return render(request, "kiosk/kiosk_scrap.html")
-# *********************************************************************************************************
 
 
 # *********************************************************************************************************
@@ -2100,7 +2097,7 @@ def set_test1(request):
 def kiosk_scrap(request):
 	db, cursor = db_set(request)
 	# cursor.execute("""DROP TABLE IF EXISTS tkb_scrap""")   # only uncomment this line if you need to re generate the table structure or start new
-	cursor.execute("""CREATE TABLE IF NOT EXISTS tkb_scrap(Id INT PRIMARY KEY AUTO_INCREMENT,scrap_part CHAR(50),scrap_operation CHAR(50), scrap_category CHAR(50), scrap_amount INT(20), scrap_line CHAR(50))""")
+	cursor.execute("""CREATE TABLE IF NOT EXISTS tkb_scrap(Id INT PRIMARY KEY AUTO_INCREMENT,scrap_part CHAR(50),scrap_operation CHAR(50), scrap_category CHAR(50), scrap_amount INT(20), scrap_line CHAR(50), date CHAR(50))""")
 	db.commit()
 	db.close()
 
@@ -2224,9 +2221,22 @@ def kiosk_scrap_entry(request):
 		part = request.session["scrap_part"]
 		amount = scrap_amount
 		line = request.session["scrap_part_line"]
+		# sql= "SELECT Dept FROM scrap_operation_dept WHERE Operation = '%s'" % (scrap_operation)
+		# cursor.execute(sql)
+		# tmp = cursor.fetchall()
+		# scrap_operation_dept = tmp[0][0]
+		# request.session["scrap_operation_dept"] = scrap_operation_dept
+		# sql = "SELECT Cost FROM scrap_part_dept_cost WHERE Part = '%s' and Dept = '%s'" %(part,scrap_operation_dept)
+		# cursor.execute(sql)
+		# cost = cursor.fetchall()
+		# request.session["scrap_cost"] = cost
+		# ####what goes in here#######
+		# cost = cost*amount
+		date = datetime.datetime.now()
+
 
 		db, cursor = db_set(request)
-		cursor.execute('''INSERT INTO tkb_scrap(scrap_part,scrap_operation,scrap_category,scrap_amount,scrap_line) VALUES(%s,%s,%s,%s,%s)''', (part,operation,category,amount,line))
+		cursor.execute('''INSERT INTO tkb_scrap(scrap_part,scrap_operation,scrap_category,scrap_amount,scrap_line,date) VALUES(%s,%s,%s,%s,%s,%s)''', (part,operation,category,amount,line,date))
 		db.commit()
 		db.close()
 
