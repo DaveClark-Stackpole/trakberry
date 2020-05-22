@@ -15,15 +15,18 @@
             <select id="scrap_part" style="font-size:15px;width:124px;height:60px;" onchange="myFunction();" list="browsers" name="scrap_part"  {{request.session.scrap1}}>	
                 <option value="1" selected disabled>{{request.session.scrap_part}}</option>
                 {% for item in request.session.scrap_part_selection %}
-                <option value={{item.0}}>{{item.0}}</option>
+                <option value="{{item.0}}">{{item.0}}</option>
                 {% endfor %}
             </select>
         </div>
         <div class="item2">
             <select id="scrap_operation" style="font-size:15px;width:124px;height:60px;" onchange="myFunction();" list="browsers" name="scrap_operation" type="number" {{request.session.scrap2}}>	
-                <option value="0" selected disabled>{{request.session.scrap_operation}}</option>
+				<!-- <option value="0" selected disabled>{{request.session.scrap_operation}}</option>
+				 -->
+				<option selected = "selected">{{request.session.scrap_operation}} </option>
+
                 {% for item in request.session.scrap_operation_selection %}
-                <option value={{item.0}}>{{item.0}}</option>
+                <option value="{{item.0}}">{{item.0}}</option>
                 {% endfor %}
                 <!-- <option value="Secondary">Secondary</option>
                 <option value="Finishing">Finishing</option>
@@ -34,7 +37,7 @@
             <select id="scrap_category" style="font-size:15px;width:124px;height:60px;" onchange="myFunction();"  list="browsers" name="scrap_category" type="number" {{request.session.scrap3}}>	
                 <option value="0" selected disabled>{{request.session.scrap_category}}</option>
                 {% for item in request.session.scrap_category_selection %}
-                <option value={{item.0}}>{{item.0}}</option>
+                <option value="{{item.0}}">{{item.0}}</option>
                 {% endfor %}
                 <!-- <option value="Dropped">Dropped</option>
                 <option value="Damaged">Damaged</option>

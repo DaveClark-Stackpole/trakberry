@@ -2190,6 +2190,7 @@ def kiosk_scrap_entry(request):
 		if request.session["scrap_entry"] == 0:
 			request.session["scrap_part"] = scrap_part
 			request.session["scrap_entry"] = 1
+			request.session["scrap1"] ='''disabled="true"'''
 			request.session["scrap2"] =''
 			request.session["scrap3"] ='''disabled="true"'''
 			request.session["scrap4"] ='''disabled="true"'''
@@ -2212,6 +2213,8 @@ def kiosk_scrap_entry(request):
 		if request.session["scrap_entry"] == 1:
 			request.session["scrap_operation"] = scrap_operation
 			request.session["scrap_entry"] = 2
+			request.session["scrap1"] ='''disabled="true"'''
+			request.session["scrap2"] ='''disabled="true"'''
 			request.session["scrap3"] =''
 			request.session["scrap4"] ='''disabled="true"'''
 			line = request.session["scrap_part_line"]
@@ -2225,6 +2228,9 @@ def kiosk_scrap_entry(request):
 		if request.session["scrap_entry"] == 2:
 			request.session["scrap_category"] = scrap_category
 			request.session["scrap_entry"] = 3
+			request.session["scrap1"] ='''disabled="true"'''
+			request.session["scrap2"] ='''disabled="true"'''
+			request.session["scrap3"] ='''disabled="true"'''
 			request.session["scrap4"] =''
 			return render(request, "redirect_kiosk_scrap_entry.html")
 			
