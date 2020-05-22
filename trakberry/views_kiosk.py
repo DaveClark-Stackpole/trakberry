@@ -2096,7 +2096,7 @@ def set_test1(request):
 # This will be the Scrap Entry section in the Kiosk
 def kiosk_scrap(request):
 	db, cursor = db_set(request)
-	#cursor.execute("""DROP TABLE IF EXISTS tkb_scrap""")   # only uncomment this line if you need to re generate the table structure or start new
+	# cursor.execute("""DROP TABLE IF EXISTS tkb_scrap""")   # only uncomment this line if you need to re generate the table structure or start new
 	cursor.execute("""CREATE TABLE IF NOT EXISTS tkb_scrap(Id INT PRIMARY KEY AUTO_INCREMENT,scrap_part CHAR(50),scrap_operation CHAR(50), scrap_category CHAR(50), scrap_amount INT(20), scrap_line CHAR(50), total_cost CHAR(50), date CHAR(50))""")
 	db.commit()
 	db.close()
@@ -2112,6 +2112,20 @@ def kiosk_scrap(request):
 	request.session["scrap3"] ='''disabled="true"'''
 	request.session["scrap4"] ='''disabled="true"'''
 	return render(request,'kiosk_scrap.html')
+
+def kiosk_scrap_reset(request):
+	request.session["scrap_entry"] = 0
+	request.session["scrap_part"] = "Part Num:"
+	request.session["scrap_operation"] = "Operation:"
+	request.session["scrap_category"] = "Category:"
+	request.session["scrap_part"] = "Part No:"
+	request.session["scrap_amount"] = 0
+	request.session["scrap1"] =""
+	request.session["scrap2"] ='''disabled="true"'''
+	request.session["scrap3"] ='''disabled="true"'''
+	request.session["scrap4"] ='''disabled="true"'''
+	return kiosk_scrap_entry(request)
+
 
 def kiosk_scrap_entry(request):
 
