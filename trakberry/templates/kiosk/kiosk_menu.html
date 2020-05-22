@@ -9,8 +9,19 @@
 {% block grid %}
 	<!-- Include Styling for Buttons and Frames -->
 	<link rel="stylesheet" href="/static/style_1/grid_kiosk_main2.css?{{request.session.TCUR}}">
-	<link rel="stylesheet" href="/static/style_1/kiosk_main.css?{{request.session.TCUR}}">
+	<!-- <link rel="stylesheet" href="/static/style_1/kiosk_main.css?{{request.session.TCUR}}"> -->
 {% endblock %}
+<style>
+
+.frame1 {color:black;text-align:center;float:left;width:40%}
+.frame3 {color:black;text-align:center;float:left;width:33%}
+.frame2 {color:black;text-align:center;float:left;width:100%}
+
+#full-screen-background-image {z-index: -999;min-height: 110%; min-width: 100%;width: 100%;height: 110%;position: fixed;top: 0;  left: 0;}
+	.banner2_bg{position:absolute;background-color: #000000;opacity: 0.8;filter:alpha(opacity=80);width:auto; height:auto;z-index:-440;	border-radius: 25px;;}
+
+
+</style>
 </head>
 
 <body>
