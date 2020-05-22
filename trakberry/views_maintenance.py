@@ -28,11 +28,9 @@ def maint_initialize_rv(request):
 	return
 
 def maint_mgmt(request):
-	request.session["dave_test1"] = 'hey'
 
-
+	request.session["TCUR"] = int(time.time())  # Assign current Timestamp to TCUR for proper image and include refresh 
 	maint_initialize_rv(request)  #initialize request variables
-
 
 	request.session["main_screen_color"] = "#abad97"  # Color of Background in APP
 	request.session["main_menu_color"] = "#f8fcd7"    # Color of Menu Bar in APP

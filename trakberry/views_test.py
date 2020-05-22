@@ -98,15 +98,8 @@ def email_test_1(request):
 def place_test(request):
 	for key in request.session.keys():
 		del request.session[key]
-	E = 'DONE'
-#	i = ''
-#	E=[0 for i in range(5)] 
-#	E[1] = ['X','Y','Z']
-#	E[2] = ['W','Z']
-#	E[3] = ['W','X']
-#	E[4] = ['Y','X']
-#	
-	return render(request, "test8.html", {'A':E})
+	return render(request,'master.html')
+
 	 
 def vacation_set_current():
 	t = vacation_temp()

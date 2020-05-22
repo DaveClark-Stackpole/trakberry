@@ -62,6 +62,9 @@ def retrieve(request):
 	
 	return render(request,"test3.html",{'tmp':tmp,'total':total})	
 
+def master(request):
+	return render(request, "master.html")
+
 
 
 

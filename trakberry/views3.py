@@ -14,6 +14,111 @@ import xlrd
 #import pandas
 from views_vacation import vacation_temp, vacation_set_current, vacation_set_current2,vacation_set_current6, vacation_set_current4
 
+def excel_dump(request):
+	excel_table_create("excel_dump.xlsx",request)
+	return render(request,"master_excel_message1.html")
+
+def excel_scrap_dump(request):
+	
+	excel_table_create("scrap_line_operation_category.xlsx",request)
+	excel_table_create("scrap_operation_dept.xlsx",request)
+	excel_table_create("scrap_part_dept_cost.xlsx",request)
+	excel_table_create("scrap_part_line.xlsx",request)
+	return render(request,"master_excel_message1.html")
+
+def excel_table_create(sheet,request):
+	# Read in Excel Sheet  .  Top corner is name of table.  Top row is column name and below that is data for each column
+	# Read it in as a tuple
+	# Create a table with that structure.
+	# Write it to Database
+
+	# if different folder otherwise root
+	# label_link = 'c:/Programming/Stackpole'
+	# sheet = 'excel_dump.xlsx'
+	sheet_name = 'Sheet1'
+
+	# use this if excel sheet is in a different folder
+	# os.chdir(label_link)
+	
+	book = xlrd.open_workbook(sheet)
+	working = book.sheet_by_name(sheet_name)
+
+	yy = ''
+
+	table_name = str(working.cell(0,0).value)  # retrieved from cell 0,0 on excel sheet (top left corner A1)
+	name1 = ''
+	ss =[]
+	a = 0 #set counter / column start at 0
+	while True:
+		try:
+			name1 = str(working.cell(1,a).value)  # read in cell / column for table
+		except:
+			break  # if error on reading cell (ie NULL) then end the loop
+		if len(name1)<1:  # if cell has 0 length then end loop
+			break
+		ss.append(name1) # add cell value to list of names for table headers
+		a=a+1 # increment so as to read next colunn
+	ss_len = len(ss)  # lets us know how many columns there are.  Could use   (a-1) as well 
+
+	db, cur = db_set(request)
+	s1 = ("""DROP TABLE IF EXISTS xx1""")
+	index = s1.find('xx1')
+	s1 = s1[:index] + table_name + s1[index+3:]
+	cur.execute(s1)
+	db.commit()
+
+	for i in ss:
+		yy = yy + ',xx2 CHAR(50)'
+		index = yy.find('xx2')
+		yy = yy[:index] + i + yy[index+3:]
+
+	s1 = ("""CREATE TABLE IF NOT EXISTS xx1(Id INT PRIMARY KEY AUTO_INCREMENT xyz)""")
+	index = s1.find('xx1')
+	s1 = s1[:index] + table_name + s1[index+3:]
+	index = s1.find('xyz')
+	s1 = s1[:index] + yy + s1[index+3:]
+	cur.execute(s1)
+	db.commit()
+
+	# Next step is read in each row and insert into table.
+	row_ptr = 2
+	while True:
+		row_entries = []
+		row_empty = 0
+		for i in range(0,ss_len):
+			try:
+				entry1 = str(working.cell(row_ptr,i).value)
+				row_empty = 1
+			except:
+				entry1 = ''
+
+			row_entries.append(entry1)
+			# Develop the SQL String
+		if row_empty == 0:
+			break
+
+		entry2 = ''
+		for ii in row_entries:
+			var1 =''
+			var2 = ''
+			for i in ss:
+				var1 = var1 + i + ','
+				var2 = var2 + '%s,'
+			var1 = var1[:-1]
+			var2 = var2[:-1]
+			s2 = "INSERT INTO xx1(xx2) VALUES(xx3)"
+			index = s2.find('xx1')
+			s2 = s2[:index] + table_name + s2[index+3:]
+			index = s2.find('xx2')
+			s2 = s2[:index] + var1 + s2[index+3:]
+			index = s2.find('xx3')
+			s2 = s2[:index] + var2 + s2[index+3:]
+		cur.execute(s2,row_entries)
+		db.commit()
+		row_ptr = row_ptr + 1
+	db.close()
+	return
+	# return render(request,"master_excel_message1.html")
 
 #  Testing View for Excel Reading
 
@@ -27,6 +132,10 @@ def excel_test(request):
 	label_link = 'c:/Projects/'
 #		Use this one for actual server
 	# label_link = '/home/file/import1/Inventory/importedxls'
+
+	# Try below instead
+	# Label_link = '/var/www/html/django/trakberry/trakberry'  # This is the patch to the root on server
+
 	
 	sheet = 'inventory.xlsx'
 	sheet_name = 'Sheet1'

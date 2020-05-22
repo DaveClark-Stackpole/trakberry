@@ -1,5 +1,75 @@
 <!DOCTYPE html>
-<html lang="en">
-hello
+<html>
+<head>
+  <title>Kiosk Scrap Form</title>
+	<!-- ********************************* BootStrap Local*******************************-->
+	<script src="/static/bootstrap/js/1.11.3/jquery.min.js"></script>
+	<script src="/static/bootstrap/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
+	<!-- ***********************************************************************************-->
+
+	<link rel="stylesheet" href="/static/style_1/grid_kiosk_job_assign.css">
+    
+
+
+
+
+<style>
+
+
+#full-screen-background-image {z-index: -999;min-height: 110%; min-width: 100%;width: 100%;height: 110%;position: fixed;top: 0;  left: 0;}
+	.banner2_bg{position:absolute;background-color: #000000;opacity: 0.8;filter:alpha(opacity=80);width:auto; height:auto;z-index:-440;	border-radius: 25px;;}
+    h1{text-align: center; color: rgb(216, 211, 211);}
+    #dd-menu{position: relative; display: inline-block; font-family: Arial; background-color: bisque;}
+    .same-line{margin: 15px 0 0 0; text-align: center; display: inline-block; float: left;  width: 30%;}
+    .drop-down{position: relative; display: inline-block; font-family: Arial; background-color: rgb(158, 95, 18);}
+    
+	.frame1 {color:black;text-align:center;margin-left: 20%;width:50%}
+	.button3 {
+  width: 80%;
+  height: 350px;
+  text-align: center;
+  cursor: pointer;
+  outline: none;
+  color: #000000;
+  background-color: rgb(233, 179, 135);
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 15px #999;
+}
+	.button3:hover {background-color: rgb(241, 143, 98)}
+	.button3:active {
+	  background-color: rgb(235, 213, 154);
+	  box-shadow: 0 8px #666;
+	  transform: translateY(8px);
+	}
+
+</style>
+
+<script>
+ function myFunction() {
+        document.querySelectorAll("input[type=submit]")[0].click();
+    }
+</script>
+
+</head>
+<body>
+
+    <img alt="full screen background image" src="/static/media/kiosk.jpeg?" id="full-screen-background-image"/>
+
+{% block content %}
+
+
+<div class="frame1"><br><br><br><br><br><br><br>
+
+	<button class="button3" type="button" onclick="window.location.href = '{{request.session.local_toggle}}/kiosk_scrap_entry';"><font size="7"><b>Scrap Entry</b></font></button>
+
+</div>
+
+
+{% endblock %}
+
+
+</body>
 </html>
   
