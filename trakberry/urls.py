@@ -134,6 +134,12 @@ from views_admin import master
 from views3 import excel_dump, excel_scrap_dump
 # ***********************************************************************************************************************************************************
 
+# *******************************************  Scrap Section ********************************************************************************************
+from views_scrap import scrap_mgmt, scrap_mgmt_login_form
+
+# ***********************************************************************************************************************************************************
+
+
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     
@@ -519,6 +525,9 @@ urlpatterns = [
 	url(r'^barcode_check_10R/', barcode_check_10R),
 	url(r'^barcode_initial_10R/', barcode_initial_10R),
 
+	# *************  Scrap Section *********************************************
+	url(r'^scrap_mgmt/', scrap_mgmt),
+	url(r'^scrap_mgmt_login_form/', scrap_mgmt_login_form),
 	
 ]
  
