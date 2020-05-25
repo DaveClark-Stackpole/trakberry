@@ -33,9 +33,9 @@ def scrap_mgmt_manpower(request):
 
 # Login for Maintenance Manager App
 def scrap_mgmt_login_form(request):
-	Scrap_Mgmt_Manpower = []
+	
 	request.session["login_department"] = 'Quality Manager'
-	Scrap_Mgmt_Manpower = scrap_mgmt_manpower(request)
+	scrap_mgmt_manpower(request)
 	request.session["scrap_mgmt_login_name"] = ""
 	request.session["scrap_mgmt_login_password"] = ""
 	request.session[" scrap_mgmt_login_password_check"] = 'False'
@@ -80,7 +80,7 @@ def scrap_mgmt_login_form(request):
 	request.session["scrap_mgmt_login_password"] = ""
 
 
-	return render(request,'scrap_mgmt_login_form.html', {'args':args, 'SList':Scrap_Mgmt_Manpower })
+	return render(request,'scrap_mgmt_login_form.html', {'args':args})
 
 def scrap_mgmt(request):
 	request.session["main_screen_color"] = "#849185"  # Color of Background in APP
