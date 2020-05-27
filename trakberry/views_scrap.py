@@ -29,7 +29,7 @@ def scrap_mgmt_manpower(request):
 	tmp2 = list(tmp)
 	db.close()
 	request.session["scrap_mgmt_manpower"] = tmp
-	return tmp
+	return 
 
 # Login for Maintenance Manager App
 def scrap_mgmt_login_form(request):
@@ -49,7 +49,7 @@ def scrap_mgmt_login_form(request):
 		request.session["login_password_check"] = ''
 		login_password_check(request)
 		check = request.session["login_password_check"]
-		request.session["scrap_mgmt_login_password_check"]
+		#request.session["scrap_mgmt_login_password_check"]
 
 
 		# if len(login_name) < 5:
@@ -86,3 +86,9 @@ def scrap_mgmt(request):
 	request.session["main_screen_color"] = "#849185"  # Color of Background in APP
 	request.session["main_menu_color"] = "#d3ded4"    # Color of Menu Bar in APP
 	return render(request, "scrap_mgmt.html")
+
+def scrap_display(request):
+	db, cur = db_set(request)
+	sql_scrap = "Select * from tkb_scrap"
+	cur.execute(sql_scrap)
+	tmp_scrap = cur.fetchall()
