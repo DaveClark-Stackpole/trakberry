@@ -89,6 +89,9 @@ def scrap_mgmt(request):
 
 def scrap_display(request):
 	db, cur = db_set(request)
-	sql_scrap = "Select * from tkb_scrap"
+	sql_scrap = "SELECT * from tkb_scrap"
 	cur.execute(sql_scrap)
-	tmp_scrap = cur.fetchall()
+	request.session["tmp_scrap"] = cur.fetchall()
+
+	return render(request, "scrap_mgmt24.html")
+
