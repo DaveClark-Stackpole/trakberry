@@ -89,7 +89,9 @@ def scrap_mgmt(request):
 
 def scrap_display(request):
 	db, cur = db_set(request)
-	sql_scrap = "SELECT * from tkb_scrap"
+	#sql_scrap = "SELECT * from tkb_scrap"
+	#sql_scrap = "SELECT * FROM tkb_scrap where date between '2020-05-21' and '2020-05-27';"
+	sql_scrap = "SELECT * FROM tkb_scrap WHERE date BETWEEN date_sub(now(), interval 1 day) AND date_add(now(), interval 1 day);"
 	cur.execute(sql_scrap)
 	request.session["tmp_scrap"] = cur.fetchall()
 
