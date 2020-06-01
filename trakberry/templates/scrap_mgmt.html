@@ -17,7 +17,7 @@
                 </a>
             </div>
             <div class="collapse navbar-collapse">
-                <ul class="nav navbar-nav">
+                <ul class="nav navbar-nav">  
                     <!-- This is the indicator to not display menu if not logged in -->
                     <!-- if request.session.main_login_department = request.session.login_department -->
                     {% if request.session.scrap_mgmt_login_password_check = 'True' %}  
@@ -55,8 +55,8 @@
 {% endblock %}
 
 {% block content %}
-{% if request.session.scrap_mgmt_login_password_check != 'True' %}
-<meta http-equiv="refresh" content="0; url={{request.session.local_toggle}}/scrap_mgmt_login_form" />
+<!-- {% if request.session.scrap_mgmt_login_password_check != 'True' %}
+<meta http-equiv="refresh" content="0; url={{request.session.local_toggle}}/scrap_mgmt_login_form" /> -->
 
 {% endif %}
 
