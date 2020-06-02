@@ -38,8 +38,10 @@ def scrap_mgmt_login_form(request):
 	scrap_mgmt_manpower(request)
 	request.session["scrap_mgmt_login_name"] = ""
 	request.session["scrap_mgmt_login_password"] = ""
-	request.session[" scrap_mgmt_login_password_check"] = 'False'
+	request.session["scrap_mgmt_login_password_check"] = 'False'
 	request.session["scrap_mgmt_main_switch"] = 0
+
+
 
 #	if request.POST:
 	if 'button1' in request.POST:
@@ -78,6 +80,7 @@ def scrap_mgmt_login_form(request):
 	args['form'] = form
 	request.session["scrap_mgmt_login_name"] = ""
 	request.session["scrap_mgmt_login_password"] = ""
+
 
 
 	return render(request,'scrap_mgmt_login_form.html', {'args':args})

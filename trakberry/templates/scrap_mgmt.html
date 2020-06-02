@@ -25,7 +25,7 @@
                         <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
                         <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
 				        <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
-                        <li><a href="{{request.session.local_toggle}}/scrap_mgmt"><span class="glyphicon glyphicon-home"></span> Main</a></li>
+                        <li><a href="{{request.session.local_toggle}}/scrap_mgmt"><span class="glyphicon glyphicon-home"></span>Main</a></li>
                         <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
                         <li><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-stats"></span> Reports<b class="caret"></b></a>
                          <ul class="dropdown-menu multi-level"  style="background-color:{{request.session.main_menu_color}}" >
@@ -55,8 +55,8 @@
 {% endblock %}
 
 {% block content %}
-<!-- {% if request.session.scrap_mgmt_login_password_check != 'True' %}
-<meta http-equiv="refresh" content="0; url={{request.session.local_toggle}}/scrap_mgmt_login_form" /> -->
+{% if request.session.scrap_mgmt_login_password_check != 'True' %}
+<meta http-equiv="refresh" content="0; url={{request.session.local_toggle}}/scrap_mgmt_login_form" />
 
 {% endif %}
 

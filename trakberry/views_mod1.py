@@ -149,7 +149,7 @@ def mgmt_display(request):
 	index = s1.find('xx4')
 	s1 = s1[:index] + id_name + s1[index+3:]
 
-	ee=3/0
+
 
 
 # Uncomment below block to put filtering trial back in play
