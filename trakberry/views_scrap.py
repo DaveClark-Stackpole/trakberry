@@ -80,9 +80,6 @@ def scrap_mgmt_login_form(request):
 	args['form'] = form
 	request.session["scrap_mgmt_login_name"] = ""
 	request.session["scrap_mgmt_login_password"] = ""
-
-
-
 	return render(request,'scrap_mgmt_login_form.html', {'args':args})
 
 def scrap_mgmt(request):
@@ -92,7 +89,16 @@ def scrap_mgmt(request):
 
 def scrap_display(request):
 	db, cur = db_set(request)
-	sql_scrap = "SELECT * FROM tkb_scrap WHERE date BETWEEN date_sub(now(), interval 1 day) AND date_add(now(), interval 1 day);"
+	sql_scrap = "SELECT FORMAT(sum(scrap_amount),0),scrap_part FROM tkb_scrap group by scrap_part"
+	# sql_scrap = "SELECT * FROM tkb_scrap WHERE date BETWEEN date_sub(now(), interval 1 day) AND date_add(now(), interval 1 day);"
+	cur.execute(sql_scrap)
+	request.session["tmp_scrap"] = cur.fetchall()
+
+	return render(request, "scrap_mgmt24.html")
+def scrap_display_operation(request,partno):
+	db, cur = db_set(request)
+	sql_scrap = "SELECT FORMAT(sum(scrap_amount),0),scrap_part FROM tkb_scrap group by scrap_part"
+	# sql_scrap = "SELECT * FROM tkb_scrap WHERE date BETWEEN date_sub(now(), interval 1 day) AND date_add(now(), interval 1 day);"
 	cur.execute(sql_scrap)
 	request.session["tmp_scrap"] = cur.fetchall()
 
