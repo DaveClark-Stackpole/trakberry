@@ -252,7 +252,7 @@ def mgmt_display_edit(request,index):
 
 	ptr = 1
 	for x in tmp2:
-		if type(x) is dt.date:
+		if type(x) is dt.date: ## whats this loop doing
 			y = vacation_set_current6(x)
 			datecheck.append(1)
 			v.append(y)
@@ -267,7 +267,7 @@ def mgmt_display_edit(request,index):
 	
 	if request.POST:
 		try:
-			kiosk_button1 = int(request.POST.get("kiosk_assign_button1"))
+			kiosk_button1 = int(request.POST.get("kiosk_assign_button1")) ##why is kiosk back
 			if kiosk_button1 == -1:
 				request.session["route_1"] = 'mgmt_production_hourly'
 				return direction(request)
