@@ -96,7 +96,46 @@ def scrap_display(request):
 
 	return render(request, "scrap_mgmt24.html")
 
-def scrap_display_operation(request,partno):
+
+
+def scrap_display_operation(request,index):
+
+	t=7/0
+
+	# request.session["table_headers"]  ==>  The name displayed on page 
+	# request.session["table_variables"] ==> The name in the DB 
+	p = ['' for y in range(0)]
+	v = ['' for y in range(0)]
+	datecheck = ['' for y in range(0)]
+	a1 = ['' for y in range(0)]
+
+	# call in to tmp the row to edit
+	update_list = ''
+	ctr = 0
+	tmp_part = index
+	db, cur = db_set(request) 
+	sq1 = request.session["scrap_table_call"] + "  where id = '%s'" %(tmp_part)
+	cur.execute(sq1)
+	tmp = cur.fetchall()
+	tmp2 = tmp[0]
+
+## tried a whole bunch of stuff. couldn't figure what shall go where. referred to multiple kisok,management
+##  and scrap files too. let me know what you think and how to fix this.
+	
+	
+	if request.POST:
+		db, cur = db_set(request)
+		sql_scrap1 = "SELECT FORMAT(sum(scrap_amount),0),scrap_operation FROM tkb_scrap group by scrap_operation"
+		# sql_scrap = "SELECT * FROM tkb_scrap WHERE date BETWEEN date_sub(now(), interval 1 day) AND date_add(now(), interval 1 day);"
+		cur.execute(sql_scrap1)
+		request.session["tmp_scrap"] = cur.fetchall()
+
+	return render(request, "scrap_mgmt24.html")
+
+def scrap_display_o(request):
+
+	t=7/0
+
 	# request.session["table_headers"]  ==>  The name displayed on page 
 	# request.session["table_variables"] ==> The name in the DB 
 	p = ['' for y in range(0)]
@@ -126,4 +165,3 @@ def scrap_display_operation(request,partno):
 		request.session["tmp_scrap"] = cur.fetchall()
 
 	return render(request, "scrap_mgmt24.html")
-
