@@ -95,6 +95,7 @@ def scrap_display(request):
 	request.session["tmp_scrap"] = cur.fetchall()
 
 	return render(request, "scrap_mgmt24.html")
+
 def scrap_display_operation(request,partno):
 	db, cur = db_set(request)
 	sql_scrap = "SELECT FORMAT(sum(scrap_amount),0),scrap_part FROM tkb_scrap group by scrap_part"
