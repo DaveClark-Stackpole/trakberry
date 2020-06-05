@@ -96,6 +96,15 @@ def scrap_display(request):
 
 	return render(request, "scrap_mgmt24.html")
 
+def scrap_entries(request):
+	
+	db, cur = db_set(request)
+	sql_scrap_entries = "SELECT * FROM tkb_scrap group by scrap_part"
+	# sql_scrap = "SELECT * FROM tkb_scrap WHERE date BETWEEN date_sub(now(), interval 1 day) AND date_add(now(), interval 1 day);"
+	cur.execute(sql_scrap_entries)
+	request.session["tmp_scrap_entries"] = cur.fetchall()
+
+	return render(request, "scrap_entries.html")
 
 
 def scrap_display_operation(request,index):

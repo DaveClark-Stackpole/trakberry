@@ -1,0 +1,54 @@
+{% extends "scrap_mgmt.html" %}
+
+
+{% block content %}
+<!-- <a href="{{request.session.local_toggle}}/mgmt_display_edit/get/{{ i.0 }}" class="blue"></a> -->
+
+<table class="center">
+	<tr>
+		<th>Part Number</th>
+        <th>Operation</th>
+        <th>Category</th>
+        <th>Amount</th>
+        <th>Line</th>
+        <th>Cost</th>
+        <th>Date</th>
+		<!-- <th>Scrap Cost</th> -->
+	</tr>
+	{% for i in request.session.tmp_scrap_entries %}
+	<tr>
+		
+		<td>
+			<!-- <a href="{{request.session.local_toggle}}/scrap_display_operation/get/{{ i.1 }}">{{i.1}}</a> -->
+			<a href="{{request.session.local_toggle}}/scrap_entries/{{i.1}}">{{i.1}}</a>
+
+		</td>
+		<td>
+			<a href="{{request.session.local_toggle}}/scrap_entries/{{i.1}}">{{i.2}}</a>
+        </td>
+        <td>
+			<a href="{{request.session.local_toggle}}/scrap_entries/{{i.1}}">{{i.3}}</a>
+        </td>
+        <td>
+			<a href="{{request.session.local_toggle}}/scrap_entries/{{i.1}}">{{i.4}}</a>
+        </td>
+        <td>
+			<a href="{{request.session.local_toggle}}/scrap_entries/{{i.1}}">{{i.5}}</a>
+        </td>
+        <td>
+			<a href="{{request.session.local_toggle}}/scrap_entries/{{i.1}}">{{i.6}}</a>
+        </td>
+        <td>
+			<a href="{{request.session.local_toggle}}/scrap_entries/{{i.1}}">{{i.7}}</a>
+		</td>
+		<!-- <td>
+			<div contenteditable="true">{{i.6}}</div>
+		</td> -->
+	</tr>
+	
+{% endfor %}
+
+</table>
+
+
+{% endblock %}
