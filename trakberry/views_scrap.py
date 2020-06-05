@@ -100,7 +100,9 @@ def scrap_display(request):
 
 def scrap_display_operation(request,index):
 	db, cur = db_set(request)
-	sql_scrap1 = "SELECT FORMAT(sum(scrap_amount),0),scrap_operation, scrap_part FROM tkb_scrap group by scrap_operation WHERE scrap_part = '%s'" #% (scrap_part)
+
+
+	sql_scrap1 = "SELECT FORMAT(sum(scrap_amount),0),scrap_operation, scrap_part FROM tkb_scrap  WHERE scrap_part = '%s' group by scrap_operation" % (index)
 
 	# *********************  COMMENTS
 	# Need to filter out the sql_scrap1 so it's only pulling the correct part number.    
