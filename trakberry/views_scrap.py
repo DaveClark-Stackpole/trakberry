@@ -101,6 +101,15 @@ def scrap_display(request):
 def scrap_display_operation(request,index):
 	db, cur = db_set(request)
 	sql_scrap1 = "SELECT FORMAT(sum(scrap_amount),0),scrap_operation FROM tkb_scrap group by scrap_operation"
+
+	# *********************  COMMENTS
+	# Need to filter out the sql_scrap1 so it's only pulling the correct part number.    
+	# like select format .......   by scrap_operation where scrap_part = .......
+	# otherwise it just shows total of all operations.
+	# ***********************************************
+	
+
+
 	# sql_scrap = "SELECT * FROM tkb_scrap WHERE date BETWEEN date_sub(now(), interval 1 day) AND date_add(now(), interval 1 day);"
 	cur.execute(sql_scrap1)
 	request.session["tmp_scrap"] = cur.fetchall()
