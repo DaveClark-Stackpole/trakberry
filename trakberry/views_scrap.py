@@ -89,7 +89,7 @@ def scrap_mgmt(request):
 
 def scrap_display(request):
 	db, cur = db_set(request)
-	sql_scrap = "SELECT FORMAT(sum(scrap_amount),0),scrap_part FROM tkb_scrap group by scrap_part"
+	sql_scrap = "SELECT FORMAT(sum(scrap_amount),0),scrap_part,date FROM tkb_scrap WHERE date BETWEEN date_sub(now(), interval 1 day) AND date_add(now(), interval 1 day) group by scrap_part"
 	# sql_scrap = "SELECT * FROM tkb_scrap WHERE date BETWEEN date_sub(now(), interval 1 day) AND date_add(now(), interval 1 day);"
 	cur.execute(sql_scrap)
 	request.session["tmp_scrap"] = cur.fetchall()
@@ -102,7 +102,7 @@ def scrap_display_operation(request,index):
 	db, cur = db_set(request)
 
 
-	sql_scrap1 = "SELECT FORMAT(sum(scrap_amount),0),scrap_operation, scrap_part FROM tkb_scrap  WHERE scrap_part = '%s' group by scrap_operation" % (index)
+	sql_scrap1 = "SELECT FORMAT(sum(scrap_amount),0),scrap_operation, scrap_part, date FROM tkb_scrap  WHERE date BETWEEN date_sub(now(), interval 1 day) AND date_add(now(), interval 1 day) AND scrap_part = '%s' group by scrap_operation" % (index)
 
 	# *********************  COMMENTS
 	# Need to filter out the sql_scrap1 so it's only pulling the correct part number.    
@@ -115,7 +115,26 @@ def scrap_display_operation(request,index):
 	# sql_scrap = "SELECT * FROM tkb_scrap WHERE date BETWEEN date_sub(now(), interval 1 day) AND date_add(now(), interval 1 day);"
 	cur.execute(sql_scrap1)
 	request.session["tmp_scrap"] = cur.fetchall()
-	return render(request, "scrap_mgmt24.html")
+	return render(request, "scrap_mgmt_operation.html")
+
+def scrap_display_category(request,index):	
+	db, cur = db_set(request)
+
+
+	sql_scrap2 = "SELECT FORMAT(sum(scrap_amount),0),scrap_category, scrap_operation, date FROM tkb_scrap WHERE date BETWEEN date_sub(now(), interval 1 day) AND date_add(now(), interval 1 day) AND scrap_operation = '%s' group by scrap_category" % (index)
+
+	# *********************  COMMENTS
+	# Need to filter out the sql_scrap1 so it's only pulling the correct part number.    
+	# like select format .......   by scrap_operation where scrap_part = .......
+	# otherwise it just shows total of all operations.
+	# ***********************************************
+	
+
+
+	# sql_scrap = "SELECT * FROM tkb_scrap WHERE date BETWEEN date_sub(now(), interval 1 day) AND date_add(now(), interval 1 day);"
+	cur.execute(sql_scrap2)
+	request.session["tmp_scrap2"] = cur.fetchall()
+	return render(request, "scrap_mgmt_category.html")	
 
 # def scrap_display_o(request):
 
