@@ -135,7 +135,7 @@ from views3 import excel_dump, excel_scrap_dump
 # ***********************************************************************************************************************************************************
 
 # *******************************************  Scrap Section ********************************************************************************************
-from views_scrap import scrap_mgmt, scrap_mgmt_login_form,scrap_display,scrap_display_operation,scrap_display_o
+from views_scrap import scrap_mgmt, scrap_mgmt_login_form,scrap_display,scrap_display_operation #scrap_display_o
 
 # ***********************************************************************************************************************************************************
 
@@ -532,7 +532,7 @@ urlpatterns = [
 
 	# url(r'^scrap_display_operation/get/(?P<index>\w{0,50})/$', scrap_display_operation),
 	url(r'^scrap_display_operation/get/(?P<index>[\w\-]+)/$', scrap_display_operation),
-	url(r'^scrap_display_o/', scrap_display_o),
+	#url(r'^scrap_display_o/', scrap_display_o),
 
 	
 ]
