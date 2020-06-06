@@ -130,7 +130,7 @@ def scrap_display_operation(request,index):
 
 def scrap_display_category(request,index):	
 	db, cur = db_set(request)
-
+	index.replace(" ","")
 
 	sql_scrap2 = "SELECT FORMAT(sum(scrap_amount),0),scrap_category, scrap_operation FROM tkb_scrap WHERE date BETWEEN date_sub(now(), interval 1 day) AND date_add(now(), interval 1 day) AND scrap_operation = '%s' group by scrap_category" % (index)
 
