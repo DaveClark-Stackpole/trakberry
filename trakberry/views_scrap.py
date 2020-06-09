@@ -110,9 +110,8 @@ def scrap_entries(request):
 
 
 def scrap_display_operation(request,index):
+	request.session["scrap_24hrs_part"]=index
 	db, cur = db_set(request)
-
-
 	sql_scrap1 = "SELECT FORMAT(sum(scrap_amount),0),scrap_operation, scrap_part FROM tkb_scrap  WHERE date BETWEEN date_sub(now(), interval 1 day) AND date_add(now(), interval 1 day) AND scrap_part = '%s' group by scrap_operation" % (index)
 
 	# *********************  COMMENTS
@@ -121,14 +120,14 @@ def scrap_display_operation(request,index):
 	# otherwise it just shows total of all operations.
 	# ***********************************************
 	
-
-
 	# sql_scrap = "SELECT * FROM tkb_scrap WHERE date BETWEEN date_sub(now(), interval 1 day) AND date_add(now(), interval 1 day);"
 	cur.execute(sql_scrap1)
 	request.session["tmp_scrap"] = cur.fetchall()
 	return render(request, "scrap_mgmt_operation.html")
 
-def scrap_display_category(request,index):	
+def scrap_display_category(request,index):
+	request.session["scrap_24hrs_operation"] = index
+	e=3/0
 	db, cur = db_set(request)
 	index.replace(" ","")
 

@@ -530,15 +530,19 @@ urlpatterns = [
 	url(r'^scrap_mgmt_login_form/', scrap_mgmt_login_form),
 	url(r'^scrap_display/', scrap_display),
 
+	# url(r'^scrap_display_operation/get/(?P<index>\w{0,50})/$', scrap_display_operation),
+	url(r'^scrap_display_operation/get/(?P<index>[\w\-]+)/$', scrap_display_operation),
+
 	# Need to have \w|W as url pattern to capture spaces and other characters
-	url(r'^scrap_display_operation/get/(?P<index>[\w|\W]+)', scrap_display_operation),
 	url(r'^scrap_display_category/get/(?P<index>[\w|\W]+)', scrap_display_category),
 
+
+	# url(r'^scrap_display_category/get/(?P<index>[\w|w\-]+)/$', scrap_display_category),
 	url(r'^scrap_entries/', scrap_entries),
 	#url(r'^scrap_entries/get/(?P<index>[\w\-]+)/$', scrap_entries),
+	#url(r'^scrap_display_o/', scrap_display_o),
 
 
-	
 ]
  
 
