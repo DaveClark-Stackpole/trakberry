@@ -134,6 +134,12 @@ from views_admin import master
 from views3 import excel_dump, excel_scrap_dump
 # ***********************************************************************************************************************************************************
 
+# *******************************************  Scrap Section ********************************************************************************************
+from views_scrap import scrap_mgmt, scrap_mgmt_login_form,scrap_display,scrap_display_operation,scrap_display_category,scrap_entries
+
+# ***********************************************************************************************************************************************************
+
+
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     
@@ -519,7 +525,24 @@ urlpatterns = [
 	url(r'^barcode_check_10R/', barcode_check_10R),
 	url(r'^barcode_initial_10R/', barcode_initial_10R),
 
-	
+	# *************  Scrap Section *********************************************
+	url(r'^scrap_mgmt/', scrap_mgmt),
+	url(r'^scrap_mgmt_login_form/', scrap_mgmt_login_form),
+	url(r'^scrap_display/', scrap_display),
+
+	# url(r'^scrap_display_operation/get/(?P<index>\w{0,50})/$', scrap_display_operation),
+	url(r'^scrap_display_operation/get/(?P<index>[\w\-]+)/$', scrap_display_operation),
+
+	# Need to have \w|W as url pattern to capture spaces and other characters
+	url(r'^scrap_display_category/get/(?P<index>[\w|\W]+)', scrap_display_category),
+
+
+	# url(r'^scrap_display_category/get/(?P<index>[\w|w\-]+)/$', scrap_display_category),
+	url(r'^scrap_entries/', scrap_entries),
+	#url(r'^scrap_entries/get/(?P<index>[\w\-]+)/$', scrap_entries),
+	#url(r'^scrap_display_o/', scrap_display_o),
+
+
 ]
  
 
