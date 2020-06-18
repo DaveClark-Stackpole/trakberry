@@ -362,7 +362,15 @@ def vacation_purge(request):
 	return render(request,'done_test.html')
 
 
-	
+def create_table_1(request):
+	db, cursor = db_set(request)
+	# cursor.execute("""DROP TABLE IF EXISTS tkb_scrap""")   # only uncomment this line if you need to re generate the table structure or start new
+	cursor.execute("""CREATE TABLE IF NOT EXISTS GFxPRoduction(Id INT PRIMARY KEY AUTO_INCREMENT,Machine CHAR(20),Part CHAR(20), PerpetualCount Double(20,2), TimeStamp Double(20,2))""")
+	db.commit()
+	db.close()
+	return render(request,'done_test.html')
+
+
 def vacation_purge_delete(request):
 
 	# delete all entries with wrap dates
