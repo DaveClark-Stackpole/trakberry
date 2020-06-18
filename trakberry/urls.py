@@ -37,7 +37,7 @@ from views_admin import retrieve
 from views_db import db_select
 from views_test import place_test, email_test_1, email_test_2
 from views_mod1 import table_copy
-from views_vacation import duplicate_1
+from views_vacation import duplicate_1,create_table_1
 
 # *******************************************  Testing Views *******************************************************************************************
 from views_email import e_test
@@ -230,6 +230,7 @@ urlpatterns = [
 	url(r'^vacation_month_fix/', vacation_month_fix),
 	url(r'^resetcheck/', resetcheck),
 	url(r'^duplicate_1/', duplicate_1),
+	url(r'^create_table_1/', create_table_1),
 	# ********************************************************	
 	
 	url(r'^machinery/', machinery),
