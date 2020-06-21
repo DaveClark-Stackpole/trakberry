@@ -89,18 +89,37 @@ def scrap_mgmt(request):
 
 def scrap_display(request):
 	db, cur = db_set(request)
-	sql_scrap = "SELECT FORMAT(sum(scrap_amount),0),scrap_part,FORMAT(sum(total_cost),2) FROM tkb_scrap WHERE date BETWEEN date_sub(now(), interval 1 day) AND date_add(now(), interval 1 day) group by scrap_part ORDER BY FORMAT(sum(total_cost),2) DESC"
+	sql_scrap = "SELECT FORMAT(sum(scrap_amount),0),scrap_part,FORMAT(sum(total_cost),2) FROM tkb_scrap WHERE date BETWEEN date_sub(now(), interval 1 day) AND date_add(now(), interval 1 day) group by scrap_part ORDER BY sum(total_cost) DESC"
 	# sql_scrap = "SELECT * FROM tkb_scrap WHERE date BETWEEN date_sub(now(), interval 1 day) AND date_add(now(), interval 1 day);"
 	cur.execute(sql_scrap)
 	request.session["tmp_scrap"] = cur.fetchall()
 	return render(request, "scrap_mgmt24.html")
 
 def scrap_entries(request):
+	request.session["scrap_partno_filter"] = ""
+	request.session["scrap_date_filter"] = ""
+	request.session["scrap_line_filter"] = ""
+	request.session["scrap_operation_filter"] = ""
+	request.session["scrap_category_filter"] = ""
 	db, cur = db_set(request)
-	sql_scrap_entries = "SELECT * FROM tkb_scrap group by scrap_part"
-	# sql_scrap = "SELECT * FROM tkb_scrap WHERE date BETWEEN date_sub(now(), interval 1 day) AND date_add(now(), interval 1 day);"
+	sql_scrap_entries = "SELECT * FROM tkb_scrap order by Id DESC limit 3"
 	cur.execute(sql_scrap_entries)
 	request.session["tmp_scrap_entries"] = cur.fetchall()
+	se = request.session["tmp_scrap_entries"]
+
+
+	sql_scrap_entries_first = "SELECT max(Id) FROM (select Id from tkb_scrap order by Id DESC limit 4) as selectmax"
+	cur.execute(sql_scrap_entries_first)
+	first = cur.fetchall()
+	first = first[0][0]
+	sql_scrap_entries_last = "SELECT min(Id) FROM (select ID from tkb_scrap order by Id DESC limit 4) as selectmin"
+	cur.execute(sql_scrap_entries_last)
+	last = cur.fetchall()
+	last = last[0][0]
+
+	e=3/0
+
+
 	return render(request, "scrap_entries.html")
 
 def scrap_display_operation(request,index):
@@ -135,7 +154,7 @@ def scrap_display_category_shift(request,index):
 	db, cur = db_set(request)
 	index.replace(" ","")
 	#DATE_FORMAT(date, "%M %d %Y") 
-	sql_scrap2 = "SELECT scrap_amount,scrap_category, scrap_operation,FORMAT(total_cost,2),FORMAT(date,1) FROM tkb_scrap WHERE date BETWEEN date_sub(now(), interval 1 day) AND date_add(now(), interval 1 day) AND scrap_operation = '%s' AND scrap_category = '%s' AND scrap_part = '%s' ORDER BY date ASC" % (index_operation,index_category,index_part)
+	sql_scrap2 = "SELECT scrap_amount,scrap_category, scrap_operation,FORMAT(total_cost,2),date FROM tkb_scrap WHERE date BETWEEN date_sub(now(), interval 1 day) AND date_add(now(), interval 1 day) AND scrap_operation = '%s' AND scrap_category = '%s' AND scrap_part = '%s' ORDER BY scrap_amount DESC" % (index_operation,index_category,index_part)
 	cur.execute(sql_scrap2)
 	request.session["tmp_scrap2"] = cur.fetchall()
 	tmp_scrap2 = request.session["tmp_scrap2"]
