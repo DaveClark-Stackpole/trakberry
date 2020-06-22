@@ -114,6 +114,12 @@ def scrap_edit_selection(request):
 	last = cur.fetchall()
 	last = last[0][0]
 	request.session["scrap_ptr"] = last
+
+	sql_scrap_entries_first = "SELECT max(Id) FROM (select ID from tkb_scrap where Id < '%s' order by Id DESC limit 3) as selectmin" % (ptr)
+	cur.execute(sql_scrap_entries_first)
+	first = cur.fetchall()
+	first = first[0][0]
+	request.session["scrap_ptr_first"] = first
 	db.close()
 	return
 
