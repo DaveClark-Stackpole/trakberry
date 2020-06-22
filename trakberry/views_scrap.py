@@ -95,24 +95,42 @@ def scrap_display(request):
 	request.session["tmp_scrap"] = cur.fetchall()
 	return render(request, "scrap_mgmt24.html")
 
+def scrap_edit_selection(request):
+	ptr = request.session["scrap_ptr"]
+	db, cur = db_set(request)
+	sql_scrap_entries = "SELECT * FROM tkb_scrap where Id < '%s' order by Id DESC limit 3" % (ptr)
+	cur.execute(sql_scrap_entries)
+	request.session["tmp_scrap_entries"] = cur.fetchall()
+	se = request.session["tmp_scrap_entries"]
+
+	return
+
+	
 def scrap_entries(request):
 	request.session["scrap_partno_filter"] = ""
 	request.session["scrap_date_filter"] = ""
 	request.session["scrap_line_filter"] = ""
 	request.session["scrap_operation_filter"] = ""
 	request.session["scrap_category_filter"] = ""
+	request.session["scrap_ptr"] = 0
+
+
+	
+	request.session["scrap_ptr"] = 6
+
+	ptr = request.session["scrap_ptr"]
 	db, cur = db_set(request)
-	sql_scrap_entries = "SELECT * FROM tkb_scrap order by Id DESC limit 3"
+	sql_scrap_entries = "SELECT * FROM tkb_scrap where Id < '%s' order by Id DESC limit 3" % (ptr)
 	cur.execute(sql_scrap_entries)
 	request.session["tmp_scrap_entries"] = cur.fetchall()
 	se = request.session["tmp_scrap_entries"]
 
 
-	sql_scrap_entries_first = "SELECT max(Id) FROM (select Id from tkb_scrap order by Id DESC limit 4) as selectmax"
+	sql_scrap_entries_first = "SELECT max(Id) FROM (select Id from tkb_scrap order by Id DESC limit 3) as selectmax"
 	cur.execute(sql_scrap_entries_first)
 	first = cur.fetchall()
 	first = first[0][0]
-	sql_scrap_entries_last = "SELECT min(Id) FROM (select ID from tkb_scrap order by Id DESC limit 4) as selectmin"
+	sql_scrap_entries_last = "SELECT min(Id) FROM (select ID from tkb_scrap where Id < '%s' order by Id DESC limit 3) as selectmin" % (ptr)
 	cur.execute(sql_scrap_entries_last)
 	last = cur.fetchall()
 	last = last[0][0]
