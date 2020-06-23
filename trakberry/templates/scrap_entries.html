@@ -7,7 +7,9 @@
 <table class="center">
 	<tr>
 		<!-- <th></th> -->
-		<th><form><input style= "background-color: blue; " type="button" value="Previous" onclick="history.back()"> </form>Part Number</th>
+		<th><form><a href="{{request.session.local_toggle}}/scrap_entries" class="previous round">&laquo; Not Previous</a></font>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Part Number</th>
         <th>Operation</th>
         <th>Category</th>
         <th>Amount</th>
