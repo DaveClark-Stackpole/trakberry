@@ -105,17 +105,17 @@ def scrap_edit_selection(request):
 		ptr = cur.fetchall()
 		ptr = ptr[0][0] + 1
 	
-	sql_scrap_entries = "SELECT * FROM tkb_scrap where Id < '%s' order by Id DESC limit 3" % (ptr)
+	sql_scrap_entries = "SELECT * FROM tkb_scrap where Id < '%s' order by Id DESC limit 10" % (ptr)
 	cur.execute(sql_scrap_entries)
 	request.session["tmp_scrap_entries"] = cur.fetchall()
 
-	sql_scrap_entries_last = "SELECT min(Id) FROM (select ID from tkb_scrap where Id < '%s' order by Id DESC limit 3) as selectmin" % (ptr)
+	sql_scrap_entries_last = "SELECT min(Id) FROM (select ID from tkb_scrap where Id < '%s' order by Id DESC limit 10) as selectmin" % (ptr)
 	cur.execute(sql_scrap_entries_last)
 	last = cur.fetchall()
 	last = last[0][0]
 	request.session["scrap_ptr"] = last
 
-	sql_scrap_entries_first = "SELECT max(Id) FROM (select ID from tkb_scrap where Id < '%s' order by Id DESC limit 3) as selectmin" % (ptr)
+	sql_scrap_entries_first = "SELECT max(Id) FROM (select ID from tkb_scrap where Id < '%s' order by Id DESC limit 10) as selectmin" % (ptr)
 	cur.execute(sql_scrap_entries_first)
 	first = cur.fetchall()
 	first = first[0][0]
