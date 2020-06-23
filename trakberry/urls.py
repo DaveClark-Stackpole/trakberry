@@ -37,7 +37,7 @@ from views_admin import retrieve
 from views_db import db_select
 from views_test import place_test, email_test_1, email_test_2
 from views_mod1 import table_copy
-from views_vacation import duplicate_1
+from views_vacation import duplicate_1,create_table_1
 
 # *******************************************  Testing Views *******************************************************************************************
 from views_email import e_test
@@ -135,8 +135,8 @@ from views3 import excel_dump, excel_scrap_dump
 # ***********************************************************************************************************************************************************
 
 # *******************************************  Scrap Section ********************************************************************************************
-from views_scrap import scrap_mgmt, scrap_mgmt_login_form,scrap_display,scrap_display_operation,scrap_display_category,scrap_entries
-
+from views_scrap import scrap_mgmt, scrap_mgmt_login_form,scrap_display,scrap_display_operation,scrap_display_category,scrap_entries,scrap_display_category_shift
+from views_scrap import scrap_entries_next
 # ***********************************************************************************************************************************************************
 
 
@@ -230,6 +230,7 @@ urlpatterns = [
 	url(r'^vacation_month_fix/', vacation_month_fix),
 	url(r'^resetcheck/', resetcheck),
 	url(r'^duplicate_1/', duplicate_1),
+	url(r'^create_table_1/', create_table_1),
 	# ********************************************************	
 	
 	url(r'^machinery/', machinery),
@@ -529,15 +530,22 @@ urlpatterns = [
 	url(r'^scrap_mgmt/', scrap_mgmt),
 	url(r'^scrap_mgmt_login_form/', scrap_mgmt_login_form),
 	url(r'^scrap_display/', scrap_display),
+	url(r'^scrap_entries_next/', scrap_entries_next),
 
 	# url(r'^scrap_display_operation/get/(?P<index>\w{0,50})/$', scrap_display_operation),
+	
 	url(r'^scrap_display_operation/get/(?P<index>[\w\-]+)/$', scrap_display_operation),
-	url(r'^scrap_display_category/get/(?P<index>[\w\-]+)/$', scrap_display_category),
+
+	# Need to have \w|W as url pattern to capture spaces and other characters
+	# url(r'^scrap_display_category/get/(?P<index>[\w\-]+)/$', scrap_display_category),
+	url(r'^scrap_display_category/get/(?P<index>[\w|\W]+)', scrap_display_category),
+	url(r'^scrap_display_category_shift/get/(?P<index>[\w|\W]+)', scrap_display_category_shift),
+
 	url(r'^scrap_entries/', scrap_entries),
 	#url(r'^scrap_entries/get/(?P<index>[\w\-]+)/$', scrap_entries),
 	#url(r'^scrap_display_o/', scrap_display_o),
 
-	
+
 ]
  
 

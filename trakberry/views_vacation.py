@@ -305,7 +305,22 @@ def vacation_set_current4(t):
 		current_first = current_first + "-" + str(day_st)
 		
 	return current_first
-	
+
+def vacation_set_current9():
+	t = vacation_temp()
+	month_st = t.month
+	year_st = t.year
+	day_st = t.day
+	hour_st = int(t.hour)
+	min_st = t.minute
+	min_st_st = str(min_st)
+	if len(min_st_st) < 2:
+		min_st_st = "0" + min_st_st
+	weekday_st = t.weekday()
+	current_first = str(year_st) + "-" + str(month_st) + "-" +str(day_st) + " ("+str(hour_st) + ":" + min_st_st + ")"
+	return current_first
+
+
 def vacation_backup(request):
 
 	# backup Vacation Table
@@ -362,7 +377,15 @@ def vacation_purge(request):
 	return render(request,'done_test.html')
 
 
-	
+def create_table_1(request):
+	db, cursor = db_set(request)
+	# cursor.execute("""DROP TABLE IF EXISTS tkb_scrap""")   # only uncomment this line if you need to re generate the table structure or start new
+	cursor.execute("""CREATE TABLE IF NOT EXISTS GFxPRoduction(Id INT PRIMARY KEY AUTO_INCREMENT,Machine CHAR(20),Part CHAR(20), PerpetualCount Double(20,2), TimeStamp Double(20,2))""")
+	db.commit()
+	db.close()
+	return render(request,'done_test.html')
+
+
 def vacation_purge_delete(request):
 
 	# delete all entries with wrap dates

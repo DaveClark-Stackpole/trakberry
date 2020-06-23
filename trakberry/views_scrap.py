@@ -89,92 +89,109 @@ def scrap_mgmt(request):
 
 def scrap_display(request):
 	db, cur = db_set(request)
-	sql_scrap = "SELECT FORMAT(sum(scrap_amount),0),scrap_part,date FROM tkb_scrap WHERE date BETWEEN date_sub(now(), interval 1 day) AND date_add(now(), interval 1 day) group by scrap_part"
+	sql_scrap = "SELECT FORMAT(sum(scrap_amount),0),scrap_part,FORMAT(sum(total_cost),2) FROM tkb_scrap WHERE date BETWEEN date_sub(now(), interval 1 day) AND date_add(now(), interval 1 day) group by scrap_part ORDER BY sum(total_cost) DESC"
 	# sql_scrap = "SELECT * FROM tkb_scrap WHERE date BETWEEN date_sub(now(), interval 1 day) AND date_add(now(), interval 1 day);"
 	cur.execute(sql_scrap)
 	request.session["tmp_scrap"] = cur.fetchall()
-
 	return render(request, "scrap_mgmt24.html")
 
-def scrap_entries(request):
-	
+def scrap_edit_selection(request):
+	ptr = request.session["scrap_ptr"]
 	db, cur = db_set(request)
-	sql_scrap_entries = "SELECT * FROM tkb_scrap group by scrap_part"
-	# sql_scrap = "SELECT * FROM tkb_scrap WHERE date BETWEEN date_sub(now(), interval 1 day) AND date_add(now(), interval 1 day);"
+
+	if ptr == 0:
+		sql_max_ptr = "SELECT max(Id) FROM tkb_scrap"
+		cur.execute(sql_max_ptr)
+		ptr = cur.fetchall()
+		ptr = ptr[0][0] + 1
+	
+	sql_scrap_entries = "SELECT * FROM tkb_scrap where Id < '%s' order by Id DESC limit 10" % (ptr)
 	cur.execute(sql_scrap_entries)
 	request.session["tmp_scrap_entries"] = cur.fetchall()
 
+	sql_scrap_entries_last = "SELECT min(Id) FROM (select ID from tkb_scrap where Id < '%s' order by Id DESC limit 10) as selectmin" % (ptr)
+	cur.execute(sql_scrap_entries_last)
+	last = cur.fetchall()
+	last = last[0][0]
+	request.session["scrap_ptr"] = last
+
+	sql_scrap_entries_first = "SELECT max(Id) FROM (select ID from tkb_scrap where Id < '%s' order by Id DESC limit 10) as selectmin" % (ptr)
+	cur.execute(sql_scrap_entries_first)
+	first = cur.fetchall()
+	first = first[0][0]
+	request.session["scrap_ptr_first"] = first
+	db.close()
+	return
+
+def scrap_entries_next(request):
+	scrap_edit_selection(request)
 	return render(request, "scrap_entries.html")
 
+def scrap_entries(request):
+	request.session["scrap_partno_filter"] = ""
+	request.session["scrap_date_filter"] = ""
+	request.session["scrap_line_filter"] = ""
+	request.session["scrap_operation_filter"] = ""
+	request.session["scrap_category_filter"] = ""
+	request.session["scrap_ptr"] = 0
+
+
+	scrap_edit_selection(request)
+	# request.session["scrap_ptr"] = 6
+
+	# ptr = request.session["scrap_ptr"]
+	# db, cur = db_set(request)
+	# sql_scrap_entries = "SELECT * FROM tkb_scrap where Id < '%s' order by Id DESC limit 3" % (ptr)
+	# cur.execute(sql_scrap_entries)
+	# request.session["tmp_scrap_entries"] = cur.fetchall()
+	# se = request.session["tmp_scrap_entries"]
+
+
+	# sql_scrap_entries_first = "SELECT max(Id) FROM (select Id from tkb_scrap order by Id DESC limit 3) as selectmax"
+	# cur.execute(sql_scrap_entries_first)
+	# first = cur.fetchall()
+	# first = first[0][0]
+	# sql_scrap_entries_last = "SELECT min(Id) FROM (select ID from tkb_scrap where Id < '%s' order by Id DESC limit 3) as selectmin" % (ptr)
+	# cur.execute(sql_scrap_entries_last)
+	# last = cur.fetchall()
+	# last = last[0][0]
+
+	return render(request, "scrap_entries.html")
 
 def scrap_display_operation(request,index):
+	request.session["scrap_24hrs_part"]=index
 	db, cur = db_set(request)
-
-
-	sql_scrap1 = "SELECT FORMAT(sum(scrap_amount),0),scrap_operation, scrap_part, date FROM tkb_scrap  WHERE date BETWEEN date_sub(now(), interval 1 day) AND date_add(now(), interval 1 day) AND scrap_part = '%s' group by scrap_operation" % (index)
-
-	# *********************  COMMENTS
-	# Need to filter out the sql_scrap1 so it's only pulling the correct part number.    
-	# like select format .......   by scrap_operation where scrap_part = .......
-	# otherwise it just shows total of all operations.
-	# ***********************************************
-	
-
-
-	# sql_scrap = "SELECT * FROM tkb_scrap WHERE date BETWEEN date_sub(now(), interval 1 day) AND date_add(now(), interval 1 day);"
+	sql_scrap1 = "SELECT FORMAT(sum(scrap_amount),0),scrap_operation, scrap_part,FORMAT(sum(total_cost),2) FROM tkb_scrap  WHERE date BETWEEN date_sub(now(), interval 1 day) AND date_add(now(), interval 1 day) AND scrap_part = '%s' group by scrap_operation ORDER BY sum(total_cost) DESC" % (index)
 	cur.execute(sql_scrap1)
 	request.session["tmp_scrap"] = cur.fetchall()
+	tt = request.session["tmp_scrap"]
 	return render(request, "scrap_mgmt_operation.html")
 
-def scrap_display_category(request,index):	
+def scrap_display_category(request,index):
+	index_check = index[-1:]
+	index_len = len(index) - 1
+	if index_check == '/': # bit of a bug when Sinter is used it adds a / to name
+		index = index[:index_len]
+	request.session["scrap_24hrs_operation"] = index
+	index_part = request.session["scrap_24hrs_part"]
+
 	db, cur = db_set(request)
-
-
-	sql_scrap2 = "SELECT FORMAT(sum(scrap_amount),0),scrap_category, scrap_operation, date FROM tkb_scrap WHERE date BETWEEN date_sub(now(), interval 1 day) AND date_add(now(), interval 1 day) AND scrap_operation = '%s' group by scrap_category" % (index)
-
-	# *********************  COMMENTS
-	# Need to filter out the sql_scrap1 so it's only pulling the correct part number.    
-	# like select format .......   by scrap_operation where scrap_part = .......
-	# otherwise it just shows total of all operations.
-	# ***********************************************
-	
-
-
-	# sql_scrap = "SELECT * FROM tkb_scrap WHERE date BETWEEN date_sub(now(), interval 1 day) AND date_add(now(), interval 1 day);"
+	index.replace(" ","")
+	sql_scrap2 = "SELECT FORMAT(sum(scrap_amount),0),scrap_category, scrap_operation,FORMAT(sum(total_cost),2) FROM tkb_scrap WHERE date BETWEEN date_sub(now(), interval 1 day) AND date_add(now(), interval 1 day) AND scrap_operation = '%s' AND scrap_part = '%s' group by scrap_category ORDER BY sum(total_cost) DESC" % (index,index_part)
 	cur.execute(sql_scrap2)
 	request.session["tmp_scrap2"] = cur.fetchall()
 	return render(request, "scrap_mgmt_category.html")	
 
-# def scrap_display_o(request):
-
-# 	t=7/0
-
-# 	# request.session["table_headers"]  ==>  The name displayed on page 
-# 	# request.session["table_variables"] ==> The name in the DB 
-# 	p = ['' for y in range(0)]
-# 	v = ['' for y in range(0)]
-# 	datecheck = ['' for y in range(0)]
-# 	a1 = ['' for y in range(0)]
-
-# 	# call in to tmp the row to edit
-# 	update_list = ''
-# 	ctr = 0
-# 	tmp_part = partno
-# 	db, cur = db_set(request) 
-# 	sq1 = request.session["scrap_table_call"] + "  where id = '%s'" %(tmp_part)
-# 	cur.execute(sq1)
-# 	tmp = cur.fetchall()
-# 	tmp2 = tmp[0]
-
-# ## tried a whole bunch of stuff. couldn't figure what shall go where. referred to multiple kisok,management
-# ##  and scrap files too. let me know what you think and how to fix this.
-	
-	
-# 	if request.POST:
-# 		db, cur = db_set(request)
-# 		sql_scrap1 = "SELECT FORMAT(sum(scrap_amount),0),scrap_operation FROM tkb_scrap group by scrap_operation"
-# 		# sql_scrap = "SELECT * FROM tkb_scrap WHERE date BETWEEN date_sub(now(), interval 1 day) AND date_add(now(), interval 1 day);"
-# 		cur.execute(sql_scrap1)
-# 		request.session["tmp_scrap"] = cur.fetchall()
-
-# 	return render(request, "scrap_mgmt24.html")
+def scrap_display_category_shift(request,index):
+	request.session["scrap_24hrs_category"] = index
+	index_part = request.session["scrap_24hrs_part"]
+	index_operation = request.session["scrap_24hrs_operation"]
+	index_category = index
+	db, cur = db_set(request)
+	index.replace(" ","")
+	#DATE_FORMAT(date, "%M %d %Y") 
+	sql_scrap2 = "SELECT scrap_amount,scrap_category, scrap_operation,FORMAT(total_cost,2),date FROM tkb_scrap WHERE date BETWEEN date_sub(now(), interval 1 day) AND date_add(now(), interval 1 day) AND scrap_operation = '%s' AND scrap_category = '%s' AND scrap_part = '%s' ORDER BY scrap_amount DESC" % (index_operation,index_category,index_part)
+	cur.execute(sql_scrap2)
+	request.session["tmp_scrap2"] = cur.fetchall()
+	tmp_scrap2 = request.session["tmp_scrap2"]
+	return render(request, "scrap_mgmt_category_shift.html")	

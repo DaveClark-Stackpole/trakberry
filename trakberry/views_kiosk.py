@@ -8,7 +8,7 @@ from views_mod1 import find_current_date
 from trakberry.views2 import login_initial
 from trakberry.views_testing import machine_list_display
 from trakberry.views_vacation import vacation_temp, vacation_set_current, vacation_set_current2, vacation_set_current5
-from views_vacation import vacation_set_current77
+from views_vacation import vacation_set_current77,vacation_set_current4,vacation_set_current9
 from django.http import QueryDict
 import MySQLdb
 import json
@@ -2272,7 +2272,8 @@ def kiosk_scrap_entry(request):
 
 		total_cost = float(cost) * float(amount)
 
-		date = datetime.datetime.now()
+		# date = datetime.datetime.now()
+		date = vacation_set_current9()
 
 
 		# Take out below line to run through to write but you will need to add total cost below
