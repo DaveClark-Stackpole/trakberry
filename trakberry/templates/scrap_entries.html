@@ -6,7 +6,8 @@
 
 <table class="center">
 	<tr>
-		<th>Part Number</th>
+		<!-- <th></th> -->
+		<th><form><input style= "background-color: blue; " type="button" value="Previous" onclick="history.back()"> </form>Part Number</th>
         <th>Operation</th>
         <th>Category</th>
         <th>Amount</th>
@@ -17,7 +18,7 @@
 	</tr>
 	{% for i in request.session.tmp_scrap_entries %}
 	<tr>
-		
+		<!-- <td></td> -->
 		<td>
 			<!-- <a href="{{request.session.local_toggle}}/scrap_display_operation/get/{{ i.1 }}">{{i.1}}</a> -->
 			<a href="{{request.session.local_toggle}}/scrap_entries/{{i.1}}">{{i.1}}</a>
@@ -49,6 +50,48 @@
 {% endfor %}
 
 </table>
+
+
+
+<!-- <center>
+
+	<form action="" method="post">{% csrf_token %}
+	<table style="overflow-x:auto;">
+		<tr><td nowrap>
+	
+	<input style="background-color: rgb(177, 167, 182);border-radius: 10px;width:80px;height:30px;font-weight: 400;font-size:11px;align=left;" type="submit" value="Update">
+	
+	
+	
+		</td></tr>
+	<tr>
+		{% for x in request.session.table_headers %}
+			<td nowrap>
+				<font size ="2" style="color:rgb(180, 40, 40)">
+					<b>{{x}}</b> 
+				</font>
+			</td>
+		{% endfor %}
+	</tr>
+	{% for i in tmp%}
+		 <td nowrap><font size ="2" style="color:rgb(100, 100, 100)">
+	
+			{% if i.2 == 1%}         
+				<input style="width:150px; height:40px; word-wrap: break-word;"  type="date" name="{{i.0}}" value={{i.1}}>
+			{% elif i.0 > 1 %}
+				<textarea rows = "3" cols = "10" name = "{{i.0}}">{{i.1}}</textarea>
+			{% else %}
+				<textarea readonly rows = "3" cols = "10" name = "{{i.0}}" style="background-color: rgb(197, 197, 197);">{{i.1}}</textarea>
+			{% endif %}
+		 </td>
+	
+	{% endfor %}
+	</table>
+	
+	</form>
+	
+	
+	</center> -->
 
 
 {% endblock %}
