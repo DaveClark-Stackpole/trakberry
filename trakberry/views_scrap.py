@@ -97,6 +97,11 @@ def scrap_display(request):
 
 def scrap_edit_selection(request):
 	ptr = request.session["scrap_ptr"]
+	ptr_first = request.session["scrap_ptr_first"]
+	ptr_direction = request.session["scrap_entries_direction"]
+	# ptr_direction = "up"
+	# ptr_first = 2
+
 	db, cur = db_set(request)
 
 	if ptr == 0:
@@ -105,25 +110,53 @@ def scrap_edit_selection(request):
 		ptr = cur.fetchall()
 		ptr = ptr[0][0] + 1
 	
-	sql_scrap_entries = "SELECT * FROM tkb_scrap where Id < '%s' order by Id DESC limit 10" % (ptr)
-	cur.execute(sql_scrap_entries)
-	request.session["tmp_scrap_entries"] = cur.fetchall()
+	if ptr_direction == "down":
+		# request.session["scrap_ptr_first"] = ptr
+		sql_scrap_entries = "SELECT * FROM tkb_scrap where Id < '%s' order by Id DESC limit 10" % (ptr)
+		cur.execute(sql_scrap_entries)
+		request.session["tmp_scrap_entries"] = cur.fetchall()
 
-	sql_scrap_entries_last = "SELECT min(Id) FROM (select ID from tkb_scrap where Id < '%s' order by Id DESC limit 10) as selectmin" % (ptr)
-	cur.execute(sql_scrap_entries_last)
-	last = cur.fetchall()
-	last = last[0][0]
-	request.session["scrap_ptr"] = last
+		sql_scrap_entries_last = "SELECT min(Id) FROM (select ID from tkb_scrap where Id < '%s' order by Id DESC limit 10) as selectmin" % (ptr)
+		cur.execute(sql_scrap_entries_last)
+		last = cur.fetchall()
+		last = last[0][0]
+		request.session["scrap_ptr"] = last
 
-	sql_scrap_entries_first = "SELECT max(Id) FROM (select ID from tkb_scrap where Id < '%s' order by Id DESC limit 10) as selectmin" % (ptr)
-	cur.execute(sql_scrap_entries_first)
-	first = cur.fetchall()
-	first = first[0][0]
-	request.session["scrap_ptr_first"] = first
+		sql_scrap_entries_first = "SELECT max(Id) FROM (select ID from tkb_scrap where Id < '%s' order by Id DESC limit 10) as selectmin" % (ptr)
+		cur.execute(sql_scrap_entries_first)
+		first = cur.fetchall()
+		first = first[0][0]
+		request.session["scrap_ptr_first"] = first
+
+
+		# t=5/0
+	else:
+		
+		sql_scrap_entries_first = "SELECT max(Id) FROM (select ID from tkb_scrap where Id > '%s' order by Id ASC limit 10) as selectmin" % (ptr_first)
+		cur.execute(sql_scrap_entries_first)
+		first = cur.fetchall()
+		first = first[0][0]
+		request.session["scrap_ptr_first"] = first 
+
+		sql_scrap_entries = "SELECT * FROM tkb_scrap where Id <= '%s' order by Id DESC limit 10" % (first)
+		cur.execute(sql_scrap_entries)
+		request.session["tmp_scrap_entries"] = cur.fetchall()
+
+		sql_scrap_entries_last = "SELECT min(Id) FROM (select ID from tkb_scrap where Id > '%s' order by Id ASC limit 10) as selectmin" % (ptr_first)
+		cur.execute(sql_scrap_entries_last)
+		last = cur.fetchall()
+		last = last[0][0]
+		request.session["scrap_ptr"] = last
+
+	
+		
+
+		
+
 	db.close()
 	return
 
-# def scrap_edit_prev_selection(request):
+# def scrap_edit_prev_selection2(request):
 # 	ptr = request.session["scrap_ptr"]
 # 	db, cur = db_set(request)
 
@@ -151,25 +184,30 @@ def scrap_edit_selection(request):
 # 	db.close()
 # 	return
 
+
+
 def scrap_entries_next(request):
+	
+	request.session["scrap_entries_direction"] = "down"
 	scrap_edit_selection(request)
+
 	return render(request, "scrap_entries.html")
 
 def scrap_entries_prev(request):
-	request.session['scrap_ptr'] -= 1
-	return render(request, "scrap_entries.html")  #scrap_edit_selection
-
-# def (request):
-# 	scrap_edit_prev_selection(request)
-# 	return render(request, "scrap_display_edit_entries.html")
+	request.session["scrap_entries_direction"] = "up"
+	
+	scrap_edit_selection(request)
+	return render(request, "scrap_entries.html")
 
 def scrap_entries(request):
+	request.session["scrap_entries_direction"] = "down"
 	request.session["scrap_partno_filter"] = ""
 	request.session["scrap_date_filter"] = ""
 	request.session["scrap_line_filter"] = ""
 	request.session["scrap_operation_filter"] = ""
 	request.session["scrap_category_filter"] = ""
 	request.session["scrap_ptr"] = 0
+	request.session["scrap_ptr_first"] = 0
 
 
 	scrap_edit_selection(request)
