@@ -30,24 +30,22 @@
 
 
     </td></tr>
-<tr>
-    {% for x in request.session.table_headers %}
-        <td nowrap>
-            <font size ="2" style="color:rgb(40, 117, 180)">
-                <b>{{x}}</b> 
-            </font>
-        </td>
-    {% endfor %}
-</tr>
-{% for i in tmp%}
+    <th>Part Number</th>
+    <th>Operation</th>
+    <th>Category</th>
+    <th>Amount</th>
+    <th>Line</th>
+    <th>Cost</th>
+    <th>Date</th> 
+{% for i in tmp_scrap3%}
      <td nowrap><font size ="2" style="color:rgb(100, 100, 100)">
-
+        
         {% if i.2 == 1%}         
             <input style="width:150px; height:40px; word-wrap: break-word;"  type="date" name="{{i.0}}" value={{i.1}}>
         {% elif i.0 > 1 %}
             <textarea rows = "3" cols = "10" name = "{{i.0}}">{{i.1}}</textarea>
         {% else %}
-            <textarea readonly rows = "3" cols = "10" name = "{{i.0}}" style="background-color: rgb(197, 197, 197);">{{i.1}}</textarea>
+            <textarea readonly rows = "3" cols = "10" name = "{{i.0}}" style="background-color: rgb(202, 48, 48);">{{i.1}}</textarea>
         {% endif %}
      </td>
 

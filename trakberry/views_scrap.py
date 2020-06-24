@@ -269,3 +269,13 @@ def scrap_display_category_shift(request,index):
 	request.session["tmp_scrap2"] = cur.fetchall()
 	tmp_scrap2 = request.session["tmp_scrap2"]
 	return render(request, "scrap_mgmt_category_shift.html")	
+
+def scrap_entries_update(request,index):
+	db, cur = db_set(request)
+	index.replace(" ","")
+	sql = "SELECT * FROM tkb_scrap where Id = '%s'" % (index)
+	e = 4/0
+	cur.execute(sql)
+	request.session["tmp_scrap3"] = cur.fetchall()
+	tmp_scrap3 = request.session["tmp_scrap3"]
+	return render(request, "scrap_display_edit_entries.html")	
