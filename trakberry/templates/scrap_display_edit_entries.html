@@ -23,33 +23,41 @@
 
 <form action="" method="post">{% csrf_token %}
 <table style="overflow-x:auto;">
-    <tr><td nowrap>
+    <tr><th nowrap>
 
-<input style="background-color: rgb(177, 167, 182);border-radius: 10px;width:80px;height:30px;font-weight: 400;font-size:11px;align=left;" type="submit" value="Update">
+<input style="background-color: rgb(177, 167, 182);border-radius: 10px;width:80px;height:30px;font-weight: 400;font-size:11px;align=left;" type="submit" value="Update"></th>
 
 
 
-    </td></tr>
+    <!-- </td></tr> -->
     <th>Part Number</th>
     <th>Operation</th>
     <th>Category</th>
     <th>Amount</th>
     <th>Line</th>
     <th>Cost</th>
-    <th>Date</th> 
-{% for i in tmp_scrap3%}
-     <td nowrap><font size ="2" style="color:rgb(100, 100, 100)">
+    <th>Date</th><br></tr>
+
+    <!-- <tr>
+     <td nowrap><font size ="2" style="color:rgb(155, 39, 39)">
+    </tr>     -->
+            <tr>
+            <td></td>
+              <td><input style="width:100px; height:40px; word-wrap: break-word;"   name="{{request.session.tmp_scrap3.1}}" value={{request.session.tmp_scrap3.0.1}}></td>
+              <td><input style="width:100px; height:40px; word-wrap: break-word;"   name="{{request.session.tmp_scrap3.1}}" value={{request.session.tmp_scrap3.0.2}}></td>
+              <td><input style="width:100px; height:40px; word-wrap: break-word;"   name="{{request.session.tmp_scrap3.1}}" value={{request.session.tmp_scrap3.0.3}}></td>
+              <td><input style="width:100px; height:40px; word-wrap: break-word;"   name="{{request.session.tmp_scrap3.1}}" value={{request.session.tmp_scrap3.0.4}}></td>
+              <td><input style="width:100px; height:40px; word-wrap: break-word;"   name="{{request.session.tmp_scrap3.1}}" value={{request.session.tmp_scrap3.0.5}}></td>
+              <td><input style="width:100px; height:40px; word-wrap: break-word;"   name="{{request.session.tmp_scrap3.1}}" value={{request.session.tmp_scrap3.0.6}}></td>
+              <td><input style="width:100px; height:40px; word-wrap: break-word;"   name="{{request.session.tmp_scrap3.1}}" value={{request.session.tmp_scrap3.0.7}}></td>
+          </tr>
+            <!-- <textarea rows = "3" cols = "10" name = "{{i.0}}">{{i.1}}</textarea>
         
-        {% if i.2 == 1%}         
-            <input style="width:150px; height:40px; word-wrap: break-word;"  type="date" name="{{i.0}}" value={{i.1}}>
-        {% elif i.0 > 1 %}
-            <textarea rows = "3" cols = "10" name = "{{i.0}}">{{i.1}}</textarea>
-        {% else %}
             <textarea readonly rows = "3" cols = "10" name = "{{i.0}}" style="background-color: rgb(202, 48, 48);">{{i.1}}</textarea>
-        {% endif %}
+    -->
      </td>
 
-{% endfor %}
+
 </table>
 
 </form>
