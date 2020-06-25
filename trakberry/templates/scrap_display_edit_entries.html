@@ -12,46 +12,52 @@
           text-align: left;
           padding: 7px;
         }
-        tr:nth-child(odd){background-color: #c7c9ad}
-        tr:nth-child(even){background-color: #ebeace}
+        tr:nth-child(odd){background-color: #a8b4a9}
+        tr:nth-child(even){background-color: #a8b4a9}
         a.blue:link {color: black;}
         a.blue:active {color: black;}
         a.blue:visited {color: black;}
-        a.blue:hover {color: black;background-color: rgb(255, 223, 78);border-radius: 10px;}
+        a.blue:hover {color: black;background-color: rgb(10, 46, 29);border-radius: 10px;}
 </style>
 <center>
 
 <form action="" method="post">{% csrf_token %}
 <table style="overflow-x:auto;">
-    <tr><td nowrap>
+    <tr><th nowrap>
 
-<input style="background-color: rgb(177, 167, 182);border-radius: 10px;width:80px;height:30px;font-weight: 400;font-size:11px;align=left;" type="submit" value="Update">
+<input style="background-color: rgb(177, 167, 182);border-radius: 10px;width:80px;height:30px;font-weight: 400;font-size:11px;align=left;" type="submit" value="Update"></th>
 
 
 
-    </td></tr>
-<tr>
-    {% for x in request.session.table_headers %}
-        <td nowrap>
-            <font size ="2" style="color:rgb(180, 40, 40)">
-                <b>{{x}}</b> 
-            </font>
-        </td>
-    {% endfor %}
-</tr>
-{% for i in tmp%}
-     <td nowrap><font size ="2" style="color:rgb(100, 100, 100)">
+    <!-- </td></tr> -->
+    <th>Part Number</th>
+    <th>Operation</th>
+    <th>Category</th>
+    <th>Amount</th>
+    <th>Line</th>
+    <th>Cost</th>
+    <th>Date</th><br></tr>
 
-        {% if i.2 == 1%}         
-            <input style="width:150px; height:40px; word-wrap: break-word;"  type="date" name="{{i.0}}" value={{i.1}}>
-        {% elif i.0 > 1 %}
-            <textarea rows = "3" cols = "10" name = "{{i.0}}">{{i.1}}</textarea>
-        {% else %}
-            <textarea readonly rows = "3" cols = "10" name = "{{i.0}}" style="background-color: rgb(197, 197, 197);">{{i.1}}</textarea>
-        {% endif %}
+    <!-- <tr>
+     <td nowrap><font size ="2" style="color:rgb(155, 39, 39)">
+    </tr>     -->
+            <tr>
+            <td></td>
+              <td><input style="width:100px; height:40px; word-wrap: break-word;"   name="{{request.session.tmp_scrap3.1}}" value={{request.session.tmp_scrap3.0.1}}></td>
+              <td><input style="width:100px; height:40px; word-wrap: break-word;"   name="{{request.session.tmp_scrap3.1}}" value={{request.session.tmp_scrap3.0.2}}></td>
+              <td><input style="width:100px; height:40px; word-wrap: break-word;"   name="{{request.session.tmp_scrap3.1}}" value={{request.session.tmp_scrap3.0.3}}></td>
+              <td><input style="width:100px; height:40px; word-wrap: break-word;"   name="{{request.session.tmp_scrap3.1}}" value={{request.session.tmp_scrap3.0.4}}></td>
+              <td><input style="width:100px; height:40px; word-wrap: break-word;"   name="{{request.session.tmp_scrap3.1}}" value={{request.session.tmp_scrap3.0.5}}></td>
+              <td><input style="width:100px; height:40px; word-wrap: break-word;"   name="{{request.session.tmp_scrap3.1}}" value={{request.session.tmp_scrap3.0.6}}></td>
+              <td><input style="width:100px; height:40px; word-wrap: break-word;"   name="{{request.session.tmp_scrap3.1}}" value={{request.session.tmp_scrap3.0.7}} type = "date"></td>
+          </tr>
+            <!-- <textarea rows = "3" cols = "10" name = "{{i.0}}">{{i.1}}</textarea>
+        
+            <textarea readonly rows = "3" cols = "10" name = "{{i.0}}" style="background-color: rgb(202, 48, 48);">{{i.1}}</textarea>
+    -->
      </td>
 
-{% endfor %}
+
 </table>
 
 </form>

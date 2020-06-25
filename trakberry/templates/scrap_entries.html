@@ -7,46 +7,46 @@
 <table class="center">
 	<tr>
 		<!-- <th></th> -->
-		<th><form><a href="{{request.session.local_toggle}}/scrap_entries" class="previous round">&laquo; Not Previous</a></font>
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Part Number</th>
+		<th><form><a href="{{request.session.local_toggle}}/scrap_entries_prev" class="previous round"> Previous</a></font>
+		</th>
+		<th>Part Number</th>
         <th>Operation</th>
         <th>Category</th>
         <th>Amount</th>
         <th>Line</th>
         <th>Cost</th>
-        <th>Date  <a href="{{request.session.local_toggle}}/scrap_entries_next">  &nbsp;&nbsp;&nbsp;&nbsp;>>> </a></th>
+		<th>Date</th> 
+		<th><a href="{{request.session.local_toggle}}/scrap_entries_next">Next</a></th>
 		<!-- <th>Scrap Cost</th> -->
 	</tr>
 	{% for i in request.session.tmp_scrap_entries %}
 	<tr>
-		<!-- <td></td> -->
+		<td></td>
 		<td>
 			<!-- <a href="{{request.session.local_toggle}}/scrap_display_operation/get/{{ i.1 }}">{{i.1}}</a> -->
-			<a href="{{request.session.local_toggle}}/scrap_entries/{{i.1}}">{{i.1}}</a>
+			<a href="{{request.session.local_toggle}}/scrap_entries_update/{{i.0}}">{{i.1}}</a>
 
 		</td>
 		<td>
-			<a href="{{request.session.local_toggle}}/scrap_entries/{{i.1}}">{{i.2}}</a>
+			<!-- change from i.1 to i.2 when not troubleshooting for Id value-->
+			<a href="{{request.session.local_toggle}}/scrap_entries_update/{{i.0}}">{{i.2}}</a>
         </td>
         <td>
-			<a href="{{request.session.local_toggle}}/scrap_entries/{{i.1}}">{{i.3}}</a>
+			<a href="{{request.session.local_toggle}}/scrap_entries_update/{{i.0}}">{{i.3}}</a>
         </td>
         <td>
-			<a href="{{request.session.local_toggle}}/scrap_entries/{{i.1}}">{{i.4}}</a>
+			<a href="{{request.session.local_toggle}}/scrap_entries_update/{{i.0}}">{{i.4}}</a>
         </td>
         <td>
-			<a href="{{request.session.local_toggle}}/scrap_entries/{{i.1}}">{{i.5}}</a>
+			<a href="{{request.session.local_toggle}}/scrap_entries_update/{{i.0}}">{{i.5}}</a>
         </td>
         <td>
-			<a href="{{request.session.local_toggle}}/scrap_entries/{{i.1}}">{{i.6}}</a>
+			<a href="{{request.session.local_toggle}}/scrap_entries_update/{{i.0}}">{{i.6}}</a>
         </td>
         <td>
-			<a href="{{request.session.local_toggle}}/scrap_entries/{{i.1}}">{{i.7}}</a>
+			<a href="{{request.session.local_toggle}}/scrap_entries_update/{{i.0}}">{{i.7}}</a>
 		</td>
-		<!-- <td>
-			<div contenteditable="true">{{i.6}}</div>
-		</td> -->
+		<td></td>
 	</tr>
 	
 {% endfor %}
