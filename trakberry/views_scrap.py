@@ -209,7 +209,7 @@ def scrap_entries(request):
 	request.session["scrap_ptr"] = 0
 	request.session["scrap_ptr_first"] = 0
 
-	
+
 	scrap_edit_selection(request)
 	# request.session["scrap_ptr"] = 6
 
@@ -278,8 +278,25 @@ def scrap_entries_update(request,index):
 	request.session["tmp_scrap3"] = cur.fetchall()
 	tmp_scrap3 = request.session["tmp_scrap3"]
 	if request.POST:
-		cql = ('update tkb_scrap SET scrap_part = "%s",scrap_operation="%s",scrap_amount="%s", scrap_line="%s", toal_cost="%s", date="%s" WHERE id ="%s"' % (index))
+		scrap_part = request.POST.get("scrap_part")
+		scrap_operation = request.POST.get("scrap_operation")
+		scrap_category = request.POST.get("scrap_category")
+		scrap_amount = request.POST.get("scrap_amount")
+		scrap_line = request.POST.get("scrap_line")
+		total_cost = request.POST.get("total_cost")
+		date = request.POST.get("date")
+
+		cql = ('update tkb_scrap SET scrap_part = "%s",scrap_operation="%s",scrap_amount="%s", scrap_line="%s", total_cost="%s", date="%s" WHERE id ="%s"' % (scrap_part, scrap_operation, scrap_amount, scrap_line, total_cost, date, index))
 		cur.execute(cql)
 		db.commit()
-	# r=9/0
-	return render(request, "scrap_display_edit_entries.html")	
+		# db.close()
+
+		return render(request, "scrap_mgmt.html")
+	else:
+		form = sup_downForm()
+	args = {}
+	args.update(csrf(request))
+	args['form'] = form
+
+	return render(request,'scrap_display_edit_entries.html',{'args':args})
+
