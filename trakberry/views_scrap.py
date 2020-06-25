@@ -209,7 +209,7 @@ def scrap_entries(request):
 	request.session["scrap_ptr"] = 0
 	request.session["scrap_ptr_first"] = 0
 
-
+	
 	scrap_edit_selection(request)
 	# request.session["scrap_ptr"] = 6
 
@@ -277,5 +277,9 @@ def scrap_entries_update(request,index):
 	cur.execute(sql)
 	request.session["tmp_scrap3"] = cur.fetchall()
 	tmp_scrap3 = request.session["tmp_scrap3"]
+	if request.POST:
+		cql = ('update tkb_scrap SET scrap_part = "%s",scrap_operation="%s",scrap_amount="%s", scrap_line="%s", toal_cost="%s", date="%s" WHERE id ="%s"' % (index))
+		cur.execute(cql)
+		db.commit()
 	# r=9/0
 	return render(request, "scrap_display_edit_entries.html")	
