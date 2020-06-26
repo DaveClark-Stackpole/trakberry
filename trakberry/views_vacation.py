@@ -303,7 +303,7 @@ def vacation_set_current4(t):
 		current_first = current_first + "-" + "0" + str(day_st)
 	else:
 		current_first = current_first + "-" + str(day_st)
-		
+
 	return current_first
 
 def vacation_set_current9():
