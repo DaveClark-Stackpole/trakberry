@@ -317,7 +317,15 @@ def vacation_set_current9():
 	if len(min_st_st) < 2:
 		min_st_st = "0" + min_st_st
 	weekday_st = t.weekday()
-	current_first = str(year_st) + "-" + str(month_st) + "-" +str(day_st) + " ("+str(hour_st) + ":" + min_st_st + ")"
+	if month_st < 10 and hour_st < 10:
+		current_first = str(year_st) + "-0" + str(month_st) + "-" +str(day_st) + "T0"+str(hour_st) + ":" + min_st_st
+	if month_st < 10 and hour_st > 10:
+		current_first = str(year_st) + "-0" + str(month_st) + "-" +str(day_st) + "T"+str(hour_st) + ":" + min_st_st
+	if month_st > 10 and hour_st < 10:
+		current_first = str(year_st) + "-" + str(month_st) + "-" +str(day_st) + "T0"+str(hour_st) + ":" + min_st_st
+	elif month_st > 10 and hour_st > 10:
+		current_first = str(year_st) + "-" + str(month_st) + "-" +str(day_st) + "T"+str(hour_st) + ":" + min_st_st
+
 	return current_first
 
 
