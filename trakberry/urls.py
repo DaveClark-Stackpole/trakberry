@@ -136,7 +136,7 @@ from views3 import excel_dump, excel_scrap_dump
 
 # *******************************************  Scrap Section ********************************************************************************************
 from views_scrap import scrap_mgmt, scrap_mgmt_login_form,scrap_display,scrap_display_operation,scrap_display_category,scrap_entries,scrap_display_category_shift
-from views_scrap import scrap_entries_next
+from views_scrap import scrap_entries_next, scrap_entries_prev,scrap_entries_update
 # ***********************************************************************************************************************************************************
 
 
@@ -531,6 +531,7 @@ urlpatterns = [
 	url(r'^scrap_mgmt_login_form/', scrap_mgmt_login_form),
 	url(r'^scrap_display/', scrap_display),
 	url(r'^scrap_entries_next/', scrap_entries_next),
+	url(r'^scrap_entries_prev/', scrap_entries_prev),
 
 	# url(r'^scrap_display_operation/get/(?P<index>\w{0,50})/$', scrap_display_operation),
 	
@@ -542,6 +543,7 @@ urlpatterns = [
 	url(r'^scrap_display_category_shift/get/(?P<index>[\w|\W]+)', scrap_display_category_shift),
 
 	url(r'^scrap_entries/', scrap_entries),
+	url(r'^scrap_entries_update/(?P<index>\d+)/$', scrap_entries_update),
 	#url(r'^scrap_entries/get/(?P<index>[\w\-]+)/$', scrap_entries),
 	#url(r'^scrap_display_o/', scrap_display_o),
 
