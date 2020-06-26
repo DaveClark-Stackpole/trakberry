@@ -198,7 +198,7 @@ def scrap_entries_prev(request):
 	request.session["scrap_entries_direction"] = scrap_ent #i tried to initialize a variable
 	if (request.session["scrap_entries_direction"] == 0): #and then i set it to 0, so scrap_entries_direction should be equal to the scrap_entries page
 														  #and then i increment the value so now it should go on next. However, it gets disbaled completely after i 
-		scrap_ent +=1                                     #click next just once.
+		scrap_ent +=1                                     #click next just once. so how can we enable it when not on page 0
 		return render(request, "scrap_entries.html")
 	else:
 		request.session["scrap_entries_direction"] = "up"
