@@ -16,6 +16,7 @@ from trakberry.views_vacation import vacation_temp, vacation_set_current, vacati
 import time
 #import datetime as dt
 from django.core.context_processors import csrf
+import math
 
 
 def scrap_mgmt_manpower(request):
@@ -187,23 +188,18 @@ def scrap_edit_selection(request):
 
 
 def scrap_entries_next(request):
-	
 	request.session["scrap_entries_direction"] = "down"
 	scrap_edit_selection(request)
-
+	request.session["scrap_prev"] += 1
+	request.session["scrap_next"] -= 1
 	return render(request, "scrap_entries.html")
 
 def scrap_entries_prev(request):
-	scrap_ent = 0
-	request.session["scrap_entries_direction"] = scrap_ent #i tried to initialize a variable
-	if (request.session["scrap_entries_direction"] == 0): #and then i set it to 0, so scrap_entries_direction should be equal to the scrap_entries page
-														  #and then i increment the value so now it should go on next. However, it gets disbaled completely after i 
-		scrap_ent +=1                                     #click next just once. so how can we enable it when not on page 0
-		return render(request, "scrap_entries.html")
-	else:
-		request.session["scrap_entries_direction"] = "up"
-		scrap_edit_selection(request)
-		return render(request, "scrap_entries.html")
+	request.session["scrap_entries_direction"] = "up"
+	scrap_edit_selection(request)
+	request.session["scrap_prev"] -= 1
+	request.session["scrap_next"] += 1
+	return render(request, "scrap_entries.html")
 
 def scrap_entries(request):
 	request.session["scrap_entries_direction"] = "down"
@@ -214,7 +210,26 @@ def scrap_entries(request):
 	request.session["scrap_category_filter"] = ""
 	request.session["scrap_ptr"] = 0
 	request.session["scrap_ptr_first"] = 0
+	
+	db, cur = db_set(request)
+	row_count = "SELECT COUNT(*) FROM tkb_scrap" ## checking number of rows we have
+	execu = cur.execute(row_count) #executing
+	maximize = cur.fetchall() ## fetch
+	maximize = maximize[0][0]	## converting to integer
+	db.close()
 
+	num_entries =  maximize / float(10) 
+	x = math.ceil(num_entries)
+
+	
+	
+	request.session["scrap_prev"] = 0
+	request.session["scrap_next"] = x-1
+
+
+
+
+ 
 
 	scrap_edit_selection(request)
 	# request.session["scrap_ptr"] = 6
