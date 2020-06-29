@@ -196,17 +196,17 @@ def tech(request):
 	a5 = "Toby Kuepfer"
 	a6 = "Terry Kennedy"
 	a7 = "Paul Wilson"
-	a8 = "Chris Strutton"
+	a8 = "James Kuepfer"
 	a9 = "Ervin Kuepfer"
-	a10 = "Woodrow Sismar"
+	a10 = "Jonathan Brunk"
 	a11 = "Mayank Gehlot"
 	a13 = "Les Vaters"
-	a12 = "Phuc Bui"
+	a12 = "Dan Deighton"
 	a14 = "Jered Pankratz"
 	a15 = "Derek Peachey"
 	a16 = "Rob Wood"
-	a17 = "Greg Hundt"
-	a18 = "Kyle Scheuerman"
+	a17 = "Jeremy Bourque"
+	a18 = "Scott Warner"
 	
 
 	
@@ -290,7 +290,7 @@ def tech(request):
 	elif request.session["login_tech"] == "Dave McLaren":
 		request.session["login_image"] = "/static/media/tech_training.jpg"
 		request.session["login_back"] = "/static/media/back_tech_training.jpg"
-	elif request.session["login_tech"] == "Woodrow Sismar":
+	elif request.session["login_tech"] == "Jonathan Brunk":
 		request.session["login_image"] = "/static/media/tech_woodrow.jpg"
 		request.session["login_back"] = "/static/media/back_woodrow.jpg"
 	elif request.session["login_tech"] == "Ervin Kuepfer":
@@ -299,16 +299,16 @@ def tech(request):
 	elif request.session["login_tech"] == "Muoi Le":
 		request.session["login_image"] = "/static/media/tech_training.jpg"
 		request.session["login_back"] = "/static/media/back_tech_training.jpg"
-	elif request.session["login_tech"] == "Greg Hundt":
+	elif request.session["login_tech"] == "Scott Warner":
 		request.session["login_image"] = "/static/media/tech_training.jpg"
 		request.session["login_back"] = "/static/media/back_tech_training.jpg"
-	elif request.session["login_tech"] == "Kyle Scheuerman":
-		request.session["login_image"] = "/static/media/tech_training.jpg"
-		request.session["login_back"] = "/static/media/back_tech_training.jpg"		
+	elif request.session["login_tech"] == "Jeremy Bourque":
+		request.session["login_image"] = "/static/media/tech_nigel.jpg"
+		request.session["login_back"] = "/static/media/back_nigel.jpg"		
 	elif request.session["login_tech"] == "Mayank Gehlot":
 		request.session["login_image"] = "/static/media/tech_training.jpg"
 		request.session["login_back"] = "/static/media/back_tech_training.jpg"
-	elif request.session["login_tech"] == "Phuc Bui":
+	elif request.session["login_tech"] == "James Kuepfer":
 		request.session["login_image"] = "/static/media/tech_training.jpg"
 		request.session["login_back"] = "/static/media/back_tech_training.jpg"	
 	elif request.session["login_tech"] == "Derek Peachey":
@@ -321,7 +321,7 @@ def tech(request):
 	elif request.session["login_tech"] == "Terry Kennedy":
 		request.session["login_image"] = "/static/media/tech_terry.jpg"
 		request.session["login_back"] = "/static/media/back_terry.jpg"		
-	elif request.session["login_tech"] == "Les Vaters":
+	elif request.session["login_tech"] == "Dan Deighton":
 		request.session["login_image"] = "/static/media/tech_vaters.jpg"
 		request.session["login_back"] = "/static/media/back_vaters.jpg"	
 	else:
