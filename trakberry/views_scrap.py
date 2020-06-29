@@ -361,3 +361,110 @@ def scrap_display_date_pick(request):
 	args.update(csrf(request))
 	args['form'] = form
 	return render(request,'scrap_display_date_pick_form.html',{'args':args})
+
+
+def operation_department(request):
+	request.session["operation_entries_direction"] = "down"
+	request.session["operation_filter"] = ""
+	request.session["operation_dept_filter"] = ""
+	request.session["oper_dept_ptr"] = 0
+	request.session["oper_dept_ptr_first"] = 0
+	
+	db, cur = db_set(request)
+	row_count = "SELECT COUNT(*) FROM tkb_scrap" ## checking number of rows we have
+	execu = cur.execute(row_count) #executing
+	maximize = cur.fetchall() ## fetch
+	maximize = maximize[0][0]	## converting to integer
+	db.close()
+
+	num_entries =  maximize / float(10) 
+	x = math.ceil(num_entries)
+
+	
+	
+	request.session["oper_prev"] = 0
+	request.session["oper_next"] = x-1
+
+
+
+
+ 
+
+	oper_dept_edit_selection(request)
+
+	return render(request, "scrap_operation_dept.html")		
+
+def oper_dept_edit_selection(request):
+	ptr = request.session["oper_dept_ptr"]
+	ptr_first = request.session["oper_dept_ptr_first"]
+	ptr_direction = request.session["operation_entries_direction"]
+	# ptr_direction = "up"
+	# ptr_first = 2
+
+	db, cur = db_set(request)
+
+	if ptr == 0:
+		sql_max_ptr = "SELECT max(Id) FROM scrap_operation_dept"
+		cur.execute(sql_max_ptr)
+		ptr = cur.fetchall()
+		ptr = ptr[0][0] + 1
+	
+	if ptr_direction == "down":
+		# request.session["scrap_ptr_first"] = ptr
+		sql_scrap_entries = "SELECT * FROM scrap_operation_dept where Id < '%s' order by Id DESC limit 10" % (ptr)
+		cur.execute(sql_scrap_entries)
+		request.session["tmp_oper_dept_entries"] = cur.fetchall()
+
+		sql_scrap_entries_last = "SELECT min(Id) FROM (select ID from scrap_operation_dept where Id < '%s' order by Id DESC limit 10) as selectmin" % (ptr)
+		cur.execute(sql_scrap_entries_last)
+		last = cur.fetchall()
+		last = last[0][0]
+		request.session["oper_dept_ptr"] = last
+
+		sql_scrap_entries_first = "SELECT max(Id) FROM (select ID from scrap_operation_dept where Id < '%s' order by Id DESC limit 10) as selectmin" % (ptr)
+		cur.execute(sql_scrap_entries_first)
+		first = cur.fetchall()
+		first = first[0][0]
+		request.session["oper_dept_ptr_first"] = first
+
+
+		# t=5/0
+	else:
+		
+		sql_scrap_entries_first = "SELECT max(Id) FROM (select ID from scrap_operation_dept where Id > '%s' order by Id ASC limit 10) as selectmin" % (ptr_first)
+		cur.execute(sql_scrap_entries_first)
+		first = cur.fetchall()
+		first = first[0][0]
+		request.session["oper_dept_ptr_first"] = first 
+
+		sql_scrap_entries = "SELECT * FROM scrap_operation_dept where Id <= '%s' order by Id DESC limit 10" % (first)
+		cur.execute(sql_scrap_entries)
+		request.session["tmp_oper_dept_entries"] = cur.fetchall()
+
+		sql_scrap_entries_last = "SELECT min(Id) FROM (select ID from scrap_operation_dept where Id > '%s' order by Id ASC limit 10) as selectmin" % (ptr_first)
+		cur.execute(sql_scrap_entries_last)
+		last = cur.fetchall()
+		last = last[0][0]
+		request.session["oper_dept_ptr"] = last
+
+	
+		
+
+		
+
+	db.close()
+	return
+
+def operation_entries_next(request):
+	request.session["oper_dept_entries_direction"] = "down"
+	oper_dept_edit_selection(request)
+	request.session["oper_prev"] += 1
+	request.session["oper_next"] -= 1
+	return render(request, "scrap_operation_dept.html")
+
+def operation_entries_prev(request):
+	request.session["oper_dept_entries_direction"] = "up"
+	oper_dept_edit_selection(request)
+	request.session["oper_prev"] -= 1
+	request.session["oper_next"] += 1
+	return render(request, "scrap_operation_dept.html")
