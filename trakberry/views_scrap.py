@@ -297,6 +297,7 @@ def scrap_entries_update(request,index):
 	sql = "SELECT * FROM tkb_scrap where Id = '%s'" % (index) 
 	cur.execute(sql)
 	request.session["tmp_scrap3"] = cur.fetchall()
+	db.close()
 	tmp_scrap3 = request.session["tmp_scrap3"]
 	if request.POST:
 		scrap_part = request.POST.get("scrap_part")
@@ -306,11 +307,26 @@ def scrap_entries_update(request,index):
 		scrap_line = request.POST.get("scrap_line")
 		total_cost = request.POST.get("total_cost")
 		date = request.POST.get("date")
+		db, cur = db_set(request)
+
+		# Calculate new cost but if error (changed operation) keep cost same
+		try:
+			sql2 = "SELECT Dept FROM scrap_operation_dept WHERE Operation = '%s'" % (scrap_operation)
+			cur.execute(sql2)
+			tmp = cur.fetchall()
+			department = tmp[0][0]
+			sql3 = "SELECT Cost FROM scrap_part_dept_cost WHERE Part = '%s' and Dept = '%s'" % (scrap_part,department)
+			cur.execute(sql3)
+			tmp = cur.fetchall()
+			cost = tmp[0][0]
+			total_cost = float(cost) * float(scrap_amount)
+		except:
+			dummy = 1
 
 		cql = ('update tkb_scrap SET scrap_part = "%s",scrap_operation="%s",scrap_amount="%s", scrap_line="%s", total_cost="%s", date="%s" WHERE id ="%s"' % (scrap_part, scrap_operation, scrap_amount, scrap_line, total_cost, date, index))
 		cur.execute(cql)
 		db.commit()
-		# db.close()
+		db.close()
 
 		return render(request, "scrap_mgmt.html")
 	else:

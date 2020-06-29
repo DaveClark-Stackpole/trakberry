@@ -2276,9 +2276,6 @@ def kiosk_scrap_entry(request):
 		date = vacation_set_current9()
 
 
-		# Take out below line to run through to write but you will need to add total cost below
-		#e=9/0
-		## I'm back
 		
 		cursor.execute('''INSERT INTO tkb_scrap(scrap_part,scrap_operation,scrap_category,scrap_amount,scrap_line,total_cost,date) VALUES(%s,%s,%s,%s,%s,%s,%s)''', (part,operation,category,amount,line,total_cost,date))
 		db.commit()
