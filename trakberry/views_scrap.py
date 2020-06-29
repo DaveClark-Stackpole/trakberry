@@ -16,6 +16,7 @@ from trakberry.views_vacation import vacation_temp, vacation_set_current, vacati
 import time
 #import datetime as dt
 from django.core.context_processors import csrf
+import math
 
 
 def scrap_mgmt_manpower(request):
@@ -187,16 +188,17 @@ def scrap_edit_selection(request):
 
 
 def scrap_entries_next(request):
-	
 	request.session["scrap_entries_direction"] = "down"
 	scrap_edit_selection(request)
-
+	request.session["scrap_prev"] += 1
+	request.session["scrap_next"] -= 1
 	return render(request, "scrap_entries.html")
 
 def scrap_entries_prev(request):
 	request.session["scrap_entries_direction"] = "up"
-	
 	scrap_edit_selection(request)
+	request.session["scrap_prev"] -= 1
+	request.session["scrap_next"] += 1
 	return render(request, "scrap_entries.html")
 
 def scrap_entries(request):
@@ -208,7 +210,26 @@ def scrap_entries(request):
 	request.session["scrap_category_filter"] = ""
 	request.session["scrap_ptr"] = 0
 	request.session["scrap_ptr_first"] = 0
+	
+	db, cur = db_set(request)
+	row_count = "SELECT COUNT(*) FROM tkb_scrap" ## checking number of rows we have
+	execu = cur.execute(row_count) #executing
+	maximize = cur.fetchall() ## fetch
+	maximize = maximize[0][0]	## converting to integer
+	db.close()
 
+	num_entries =  maximize / float(10) 
+	x = math.ceil(num_entries)
+
+	
+	
+	request.session["scrap_prev"] = 0
+	request.session["scrap_next"] = x-1
+
+
+
+
+ 
 
 	scrap_edit_selection(request)
 	# request.session["scrap_ptr"] = 6
@@ -276,6 +297,7 @@ def scrap_entries_update(request,index):
 	sql = "SELECT * FROM tkb_scrap where Id = '%s'" % (index) 
 	cur.execute(sql)
 	request.session["tmp_scrap3"] = cur.fetchall()
+	db.close()
 	tmp_scrap3 = request.session["tmp_scrap3"]
 	if request.POST:
 		scrap_part = request.POST.get("scrap_part")
@@ -285,11 +307,26 @@ def scrap_entries_update(request,index):
 		scrap_line = request.POST.get("scrap_line")
 		total_cost = request.POST.get("total_cost")
 		date = request.POST.get("date")
+		db, cur = db_set(request)
+
+		# Calculate new cost but if error (changed operation) keep cost same
+		try:
+			sql2 = "SELECT Dept FROM scrap_operation_dept WHERE Operation = '%s'" % (scrap_operation)
+			cur.execute(sql2)
+			tmp = cur.fetchall()
+			department = tmp[0][0]
+			sql3 = "SELECT Cost FROM scrap_part_dept_cost WHERE Part = '%s' and Dept = '%s'" % (scrap_part,department)
+			cur.execute(sql3)
+			tmp = cur.fetchall()
+			cost = tmp[0][0]
+			total_cost = float(cost) * float(scrap_amount)
+		except:
+			dummy = 1
 
 		cql = ('update tkb_scrap SET scrap_part = "%s",scrap_operation="%s",scrap_amount="%s", scrap_line="%s", total_cost="%s", date="%s" WHERE id ="%s"' % (scrap_part, scrap_operation, scrap_amount, scrap_line, total_cost, date, index))
 		cur.execute(cql)
 		db.commit()
-		# db.close()
+		db.close()
 
 		return render(request, "scrap_mgmt.html")
 	else:

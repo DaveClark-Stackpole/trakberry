@@ -7,8 +7,12 @@
 <table class="center">
 	<tr>
 		<!-- <th></th> -->
-		<th><form><a href="{{request.session.local_toggle}}/scrap_entries_prev" class="previous round"> Previous</a></font>
-		</th>
+		{% if request.session.scrap_prev >= 1 %}
+			<th><a href="{{request.session.local_toggle}}/scrap_entries_prev" class="previous round"> Previous</a></font></th>
+		{% else %}
+			<th></th>
+		{% endif %}
+
 		<th>Part Number</th>
         <th>Operation</th>
         <th>Category</th>
@@ -16,7 +20,12 @@
         <th>Line</th>
         <th>Cost</th>
 		<th>Date</th> 
-		<th><a href="{{request.session.local_toggle}}/scrap_entries_next">Next</a></th>
+		{% if request.session.scrap_next = 0 %}
+			<th></th>
+		{% else %}
+			<th><a href="{{request.session.local_toggle}}/scrap_entries_next">Next</a></th>
+		{% endif %}
+
 		<!-- <th>Scrap Cost</th> -->
 	</tr>
 	{% for i in request.session.tmp_scrap_entries %}
