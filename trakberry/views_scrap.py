@@ -6,7 +6,7 @@ from views_db import db_open, db_set
 from views_mod1 import find_current_date
 from views_mod2 import seperate_string, create_new_table,generate_string
 from views_email import e_test
-from views_vacation import vacation_temp, vacation_set_current, vacation_set_current2
+from views_vacation import vacation_temp, vacation_set_current, vacation_set_current2, vacation_set_current9
 from views_supervisor import supervisor_tech_call
 from views_maintenance import login_password_check
 from trakberry.views_testing import machine_list_display
@@ -14,6 +14,7 @@ from mod1 import hyphon_fix, multi_name_breakdown
 import MySQLdb
 from trakberry.views_vacation import vacation_temp, vacation_set_current, vacation_set_current2
 import time
+import datetime 
 #import datetime as dt
 from django.core.context_processors import csrf
 import math
@@ -88,9 +89,19 @@ def scrap_mgmt(request):
 	request.session["main_menu_color"] = "#d3ded4"    # Color of Menu Bar in APP
 	return render(request, "scrap_mgmt.html")
 
+
+def scrap_display_24hr(request):
+	request.session["scrap_display_type"] = "24hr" 
+	return render(request, "redirect_scrap_display.html")
+
 def scrap_display(request):
 	db, cur = db_set(request)
-	sql_scrap = "SELECT FORMAT(sum(scrap_amount),0),scrap_part,FORMAT(sum(total_cost),2) FROM tkb_scrap WHERE date BETWEEN date_sub(now(), interval 1 day) AND date_add(now(), interval 1 day) group by scrap_part ORDER BY sum(total_cost) DESC"
+	if request.session["scrap_display_type"] == "24hr":
+		sql_scrap = "SELECT FORMAT(sum(scrap_amount),0),scrap_part,FORMAT(sum(total_cost),2) FROM tkb_scrap WHERE date BETWEEN date_sub(now(), interval 1 day) AND date_add(now(), interval 1 day) group by scrap_part ORDER BY sum(total_cost) DESC"
+	else:
+		date1 = request.session["scrap_display_date1"]
+		date2 = request.session["scrap_display_date2"]
+		sql_scrap = "SELECT FORMAT(sum(scrap_amount),0),scrap_part,FORMAT(sum(total_cost),2) FROM tkb_scrap WHERE date BETWEEN '%s' AND '%s' group by scrap_part ORDER BY sum(total_cost) DESC" % (date1,date2)
 	# sql_scrap = "SELECT * FROM tkb_scrap WHERE date BETWEEN date_sub(now(), interval 1 day) AND date_add(now(), interval 1 day);"
 	cur.execute(sql_scrap)
 	request.session["tmp_scrap"] = cur.fetchall()
@@ -337,3 +348,20 @@ def scrap_entries_update(request,index):
 
 	return render(request,'scrap_display_edit_entries.html',{'args':args})
 
+def scrap_display_date_pick(request):
+	# t = datetime.datetime.now()
+	date = vacation_set_current9()
+	request.session["date1_default"] =  date
+	# request.session["date2_default"] = t
+	if request.POST:
+		request.session["scrap_display_date1"] = request.POST.get("scrap_display_date1")
+		request.session["scrap_display_date2"] = request.POST.get("scrap_display_date2")
+		request.session["scrap_display_type"] = "date_selection"
+		return render(request, "redirect_scrap_display.html")
+
+	else:
+		form = sup_downForm()
+	args = {}
+	args.update(csrf(request))
+	args['form'] = form
+	return render(request,'scrap_display_date_pick_form.html',{'args':args})
