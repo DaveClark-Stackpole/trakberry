@@ -371,7 +371,7 @@ def operation_department(request):
 	request.session["oper_dept_ptr_first"] = 0
 	
 	db, cur = db_set(request)
-	row_count = "SELECT COUNT(*) FROM tkb_scrap" ## checking number of rows we have
+	row_count = "SELECT COUNT(*) FROM scrap_operation_dept" ## checking number of rows we have
 	execu = cur.execute(row_count) #executing
 	maximize = cur.fetchall() ## fetch
 	maximize = maximize[0][0]	## converting to integer
@@ -379,6 +379,7 @@ def operation_department(request):
 
 	num_entries =  maximize / float(10) 
 	x = math.ceil(num_entries)
+	
 
 	
 	
@@ -468,3 +469,30 @@ def operation_entries_prev(request):
 	request.session["oper_prev"] -= 1
 	request.session["oper_next"] += 1
 	return render(request, "scrap_operation_dept.html")
+
+
+
+def operation_entries_update(request,index):
+	db, cur = db_set(request)
+	index.replace(" ","")
+	sql = "SELECT * FROM scrap_operation_dept where Id = '%s'" % (index) 
+	cur.execute(sql)
+	request.session["tmp_scrap4"] = cur.fetchall()
+	db.close()
+	tmp_scrap4 = request.session["tmp_scrap4"]
+	if request.POST:
+		operation = request.POST.get("Operation")
+		department = request.POST.get("Dept")
+		db, cur = db_set(request)
+
+		cql = ('update scrap_operation_dept SET Operation = "%s",Dept="%s" WHERE id ="%s"' % (operation, department, index))
+		cur.execute(cql)
+		db.commit()
+		db.close()
+		return render(request, "scrap_mgmt.html")
+	else:
+		form = sup_downForm()
+	args = {}
+	args.update(csrf(request))
+	args['form'] = form
+	return render(request,'scrap_display_edit_operation_entries.html',{'args':args})
