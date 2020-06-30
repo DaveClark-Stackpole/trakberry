@@ -136,7 +136,7 @@ from views3 import excel_dump, excel_scrap_dump
 
 # *******************************************  Scrap Section ********************************************************************************************
 from views_scrap import scrap_mgmt, scrap_mgmt_login_form,scrap_display,scrap_display_operation,scrap_display_category,scrap_entries,scrap_display_category_shift
-from views_scrap import scrap_entries_next, scrap_entries_prev,scrap_entries_update
+from views_scrap import scrap_entries_next, scrap_entries_prev,scrap_entries_update,scrap_display_date_pick,scrap_display_24hr,operation_department,oper_dept_edit_selection,operation_entries_next, operation_entries_prev,operation_entries_update
 # ***********************************************************************************************************************************************************
 
 
@@ -530,6 +530,9 @@ urlpatterns = [
 	url(r'^scrap_mgmt/', scrap_mgmt),
 	url(r'^scrap_mgmt_login_form/', scrap_mgmt_login_form),
 	url(r'^scrap_display/', scrap_display),
+	url(r'^scrap_display_24hr/', scrap_display_24hr),
+	url(r'^scrap_display_date_pick/', scrap_display_date_pick),
+
 	url(r'^scrap_entries_next/', scrap_entries_next),
 	url(r'^scrap_entries_prev/', scrap_entries_prev),
 
@@ -541,11 +544,16 @@ urlpatterns = [
 	# url(r'^scrap_display_category/get/(?P<index>[\w\-]+)/$', scrap_display_category),
 	url(r'^scrap_display_category/get/(?P<index>[\w|\W]+)', scrap_display_category),
 	url(r'^scrap_display_category_shift/get/(?P<index>[\w|\W]+)', scrap_display_category_shift),
-
 	url(r'^scrap_entries/', scrap_entries),
 	url(r'^scrap_entries_update/(?P<index>\d+)/$', scrap_entries_update),
 	#url(r'^scrap_entries/get/(?P<index>[\w\-]+)/$', scrap_entries),
 	#url(r'^scrap_display_o/', scrap_display_o),
+	url(r'^operation_entries_prev/', operation_entries_prev),
+	url(r'^operation_entries_next/', operation_entries_next),
+	url(r'^operation_department/', operation_department),
+	#url(r'^scrap_entries/', scrap_entries),
+	url(r'^operation_entries_update/(?P<index>\d+)/$', operation_entries_update),
+	# url(r'^part_entries/', part_entries),
 
 
 ]

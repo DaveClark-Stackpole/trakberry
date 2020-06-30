@@ -29,17 +29,17 @@
                         <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
                         <li><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-stats"></span> Reports<b class="caret"></b></a>
                          <ul class="dropdown-menu multi-level"  style="background-color:{{request.session.main_menu_color}}" >
-                            <li><a href="{{request.session.local_toggle}}/scrap_display">Last 24hrs</a></li>
-                            <li><a href="#">By Line</a></li>
-                            <li><a href="#">Details</a></li>                  
+														<li><a href="{{request.session.local_toggle}}/scrap_display_24hr">Last 24hrs</a></li>
+														<li><a href="{{request.session.local_toggle}}/scrap_display_date_pick">Interval</a></li>
+                 
                         </ul>        
                         </li>
 			    	    <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
 				        <li><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-stats"></span>Edits<b class="caret"></b></a>
                             <ul class="dropdown-menu multi-level"  style="background-color:{{request.session.main_menu_color}}" >
                                <li><a href="{{request.session.local_toggle}}/scrap_entries">Entries</a></li>
-                               <li><a href="#">Line Operation</a></li>
-                               <li><a href="#">Operation Department</a></li>
+                               <li><a href="{{request.session.local_toggle}}/part_entries">Line Operation</a></li>
+                               <li><a href="{{request.session.local_toggle}}/operation_department">Operation Department</a></li>
                                <li><a href="#">Part Cost</a></li>
                                <li><a href="#">Part Line</a></li>               
                            </ul>
