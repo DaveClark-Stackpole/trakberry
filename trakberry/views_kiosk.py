@@ -2172,7 +2172,7 @@ def kiosk_scrap_entry(request):
 	# tmp = cursor.fetchall()
 	# tmp2 = tmp
 	# request.session["description_temp"] = tmp
-
+ 
  	if request.POST:
 		scrap_part = request.POST.get("scrap_part")
 		scrap_operation = request.POST.get("scrap_operation")
