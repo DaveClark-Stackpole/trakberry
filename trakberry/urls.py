@@ -553,6 +553,7 @@ urlpatterns = [
 	url(r'^operation_department/', operation_department),
 	#url(r'^scrap_entries/', scrap_entries),
 	url(r'^operation_entries_update/(?P<index>\d+)/$', operation_entries_update),
+	# url(r'^part_entries/', part_entries),
 
 
 ]

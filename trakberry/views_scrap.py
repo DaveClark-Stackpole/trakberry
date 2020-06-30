@@ -267,7 +267,12 @@ def scrap_entries(request):
 def scrap_display_operation(request,index):
 	request.session["scrap_24hrs_part"]=index
 	db, cur = db_set(request)
-	sql_scrap1 = "SELECT FORMAT(sum(scrap_amount),0),scrap_operation, scrap_part,FORMAT(sum(total_cost),2) FROM tkb_scrap  WHERE date BETWEEN date_sub(now(), interval 1 day) AND date_add(now(), interval 1 day) AND scrap_part = '%s' group by scrap_operation ORDER BY sum(total_cost) DESC" % (index)
+	if request.session["scrap_display_type"] == "24hr":
+		sql_scrap1 = "SELECT FORMAT(sum(scrap_amount),0),scrap_operation, scrap_part,FORMAT(sum(total_cost),2) FROM tkb_scrap  WHERE date BETWEEN date_sub(now(), interval 1 day) AND date_add(now(), interval 1 day) AND scrap_part = '%s' group by scrap_operation ORDER BY sum(total_cost) DESC" % (index)
+	else:
+		date1 = request.session["scrap_display_date1"]
+		date2 = request.session["scrap_display_date2"]
+		sql_scrap1 = "SELECT FORMAT(sum(scrap_amount),0),scrap_operation, scrap_part,FORMAT(sum(total_cost),2) FROM tkb_scrap  WHERE date BETWEEN '%s' AND '%s' AND scrap_part = '%s' group by scrap_operation ORDER BY sum(total_cost) DESC" % (date1,date2,index)
 	cur.execute(sql_scrap1)
 	request.session["tmp_scrap"] = cur.fetchall()
 	tt = request.session["tmp_scrap"]
@@ -283,7 +288,12 @@ def scrap_display_category(request,index):
 
 	db, cur = db_set(request)
 	index.replace(" ","")
-	sql_scrap2 = "SELECT FORMAT(sum(scrap_amount),0),scrap_category, scrap_operation,FORMAT(sum(total_cost),2) FROM tkb_scrap WHERE date BETWEEN date_sub(now(), interval 1 day) AND date_add(now(), interval 1 day) AND scrap_operation = '%s' AND scrap_part = '%s' group by scrap_category ORDER BY sum(total_cost) DESC" % (index,index_part)
+	if request.session["scrap_display_type"] == "24hr":
+		sql_scrap2 = "SELECT FORMAT(sum(scrap_amount),0),scrap_category, scrap_operation,FORMAT(sum(total_cost),2) FROM tkb_scrap WHERE date BETWEEN date_sub(now(), interval 1 day) AND date_add(now(), interval 1 day) AND scrap_operation = '%s' AND scrap_part = '%s' group by scrap_category ORDER BY sum(total_cost) DESC" % (index,index_part)
+	else:
+		date1 = request.session["scrap_display_date1"]
+		date2 = request.session["scrap_display_date2"]
+		sql_scrap2 = "SELECT FORMAT(sum(scrap_amount),0),scrap_category, scrap_operation,FORMAT(sum(total_cost),2) FROM tkb_scrap WHERE date BETWEEN '%s' AND '%s'  AND scrap_operation = '%s' AND scrap_part = '%s' group by scrap_category ORDER BY sum(total_cost) DESC" % (date1,date2,index,index_part)
 	cur.execute(sql_scrap2)
 	request.session["tmp_scrap2"] = cur.fetchall()
 	return render(request, "scrap_mgmt_category.html")	
@@ -295,8 +305,13 @@ def scrap_display_category_shift(request,index):
 	index_category = index
 	db, cur = db_set(request)
 	index.replace(" ","")
-	#DATE_FORMAT(date, "%M %d %Y") 
-	sql_scrap2 = "SELECT scrap_amount,scrap_category, scrap_operation,FORMAT(total_cost,2),date FROM tkb_scrap WHERE date BETWEEN date_sub(now(), interval 1 day) AND date_add(now(), interval 1 day) AND scrap_operation = '%s' AND scrap_category = '%s' AND scrap_part = '%s' ORDER BY scrap_amount DESC" % (index_operation,index_category,index_part)
+	#DATE_FORMAT(date, "%M %d %Y")
+	if request.session["scrap_display_type"] == "24hr":
+		sql_scrap2 = "SELECT scrap_amount,scrap_category, scrap_operation,FORMAT(total_cost,2),date FROM tkb_scrap WHERE date BETWEEN date_sub(now(), interval 1 day) AND date_add(now(), interval 1 day) AND scrap_operation = '%s' AND scrap_category = '%s' AND scrap_part = '%s' ORDER BY scrap_amount DESC" % (index_operation,index_category,index_part)
+	else:
+		date1 = request.session["scrap_display_date1"]
+		date2 = request.session["scrap_display_date2"]
+		sql_scrap2 = "SELECT scrap_amount,scrap_category, scrap_operation,FORMAT(total_cost,2),date FROM tkb_scrap WHERE date BETWEEN '%s' AND '%s' AND scrap_operation = '%s' AND scrap_category = '%s' AND scrap_part = '%s' ORDER BY scrap_amount DESC" % (date1, date2, index_operation,index_category,index_part)		
 	cur.execute(sql_scrap2)
 	request.session["tmp_scrap2"] = cur.fetchall()
 	tmp_scrap2 = request.session["tmp_scrap2"]
@@ -496,3 +511,102 @@ def operation_entries_update(request,index):
 	args.update(csrf(request))
 	args['form'] = form
 	return render(request,'scrap_display_edit_operation_entries.html',{'args':args})
+
+# def part_edit_selection(request):
+# 	active = '1.0'
+# 	ptr = request.session["scrap_ptr"]
+# 	ptr_first = request.session["scrap_ptr_first"]
+# 	ptr_direction = request.session["scrap_entries_direction"]
+	
+# 	# ptr = request.session["part_ptr"]
+# 	# ptr_first = request.session["part_ptr_first"]
+# 	# ptr_direction = request.session["part_entries_direction"]
+# 	# ptr_direction = "up"
+# 	# ptr_first = 2
+
+# 	db, cur = db_set(request)
+
+# 	if ptr == 0:
+# 		sql_max_ptr = "SELECT max(Id) Part FROM scrap_part_line WHERE Active='%s'"%(active)
+# 		cur.execute(sql_max_ptr)
+# 		ptr = cur.fetchall()
+# 		ptr = ptr[0][0] + 1
+	
+# 	if ptr_direction == "down":
+# 		# request.session["scrap_ptr_first"] = ptr
+# 		sql_scrap_entries = "SELECT Part FROM scrap_part_line where Id < '%s' and Active = '%s' order by Id DESC limit 10" % (ptr,active)
+# 		cur.execute(sql_scrap_entries)
+# 		request.session["tmp_part_entries"] = cur.fetchall()
+
+# 		sql_scrap_entries_last = "SELECT min(Id) FROM (select ID from scrap_part_line where Id < '%s' order by Id DESC limit 10) as selectmin" % (ptr)
+# 		cur.execute(sql_scrap_entries_last)
+# 		last = cur.fetchall()
+# 		last = last[0][0]
+# 		request.session["scrap_ptr"] = last
+
+# 		sql_scrap_entries_first = "SELECT max(Id) FROM (select ID from scrap_part_line where Id < '%s' order by Id DESC limit 10) as selectmin" % (ptr)
+# 		cur.execute(sql_scrap_entries_first)
+# 		first = cur.fetchall()
+# 		first = first[0][0]
+# 		request.session["scrap_ptr_first"] = first
+
+
+# 		# t=5/0
+# 	else:
+		
+# 		sql_scrap_entries_first = "SELECT max(Id) FROM (select ID from scrap_part_line where Id > '%s' order by Id ASC limit 10) as selectmin" % (ptr_first)
+# 		cur.execute(sql_scrap_entries_first)
+# 		first = cur.fetchall()
+# 		first = first[0][0]
+# 		request.session["scrap_ptr_first"] = first 
+
+# 		sql_scrap_entries = "SELECT Part FROM scrap_part_line where Id <= '%s' and Active = '%s' order by Id DESC limit 10" % (first,active)
+# 		cur.execute(sql_scrap_entries)
+# 		request.session["tmp_part_entries"] = cur.fetchall()
+
+# 		sql_scrap_entries_last = "SELECT min(Id) FROM (select ID from scrap_part_line where Id > '%s' order by Id ASC limit 10) as selectmin" % (ptr_first)
+# 		cur.execute(sql_scrap_entries_last)
+# 		last = cur.fetchall()
+# 		last = last[0][0]
+# 		request.session["scrap_ptr"] = last
+
+	
+		
+
+		
+
+# 	db.close()
+# 	return
+
+# def part_entries(request):
+# 	request.session["scrap_entries_direction"] = "down"
+# 	request.session["scrap_partno_filter"] = ""
+# 	request.session["scrap_date_filter"] = ""
+# 	request.session["scrap_line_filter"] = ""
+# 	request.session["scrap_operation_filter"] = ""
+# 	request.session["scrap_category_filter"] = ""
+# 	request.session["scrap_ptr"] = 0
+# 	request.session["scrap_ptr_first"] = 0
+	
+# 	db, cur = db_set(request)
+# 	row_count = "SELECT COUNT(*) FROM scrap_part_line" ## checking number of rows we have
+# 	execu = cur.execute(row_count) #executing
+# 	maximize = cur.fetchall() ## fetch
+# 	maximize = maximize[0][0]	## converting to integer
+# 	db.close()
+
+# 	num_entries =  maximize / float(10) 
+# 	x = math.ceil(num_entries)
+
+	
+	
+# 	request.session["scrap_prev"] = 0
+# 	request.session["scrap_next"] = x-1
+
+# 	part_edit_selection(request)
+
+# 	return render(request, "scrap_entries.html")
+
+
+
+
