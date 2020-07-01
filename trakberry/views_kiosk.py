@@ -2268,7 +2268,10 @@ def kiosk_scrap_entry(request):
 		sql3 = "SELECT Cost FROM scrap_part_dept_cost WHERE Part = '%s' and Dept = '%s'" % (part,department)
 		cursor.execute(sql3)
 		tmp = cursor.fetchall()
-		cost = tmp[0][0]
+		try:
+			cost = tmp[0][0]
+		except:
+			cost = 0
 
 		total_cost = float(cost) * float(amount)
 
