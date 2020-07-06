@@ -678,6 +678,8 @@ def kiosk_add_category(request):
 		if request.session["scrap_entry"] == 0:
 			request.session["scrap_part"] = scrap_part
 			request.session["scrap_entry"] = 1
+			print(request.session["scrap_entry"])
+			E = 4/0
 			request.session["scrap1"] ='''disabled="true"'''
 			request.session["scrap2"] =''
 			request.session["scrap3"] ='''disabled="true"'''
@@ -690,14 +692,15 @@ def kiosk_add_category(request):
 			tmp = cursor.fetchall()
 			scrap_part_line = tmp[0][0]
 			request.session["scrap_part_line"] = scrap_part_line
-
+			#r=4/0
 			sql = "SELECT DISTINCT Operation FROM scrap_line_operation_category WHERE Line = '%s'" %(scrap_part_line)
 			cursor.execute(sql)
 			tmp = cursor.fetchall()
 			request.session["scrap_operation_selection"] = tmp
 			db.close()
+			
 			return render(request, "redirect_edit_category.html")
-		
+			
 		if request.session["scrap_entry"] == 1:
 			request.session["scrap_operation"] = scrap_operation
 			request.session["scrap_entry"] = 2
@@ -711,10 +714,10 @@ def kiosk_add_category(request):
 			cursor.execute(sql)
 			tmp = cursor.fetchall()
 			request.session["scrap_category_selection"] = tmp
-			r=4/0
+			
 			return render(request, "redirect_edit_category.html")
 	
-		return render(request, "redirect_guideme.html")
+		return render(request, "redirect_kiosk_scrap.html")
 
 	else:
 		form = sup_downForm()
@@ -723,6 +726,12 @@ def kiosk_add_category(request):
 	args['form'] = form
 
 	return render(request,'edit_category.html',{'args':args})
+
+
+
+
+
+	
 		
 def guide_me(request):
 	request.session["scrap_entry"] = 0
@@ -801,7 +810,7 @@ def kiosked_scrap_entry(request):
 
 		if request.session["scrap_entry"] == 0:
 			request.session["scrap_part"] = scrap_part
-			request.session["scrap_entry"] = 1
+			
 			request.session["scrap1"] ='''disabled="true"'''
 			request.session["scrap2"] =''
 			request.session["scrap3"] ='''disabled="true"'''
@@ -820,6 +829,7 @@ def kiosked_scrap_entry(request):
 			tmp = cursor.fetchall()
 			request.session["scrap_operation_selection"] = tmp
 			db.close()
+			request.session["scrap_entry"] = 1
 			return render(request, "redirect_kiosk_scrap_entry.html")
 
 		if request.session["scrap_entry"] == 1:
