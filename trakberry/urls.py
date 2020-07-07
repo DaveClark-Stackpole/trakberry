@@ -136,7 +136,7 @@ from views3 import excel_dump, excel_scrap_dump
 
 # *******************************************  Scrap Section ********************************************************************************************
 from views_scrap import scrap_mgmt, scrap_mgmt_login_form,scrap_display,scrap_display_operation,scrap_display_category,scrap_entries,scrap_display_category_shift
-from views_scrap import scrap_entries_next, scrap_entries_prev,scrap_entries_update,scrap_display_date_pick,scrap_display_24hr,operation_department,oper_dept_edit_selection,operation_entries_next, operation_entries_prev,operation_entries_update,kiosked_scrap_entry,kiosk_add_category,guide_me
+from views_scrap import scrap_entries_next, scrap_entries_prev,scrap_entries_update,scrap_display_date_pick,scrap_display_24hr,operation_department,oper_dept_edit_selection,operation_entries_next, operation_entries_prev,operation_entries_update,kiosk_add_category,kiosk_initiate
 # ***********************************************************************************************************************************************************
 
 
@@ -553,9 +553,9 @@ urlpatterns = [
 	url(r'^operation_department/', operation_department),
 	# url(r'^part_entries/', part_entries),
 	url(r'^operation_entries_update/(?P<index>\d+)/$', operation_entries_update),
-	url(r'^kiosked_scrap_entry/', kiosked_scrap_entry),
-	url(r'^kiosk_add_category/', kiosk_add_category),
-	url(r'^guide_me/', guide_me),
+	# url(r'^kiosk_add_category/', kiosk_add_category),
+	url(r'^kiosk_add_category/(?P<index>\d+)/$', kiosk_add_category),
+	url(r'^kiosk_initiate/', kiosk_initiate),
 	# url(r'^part_entries_update/(?P<index>\d+)/$', part_entries_update),
 	# url(r'^part_entries_prev/', part_entries_prev),
 	# url(r'^part_entries_next/', part_entries_next),
