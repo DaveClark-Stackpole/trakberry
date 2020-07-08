@@ -552,7 +552,15 @@ def kiosk_initiate(request):
 # 	return render(request,'scrap_display_edit_operation_entries.html',{'args':args})
 
 def kiosk_add_category(request,index):
+	e = 4/0
 	db, cursor = db_set(request)
+	index.replace(" ","")
+
+	sql_11 = "SELECT * FROM scrap_line_operation_category where Id = '%s'" % (index) 
+	cursor.execute(sql_11)
+ 	request.session["tmp_scrap6"] = cursor.fetchall()
+
+ 	tmp_scrap4 = request.session["tmp_scrap6"]
 	# This will assign all the values of machines into session variable machine_temp
 	if request.session["scrap_entry"] == 0:
 		active = '1.0'
@@ -603,6 +611,7 @@ def kiosk_add_category(request,index):
  			request.session["scrap3"] =''
  			# request.session["scrap4"] ='''disabled="true"'''
  			line = request.session["scrap_part_line"]
+			tmp_scrap4 = request.session["tmp_scrap6"]
  			# db, cursor = db_set(request)
  			# index.replace(" ","")
  			# sql = "SELECT * FROM scrap_line_operation_category where Id = '%s'" % (index) 
@@ -610,11 +619,16 @@ def kiosk_add_category(request,index):
  			# request.session["tmp_scrap6"] = cursor.fetchall()
  			# db.close()
  			# tmp_scrap6 = request.session["tmp_scrap6"]
- 			if request.POST:
-				sql = ("update scrap_line_operation_category SET scrap_category = '%s' WHERE Line = '%s' and Operation ='%s' and id ='%s' " %(scrap_category,line,scrap_operation,index))
-				cursor.execute(sql) 
-				tmp = cursor.fetchall() 
-				request.session["scrap_category_selection"] = tmp
+ 			# if request.POST:
+			scrap_category = request.POST.get("scrap_category")
+				# scrap_operation =request.POST.get("scrap_operation") 
+			db, cursor = db_set(request)
+			sql_12 = ("update scrap_line_operation_category SET scrap_category = '%s' WHERE Line = '%s' and Operation ='%s' and id ='%s' " %(scrap_category,line,scrap_operation,index))
+			cursor.execute(sql_12) 
+			db.commit()
+			db.close()
+
+				# return render(request, "scrap_mgmt.html")
 			## i tried adding an index parameter in the function so this works but didn't work  ^^. 
 			## i wanted to make it so im taking a similar approach as def operationg_entries_update() but I dont think this is quite there
 
