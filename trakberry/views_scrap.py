@@ -552,6 +552,8 @@ def kiosk_initiate(request):
 # 	return render(request,'scrap_display_edit_operation_entries.html',{'args':args})
 
 def kiosk_add_category(request):
+
+
 	# e = 4/0
 	db, cursor = db_set(request)
 	# index.replace(" ","")
@@ -572,13 +574,15 @@ def kiosk_add_category(request):
 	db.close()	
 
  	if request.POST:
-		scrap_part = request.POST.get("scrap_part")
-		scrap_operation = request.POST.get("scrap_operation")
+		
+
 		scrap_category = request.POST.get("scrap_category")
+
 		
 		
 		if request.session["scrap_entry"] == 0:
-			request.session["scrap_part"] = scrap_part
+			request.session["scrap_part"] = request.POST.get("scrap_part")
+			scrap_part = request.session["scrap_part"] 
 			request.session["scrap_entry"] = 1
 			#print(request.session["scrap_entry"])
 			
@@ -601,17 +605,18 @@ def kiosk_add_category(request):
   			request.session["scrap_operation_selection"] = tmp
  			db.close()
 	
- 			
+ 		
  			return render(request, "redirect_edit_category.html")
  			
  		if request.session["scrap_entry"] == 1:
- 			request.session["scrap_operation"] = scrap_operation
+ 			request.session["scrap_operation"] = request.POST.get("scrap_operation")
  			request.session["scrap_entry"] = 2
   			request.session["scrap1"] ='''disabled="true"'''
  			request.session["scrap2"] ='''disabled="true"'''
  			request.session["scrap3"] =''
  			# request.session["scrap4"] ='''disabled="true"'''
  			line = request.session["scrap_part_line"]
+
 			# tmp_scrap4 = request.session["tmp_scrap6"]
  			# db, cursor = db_set(request)
  			# index.replace(" ","")
@@ -628,22 +633,25 @@ def kiosk_add_category(request):
 			# return render(request, "scrap_mgmt.html")
 			## i tried adding an index parameter in the function so this works but didn't work  ^^. 
 			## i wanted to make it so im taking a similar approach as def operationg_entries_update() but I dont think this is quite there
-
+	
 			return render(request, "redirect_edit_category.html") 
 
 		if request.session["scrap_entry"] == 2:
 			
-			scrap_category = request.POST.get("scrap_category")
-			request.session["scrap_operation"] = scrap_operation
-			request.session["scrap_part"] = scrap_part
-			# r=4/0 
-			db, cursor = db_set(request)
-			sql_12 = ('''INSERT INTO scrap_line_operation_category(category) VALUES(%s)''', (scrap_category))
+
+			request.session["scrap_category"] = request.POST.get("scrap_category")
+
+			scrap_part = request.session["scrap_part"]
+			scrap_operation = request.session["scrap_operation"]
+			scrap_category = request.session["scrap_category"]
+
+			r=4/0 
 			
-			cursor.execute(sql_12)
-			db.commit()
+
+			#Put in here that you INSERT into Mysql a new line showing three things above
 			
-			db.close()
+
+
 			return render(request, "redirect_edit_category.html") 
 
 		return render(request, "redirect_scrap_mgmt.html") 
