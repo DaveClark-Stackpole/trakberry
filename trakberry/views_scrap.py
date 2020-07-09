@@ -644,15 +644,19 @@ def kiosk_add_category(request):
 			scrap_part = request.session["scrap_part"]
 			scrap_operation = request.session["scrap_operation"]
 			scrap_category = request.session["scrap_category"]
-
-			r=4/0 
+			line = request.session["scrap_part_line"]
+			active = '1.0'
+			#r=4/0 
 			
 
 			#Put in here that you INSERT into Mysql a new line showing three things above
-			
+			db, cursor = db_set(request)
+			cursor.execute('''INSERT INTO scrap_line_operation_category(Line,Operation,Category) VALUES(%s,%s,%s)''', (line,scrap_operation,scrap_category))
+			cursor.execute('''INSERT INTO scrap_part_line(Part,Line,Active) VALUES(%s,%s,%s)''', (scrap_part,line,active))
+			db.commit()
+			db.close()
 
-
-			return render(request, "redirect_edit_category.html") 
+			return render(request, "redirect_scrap_mgmt.html") 
 
 		return render(request, "redirect_scrap_mgmt.html") 
 
