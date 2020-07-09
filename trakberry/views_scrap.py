@@ -512,101 +512,158 @@ def operation_entries_update(request,index):
 	args['form'] = form
 	return render(request,'scrap_display_edit_operation_entries.html',{'args':args})
 
-# def part_edit_selection(request):
-# 	active = '1.0'
-# 	ptr = request.session["scrap_ptr"]
-# 	ptr_first = request.session["scrap_ptr_first"]
-# 	ptr_direction = request.session["scrap_entries_direction"]
-	
-# 	# ptr = request.session["part_ptr"]
-# 	# ptr_first = request.session["part_ptr_first"]
-# 	# ptr_direction = request.session["part_entries_direction"]
-# 	# ptr_direction = "up"
-# 	# ptr_first = 2
+ 
+def kiosk_initiate(request):
+	request.session["scrap_entry"] = 0
+	request.session["scrap_part"] = "Part Num:"
+	request.session["scrap_operation"] = "Operation:"
+	request.session["scrap_category"] = "Category:"
+	request.session["scrap_part"] = "Part No:"
+	request.session["scrap_amount"] = 0
+	request.session["scrap1"] =""
+	request.session["scrap2"] ='''disabled="true"'''
+	request.session["scrap3"] ='''disabled="true"'''
+	request.session["scrap4"] ='''disabled="true"'''
+	return render(request,'scrap_edits.html')
 
+# def category_update(request,index):
 # 	db, cur = db_set(request)
+# 	index.replace(" ","")
+# 	sql = "SELECT * FROM scrap_line_operation_category where Id = '%s'" % (index) 
+# 	cur.execute(sql)
+# 	request.session["tmp_scrap6"] = cur.fetchall()
+# 	db.close()
+# 	tmp_scrap4 = request.session["tmp_scrap6"]
+# 	if request.POST:
+# 		scrap_part = request.POST.get("scrap_part")
+# 		scrap_operation = request.POST.get("scrap_operation")
+# 		db, cur = db_set(request)
 
-# 	if ptr == 0:
-# 		sql_max_ptr = "SELECT max(Id) Part FROM scrap_part_line WHERE Active='%s'"%(active)
-# 		cur.execute(sql_max_ptr)
-# 		ptr = cur.fetchall()
-# 		ptr = ptr[0][0] + 1
-	
-# 	if ptr_direction == "down":
-# 		# request.session["scrap_ptr_first"] = ptr
-# 		sql_scrap_entries = "SELECT Part FROM scrap_part_line where Id < '%s' and Active = '%s' order by Id DESC limit 10" % (ptr,active)
-# 		cur.execute(sql_scrap_entries)
-# 		request.session["tmp_part_entries"] = cur.fetchall()
-
-# 		sql_scrap_entries_last = "SELECT min(Id) FROM (select ID from scrap_part_line where Id < '%s' order by Id DESC limit 10) as selectmin" % (ptr)
-# 		cur.execute(sql_scrap_entries_last)
-# 		last = cur.fetchall()
-# 		last = last[0][0]
-# 		request.session["scrap_ptr"] = last
-
-# 		sql_scrap_entries_first = "SELECT max(Id) FROM (select ID from scrap_part_line where Id < '%s' order by Id DESC limit 10) as selectmin" % (ptr)
-# 		cur.execute(sql_scrap_entries_first)
-# 		first = cur.fetchall()
-# 		first = first[0][0]
-# 		request.session["scrap_ptr_first"] = first
-
-
-# 		# t=5/0
+# 		cql = ('update scrap_operation_dept SET scrap_part = "%s",scrap_operation="%s" WHERE id ="%s"' % (scrap_part, scrap_operation, index))
+# 		cur.execute(cql)
+# 		db.commit()
+# 		db.close()
+# 		return render(request, "scrap_mgmt.html")
 # 	else:
+# 		form = sup_downForm()
+# 	args = {}
+# 	args.update(csrf(request))
+# 	args['form'] = form
+# 	return render(request,'scrap_display_edit_operation_entries.html',{'args':args})
+
+def kiosk_add_category(request):
+
+
+	# e = 4/0
+	db, cursor = db_set(request)
+	# index.replace(" ","")
+
+	# sql_11 = "SELECT * FROM scrap_line_operation_category where Id = '%s'" % (index) 
+	# cursor.execute(sql_11)
+ 	# request.session["tmp_scrap6"] = cursor.fetchall()
+
+ 	# tmp_scrap4 = request.session["tmp_scrap6"]
+	# This will assign all the values of machines into session variable machine_temp
+	if request.session["scrap_entry"] == 0:
+		active = '1.0'
+		sql = "SELECT Part FROM scrap_part_line WHERE Active = '%s'" %(active)
+		##sql = "update scrap_part_line SET Part ='%s' WHERE Active = '%s'" %(active)
+		cursor.execute(sql)
+		tmp = cursor.fetchall()
+		request.session["scrap_part_selection"] = tmp
+	db.close()	
+
+ 	if request.POST:
 		
-# 		sql_scrap_entries_first = "SELECT max(Id) FROM (select ID from scrap_part_line where Id > '%s' order by Id ASC limit 10) as selectmin" % (ptr_first)
-# 		cur.execute(sql_scrap_entries_first)
-# 		first = cur.fetchall()
-# 		first = first[0][0]
-# 		request.session["scrap_ptr_first"] = first 
 
-# 		sql_scrap_entries = "SELECT Part FROM scrap_part_line where Id <= '%s' and Active = '%s' order by Id DESC limit 10" % (first,active)
-# 		cur.execute(sql_scrap_entries)
-# 		request.session["tmp_part_entries"] = cur.fetchall()
-
-# 		sql_scrap_entries_last = "SELECT min(Id) FROM (select ID from scrap_part_line where Id > '%s' order by Id ASC limit 10) as selectmin" % (ptr_first)
-# 		cur.execute(sql_scrap_entries_last)
-# 		last = cur.fetchall()
-# 		last = last[0][0]
-# 		request.session["scrap_ptr"] = last
-
-	
-		
+		scrap_category = request.POST.get("scrap_category")
 
 		
-
-# 	db.close()
-# 	return
-
-# def part_entries(request):
-# 	request.session["scrap_entries_direction"] = "down"
-# 	request.session["scrap_partno_filter"] = ""
-# 	request.session["scrap_date_filter"] = ""
-# 	request.session["scrap_line_filter"] = ""
-# 	request.session["scrap_operation_filter"] = ""
-# 	request.session["scrap_category_filter"] = ""
-# 	request.session["scrap_ptr"] = 0
-# 	request.session["scrap_ptr_first"] = 0
+		
+		if request.session["scrap_entry"] == 0:
+			request.session["scrap_part"] = request.POST.get("scrap_part")
+			scrap_part = request.session["scrap_part"] 
+			request.session["scrap_entry"] = 1
+			#print(request.session["scrap_entry"])
+			
+			request.session["scrap1"] ='''disabled="true"'''
+			request.session["scrap2"] =''
+			request.session["scrap3"] ='''disabled="true"'''
+			request.session["scrap4"] ='''disabled="true"'''
+			#request.session["scrap"] = "Scrap Description:"
+			#request.session["amount"] = "Asset Num:"
+			db, cursor = db_set(request)
+			sql = "SELECT Line FROM scrap_part_line WHERE Part = '%s'" %(scrap_part)
+			cursor.execute(sql)
+			tmp = cursor.fetchall()
+			scrap_part_line = tmp[0][0]
+  			request.session["scrap_part_line"] = scrap_part_line
+ 			#r=4/0
+  			sql = "SELECT DISTINCT Operation FROM scrap_line_operation_category WHERE Line = '%s'" %(scrap_part_line)
+ 			cursor.execute(sql)
+  			tmp = cursor.fetchall()
+  			request.session["scrap_operation_selection"] = tmp
+ 			db.close()
 	
-# 	db, cur = db_set(request)
-# 	row_count = "SELECT COUNT(*) FROM scrap_part_line" ## checking number of rows we have
-# 	execu = cur.execute(row_count) #executing
-# 	maximize = cur.fetchall() ## fetch
-# 	maximize = maximize[0][0]	## converting to integer
-# 	db.close()
+ 		
+ 			return render(request, "redirect_edit_category.html")
+ 			
+ 		if request.session["scrap_entry"] == 1:
+ 			request.session["scrap_operation"] = request.POST.get("scrap_operation")
+ 			request.session["scrap_entry"] = 2
+  			request.session["scrap1"] ='''disabled="true"'''
+ 			request.session["scrap2"] ='''disabled="true"'''
+ 			request.session["scrap3"] =''
+ 			# request.session["scrap4"] ='''disabled="true"'''
+ 			line = request.session["scrap_part_line"]
 
-# 	num_entries =  maximize / float(10) 
-# 	x = math.ceil(num_entries)
+			# tmp_scrap4 = request.session["tmp_scrap6"]
+ 			# db, cursor = db_set(request)
+ 			# index.replace(" ","")
+ 			# sql = "SELECT * FROM scrap_line_operation_category where Id = '%s'" % (index) 
+ 			# cursor.execute(sql)
+ 			# request.session["tmp_scrap6"] = cursor.fetchall()
+ 			# db.close()
+ 			# tmp_scrap6 = request.session["tmp_scrap6"]
+ 			# if request.POST:
+			# scrap_category = request.POST.get("scrap_category")
+			# 	# scrap_operation =request.POST.get("scrap_operation") 
 
+
+			# return render(request, "scrap_mgmt.html")
+			## i tried adding an index parameter in the function so this works but didn't work  ^^. 
+			## i wanted to make it so im taking a similar approach as def operationg_entries_update() but I dont think this is quite there
 	
-	
-# 	request.session["scrap_prev"] = 0
-# 	request.session["scrap_next"] = x-1
+			return render(request, "redirect_edit_category.html") 
 
-# 	part_edit_selection(request)
+		if request.session["scrap_entry"] == 2:
+			
 
-# 	return render(request, "scrap_entries.html")
+			request.session["scrap_category"] = request.POST.get("scrap_category")
 
+			scrap_part = request.session["scrap_part"]
+			scrap_operation = request.session["scrap_operation"]
+			scrap_category = request.session["scrap_category"]
+			line = request.session["scrap_part_line"]
+			active = '1.0'
+			#r=4/0 
+			
 
+			#Put in here that you INSERT into Mysql a new line showing three things above
+			db, cursor = db_set(request)
+			cursor.execute('''INSERT INTO scrap_line_operation_category(Line,Operation,Category) VALUES(%s,%s,%s)''', (line,scrap_operation,scrap_category))
+			cursor.execute('''INSERT INTO scrap_part_line(Part,Line,Active) VALUES(%s,%s,%s)''', (scrap_part,line,active))
+			db.commit()
+			db.close()
 
+			return render(request, "redirect_scrap_mgmt.html") 
 
+		return render(request, "redirect_scrap_mgmt.html") 
+
+	else:
+		form = sup_downForm()
+	args = {}
+	args.update(csrf(request))
+	args['form'] = form
+
+	return render(request,'edit_category.html',{'args':args})
