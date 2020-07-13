@@ -2126,7 +2126,7 @@ def kiosk_scrap_reset(request):
 	request.session["scrap4"] ='''disabled="true"'''
 	return kiosk_scrap_entry(request)
 
-def kiosk_mult_entries(request):
+# def kiosk_mult_entries(request):
 	request.session["scrap_entry"] = 1
 	
 	db, cursor = db_set(request)
@@ -2458,10 +2458,10 @@ def kiosk_scrap_entry(request):
 			
 
 			# return render(request,"done_update2.html")
-			return render(request, "redirect_kiosk_mult_entries.html")
+			return render(request, "redirect_kiosk_scrap.html")
 		except:
 			# e = 4/0
-			return render(request, "redirect_kiosk_mult_entries.html")
+			return render(request, "redirect_kiosk_scrap.html")
 
 	else:
 		form = sup_downForm()

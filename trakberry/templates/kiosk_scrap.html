@@ -44,6 +44,57 @@
 	  transform: translateY(8px);
 	}
 
+  #numericInput{
+    position:relative;
+}
+#numBox{
+    width:150px;
+    height:20px;
+    text-align:right;
+    border:solid 1px black;
+    cursor:text;
+    overflow:hidden;
+}
+/* #scrap_amount{
+    width:150px;
+    height:200px;
+    border:solid 1px black;
+    display:none;
+    position:absolute;
+    top:22px;
+    left:1px;
+} */
+.key{
+    border:solid 1px black;
+    background-color:blue;
+    text-align:center;
+    font-weight:bold;
+    color:white;
+    cursor:pointer;
+}
+.key:hover{
+    background-color:LightBlue;
+}
+.key:active{
+    background-color:white;
+}
+.btn{
+    border:solid 1px black;
+    text-align:center;
+    font-weight:bold;
+    color:black;
+    cursor:pointer;
+    background-color:DimGray;
+    width:33.3%;
+}
+.btn:hover{
+    background-color:DarkGray;
+}
+.btn:active{
+    background-color:LightGray;
+}
+
+
 </style>
 
 <script>
@@ -51,6 +102,57 @@
         document.querySelectorAll("input[type=submit]")[0].click();
     }
 </script>
+
+<script>
+
+$(document).ready(function(){
+    $('#numBox').click(function(){
+        $('#scrap_amount').fadeToggle('fast');
+        event.stopPropagation();
+    });
+    
+    
+    // Function commented out
+    // due to Chrome apparently being the
+    // only browser smart enough to work
+    // right >.<
+    
+    //$('body').click(function(){
+    //    $('#keypad').fadeOut('fast');
+    //    event.stopPropagation();
+    //});
+    
+    $('.key').click(function(){
+        var numBox = document.getElementById('numBox');
+        if(this.innerHTML == '0'){
+            if (numBox.innerHTML.length > 0)
+                numBox.innerHTML = numBox.innerHTML + this.innerHTML;
+        }
+        else
+            numBox.innerHTML = numBox.innerHTML + this.innerHTML;
+        
+        event.stopPropagation();
+    });
+    
+    $('.btn').click(function(){
+        if(this.innerHTML == 'DEL'){
+            var numBox = document.getElementById('numBox');
+            if(numBox.innerHTML.length > 0){
+                numBox.innerHTML = numBox.innerHTML.substring(0, numBox.innerHTML.length - 1);
+            }
+        }
+        else{
+            document.getElementById('numBox').innerHTML = '';
+        }
+        
+        event.stopPropagation();
+    });
+});
+
+
+</script>
+
+
 
 </head>
 <body>
