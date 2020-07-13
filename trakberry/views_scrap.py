@@ -667,3 +667,118 @@ def kiosk_add_category(request):
 	args['form'] = form
 
 	return render(request,'edit_category.html',{'args':args})
+
+# def kiosk_add_operation(request):
+
+# 	db, cursor = db_set(request)
+# 	# index.replace(" ","")
+
+# 	# sql_11 = "SELECT * FROM scrap_line_operation_category where Id = '%s'" % (index) 
+# 	# cursor.execute(sql_11)
+#  	# request.session["tmp_scrap6"] = cursor.fetchall()
+
+#  	# tmp_scrap4 = request.session["tmp_scrap6"]
+# 	# This will assign all the values of machines into session variable machine_temp
+# 	if request.session["scrap_entry"] == 0:
+# 		active = '1.0'
+# 		sql = "SELECT Part FROM scrap_part_line WHERE Active = '%s'" %(active)
+# 		##sql = "update scrap_part_line SET Part ='%s' WHERE Active = '%s'" %(active)
+# 		cursor.execute(sql)
+# 		tmp = cursor.fetchall()
+# 		request.session["scrap_part_selection"] = tmp
+# 	db.close()	
+
+#  	if request.POST:
+		
+
+# 		scrap_category = request.POST.get("scrap_category")
+
+		
+		
+# 		if request.session["scrap_entry"] == 0:
+# 			request.session["scrap_part"] = request.POST.get("scrap_part")
+# 			scrap_part = request.session["scrap_part"] 
+# 			request.session["scrap_entry"] = 1
+# 			#print(request.session["scrap_entry"])
+			
+# 			request.session["scrap1"] ='''disabled="true"'''
+# 			request.session["scrap2"] =''
+# 			request.session["scrap3"] ='''disabled="true"'''
+# 			request.session["scrap4"] ='''disabled="true"'''
+# 			#request.session["scrap"] = "Scrap Description:"
+# 			#request.session["amount"] = "Asset Num:"
+# 			db, cursor = db_set(request)
+# 			sql = "SELECT Line FROM scrap_part_line WHERE Part = '%s'" %(scrap_part)
+# 			cursor.execute(sql)
+# 			tmp = cursor.fetchall()
+# 			scrap_part_line = tmp[0][0]
+#   			request.session["scrap_part_line"] = scrap_part_line
+#  			#r=4/0
+#   			sql = "SELECT DISTINCT Operation FROM scrap_line_operation_category WHERE Line = '%s'" %(scrap_part_line)
+#  			cursor.execute(sql)
+#   			tmp = cursor.fetchall()
+#   			request.session["scrap_operation_selection"] = tmp
+#  			db.close()
+	
+ 		
+#  			return render(request, "redirect_edit_category.html")
+ 			
+#  		if request.session["scrap_entry"] == 1:
+#  			request.session["scrap_operation"] = request.POST.get("scrap_operation")
+#  			request.session["scrap_entry"] = 2
+#   			request.session["scrap1"] ='''disabled="true"'''
+#  			request.session["scrap2"] ='''disabled="true"'''
+#  			request.session["scrap3"] =''
+#  			# request.session["scrap4"] ='''disabled="true"'''
+#  			line = request.session["scrap_part_line"]
+
+# 			# tmp_scrap4 = request.session["tmp_scrap6"]
+#  			# db, cursor = db_set(request)
+#  			# index.replace(" ","")
+#  			# sql = "SELECT * FROM scrap_line_operation_category where Id = '%s'" % (index) 
+#  			# cursor.execute(sql)
+#  			# request.session["tmp_scrap6"] = cursor.fetchall()
+#  			# db.close()
+#  			# tmp_scrap6 = request.session["tmp_scrap6"]
+#  			# if request.POST:
+# 			# scrap_category = request.POST.get("scrap_category")
+# 			# 	# scrap_operation =request.POST.get("scrap_operation") 
+
+
+# 			# return render(request, "scrap_mgmt.html")
+# 			## i tried adding an index parameter in the function so this works but didn't work  ^^. 
+# 			## i wanted to make it so im taking a similar approach as def operationg_entries_update() but I dont think this is quite there
+	
+# 			return render(request, "redirect_edit_category.html") 
+
+# 		if request.session["scrap_entry"] == 2:
+			
+
+# 			request.session["scrap_category"] = request.POST.get("scrap_category")
+
+# 			scrap_part = request.session["scrap_part"]
+# 			scrap_operation = request.session["scrap_operation"]
+# 			scrap_category = request.session["scrap_category"]
+# 			line = request.session["scrap_part_line"]
+# 			active = '1.0'
+# 			#r=4/0 
+			
+
+# 			#Put in here that you INSERT into Mysql a new line showing three things above
+# 			db, cursor = db_set(request)
+# 			cursor.execute('''INSERT INTO scrap_line_operation_category(Line,Operation,Category) VALUES(%s,%s,%s)''', (line,scrap_operation,scrap_category))
+# 			cursor.execute('''INSERT INTO scrap_part_line(Part,Line,Active) VALUES(%s,%s,%s)''', (scrap_part,line,active))
+# 			db.commit()
+# 			db.close()
+
+# 			return render(request, "redirect_scrap_mgmt.html") 
+
+# 		return render(request, "redirect_scrap_mgmt.html") 
+
+# 	else:
+# 		form = sup_downForm()
+# 	args = {}
+# 	args.update(csrf(request))
+# 	args['form'] = form
+
+# 	return render(request,'edit_category.html',{'args':args})
