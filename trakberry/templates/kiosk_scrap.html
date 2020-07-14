@@ -47,7 +47,7 @@
   #numericInput{
     position:relative;
 }
-#numBox{
+#scrap_amount{
     width:150px;
     height:20px;
     text-align:right;
@@ -55,15 +55,15 @@
     cursor:text;
     overflow:hidden;
 }
-/* #scrap_amount{
-    width:150px;
-    height:200px;
+#keypad{
+    width:190px;
+    height:60px;
     border:solid 1px black;
     display:none;
     position:absolute;
     top:22px;
     left:1px;
-} */
+}
 .key{
     border:solid 1px black;
     background-color:blue;
@@ -71,6 +71,7 @@
     font-weight:bold;
     color:white;
     cursor:pointer;
+    width:33.3%;
 }
 .key:hover{
     background-color:LightBlue;
@@ -101,13 +102,11 @@
  function myFunction() {
         document.querySelectorAll("input[type=submit]")[0].click();
     }
-</script>
 
-<script>
 
 $(document).ready(function(){
-    $('#numBox').click(function(){
-        $('#scrap_amount').fadeToggle('fast');
+    $('#scrap_amount').click(function(){
+        $('#keypad').fadeToggle('fast');
         event.stopPropagation();
     });
     
@@ -117,32 +116,32 @@ $(document).ready(function(){
     // only browser smart enough to work
     // right >.<
     
-    //$('body').click(function(){
+    // $('body').click(function(){
     //    $('#keypad').fadeOut('fast');
     //    event.stopPropagation();
-    //});
+    // });
     
     $('.key').click(function(){
-        var numBox = document.getElementById('numBox');
+        var numericInput = document.getElementById('scrap_amount');
         if(this.innerHTML == '0'){
-            if (numBox.innerHTML.length > 0)
-                numBox.innerHTML = numBox.innerHTML + this.innerHTML;
+            if (scrap_amount.innerHTML.length > 0)
+                scrap_amount.innerHTML = scrap_amount.innerHTML + this.innerHTML;
         }
         else
-            numBox.innerHTML = numBox.innerHTML + this.innerHTML;
+            scrap_amount.innerHTML = scrap_amount.innerHTML + this.innerHTML;
         
         event.stopPropagation();
     });
     
     $('.btn').click(function(){
         if(this.innerHTML == 'DEL'){
-            var numBox = document.getElementById('numBox');
-            if(numBox.innerHTML.length > 0){
-                numBox.innerHTML = numBox.innerHTML.substring(0, numBox.innerHTML.length - 1);
+            var scrap_amount = document.getElementById('scrap_amount');
+            if(scrap_amount.innerHTML.length > 0){
+                scrap_amount.innerHTML = scrap_amount.innerHTML.substring(0, scrap_amount.innerHTML.length - 1);
             }
         }
         else{
-            document.getElementById('numBox').innerHTML = '';
+            document.getElementById('scrap_amount').innerHTML = '';
         }
         
         event.stopPropagation();
