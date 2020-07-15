@@ -2126,6 +2126,19 @@ def kiosk_scrap_reset(request):
 	request.session["scrap4"] ='''disabled="true"'''
 	return kiosk_scrap_entry(request)
 
+def kiosk_scrap_finalize(request):
+	request.session["scrap_entry"] = 4
+	request.session["scrap_part"] = "Part Num:"
+	request.session["scrap_operation"] = "Operation:"
+	request.session["scrap_category"] = "Category:"
+	request.session["scrap_part"] = "Part No:"
+	request.session["scrap_amount"] = 0
+	request.session["scrap1"] =""
+	request.session["scrap2"] ='''disabled="true"'''
+	request.session["scrap3"] ='''disabled="true"'''
+	request.session["scrap4"] ='''disabled="true"'''
+	return kiosk_scrap_entry(request)
+
 
 def kiosk_scrap_entry(request):
 
@@ -2178,6 +2191,11 @@ def kiosk_scrap_entry(request):
 		scrap_operation = request.POST.get("scrap_operation")
 		scrap_category = request.POST.get("scrap_category")
 		scrap_amount = request.POST.get("scrap_amount")
+		finish_switch = 0
+		try:
+			finish_switch = request.POST.get("one")
+		except:
+			finish_switch = 0
 
 		# if asset != request.session["asset"]:
 		# 	request.session["scrap_entry"] = 0
@@ -2187,6 +2205,36 @@ def kiosk_scrap_entry(request):
 		# 	request.session["scrap_entry"] = 2
 
 		try: 
+			if finish_switch == '1':
+				
+				request.session["scrap_amount"] = scrap_amount
+				if scrap_amount > 0:
+
+					category = request.session["scrap_category"]
+					operation = request.session["scrap_operation"]
+					part = request.session["scrap_part"]
+					amount = scrap_amount
+					line = request.session["scrap_part_line"]
+					db, cursor = db_set(request)
+					sql2 = "SELECT Dept FROM scrap_operation_dept WHERE Operation = '%s'" % (operation)
+					cursor.execute(sql2)
+					tmp = cursor.fetchall()
+					department = tmp[0][0]
+
+					sql3 = "SELECT Cost FROM scrap_part_dept_cost WHERE Part = '%s' and Dept = '%s'" % (part,department)
+					cursor.execute(sql3)
+					tmp = cursor.fetchall()
+					try:
+						cost = tmp[0][0]
+					except:
+						cost = 0
+					total_cost = float(cost) * float(amount)
+					date = vacation_set_current9()
+					cursor.execute('''INSERT INTO tkb_scrap(scrap_part,scrap_operation,scrap_category,scrap_amount,scrap_line,total_cost,date) VALUES(%s,%s,%s,%s,%s,%s,%s)''', (part,operation,category,amount,line,total_cost,date))
+					db.commit()
+					db.close()
+				return render(request, "redirect_kiosk_scrap.html")
+
 			if request.session["scrap_entry"] == 0:
 				request.session["scrap_part"] = scrap_part
 				request.session["scrap_entry"] = 1
@@ -2233,60 +2281,82 @@ def kiosk_scrap_entry(request):
 				request.session["scrap3"] ='''disabled="true"'''
 				request.session["scrap4"] =''
 				return render(request, "redirect_kiosk_scrap_entry.html")
+
 			
-			# will execute bottom section if all other scrap_entry passes are missed.   ie scrap_entry = 3
-			request.session["scrap_amount"] = scrap_amount
-			category = request.session["scrap_category"]
-			operation = request.session["scrap_operation"]
-			part = request.session["scrap_part"]
-			amount = scrap_amount
-			line = request.session["scrap_part_line"]
+			
 
 
-			# sql= "SELECT Dept FROM scrap_operation_dept WHERE Operation = '%s'" % (scrap_operation)
-			# cursor.execute(sql)
-			# tmp = cursor.fetchall()
-			# scrap_operation_dept = tmp[0][0]
-			# request.session["scrap_operation_dept"] = scrap_operation_dept
-			# sql = "SELECT Cost FROM scrap_part_dept_cost WHERE Part = '%s' and Dept = '%s'" %(part,scrap_operation_dept)
-			# cursor.execute(sql)
-			# cost = cursor.fetchall()
-			# request.session["scrap_cost"] = cost
-			# ####what goes in here#######
-			# cost = cost*amount
+			if request.session["scrap_entry"] == 3:
+				request.session["scrap_amount"] = scrap_amount
+				request.session["scrap_entry"] = 2
+				request.session["scrap1"] ='''disabled="true"'''
+				request.session["scrap2"] ='''disabled="true"'''
+				request.session["scrap3"] =''
+				request.session["scrap4"] ='''disabled="true"'''
+				category = request.session["scrap_category"]
+				operation = request.session["scrap_operation"]
+				part = request.session["scrap_part"]
+				amount = scrap_amount
+				line = request.session["scrap_part_line"]
+				db, cursor = db_set(request)
+				sql2 = "SELECT Dept FROM scrap_operation_dept WHERE Operation = '%s'" % (operation)
+				cursor.execute(sql2)
+				tmp = cursor.fetchall()
+				department = tmp[0][0]
 
-			# redid the above attempt.   scrap_operation wasn't assigned.  Need operation
-			# cost will need to be retrieved from cursor.fetchall() [0][0].
-			# need to assign cost and amount as float variables before multiplying to get total_cost
+				sql3 = "SELECT Cost FROM scrap_part_dept_cost WHERE Part = '%s' and Dept = '%s'" % (part,department)
+				cursor.execute(sql3)
+				tmp = cursor.fetchall()
+				try:
+					cost = tmp[0][0]
+				except:
+					cost = 0
+				total_cost = float(cost) * float(amount)
+				date = vacation_set_current9()
+				cursor.execute('''INSERT INTO tkb_scrap(scrap_part,scrap_operation,scrap_category,scrap_amount,scrap_line,total_cost,date) VALUES(%s,%s,%s,%s,%s,%s,%s)''', (part,operation,category,amount,line,total_cost,date))
+				db.commit()
+				db.close()
 
-			db, cursor = db_set(request)
-			sql2 = "SELECT Dept FROM scrap_operation_dept WHERE Operation = '%s'" % (operation)
-			cursor.execute(sql2)
-			tmp = cursor.fetchall()
-			department = tmp[0][0]
+				return render(request, "redirect_kiosk_scrap_entry.html")
 
-			sql3 = "SELECT Cost FROM scrap_part_dept_cost WHERE Part = '%s' and Dept = '%s'" % (part,department)
-			cursor.execute(sql3)
-			tmp = cursor.fetchall()
-			try:
-				cost = tmp[0][0]
-			except:
-				cost = 0
+			if request.session["scrap_entry"] == 4:
+				request.session["scrap_amount"] = scrap_amount
+				category = request.session["scrap_category"]
+				operation = request.session["scrap_operation"]
+				part = request.session["scrap_part"]
+				amount = scrap_amount
+				line = request.session["scrap_part_line"]
+				db, cursor = db_set(request)
+				sql2 = "SELECT Dept FROM scrap_operation_dept WHERE Operation = '%s'" % (operation)
+				cursor.execute(sql2)
+				tmp = cursor.fetchall()
+				department = tmp[0][0]
 
-			total_cost = float(cost) * float(amount)
+				sql3 = "SELECT Cost FROM scrap_part_dept_cost WHERE Part = '%s' and Dept = '%s'" % (part,department)
+				cursor.execute(sql3)
+				tmp = cursor.fetchall()
+				try:
+					cost = tmp[0][0]
+				except:
+					cost = 0
+				total_cost = float(cost) * float(amount)
+				date = vacation_set_current9()
+				cursor.execute('''INSERT INTO tkb_scrap(scrap_part,scrap_operation,scrap_category,scrap_amount,scrap_line,total_cost,date) VALUES(%s,%s,%s,%s,%s,%s,%s)''', (part,operation,category,amount,line,total_cost,date))
+				db.commit()
+				db.close()
+				return render(request, "redirect_kiosk_scrap.html")
+			
 
-			# date = datetime.datetime.now()
-			date = vacation_set_current9()
+			
+			
 
 
-		
-			cursor.execute('''INSERT INTO tkb_scrap(scrap_part,scrap_operation,scrap_category,scrap_amount,scrap_line,total_cost,date) VALUES(%s,%s,%s,%s,%s,%s,%s)''', (part,operation,category,amount,line,total_cost,date))
-			db.commit()
-			db.close()
+			
 
 			# return render(request,"done_update2.html")
 			return render(request, "redirect_kiosk_scrap.html")
 		except:
+			
 			return render(request, "redirect_kiosk_scrap.html")
 
 	else:
