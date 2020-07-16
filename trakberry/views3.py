@@ -37,8 +37,12 @@ def excel_table_create(sheet,request):
 	# sheet = 'excel_dump.xlsx'
 	sheet_name = 'Sheet1'
 
+
+	label_link = '/home/file/import1/Inventory/importedxls'
+
+
 	# use this if excel sheet is in a different folder
-	# os.chdir(label_link)
+	os.chdir(label_link)
 	
 	book = xlrd.open_workbook(sheet)
 	working = book.sheet_by_name(sheet_name)
