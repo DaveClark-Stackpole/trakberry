@@ -8,7 +8,9 @@
 	<link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
 	<!-- ***********************************************************************************-->
 
-	<link rel="stylesheet" href="/static/style_1/grid_kiosk_job_assign.css">
+    <link rel="stylesheet" href="/static/style_1/grid_kiosk_job_assign.css">
+    <link href="numpad.css" rel="stylesheet">
+    <script src="numpad.js"></script>
     
 
 
@@ -44,118 +46,17 @@
 	  transform: translateY(8px);
 	}
 
-  #numericInput{
-    position:relative;
-}
-#scrap_amount{
-    width:150px;
-    height:20px;
-    text-align:right;
-    border:solid 1px black;
-    cursor:text;
-    overflow:hidden;
-}
-#keypad{
-    width:190px;
-    height:60px;
-    border:solid 1px black;
-    display:none;
-    position:absolute;
-    top:22px;
-    left:1px;
-}
-.key{
-    border:solid 1px black;
-    background-color:blue;
-    text-align:center;
-    font-weight:bold;
-    color:white;
-    cursor:pointer;
-    width:33.3%;
-}
-.key:hover{
-    background-color:LightBlue;
-}
-.key:active{
-    background-color:white;
-}
-.btn{
-    border:solid 1px black;
-    text-align:center;
-    font-weight:bold;
-    color:black;
-    cursor:pointer;
-    background-color:DimGray;
-    /* background-size: 63px; */
-    width:33.3%;
-}
-.btn:hover{
-    background-color:DarkGray;
-}
-.btn:active{
-    background-color:LightGray;
-}
-
-
+ 
 </style>
-
 <script>
- function myFunction() {
+    function myFunction() {
         document.querySelectorAll("input[type=submit]")[0].click();
     }
 
-
-$(document).ready(function(){
-    $('#scrap_amount').click(function(){
-        $('#keypad').fadeToggle('fast');
-        event.stopPropagation();
-    });
-    
-    
-    // Function commented out
-    // due to Chrome apparently being the
-    // only browser smart enough to work
-    // right >.<
-    
-    // $('body').click(function(){
-    //    $('#keypad').fadeOut('fast');
-    //    event.stopPropagation();
-    // });
-    
-    $('.key').click(function(){
-        var numericInput = document.getElementById('scrap_amount');
-        if(this.innerHTML == '0'){
-            if (scrap_amount.innerHTML.length > 0)
-                scrap_amount.innerHTML = scrap_amount.innerHTML + this.innerHTML;
-        }
-        else
-            scrap_amount.innerHTML = scrap_amount.innerHTML + this.innerHTML;
-        
-        event.stopPropagation();
-    });
-    
-    $('.btn').click(function(){
-        if(this.innerHTML == 'DEL'){
-            var scrap_amount = document.getElementById('scrap_amount');
-            if(scrap_amount.innerHTML.length > 0){
-                scrap_amount.innerHTML = scrap_amount.innerHTML.substring(0, scrap_amount.innerHTML.length - 1);
-            }
-        }
-        else{
-            document.getElementById('scrap_amount').innerHTML = '';
-        }
-        
-        event.stopPropagation();
-    });
-});
-
-
 </script>
-
-
-
 </head>
 <body>
+ 
 
     <img alt="full screen background image" src="/static/media/kiosk.jpeg?" id="full-screen-background-image"/>
 
