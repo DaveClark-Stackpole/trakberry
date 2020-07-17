@@ -1,25 +1,24 @@
 var numpad = {
-  /* [INIT - DRAW THE ON-SCREEN NUMPAD] */
-  selector : null, // will hold the entire on-screen numpad
-  display : null, // will hold the numpad display
-  zero : null, // will hold the zero button
-  dot : null, // will hold the dot button
+  
+  selector : null, 
+  display : null, 
+  zero : null,
+  dot : null, 
   init : function () {
-    // CREATE THE NUMPAD
+   
     numpad.selector = document.createElement("div");
     numpad.selector.id = "numpad-back";
     var wrap = document.createElement("div");
     wrap.id = "numpad-wrap";
     numpad.selector.appendChild(wrap);
 
-    // ATTACH THE NUMBER DISPLAY
     numpad.display = document.createElement("input");
     numpad.display.id = "numpad-display";
     numpad.display.type = "text";
     numpad.display.readOnly = true;
     wrap.appendChild(numpad.display);
 
-    // ATTACH BUTTONS
+ 
     var buttons = document.createElement("div"),
         button = null,
         append = function (txt, fn, css) {
@@ -33,69 +32,69 @@ var numpad = {
           buttons.appendChild(button);
         };
     buttons.id = "numpad-btns";
-    // First row - 7 to 9, delete.
+    
     for (var i=7; i<=9; i++) {
       append(i, numpad.digit);
     }
     append("&#10502;", numpad.delete, "ng");
-    // Second row - 4 to 6, clear.
+    
     for (var i=4; i<=6; i++) {
       append(i, numpad.digit);
     }
     append("C", numpad.reset, "ng");
-    // Third row - 1 to 3, cancel.
+    
     for (var i=1; i<=3; i++) {
       append(i, numpad.digit);
     }
     append("&#10006;", numpad.hide, "cx");
-    // Last row - 0, dot, ok
+   
     append(0, numpad.digit, "zero");
     numpad.zero = button;
     append(".", numpad.dot);
     numpad.dot = button;
     append("&#10004;", numpad.select, "ok");
-    // Add all buttons to wrapper
+
     wrap.appendChild(buttons);
     document.body.appendChild(numpad.selector);
   },
 
-  /* [ATTACH TO INPUT] */
+
   attach : function (opt) {
-  // attach() : attach numpad to target input field
+  
 
     var target = document.getElementById(opt.id);
     if (target!=null) {
-      // APPEND DEFAULT OPTIONS
+
       if (opt.readonly==undefined || typeof opt.readonly!="boolean") { opt.readonly = true; }
       if (opt.decimal==undefined || typeof opt.decimal!="boolean") { opt.decimal = true; }
       if (opt.max==undefined || typeof opt.max!="number") { opt.max = 16; }
 
-      // SET READONLY ATTRIBUTE ON TARGET FIELD
+     
       if (opt.readonly) { target.readOnly = true; }
 
-      // ALLOW DECIMALS?
+    
       target.dataset.decimal = opt.decimal ? 1 : 0;
 
-      // MAXIMUM ALLOWED CHARACTERS
+
       target.dataset.max = opt.max;
 
-      // SHOW NUMPAD ON CLICK
+    
       target.addEventListener("click", numpad.show);
     } else {
       console.log(opt.id + " NOT FOUND!");
     }
   },
 
-  target : null, // contains the current selected field
-  dec : true, // allow decimals?
-  max : 16, // max allowed characters
+  target : null, 
+  dec : true, 
+  max : 16, 
   show : function (evt) {
-  // show() : show the number pad
+  
 
-    // Set current target field
+
     numpad.target = evt.target;
 
-    // Show or hide the decimal button
+ 
     numpad.dec = numpad.target.dataset.decimal==1;
     if (numpad.dec) {
       numpad.zero.classList.remove("zeroN");
@@ -105,10 +104,9 @@ var numpad = {
       numpad.dot.classList.add("ninja");
     }
 
-    // Max allowed characters
     numpad.max = parseInt(numpad.target.dataset.max);
 
-    // Set display value
+    
     var dv = evt.target.value;
     if (!isNaN(parseFloat(dv)) && isFinite(dv)) {
       numpad.display.value = dv;
@@ -116,19 +114,18 @@ var numpad = {
       numpad.display.value = "";
     }
 
-    // Show numpad
+    
     numpad.selector.classList.add("show");
   },
 
   hide : function () {
-  // hide() : hide the number pad
-
+  
     numpad.selector.classList.remove("show");
   },
 
-  /* [BUTTON ONCLICK ACTIONS] */
+  
   delete : function () {
-  // delete() : delete last digit on the number pad
+  
 
     var length = numpad.display.value.length;
     if (length > 0) {
@@ -137,13 +134,13 @@ var numpad = {
   },
 
   reset : function () {
-  // reset() : reset the number pad
+  
 
     numpad.display.value = "";
   },
 
   digit : function (evt) {
-  // digit() : append a digit
+  
 
     var current = numpad.display.value,
         append = evt.target.innerHTML;
@@ -158,7 +155,7 @@ var numpad = {
   },
 
   dot : function () {
-  // dot() : add the decimal point (only if not already appended)
+
 
     if (numpad.display.value.indexOf(".") == -1) {
       if (numpad.display.value=="") {
@@ -170,20 +167,20 @@ var numpad = {
   },
 
   select : function () {
-  // select() : select the current number
+  
 
     var value = numpad.display.value;
 
-    // No decimals allowed - strip decimal
+    
     if (!numpad.dec && value%1!=0) {
       value = parseInt(value);
     }
 
-    // Put selected value to target field + close numpad
+    
     numpad.target.value = value;
     numpad.hide();
   }
 };
 
-/* [INIT] */
+
 window.addEventListener("load", numpad.init);
