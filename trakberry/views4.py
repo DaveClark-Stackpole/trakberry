@@ -24,15 +24,15 @@ from datetime import datetime
 
 
 def ios_test(request):
-	# Creates a new backup table of tkb_cycletimes
-	db, cur = db_set(request)  
-	s1 = "SELECT p_cell FROM sc_prod_hr_target"
-	cur.execute(s1)
-	tmp = cur.fetchall()
+	# # Creates a new backup table of tkb_cycletimes
+	# db, cur = db_set(request)  
+	# s1 = "SELECT p_cell FROM sc_prod_hr_target"
+	# cur.execute(s1)
+	# tmp = cur.fetchall()
 
-	db.commit()
-	db.close()
-	return render(request, "kiosk/kiosk_test4.html",{'tmp':tmp})	
+	# db.commit()
+	# db.close()
+	return render(request, "kiosk/kiosk_test4.html")	
 
 def ios_test2(request):
 	# Searches all in sc_production1 unique asset num with machine >1
