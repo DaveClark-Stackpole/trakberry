@@ -1,0 +1,34 @@
+{% extends "kiosk/kiosk_style.html" %}
+{% block main %}
+
+
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<img alt="full screen background image" src="/static/media/kiosk.jpeg?{{request.session.TCUR}}" id="full-screen-background-image"/>
+<br><br><br>
+{% block content%}  <!-- Main Block -->
+<form action="" method="post">{% csrf_token %}
+<br><br><br><br>
+<center>
+	<div class="frame1">
+		<button class="button" type="submit" name="kiosk_button1" value="-1"><font size="6"><b>White Board<br>(Hourly Counts)</b></font></button>
+	</div>
+	<div class="frame1">
+		<button class="button" type="submit" name="kiosk_button1" value="-2"><font size="6"><b>Production Entry<br>(End of Shift)</b></font></button>
+	</div>
+	<div class="frame1"><br><br><br><br><br><br><br>
+		<button class="button2" type="button" onclick="window.location.href = '{{request.session.local_toggle}}/kiosk_scrap_entry';">
+			<font size="6"><b>Scrap</b></font>
+		</button>
+	</div>
+	<!-- <div class="frame1"><br><br><br><br><br><br><br>
+		<button class="button2" type="button" onclick="window.location.href = '{{request.session.local_toggle}}/kiosk_forklift_form';">
+			<font size="6"><b>Call Forklift</b></font>
+		</button>
+		<br><br><br><br>	
+	</div> -->
+</center>
+</form>
+{% endblock %}  <!-- End content Block -->
+
+
+{% endblock %}
