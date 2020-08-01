@@ -27,6 +27,13 @@ from datetime import datetime
 # This is the main Administrator View to tackle things like cycle times, view production etc.
 # *********************************************************************************************************
 
+def track_10r(request):
+	t=int(time.time())
+	request.session["time"] = t
+	return render(request, "track_10r.html")
+
+
+
 def mgmt(request):
 	request.session["bounce"] = 0
 	tcur=int(time.time())
