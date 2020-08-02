@@ -109,6 +109,12 @@ def track_10r(request):
 	request.session['wd5'],request.session['m5'],request.session['day5'], request.session['shift5'] = day_breakdown(u5) 
 	u6 = u5 - 28800
 	request.session['wd6'],request.session['m6'],request.session['day6'], request.session['shift6'] = day_breakdown(u6) 
+	u7 = u6 - 28800
+	request.session['wd7'],request.session['m7'],request.session['day7'], request.session['shift7'] = day_breakdown(u7) 
+	u8 = u7 - 28800
+	request.session['wd8'],request.session['m8'],request.session['day8'], request.session['shift8'] = day_breakdown(u8) 
+	u9 = u8 - 28800
+	request.session['wd9'],request.session['m9'],request.session['day9'], request.session['shift9'] = day_breakdown(u9) 
 	#add
 
 	shift_time = t-u
@@ -168,6 +174,24 @@ def track_10r(request):
 	tmp3 = tmp2[0]
 	prev_cnt6 = tmp3[0]
 
+	aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d'" % (u7,u6)
+	cur.execute(aql)
+	tmp2 = cur.fetchall()
+	tmp3 = tmp2[0]
+	prev_cnt7 = tmp3[0]
+
+	aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d'" % (u8,u7)
+	cur.execute(aql)
+	tmp2 = cur.fetchall()
+	tmp3 = tmp2[0]
+	prev_cnt8 = tmp3[0]
+
+	aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d'" % (u9,u8)
+	cur.execute(aql)
+	tmp2 = cur.fetchall()
+	tmp3 = tmp2[0]
+	prev_cnt9 = tmp3[0]
+
 	db.close()
 
 
@@ -188,6 +212,9 @@ def track_10r(request):
 	request.session["count4"] = prev_cnt4
 	request.session["count5"] = prev_cnt5
 	request.session["count6"] = prev_cnt6
+	request.session["count7"] = prev_cnt7
+	request.session["count8"] = prev_cnt8
+	request.session["count9"] = prev_cnt9
 
 
 	return render(request, "track_10r.html",{"tm":u,"dt":tm})
