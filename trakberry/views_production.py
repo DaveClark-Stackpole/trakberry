@@ -51,7 +51,7 @@ def track_10r(request):
 
 	u1 = u - 28800
 	u2 = u1 - 28800
-	u3 = u1 - 28800
+	u3 = u2 - 28800
 
 
 	shift_time = t-u
