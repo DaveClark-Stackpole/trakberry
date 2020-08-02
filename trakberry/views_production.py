@@ -38,6 +38,7 @@ def track_10r(request):
 	request.session["time"] = t
 
 	shift_start = -1
+	current_shift = 3
 	if tm[3]<22 and tm[3]>=14:
 		shift_start = 14
 	elif tm[3]<14 and tm[3]>=6:
@@ -47,10 +48,14 @@ def track_10r(request):
 		cur_hour = -1
 	u = t - (((cur_hour-shift_start)*60*60)+(tm[4]*60)+tm[5])    # Starting unix of shift
 
+
+	u1 = u - 28800
+	u2 = u1 - 28800
+	u3 = u1 - 28800
+
+
 	shift_time = t-u
 	shift_left = 28800 - shift_time
-
-
 
 	request.session["shift_time"] = shift_time
 	# target 334
@@ -69,6 +74,25 @@ def track_10r(request):
 	tmp2 = cur.fetchall()
 	tmp3 = tmp2[0]
 	cnt = tmp3[0]
+
+	aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d'" % (u1,u)
+	cur.execute(aql)
+	tmp2 = cur.fetchall()
+	tmp3 = tmp2[0]
+	prev_cnt1 = tmp3[0]
+
+	aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d'" % (u2,u1)
+	cur.execute(aql)
+	tmp2 = cur.fetchall()
+	tmp3 = tmp2[0]
+	prev_cnt2 = tmp3[0]
+
+	aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d'" % (u3,u2)
+	cur.execute(aql)
+	tmp2 = cur.fetchall()
+	tmp3 = tmp2[0]
+	prev_cnt3 = tmp3[0]
+
 	db.close()
 
 
@@ -83,6 +107,9 @@ def track_10r(request):
 	request.session["oa"] = oa
 
 	request.session["count"] = cnt
+	request.session["count1"] = prev_cnt1
+	request.session["count2"] = prev_cnt2
+	request.session["count3"] = prev_cnt3
 
 
 	return render(request, "track_10r.html",{"tm":u,"dt":tm})

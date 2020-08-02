@@ -2,6 +2,7 @@
 <meta http-equiv="refresh" content="5; url={{request.session.local_toggle}}/track_10r" />
 Live Tracking
 <br><br>
+{{dt}}
 <br><br>
 shift time(sec):{{request.session.shift_time}}
 <br><br><br><br>
@@ -13,7 +14,12 @@ Current Shift OA : {{request.session.oa}}%
 <br><br>
 End of Shift Projection : {{request.session.projection}}
 <br><br>
-
+<br><br>
+Last Shift Count: {{request.session.count1}}
+<br><br>
+2nd Last Shift Count: {{request.session.count2}}
+<br><br>
+3rd Last Shift Count: {{request.session.count3}}
 <br><br>
 
 
