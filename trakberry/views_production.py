@@ -101,7 +101,7 @@ def track_10r(request):
 	request.session['wd5'],request.session['m5'],request.session['day5'], request.session['shift5'] = day_breakdown(u5) 
 	u6 = u5 - 28800
 	request.session['wd6'],request.session['m6'],request.session['day6'], request.session['shift6'] = day_breakdown(u6) 
-
+	#add
 
 	shift_time = t-u
 	shift_left = 28800 - shift_time
