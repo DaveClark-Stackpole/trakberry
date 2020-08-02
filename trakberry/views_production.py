@@ -47,6 +47,21 @@ def track_10r(request):
 		cur_hour = -1
 	u = t - (((cur_hour-shift_start)*60*60)+(tm[4]*60)+tm[5])    # Starting unix of shift
 
+	db, cur = db_set(request)
+
+	aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d'" % (u,t)
+	cur.execute(aql)
+	tmp2 = cur.fetchall()
+	tmp3 = tmp2[0]
+	cnt = tmp3[0]
+
+
+
+
+	db.close()
+
+	request.session["count"] = cnt
+
 
 	return render(request, "track_10r.html",{"tm":u})
 
