@@ -20,7 +20,11 @@ from views_routes import direction
 from time import mktime
 from datetime import datetime, date
 from views_db import db_open, db_set
-from datetime import datetime 
+# from datetime import datetime 
+from time import strftime
+from datetime import datetime
+import time
+
 
 # *********************************************************************************************************
 # MAIN Production View
@@ -29,8 +33,37 @@ from datetime import datetime
 
 def track_10r(request):
 	t=int(time.time())
+	tm = time.localtime(t)
+	# request.session["time2"] = tm
 	request.session["time"] = t
-	return render(request, "track_10r.html")
+
+	shift_start = -1
+	if tm[3]<22 and tm[3]>=14:
+		shift_start = 14
+	elif tm[3]<14 and tm[3]>=6:
+		shift_start = 6
+		cur_hour = tm[3]
+	if cur_hour == 22:
+		cur_hour = -1
+	u = t - (((cur_hour-shift_start)*60*60)+(tm[4]*60)+tm[5])    # Starting unix of shift
+
+	db, cur = db_set(request)
+
+	aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d'" % (u,t)
+	cur.execute(aql)
+	tmp2 = cur.fetchall()
+	tmp3 = tmp2[0]
+	cnt = tmp3[0]
+
+
+
+
+	db.close()
+
+	request.session["count"] = cnt
+
+
+	return render(request, "track_10r.html",{"tm":u})
 
 
 
