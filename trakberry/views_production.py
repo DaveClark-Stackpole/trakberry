@@ -30,6 +30,46 @@ import time
 # MAIN Production View
 # This is the main Administrator View to tackle things like cycle times, view production etc.
 # *********************************************************************************************************
+def day_breakdown(tt):
+	mnth = ''
+	wday = ''
+	tm = time.localtime(tt)
+	month1 = tm[1]
+	day1 = tm[2]
+	wd = tm[6]
+	hr1 = tm[3]
+	shift = 'None'
+	if hr1 == 6:
+		shift = 'Day'
+	elif hr1 == 14:
+		shift = 'Aft'
+	elif hr1 == 22:
+		shift ='Mid'
+		wd = wd + 1
+		if wd == 7:
+			wd = 0
+		day1 = day1 + 1
+
+	if wd == 6:
+		wday = 'Sunday'
+	elif wd == 0:
+		wday = 'Monday'
+	elif wd == 1:
+		wday = 'Tuesday'
+	elif wd == 2:
+		wday = 'Wednesday'
+	elif wd == 3:
+		wday = 'Thursday'
+	elif wd == 4:
+		wday = 'Friday'
+	elif wd == 5:
+		wday = 'Saturday'
+
+	if month1 == 8:
+		mnth = 'August'
+
+	
+	return wday,mnth,day1,shift
 
 def track_10r(request):
 	t=int(time.time())
@@ -43,18 +83,24 @@ def track_10r(request):
 		shift_start = 14
 	elif tm[3]<14 and tm[3]>=6:
 		shift_start = 6
-		cur_hour = tm[3]
+	cur_hour = tm[3]
 	if cur_hour == 22:
 		cur_hour = -1
 	u = t - (((cur_hour-shift_start)*60*60)+(tm[4]*60)+tm[5])    # Starting unix of shift
-
+	request.session['wd'],request.session['m'],request.session['day'], request.session['shift'] = day_breakdown(u) 
 
 	u1 = u - 28800
+	request.session['wd1'],request.session['m1'],request.session['day1'], request.session['shift1'] = day_breakdown(u1) 
 	u2 = u1 - 28800
+	request.session['wd2'],request.session['m2'],request.session['day2'], request.session['shift2'] = day_breakdown(u2) 
 	u3 = u2 - 28800
+	request.session['wd3'],request.session['m3'],request.session['day3'], request.session['shift3'] = day_breakdown(u3) 
 	u4 = u3 - 28800
+	request.session['wd4'],request.session['m4'],request.session['day4'], request.session['shift4'] = day_breakdown(u4) 
 	u5 = u4 - 28800
+	request.session['wd5'],request.session['m5'],request.session['day5'], request.session['shift5'] = day_breakdown(u5) 
 	u6 = u5 - 28800
+	request.session['wd6'],request.session['m6'],request.session['day6'], request.session['shift6'] = day_breakdown(u6) 
 
 
 	shift_time = t-u
