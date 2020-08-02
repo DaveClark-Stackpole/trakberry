@@ -34,6 +34,12 @@ def day_breakdown(tt):
 	mnth = ''
 	wday = ''
 	tm = time.localtime(tt)
+	if tm[3] == 22:
+		tt = tt + 10800
+		tm = time.localtime(tt)
+		hrr = tm[3]
+
+		
 	month1 = tm[1]
 	day1 = tm[2]
 	wd = tm[6]
@@ -43,12 +49,12 @@ def day_breakdown(tt):
 		shift = 'Day'
 	elif hr1 == 14:
 		shift = 'Aft'
-	elif hr1 == 22:
+	elif hr1 == 1:
 		shift ='Mid'
-		wd = wd + 1
-		if wd == 7:
-			wd = 0
-		day1 = day1 + 1
+		
+	if wd == 7:
+		wd = 0
+
 
 	if wd == 6:
 		wday = 'Sunday'
@@ -66,7 +72,9 @@ def day_breakdown(tt):
 		wday = 'Saturday'
 
 	if month1 == 8:
-		mnth = 'August'
+		mnth = 'Aug'
+	elif month1==7:
+		mnth = 'Jul'
 
 	
 	return wday,mnth,day1,shift
