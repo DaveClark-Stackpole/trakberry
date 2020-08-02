@@ -52,6 +52,9 @@ def track_10r(request):
 	u1 = u - 28800
 	u2 = u1 - 28800
 	u3 = u2 - 28800
+	u4 = u3 - 28800
+	u5 = u4 - 28800
+	u6 = u5 - 28800
 
 
 	shift_time = t-u
@@ -93,6 +96,24 @@ def track_10r(request):
 	tmp3 = tmp2[0]
 	prev_cnt3 = tmp3[0]
 
+	aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d'" % (u4,u3)
+	cur.execute(aql)
+	tmp2 = cur.fetchall()
+	tmp3 = tmp2[0]
+	prev_cnt4 = tmp3[0]
+
+	aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d'" % (u5,u4)
+	cur.execute(aql)
+	tmp2 = cur.fetchall()
+	tmp3 = tmp2[0]
+	prev_cnt5 = tmp3[0]
+
+	aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d'" % (u6,u5)
+	cur.execute(aql)
+	tmp2 = cur.fetchall()
+	tmp3 = tmp2[0]
+	prev_cnt6 = tmp3[0]
+
 	db.close()
 
 
@@ -110,6 +131,9 @@ def track_10r(request):
 	request.session["count1"] = prev_cnt1
 	request.session["count2"] = prev_cnt2
 	request.session["count3"] = prev_cnt3
+	request.session["count4"] = prev_cnt4
+	request.session["count5"] = prev_cnt5
+	request.session["count6"] = prev_cnt6
 
 
 	return render(request, "track_10r.html",{"tm":u,"dt":tm})
