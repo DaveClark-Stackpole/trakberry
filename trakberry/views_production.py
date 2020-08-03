@@ -36,7 +36,7 @@ def track_10r_data(request,t,u):
 	m = '1533'
 	mrr = (337*(28800))/float(28800)
 	db, cursor = db_set(request)
-	sql = "SELECT * FROM gfxproduction where TimeStamp >= '%d' and TimeStamp< '%d' and machine = '%s'" %(u,t,m)
+	sql = "SELECT * FROM GFxPRoduction where TimeStamp >= '%d' and TimeStamp< '%d' and machine = '%s'" %(u,t,m)
 	cursor.execute(sql)
 	tmp = cursor.fetchall()	
 	db.close()
