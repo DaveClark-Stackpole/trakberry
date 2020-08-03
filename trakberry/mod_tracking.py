@@ -18,11 +18,11 @@ from django.core.context_processors import csrf
 # Test
 
 def fup(x):
-	return x[2]
+	return x[1]
 	
 def tup(x):
 	global tst, down_time
-	tst.append(str(x[5]))
+	tst.append(str(1))
 	
 def nup(x):
 	return x[4]
@@ -362,14 +362,16 @@ def Graph_Data(t,u,machine,tmp,multiplier):
 		cm = cr * .8
 		tst = []
 		[tup(x) for x in tmp if fup(x) == machine and nup(x) < yy]
+
 		by[ab] = sum(int(i) for i in tst)
 
-		rrr = request.session["eeeew"]
+
 
 		
 		ay[ab] = int(cr)
 		cy[ab] = int(cm)
 		
+	
 		# *** Calculate the longest break time in minutes
 		# *** and assign to brk_ctr
 		if by[ab] == last_by:
@@ -390,6 +392,8 @@ def Graph_Data(t,u,machine,tmp,multiplier):
 	gr_list = zip(px,by,ay,cy)	
 	
 	#return gr_list, brk1, brk2, tm_sh
+
+	
 	return gr_list, brk1, brk2, multiplier
 	
 	

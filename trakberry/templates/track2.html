@@ -1,0 +1,43 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<script type="text/javascript">
+window.onload = function () {
+
+var chart = new CanvasJS.Chart("chartContainer", {
+	theme: "light1", // "light2", "dark1", "dark2"
+	animationEnabled: true, // change to true		
+	title:{
+		text: "Current Shift"
+	},
+	data: [
+	{
+		// Change type to "bar", "area", "spline", "pie",etc.
+		type: "line",
+		dataPoints: [
+
+		{% for item in tmp %}
+			{ Label:"bd",y:{{item.1}} },
+		{% endfor %}
+
+		]
+	}
+	]
+});
+chart.render();
+
+}
+</script>
+</head>
+<body>
+<div id="chartContainer" style="height: 300px; width: 90%;"></div>
+
+<script src="/static/style_1/canvasjs.min.js"></script>
+
+
+
+{% block main %}
+{% endblock %}
+
+</body>
+</html>

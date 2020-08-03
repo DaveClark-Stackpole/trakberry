@@ -20,6 +20,7 @@ from views_routes import direction
 from time import mktime
 from datetime import datetime, date
 from views_db import db_open, db_set
+from mod_tracking import Graph_Data
 # from datetime import datetime 
 from time import strftime
 from datetime import datetime
@@ -30,6 +31,25 @@ import time
 # MAIN Production View
 # This is the main Administrator View to tackle things like cycle times, view production etc.
 # *********************************************************************************************************
+def track_10r_data(request,t,u):
+	
+	m = '1533'
+	mrr = (337*(28800))/float(28800)
+	db, cursor = db_set(request)
+	sql = "SELECT * FROM gfxproduction where TimeStamp >= '%d' and TimeStamp< '%d' and machine = '%s'" %(u,t,m)
+	cursor.execute(sql)
+	tmp = cursor.fetchall()	
+	db.close()
+
+	
+	gr_list, brk1, brk2, multiplier  = Graph_Data(t,u,m,tmp,mrr)
+	
+	return gr_list
+
+	return render(request, "track.html",{"GList":gr_list})
+
+	# return render(request, "10RGraph.html",{"tmp":gr_list})
+
 def day_breakdown(tt):
 	mnth = ''
 	wday = ''
@@ -81,6 +101,9 @@ def day_breakdown(tt):
 
 def track_10r(request):
 	t=int(time.time())
+
+	# t = 1596048064   #use for testing then delete
+	
 	tm = time.localtime(t)
 	# request.session["time2"] = tm
 	request.session["time"] = t
@@ -130,7 +153,7 @@ def track_10r(request):
 
 	request.session["target"] = int(target)
 
-
+	
 
 	db, cur = db_set(request)
 
@@ -219,7 +242,9 @@ def track_10r(request):
 	request.session["count9"] = prev_cnt9
 
 
-	return render(request, "track_10r.html",{"tm":u,"dt":tm})
+	gr_list = track_10r_data(request,t,u)
+	
+	return render(request, "track.html",{"tm":u,"dt":tm,'GList':gr_list})
 
 
 
