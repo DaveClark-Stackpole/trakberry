@@ -76,7 +76,7 @@ def day_breakdown(tt):
 	elif month1==7:
 		mnth = 'Jul'
 
-	
+
 	return wday,mnth,day1,shift
 
 def track_10r(request):
@@ -85,7 +85,7 @@ def track_10r(request):
 	# request.session["time2"] = tm
 	request.session["time"] = t
 
-	shift_start = -1
+	shift_start = -2
 	current_shift = 3
 	if tm[3]<22 and tm[3]>=14:
 		shift_start = 14
@@ -95,6 +95,8 @@ def track_10r(request):
 	if cur_hour == 22:
 		cur_hour = -1
 	u = t - (((cur_hour-shift_start)*60*60)+(tm[4]*60)+tm[5])    # Starting unix of shift
+
+	
 	request.session['wd'],request.session['m'],request.session['day'], request.session['shift'] = day_breakdown(u) 
 
 	u1 = u - 28800
