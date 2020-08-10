@@ -74,8 +74,6 @@ def day_breakdown(tt):
 		
 	if wd == 7:
 		wd = 0
-
-
 	if wd == 6:
 		wday = 'Sunday'
 	elif wd == 0:
@@ -102,12 +100,10 @@ def day_breakdown(tt):
 def track_10r(request):
 	t=int(time.time())
 
-	# t = 1596048064   #use for testing then delete
-	
-	tm = time.localtime(t)
-	# request.session["time2"] = tm
-	request.session["time"] = t
+	t = 1596054870
 
+	tm = time.localtime(t)
+	request.session["time"] = t
 	shift_start = -2
 	current_shift = 3
 	if tm[3]<22 and tm[3]>=14:
@@ -119,130 +115,137 @@ def track_10r(request):
 		cur_hour = -1
 	u = t - (((cur_hour-shift_start)*60*60)+(tm[4]*60)+tm[5])    # Starting unix of shift
 
-	
-	request.session['wd'],request.session['m'],request.session['day'], request.session['shift'] = day_breakdown(u) 
-
-	u1 = u - 28800
-	request.session['wd1'],request.session['m1'],request.session['day1'], request.session['shift1'] = day_breakdown(u1) 
-	u2 = u1 - 28800
-	request.session['wd2'],request.session['m2'],request.session['day2'], request.session['shift2'] = day_breakdown(u2) 
-	u3 = u2 - 28800
-	request.session['wd3'],request.session['m3'],request.session['day3'], request.session['shift3'] = day_breakdown(u3) 
-	u4 = u3 - 28800
-	request.session['wd4'],request.session['m4'],request.session['day4'], request.session['shift4'] = day_breakdown(u4) 
-	u5 = u4 - 28800
-	request.session['wd5'],request.session['m5'],request.session['day5'], request.session['shift5'] = day_breakdown(u5) 
-	u6 = u5 - 28800
-	request.session['wd6'],request.session['m6'],request.session['day6'], request.session['shift6'] = day_breakdown(u6) 
-	u7 = u6 - 28800
-	request.session['wd7'],request.session['m7'],request.session['day7'], request.session['shift7'] = day_breakdown(u7) 
-	u8 = u7 - 28800
-	request.session['wd8'],request.session['m8'],request.session['day8'], request.session['shift8'] = day_breakdown(u8) 
-	u9 = u8 - 28800
-	request.session['wd9'],request.session['m9'],request.session['day9'], request.session['shift9'] = day_breakdown(u9) 
-	#add
-
 	shift_time = t-u
 	shift_left = 28800 - shift_time
-
 	request.session["shift_time"] = shift_time
-	# target 334
-	target = 334 / float(3600)
+	target = 337 / float(3600) 
 	target = shift_time * target
-
-
 	request.session["target"] = int(target)
 
-	
+	wd, m, day, shift = day_breakdown(u)
+	request.session['wd'] = wd
+	request.session['m'] = m
+	request.session['shift'] = shift
+	request.session['day'] = day
 
 	db, cur = db_set(request)
-
 	aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d'" % (u,t)
 	cur.execute(aql)
 	tmp2 = cur.fetchall()
 	tmp3 = tmp2[0]
 	cnt = tmp3[0]
+	request.session["count"] = cnt
 
-	aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d'" % (u1,u)
-	cur.execute(aql)
-	tmp2 = cur.fetchall()
-	tmp3 = tmp2[0]
-	prev_cnt1 = tmp3[0]
+	try:
+		pwd = request.session['prev_wd']
+		pm = request.session['prev_m']
+		pday = request.session['prev_day']
+		pshift = request.session['prev_shift']
+	except:
+		pwd = 0
+		pm = 0
+		pday = 0
+		pshift = 0
 
-	aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d'" % (u2,u1)
-	cur.execute(aql)
-	tmp2 = cur.fetchall()
-	tmp3 = tmp2[0]
-	prev_cnt2 = tmp3[0]
 
-	aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d'" % (u3,u2)
-	cur.execute(aql)
-	tmp2 = cur.fetchall()
-	tmp3 = tmp2[0]
-	prev_cnt3 = tmp3[0]
+	if pwd != wd and pm!=m and pday!=day and pshift!=shift:	
+		u1 = u - 28800
+		request.session['wd1'],request.session['m1'],request.session['day1'], request.session['shift1'] = day_breakdown(u1) 
+		u2 = u1 - 28800
+		request.session['wd2'],request.session['m2'],request.session['day2'], request.session['shift2'] = day_breakdown(u2) 
+		u3 = u2 - 28800
+		request.session['wd3'],request.session['m3'],request.session['day3'], request.session['shift3'] = day_breakdown(u3) 
+		u4 = u3 - 28800
+		request.session['wd4'],request.session['m4'],request.session['day4'], request.session['shift4'] = day_breakdown(u4) 
+		u5 = u4 - 28800
+		request.session['wd5'],request.session['m5'],request.session['day5'], request.session['shift5'] = day_breakdown(u5) 
+		u6 = u5 - 28800
+		request.session['wd6'],request.session['m6'],request.session['day6'], request.session['shift6'] = day_breakdown(u6) 
+		u7 = u6 - 28800
+		request.session['wd7'],request.session['m7'],request.session['day7'], request.session['shift7'] = day_breakdown(u7) 
+		u8 = u7 - 28800
+		request.session['wd8'],request.session['m8'],request.session['day8'], request.session['shift8'] = day_breakdown(u8) 
+		u9 = u8 - 28800
+		request.session['wd9'],request.session['m9'],request.session['day9'], request.session['shift9'] = day_breakdown(u9) 
+		request.session['prev_wd'] = wd
+		request.session['prev_m'] = m
+		request.session['prev_shift'] = shift
+		request.session['prev_day'] = day
 
-	aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d'" % (u4,u3)
-	cur.execute(aql)
-	tmp2 = cur.fetchall()
-	tmp3 = tmp2[0]
-	prev_cnt4 = tmp3[0]
+		aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d'" % (u1,u)
+		cur.execute(aql)
+		tmp2 = cur.fetchall()
+		tmp3 = tmp2[0]
+		prev_cnt1 = tmp3[0]
 
-	aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d'" % (u5,u4)
-	cur.execute(aql)
-	tmp2 = cur.fetchall()
-	tmp3 = tmp2[0]
-	prev_cnt5 = tmp3[0]
+		aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d'" % (u2,u1)
+		cur.execute(aql)
+		tmp2 = cur.fetchall()
+		tmp3 = tmp2[0]
+		prev_cnt2 = tmp3[0]
 
-	aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d'" % (u6,u5)
-	cur.execute(aql)
-	tmp2 = cur.fetchall()
-	tmp3 = tmp2[0]
-	prev_cnt6 = tmp3[0]
+		aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d'" % (u3,u2)
+		cur.execute(aql)
+		tmp2 = cur.fetchall()
+		tmp3 = tmp2[0]
+		prev_cnt3 = tmp3[0]
 
-	aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d'" % (u7,u6)
-	cur.execute(aql)
-	tmp2 = cur.fetchall()
-	tmp3 = tmp2[0]
-	prev_cnt7 = tmp3[0]
+		aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d'" % (u4,u3)
+		cur.execute(aql)
+		tmp2 = cur.fetchall()
+		tmp3 = tmp2[0]
+		prev_cnt4 = tmp3[0]
 
-	aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d'" % (u8,u7)
-	cur.execute(aql)
-	tmp2 = cur.fetchall()
-	tmp3 = tmp2[0]
-	prev_cnt8 = tmp3[0]
+		aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d'" % (u5,u4)
+		cur.execute(aql)
+		tmp2 = cur.fetchall()
+		tmp3 = tmp2[0]
+		prev_cnt5 = tmp3[0]
 
-	aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d'" % (u9,u8)
-	cur.execute(aql)
-	tmp2 = cur.fetchall()
-	tmp3 = tmp2[0]
-	prev_cnt9 = tmp3[0]
+		aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d'" % (u6,u5)
+		cur.execute(aql)
+		tmp2 = cur.fetchall()
+		tmp3 = tmp2[0]
+		prev_cnt6 = tmp3[0]
+
+		aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d'" % (u7,u6)
+		cur.execute(aql)
+		tmp2 = cur.fetchall()
+		tmp3 = tmp2[0]
+		prev_cnt7 = tmp3[0]
+
+		aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d'" % (u8,u7)
+		cur.execute(aql)
+		tmp2 = cur.fetchall()
+		tmp3 = tmp2[0]
+		prev_cnt8 = tmp3[0]
+
+		aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d'" % (u9,u8)
+		cur.execute(aql)
+		tmp2 = cur.fetchall()
+		tmp3 = tmp2[0]
+		prev_cnt9 = tmp3[0]
+
+		request.session["count1"] = prev_cnt1
+		request.session["count2"] = prev_cnt2
+		request.session["count3"] = prev_cnt3
+		request.session["count4"] = prev_cnt4
+		request.session["count5"] = prev_cnt5
+		request.session["count6"] = prev_cnt6
+		request.session["count7"] = prev_cnt7
+		request.session["count8"] = prev_cnt8
+		request.session["count9"] = prev_cnt9
 
 	db.close()
 
-
-
 	current_rate = cnt / float(shift_time)
 	projection = int(current_rate * (shift_left)) + cnt
-
 	request.session["projection"] = projection
-
 	oa = cnt / float(target)
 	oa = (int(oa * 10000)) / float(100)
 	request.session["oa"] = oa
 
-	request.session["count"] = cnt
-	request.session["count1"] = prev_cnt1
-	request.session["count2"] = prev_cnt2
-	request.session["count3"] = prev_cnt3
-	request.session["count4"] = prev_cnt4
-	request.session["count5"] = prev_cnt5
-	request.session["count6"] = prev_cnt6
-	request.session["count7"] = prev_cnt7
-	request.session["count8"] = prev_cnt8
-	request.session["count9"] = prev_cnt9
-
-
-	gr_list = track_10r_data(request,t,u)
+	gr_list = track_10r_data(request,t,u) # Get the Graph Data
 	
 	return render(request, "track.html",{"tm":u,"dt":tm,'GList':gr_list})
 
