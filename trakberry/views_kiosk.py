@@ -2310,7 +2310,8 @@ def kiosk_scrap_finalize(request):
 	# # return kiosk_scrap_entry(request)
 
 def kiosk_scrap_entry(request):
-	
+	current_first, shift  = vacation_set_current5()
+
 	db, cursor = db_set(request)
 
 
