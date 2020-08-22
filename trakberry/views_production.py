@@ -130,7 +130,7 @@ def track_10r(request):
 	request.session['shift'] = shift
 	request.session['day'] = day
 
-	prt = '50-1467'
+	prt = '50-9341'
 	db, cur = db_set(request)
 	aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s'" % (u,t,prt)
 	cur.execute(aql)
@@ -149,9 +149,9 @@ def track_10r(request):
 		pm = 0
 		pday = 0
 		pshift = 0
-
-
-	if pwd != wd and pm!=m and pday!=day and pshift!=shift:	
+	aaa = 0
+	if aaa == 0 :
+	# if pwd != wd and pm!=m and pday!=day and pshift!=shift:	
 		u1 = u - 28800
 		request.session['wd1'],request.session['m1'],request.session['day1'], request.session['shift1'] = day_breakdown(u1) 
 		u2 = u1 - 28800
