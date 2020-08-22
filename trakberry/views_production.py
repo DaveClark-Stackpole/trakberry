@@ -118,7 +118,9 @@ def track_10r(request):
 	shift_time = t-u
 	shift_left = 28800 - shift_time
 	request.session["shift_time"] = shift_time
-	target = 337 / float(3600) 
+	# target = 337 / float(3600) # 10R Target
+	target = 189 / float(3600) # Trilobe Target
+
 	target = shift_time * target
 	request.session["target"] = int(target)
 
@@ -128,7 +130,7 @@ def track_10r(request):
 	request.session['shift'] = shift
 	request.session['day'] = day
 
-	prt = '50-9341'
+	prt = '50-1467'
 	db, cur = db_set(request)
 	aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s'" % (u,t,prt)
 	cur.execute(aql)
