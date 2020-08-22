@@ -128,8 +128,9 @@ def track_10r(request):
 	request.session['shift'] = shift
 	request.session['day'] = day
 
+	prt = '50-9341'
 	db, cur = db_set(request)
-	aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d'" % (u,t)
+	aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s'" % (u,t,prt)
 	cur.execute(aql)
 	tmp2 = cur.fetchall()
 	tmp3 = tmp2[0]
@@ -172,55 +173,55 @@ def track_10r(request):
 		request.session['prev_shift'] = shift
 		request.session['prev_day'] = day
 
-		aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d'" % (u1,u)
+		aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s'" % (u1,u,prt)
 		cur.execute(aql)
 		tmp2 = cur.fetchall()
 		tmp3 = tmp2[0]
 		prev_cnt1 = tmp3[0]
 
-		aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d'" % (u2,u1)
+		aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s'" % (u2,u1,prt)
 		cur.execute(aql)
 		tmp2 = cur.fetchall()
 		tmp3 = tmp2[0]
 		prev_cnt2 = tmp3[0]
 
-		aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d'" % (u3,u2)
+		aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s'" % (u3,u2,prt)
 		cur.execute(aql)
 		tmp2 = cur.fetchall()
 		tmp3 = tmp2[0]
 		prev_cnt3 = tmp3[0]
 
-		aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d'" % (u4,u3)
+		aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s'" % (u4,u3,prt)
 		cur.execute(aql)
 		tmp2 = cur.fetchall()
 		tmp3 = tmp2[0]
 		prev_cnt4 = tmp3[0]
 
-		aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d'" % (u5,u4)
+		aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s'" % (u5,u4,prt)
 		cur.execute(aql)
 		tmp2 = cur.fetchall()
 		tmp3 = tmp2[0]
 		prev_cnt5 = tmp3[0]
 
-		aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d'" % (u6,u5)
+		aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s'" % (u6,u5,prt)
 		cur.execute(aql)
 		tmp2 = cur.fetchall()
 		tmp3 = tmp2[0]
 		prev_cnt6 = tmp3[0]
 
-		aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d'" % (u7,u6)
+		aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s'" % (u7,u6,prt)
 		cur.execute(aql)
 		tmp2 = cur.fetchall()
 		tmp3 = tmp2[0]
 		prev_cnt7 = tmp3[0]
 
-		aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d'" % (u8,u7)
+		aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s'" % (u8,u7,prt)
 		cur.execute(aql)
 		tmp2 = cur.fetchall()
 		tmp3 = tmp2[0]
 		prev_cnt8 = tmp3[0]
 
-		aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d'" % (u9,u8)
+		aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s'" % (u9,u8,prt)
 		cur.execute(aql)
 		tmp2 = cur.fetchall()
 		tmp3 = tmp2[0]
