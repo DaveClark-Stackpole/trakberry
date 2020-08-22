@@ -100,7 +100,7 @@ def day_breakdown(tt):
 def track_10r(request):
 	t=int(time.time())
 
-	t = 1596054870
+	# t = 1596054870
 
 	tm = time.localtime(t)
 	request.session["time"] = t
