@@ -32,7 +32,6 @@ import time
 # This is the main Administrator View to tackle things like cycle times, view production etc.
 # *********************************************************************************************************
 def track_10r_data(request,t,u):
-	
 	m = '1533'
 	mrr = (337*(28800))/float(28800)
 	db, cursor = db_set(request)
@@ -40,13 +39,21 @@ def track_10r_data(request,t,u):
 	cursor.execute(sql)
 	tmp = cursor.fetchall()	
 	db.close()
-
-	
 	gr_list, brk1, brk2, multiplier  = Graph_Data(t,u,m,tmp,mrr)
-	
 	return gr_list
 
-	return render(request, "track.html",{"GList":gr_list})
+def track_tri_data(request,t,u):
+	m = '920'
+	mrr = (189*(28800))/float(28800)
+	db, cursor = db_set(request)
+	sql = "SELECT * FROM GFxPRoduction where TimeStamp >= '%d' and TimeStamp< '%d' and machine = '%s'" %(u,t,m)
+	cursor.execute(sql)
+	tmp = cursor.fetchall()	
+	db.close()
+	gr_list, brk1, brk2, multiplier  = Graph_Data(t,u,m,tmp,mrr)
+	return gr_list
+
+	# return render(request, "track.html",{"GList":gr_list})
 
 	# return render(request, "10RGraph.html",{"tmp":gr_list})
 
@@ -130,7 +137,7 @@ def track_10r(request):
 	request.session['shift'] = shift
 	request.session['day'] = day
 
-	prt = '50-9341'
+	prt = '50-1467'
 	db, cur = db_set(request)
 	aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s'" % (u,t,prt)
 	cur.execute(aql)
@@ -248,7 +255,7 @@ def track_10r(request):
 	oa = (int(oa * 10000)) / float(100)
 	request.session["oa"] = oa
 
-	gr_list = track_10r_data(request,t,u) # Get the Graph Data
+	gr_list = track_tri_data(request,t,u) # Get the Graph Data
 	
 	return render(request, "track.html",{"tm":u,"dt":tm,'GList':gr_list})
 
