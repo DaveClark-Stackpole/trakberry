@@ -36,7 +36,8 @@ def track_graph_10r_prev(request, index):
 	u = int(index)
 	t = int(index) + 28800
 	gr_list = track_10r_data(request,t,u) # Get the Graph Data
-	return render(request, "track_10R_prev.html",{'GList':gr_list})
+	r=5/0
+	return render(request, "10r_graph_prev.html",{'GList':gr_list})
 
 def track_10r_data(request,t,u):
 	m = '1533'
