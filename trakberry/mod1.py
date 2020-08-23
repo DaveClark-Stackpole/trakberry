@@ -22,6 +22,9 @@ from views_db import db_open, db_set
 from views_production import mgmt_users_logins_edit
 from datetime import datetime 
 
+def track_10r(request):
+	return render(request, "reroute_tracking.html")
+	
 def hyphon_fix(tx):
     tps = list(tx)
     if (tx.find("'"))>0:

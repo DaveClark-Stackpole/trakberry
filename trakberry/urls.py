@@ -115,13 +115,13 @@ from views_shipping import forklift, forklift_login_form, forklift_logout, forkl
 # *******************************************  Management Section ********************************************************************************************
 from views_production import mgmt,mgmt_login_form,mgmt_logout,mgmt_production_hourly,mgmt_production_hourly_edit, mgmt_production, mgmt_display_edit, mgmt_cycletime
 from views_production import mgmt_users_logins, mgmt_users_logins_edit, mgmt_users_logins_update, mgmt_users_logins_add, mgmt_users_logins_add_new
-from views_production import mgmt_test1, track_10r,track_10r_data
+from views_production import mgmt_test1,track_10r_data,tracking
 
 from views4 import ios_test, IsDone, NotDone, target_fix1, medium_production, multidrop, scantest, target_fix1
 from views4 import target_fix_5401, target_fix_5404, target_fix_5399, target_fix_5214, target_fix_3214
 from views_mod1 import mgmt_display_next,mgmt_display_prev
 
-from mod1 import index_template
+from mod1 import index_template,track_10r
 
 from views_mod2 import hrly_display, butter
 from views_barcode import barcode_check, barcode_input, barcode_initial, barcode_reset, barcode_search, barcode_search_check, barcode_verify, barcode_verify_check
@@ -487,6 +487,7 @@ urlpatterns = [
 	url(r'^mgmt_test1/', mgmt_test1),
 	url(r'^track_10r/', track_10r),
 	url(r'^track_10r_data/', track_10r_data),
+	url(r'^tracking/', tracking),
 
 	# ************************************************************************
 
