@@ -115,7 +115,7 @@ from views_shipping import forklift, forklift_login_form, forklift_logout, forkl
 # *******************************************  Management Section ********************************************************************************************
 from views_production import mgmt,mgmt_login_form,mgmt_logout,mgmt_production_hourly,mgmt_production_hourly_edit, mgmt_production, mgmt_display_edit, mgmt_cycletime
 from views_production import mgmt_users_logins, mgmt_users_logins_edit, mgmt_users_logins_update, mgmt_users_logins_add, mgmt_users_logins_add_new
-from views_production import mgmt_test1,track_10r_data,tracking,track_graph_10r_prev
+from views_production import mgmt_test1,track_10r_data,tracking,track_graph_10r_prev,track_graph_tri_prev
 
 from views4 import ios_test, IsDone, NotDone, target_fix1, medium_production, multidrop, scantest, target_fix1
 from views4 import target_fix_5401, target_fix_5404, target_fix_5399, target_fix_5214, target_fix_3214
@@ -489,6 +489,7 @@ urlpatterns = [
 	url(r'^track_10r_data/', track_10r_data),
 	url(r'^tracking/', tracking),
 	url(r'^track_graph_10r_prev/get/(?P<index>\d+)/$', track_graph_10r_prev),
+	url(r'^track_graph_tri_prev/get/(?P<index>\d+)/$', track_graph_tri_prev),
 
 	# ************************************************************************
 
