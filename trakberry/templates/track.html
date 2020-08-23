@@ -29,8 +29,22 @@ window.close();
 	.body3{color:black;text-align:center;background:rgb(199, 187, 166);float:left;width:33%;border: .4px solid rgb(0, 0, 0)}
 	.body3h{color:black;text-align:center;background:rgb(187, 186, 184);float:left;width:33%;border: .4px solid rgb(0, 0, 0)}
 	.body3t{color:black;text-align:center;background:rgb(187, 186, 184);float:left;font-size:medium;width:99%;border: .4px solid rgb(0, 0, 0)}
-</style>
 
+	
+</style>
+<style>
+	table {
+          border-collapse: collapse;
+          border-spacing: 0;
+          width: 85%;
+
+        }
+        th, td {
+          text-align: left;
+          padding: 2px;
+        }
+
+</style>
 </head>
 <!-- ******   Load Scripts for graphs  ****** -->
 	<!-- <script type="text/javascript" src="https://www.google.com/jsapi"></script> -->
@@ -162,109 +176,119 @@ function drawCurveTypes() {
 
 
 <br><br>
-
+<table><tr><td>
 Current Shift Count: <b>{{request.session.count}}</b> 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</td><td>
 {{request.session.wd}} 
 {{request.session.m}}
 {{request.session.day}},
 2020 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</td><td>
 {{request.session.shift}} Shift
-
-<br><br>
+</td></tr>
+<tr><td>
 Current Shift OA : {{request.session.oa}}%
-<br><br>
+</td><td>
 Current shift target: {{request.session.target}}
-<br><br>
-
-
+</td><td>
 End of Shift Projection : {{request.session.projection}}
+</td></tr>
+</table>
 <br><br>
+
 <b><u>Previous Shifts</u></b>
-<br><br>
+<br>
+<table style="width:30%;border: 1px solid black;"><tr><td style="border:1px solid black;">
 {{request.session.wd1}} 
 {{request.session.m1}}
 {{request.session.day1}},
 2020 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</td><td style="border:1px solid black;">
 {{request.session.shift1}} Shift
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</td><td style="border:1px solid black;">
 {{request.session.count1}}
-<br><br>
-
+</td></tr>
+<tr><td style="border:1px solid black;">
 {{request.session.wd2}} 
 {{request.session.m2}}
 {{request.session.day2}},
 2020 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</td><td style="border:1px solid black;">
 {{request.session.shift2}} Shift
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</td><td style="border:1px solid black;">
 {{request.session.count2}}
-
-<br><br>
+</td></tr>
+<tr><td style="border:1px solid black;">
 {{request.session.wd3}} 
 {{request.session.m3}}
 {{request.session.day3}},
 2020 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</td><td style="border:1px solid black;">
 {{request.session.shift3}} Shift
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</td><td style="border:1px solid black;">
 {{request.session.count3}}
-<br><br>
+</td></tr>
+<tr><td style="border:1px solid black;">
 {{request.session.wd4}} 
 {{request.session.m4}}
 {{request.session.day4}},
 2020 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</td><td style="border:1px solid black;">
 {{request.session.shift4}} Shift
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</td><td style="border:1px solid black;">
 {{request.session.count4}}
-<br><br>
+</td></tr>
+<tr><td style="border:1px solid black;">
 {{request.session.wd5}} 
 {{request.session.m5}}
 {{request.session.day5}},
 2020 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</td><td style="border:1px solid black;">
 {{request.session.shift5}} Shift
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</td><td style="border:1px solid black;">
 {{request.session.count5}}
-<br><br>
+</td></tr>
+<tr><td style="border:1px solid black;">
 {{request.session.wd6}} 
 {{request.session.m6}}
 {{request.session.day6}},
 2020 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</td><td style="border:1px solid black;">
 {{request.session.shift6}} Shift
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</td><td style="border:1px solid black;">
 {{request.session.count6}}
-<br><br>
+</td></tr>
+<tr><td style="border:1px solid black;">
 {{request.session.wd7}} 
 {{request.session.m7}}
 {{request.session.day7}},
 2020 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</td><td style="border:1px solid black;">
 {{request.session.shift7}} Shift
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</td><td style="border:1px solid black;">
 {{request.session.count7}}
-<br><br>
+</td></tr>
+<tr><td style="border:1px solid black;">
 {{request.session.wd8}} 
 {{request.session.m8}}
 {{request.session.day8}},
 2020 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</td><td style="border:1px solid black;">
 {{request.session.shift8}} Shift
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</td><td style="border:1px solid black;">
 {{request.session.count8}}
-<br><br>
+</td></tr>
+<tr><td style="border:1px solid black;">
 {{request.session.wd9}} 
 {{request.session.m9}}
 {{request.session.day9}},
 2020 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</td><td style="border:1px solid black;">
 {{request.session.shift9}} Shift
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</td><td style="border:1px solid black;">
 {{request.session.count9}}
+</td></tr>
+</table>
 <br><br>
 
 </div>
@@ -276,113 +300,121 @@ End of Shift Projection : {{request.session.projection}}
 	<br> 
 	<div id="chart2_div" style="width: 100%; height: 400px; "></div>
 	<br>
-	
-	
-	
+
 	<br><br>
-	
+	<table><tr><td>
 	Current Shift Count: <b>{{request.session.counta}}</b> 
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	</td><td>
 	{{request.session.wd}} 
 	{{request.session.m}}
 	{{request.session.day}},
 	2020 
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	</td><td>
 	{{request.session.shift}} Shift
-	
-	<br><br>
+	</td></tr>
+	<tr><td>
 	Current Shift OA : {{request.session.oaa}}%
-	<br><br>
+	</td><td>
 	Current shift target: {{request.session.targeta}}
-	<br><br>
-	
-	
+	</td><td>
 	End of Shift Projection : {{request.session.projectiona}}
+	</td></tr>
+	</table>
 	<br><br>
+	
 	<b><u>Previous Shifts</u></b>
-	<br><br>
+	<br>
+	<table style="width:30%;border: 1px solid black;"><tr><td style="border:1px solid black;">
 	{{request.session.wd1}} 
 	{{request.session.m1}}
 	{{request.session.day1}},
 	2020 
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	</td><td style="border:1px solid black;">
 	{{request.session.shift1}} Shift
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	</td><td style="border:1px solid black;">
 	{{request.session.count1a}}
-	<br><br>
-	
+	</td></tr>
+	<tr><td style="border:1px solid black;">
 	{{request.session.wd2}} 
 	{{request.session.m2}}
 	{{request.session.day2}},
 	2020 
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	</td><td style="border:1px solid black;">
 	{{request.session.shift2}} Shift
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	</td><td style="border:1px solid black;">
 	{{request.session.count2a}}
-	
-	<br><br>
+	</td></tr>
+	<tr><td style="border:1px solid black;">
 	{{request.session.wd3}} 
 	{{request.session.m3}}
 	{{request.session.day3}},
 	2020 
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	</td><td style="border:1px solid black;">
 	{{request.session.shift3}} Shift
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	</td><td style="border:1px solid black;">
 	{{request.session.count3a}}
-	<br><br>
+	</td></tr>
+	<tr><td style="border:1px solid black;">
 	{{request.session.wd4}} 
 	{{request.session.m4}}
 	{{request.session.day4}},
 	2020 
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	</td><td style="border:1px solid black;">
 	{{request.session.shift4}} Shift
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	</td><td style="border:1px solid black;">
 	{{request.session.count4a}}
-	<br><br>
+	</td></tr>
+	<tr><td style="border:1px solid black;">
 	{{request.session.wd5}} 
 	{{request.session.m5}}
 	{{request.session.day5}},
 	2020 
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	</td><td style="border:1px solid black;">
 	{{request.session.shift5}} Shift
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	</td><td style="border:1px solid black;">
 	{{request.session.count5a}}
-	<br><br>
+	</td></tr>
+	<tr><td style="border:1px solid black;">
 	{{request.session.wd6}} 
 	{{request.session.m6}}
 	{{request.session.day6}},
 	2020 
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	</td><td style="border:1px solid black;">
 	{{request.session.shift6}} Shift
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	</td><td style="border:1px solid black;">
 	{{request.session.count6a}}
-	<br><br>
+	</td></tr>
+	<tr><td style="border:1px solid black;">
 	{{request.session.wd7}} 
 	{{request.session.m7}}
 	{{request.session.day7}},
 	2020 
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	</td><td style="border:1px solid black;">
 	{{request.session.shift7}} Shift
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	</td><td style="border:1px solid black;">
 	{{request.session.count7a}}
-	<br><br>
+	</td></tr>
+	<tr><td style="border:1px solid black;">
 	{{request.session.wd8}} 
 	{{request.session.m8}}
 	{{request.session.day8}},
 	2020 
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	</td><td style="border:1px solid black;">
 	{{request.session.shift8}} Shift
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	</td><td style="border:1px solid black;">
 	{{request.session.count8a}}
-	<br><br>
+	</td></tr>
+	<tr><td style="border:1px solid black;">
 	{{request.session.wd9}} 
 	{{request.session.m9}}
 	{{request.session.day9}},
 	2020 
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	</td><td style="border:1px solid black;">
 	{{request.session.shift9}} Shift
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	</td><td style="border:1px solid black;">
 	{{request.session.count9a}}
+	</td></tr>
+	</table>
 	<br><br>
 	
 	</div>
