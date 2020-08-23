@@ -31,6 +31,13 @@ import time
 # MAIN Production View
 # This is the main Administrator View to tackle things like cycle times, view production etc.
 # *********************************************************************************************************
+
+def track_graph_10r_prev(request, index):
+	u = int(index)
+	t = int(index) + 28800
+	gr_list = track_10r_data(request,t,u) # Get the Graph Data
+	return render(request, "track_10R_prev.html",{'GList':gr_list})
+
 def track_10r_data(request,t,u):
 	m = '1533'
 	mrr = (337*(28800))/float(28800)
@@ -65,8 +72,6 @@ def day_breakdown(tt):
 		tt = tt + 10800
 		tm = time.localtime(tt)
 		hrr = tm[3]
-
-		
 	month1 = tm[1]
 	day1 = tm[2]
 	wd = tm[6]
@@ -100,8 +105,8 @@ def day_breakdown(tt):
 		mnth = 'Aug'
 	elif month1==7:
 		mnth = 'Jul'
-
-
+	elif month1==9:
+		mnth='Sep'
 	return wday,mnth,day1,shift
 
 def track_10r(request):
@@ -284,6 +289,7 @@ def track_tri(request):
 	request.session["targeta"] = int(target)
 
 	wd, m, day, shift = day_breakdown(u)
+
 	request.session['wd'] = wd
 	request.session['m'] = m
 	request.session['shift'] = shift
@@ -397,6 +403,16 @@ def track_tri(request):
 		request.session["count7a"] = prev_cnt7
 		request.session["count8a"] = prev_cnt8
 		request.session["count9a"] = prev_cnt9
+
+		request.session["u1"] = u1
+		request.session["u2"] = u2
+		request.session["u3"] = u3
+		request.session["u4"] = u4
+		request.session["u5"] = u5
+		request.session["u6"] = u6
+		request.session["u7"] = u7
+		request.session["u8"] = u8
+		request.session["u9"] = u9
 
 	db.close()
 
