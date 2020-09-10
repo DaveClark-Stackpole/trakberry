@@ -16,22 +16,22 @@
 
         <div class="item1">
 
-			<!-- <select id="scrap_part" style="font-size:25px;widows: 100%;height:70px;" onchange="myFunction();" list="browsers" name="scrap_part"  {{request.session.scrap1}}>	
+			<select id="scrap_part" style="font-size:25px;widows: 100%;height:70px;" onchange="myFunction();" list="browsers" name="scrap_part"  {{request.session.scrap1}}>	
                 <option value="1" selected disabled>{{request.session.scrap_part}}</option>
                 {% for item in request.session.scrap_part_selection %}
                 <option value="{{item.0}}">{{item.0}}</option>
                 {% endfor %}
-			</select> -->
+			</select>
 			
-			<div class="bloc">
-				<!-- <select name="year" size="5"> -->
+			<!-- <div class="bloc">
+				<select name="year" size="5"> 
 					<select id="scrap_part" style="font-size:25px;width:100%;height:70px;" onchange="myFunction();" name="scrap_part"  {{request.session.scrap1}}>
 					{% for item in request.session.scrap_part_selection %}
 					<option value="{{item.0}}">{{item.0}}</option>
 					{% endfor %}
 				  
 				</select>
-			  </div>
+			  </div> -->
         </div>
         <div class="item2">
             <select id="scrap_operation" style="font-size:25px;width:90%;height:70px;" onchange="myFunction();" list="browsers" name="scrap_operation" type="number" {{request.session.scrap2}}>	

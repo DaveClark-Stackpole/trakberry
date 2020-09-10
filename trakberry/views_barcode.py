@@ -99,15 +99,15 @@ def barcode_initial(request):
 
 
 def barcode_input(request):
-    db, cur = db_set(request)
-    # the above call makes the below call unnecessary now.  
-    #request.session["local_toggle"]="/trakberry"
-  
-    part = request.session["barcode_part"]
     # db, cur = db_set(request)
-    sql = "SELECT * FROM barcode"
-    cur.execute(sql)
-    tmp2 = cur.fetchall()
+    # # the above call makes the below call unnecessary now.  
+    # #request.session["local_toggle"]="/trakberry"
+  
+    # part = request.session["barcode_part"]
+    # # db, cur = db_set(request)
+    # sql = "SELECT * FROM barcode"
+    # cur.execute(sql)
+    # tmp2 = cur.fetchall()
 
 
     if request.POST:
