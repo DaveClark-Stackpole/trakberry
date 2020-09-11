@@ -2313,6 +2313,10 @@ def kiosk_scrap_entry(request):
 	current_first, shift  = vacation_set_current5()
 
 	db, cursor = db_set(request)
+	try:
+		dummy = request.session["scrap_entry"]
+	except:
+		request.session["scrap_entry"] = 1
 
 
 	# This will assign all the values of machines into session variable machine_temp
