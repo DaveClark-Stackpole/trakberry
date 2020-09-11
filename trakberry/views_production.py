@@ -56,15 +56,16 @@ def track_10r_data(request,t,u):
 	return gr_list
 
 def track_tri_data(request,t,u):
-	m = '920'
-	mrr = (189*(28800))/float(28800)
-	db, cursor = db_set(request)
-	sql = "SELECT * FROM GFxPRoduction where TimeStamp >= '%d' and TimeStamp< '%d' and machine = '%s'" %(u,t,m)
-	cursor.execute(sql)
-	tmp = cursor.fetchall()	
-	db.close()
-	gr_list, brk1, brk2, multiplier  = Graph_Data(t,u,m,tmp,mrr)
-	return gr_list
+    # m1 = '650R'
+    m = '650'
+    mrr = (189*(28800))/float(28800)
+    db, cursor = db_set(request)
+    sql = "SELECT Id,Left(Machine,3),Part,PerpetualCount,TimeStamp FROM GFxPRoduction where TimeStamp >= '%d' and TimeStamp< '%d' and Left(machine,3) = '%s'" %(u,t,m)
+    cursor.execute(sql)
+    tmp = cursor.fetchall()	
+    db.close()
+    gr_list, brk1, brk2, multiplier  = Graph_Data(t,u,m,tmp,mrr)
+    return gr_list
 
 	# return render(request, "track.html",{"GList":gr_list})
 
