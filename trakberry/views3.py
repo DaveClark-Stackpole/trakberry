@@ -376,7 +376,7 @@ def inventory_initial(request):
 	return
 
 	
-def manpower_initial():
+def manpower_initial(request):
 
 	# create inventory table if one doesn't exist
 	db, cursor = db_set(request)  
@@ -389,28 +389,39 @@ def manpower_initial():
 	
 # Update DB so it has current manpower
 def manpower_update(request):
+	# comment below when running local
 	label_link = '/home/file/import1/Inventory/importedxls'
+	os.chdir(label_link)
+	# ********************************
+
 	sheet = 'inventory.xlsx'
 	sheet_name = 'Sheet1'
-	os.chdir(label_link)
+
 	book = xlrd.open_workbook(sheet)
 	working = book.sheet_by_name(sheet_name)
-	tot = 246  # Row on Excel Sheet
+	tot = 266  # Row on Excel Sheet
 	toc = 35   # Col on Excel Sheet
 	tdate = tot+1
 	jj = 1
 	a = [[] for x in range(600)]
 	b = [[] for y in range(600)]
-	for i in range(205,tot):
+	for i in range(212,tot):
 		for ii in range(0,17):
 			if len(str(working.cell(i,ii).value)) > 5:
+
 				x = str(working.cell(i,ii).value) 
-				y = str(working.cell(204,ii).value) 
+
+				if x[-1:] == ';':
+					xlen = len(x)
+					x = x[:(xlen-1)]
+					
+				y = str(working.cell(211,ii).value) 
 				z = x + "(" + y + ")"
 				a[jj].append(x)
 				b[jj].append(y)
 				jj = jj + 1
-	manpower_initial()   # Initialize the Manpower list
+
+	manpower_initial(request)   # Initialize the Manpower list
 	db, cur = db_set(request)
 	x = 1
 	for i in range(1,jj):
