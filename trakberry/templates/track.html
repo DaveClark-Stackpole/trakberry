@@ -161,7 +161,9 @@ function drawCurveTypes() {
 
 <!-- <br><br>
 <input type="button" value="Close this window" onclick="windowClose();"> -->
-<meta http-equiv="refresh" content="30; url={{request.session.local_toggle}}/tracking" />
+
+<!-- 
+<meta http-equiv="refresh" content="30; url={{request.session.local_toggle}}/tracking" /> -->
 
 <div class="wrapper_main">
 <div class="head1_u">
@@ -301,7 +303,14 @@ End of Shift Projection : {{request.session.projection}}
 </td></tr>
 </table>
 <br><br>
+{% for item in GList %}
+{{item.0}}  &nbsp;&nbsp;&nbsp;&nbsp;
+{{item.1}}  &nbsp;&nbsp;&nbsp;&nbsp;
+{{item.2}}  &nbsp;&nbsp;&nbsp;&nbsp;
+{{item.3}}  &nbsp;&nbsp;&nbsp;&nbsp;
 
+<br>
+{% endfor %}
 </div>
 
 
@@ -445,6 +454,7 @@ End of Shift Projection : {{request.session.projection}}
 
 
 <br><br>
+
 
 </body>
 
