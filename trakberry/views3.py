@@ -417,6 +417,7 @@ def manpower_update(request):
 					
 				y = str(working.cell(203,ii).value) 
 				z = x + "(" + y + ")"
+				r=4/0
 				a[jj].append(x)
 				b[jj].append(y)
 				jj = jj + 1
