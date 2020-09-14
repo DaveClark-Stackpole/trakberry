@@ -405,7 +405,7 @@ def manpower_update(request):
 	jj = 1
 	a = [[] for x in range(600)]
 	b = [[] for y in range(600)]
-	for i in range(203,tot):
+	for i in range(204,tot):
 		for ii in range(0,17):
 			if len(str(working.cell(i,ii).value)) > 5:
 
@@ -415,7 +415,7 @@ def manpower_update(request):
 					xlen = len(x)
 					x = x[:(xlen-1)]
 					
-				y = str(working.cell(202,ii).value) 
+				y = str(working.cell(203,ii).value) 
 				z = x + "(" + y + ")"
 				a[jj].append(x)
 				b[jj].append(y)
