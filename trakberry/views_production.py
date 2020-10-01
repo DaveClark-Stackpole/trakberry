@@ -128,6 +128,24 @@ def day_breakdown(tt):
 		mnth = 'Jul'
 	elif month1==9:
 		mnth='Sep'
+	elif month1==10:
+		mnth='Oct'
+	elif month1==11:
+		mnth='Dec'
+	elif month1==1:
+		mnth='Jan'
+	elif month1==2:
+		mnth='Feb'
+	elif month1==3:
+		mnth='Mar'
+	elif month1==4:
+		mnth='Apr'
+	elif month1==5:
+		mnth='May'
+	elif month1==6:
+		mnth='Jun'
+
+
 	return wday,mnth,day1,shift
 
 def track_area(request):
