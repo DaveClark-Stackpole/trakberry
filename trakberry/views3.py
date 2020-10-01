@@ -21,6 +21,17 @@ import xlrd
 #import pandas
 from views_vacation import vacation_temp, vacation_set_current, vacation_set_current2,vacation_set_current6, vacation_set_current4
 
+
+def request_test(request):
+	a,b,c = 5,7,8
+	rtest = []
+	for i in range(1,10):
+		y = i * 3
+		rtest.append(str(y))
+	request.session['rtest'] = str(a)+str(b)+str(c)
+	return render(request,"test71.html")
+
+
 def excel_dump(request):
 	excel_table_create("excel_dump.xlsx",request)
 	return render(request,"master_excel_message1.html")
@@ -389,7 +400,11 @@ def manpower_initial(request):
 	db, cursor = db_set(request)  
 #	Use below line to recreate the table format
 	cursor.execute("""DROP TABLE IF EXISTS tkb_manpower""")
-	cursor.execute("""CREATE TABLE IF NOT EXISTS tkb_manpower(Id INT PRIMARY KEY AUTO_INCREMENT,Employee CHAR(80), Shift CHAR(80),Trained CHAR(160))""")
+	cursor.execute("""CREATE TABLE IF NOT EXISTS tkb_manpower(Id INT PRIMARY KEY AUTO_INCREMENT,Employee CHAR(80), Shift CHAR(80),Trained TEXT(5000))""")
+	cursor.execute("""DROP TABLE IF EXISTS tkb_allocation""")
+	cursor.execute("""CREATE TABLE IF NOT EXISTS tkb_allocation(Id INT PRIMARY KEY AUTO_INCREMENT,Job CHAR(80), Area CHAR(80),Operator CHAR(20),CNC CHAR(20))""")
+	# cursor.execute("""DROP TABLE IF EXISTS tkb_matrix""")
+	cursor.execute("""CREATE TABLE IF NOT EXISTS tkb_matrix(Id INT PRIMARY KEY AUTO_INCREMENT,Employee CHAR(80), Shift CHAR(80),Trained TEXT(5000),Enabled CHAR(10))""")
 	db.commit()
 	db.close()
 	return
@@ -397,8 +412,8 @@ def manpower_initial(request):
 # Update DB so it has current manpower
 def manpower_update(request):
 	# comment below when running local
-	label_link = '/home/file/import1/Inventory/importedxls'
-	os.chdir(label_link)
+	# label_link = '/home/file/import1/Inventory/importedxls'
+	# os.chdir(label_link)
 	# ********************************
 
 	sheet = 'inventory.xlsx'
@@ -412,22 +427,56 @@ def manpower_update(request):
 	jj = 1
 	a = [[] for x in range(600)]
 	b = [[] for y in range(600)]
-	for i in range(205,tot):
+
+	job1 = [[] for xx in range(600)]
+	area1 = [[] for yy in range(600)]
+	opr1 = [[] for zz in range(600)]
+	cnc1 = [[] for ww in range(600)]
+
+	for fnd in range(1,400):  # Determine what row to start reading manpower from
+		fnd_cell = str(working.cell(fnd,0).value)
+		if fnd_cell == 'Plant 1 Days':
+			start1 = fnd
+			break
+	
+	for i in range((start1+1),(start1+60)):
 		for ii in range(0,17):
 			if len(str(working.cell(i,ii).value)) > 5:
-
 				x = str(working.cell(i,ii).value) 
-
 				if x[-1:] == ';':
 					xlen = len(x)
 					x = x[:(xlen-1)]
-					
-				y = str(working.cell(204,ii).value) 
+				y = str(working.cell(start1,ii).value) 
 				z = x + "(" + y + ")"
-				# r=4/0
 				a[jj].append(x)
 				b[jj].append(y)
 				jj = jj + 1
+
+	for fnd in range(start1,900):  # Determine what row to start reading manpower from
+		fnd_cell = str(working.cell(fnd,0).value)
+		if fnd_cell == 'Area 1':
+			start2 = fnd-1
+			break
+
+	kk = 1
+	for i in range((start2+1),(start2+180)):
+		try:
+			if len(str(working.cell(i,0).value)) > 5:
+				x = str(working.cell(i,0).value) 
+				y = str(working.cell(i,1).value) 
+				z = str(working.cell(i,2).value) 
+				w = str(working.cell(i,3).value) 
+				area1[kk].append(x)
+				job1[kk].append(y)
+				opr1[kk].append(z)
+				cnc1[kk].append(w)
+				# mpwr1[jj].append(z)
+				kk = kk + 1
+			else:
+				break
+		except:
+			break
+
 
 	manpower_initial(request)   # Initialize the Manpower list
 	db, cur = db_set(request)
@@ -437,18 +486,60 @@ def manpower_update(request):
 		yy = str(b[i][0])
 		cur.execute('''INSERT INTO tkb_manpower(Employee,Shift) VALUES(%s,%s)''', (y,yy))
 		db.commit()
+	for i in range(1,kk):
+		y = str(job1[i][0])
+		yy = str(area1[i][0])
+		yyy = str(opr1[i][0])
+		yyyy = str(cnc1[i][0])
+
+		cur.execute('''INSERT INTO tkb_allocation(Job,Area,Operator,CNC) VALUES(%s,%s,%s,%s)''', (y,yy,yyy,yyyy))
+		db.commit()
+
+
+	sql = "SELECT * From tkb_manpower WHERE tkb_manpower.Employee NOT IN (SELECT Employee From tkb_matrix)"
+	cur.execute(sql)
+	tmp = cur.fetchall()
+
+	sql = "SELECT * From tkb_matrix WHERE tkb_matrix.Employee NOT IN (SELECT Employee From tkb_manpower)"
+	cur.execute(sql)
+	tmp2 = cur.fetchall()
+
+	# stp = 7/0
+
+	active = 'active'
+	inactive = 'inactive'
+
+	# Add employee if they show new from manpower to matrix
+	for a in tmp:
+		aa = a[0]
+		ab = a[1]
+		cur.execute('''INSERT INTO tkb_matrix(Employee,Shift,Enabled) VALUES(%s,%s,%s)''', (a[1],a[2],active))
+		db.commit()
+
+	# Change Employee to inactive if they've been removed from manpower
+	for a in tmp2:
+		sql =( 'update tkb_matrix SET Enabled="%s" WHERE Employee="%s"' % (inactive,a[1]))
+		cur.execute(sql)
+		db.commit()
 	db.close()
 	return render(request,"test4.html")
 
 
+def training_matrix2(request):
+	shift = 'Plant 3 Days'
+	area = 'Area 3'
+	db, cur = db_set(request)
+	sql = "SELECT * FROM tkb_manpower where Shift = '%s'" %(shift)
+	cur.execute(sql)
+	tmp = cur.fetchall()
+	tmp2 = tmp[0]
+
+	sql2 = "SELECT * FROM tkb_allocation where Area = '%s'" %(area)
+	cur.execute(sql2)
+	tmpp = cur.fetchall()
+	tmpp2 = tmpp[0]
+
+
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	return render(request,"training_matrix2.html",{'tmp':tmp,'tmpp':tmpp})
+

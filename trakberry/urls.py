@@ -58,7 +58,7 @@ from views import display, db_write, create_table, test, details_session, detail
 from views import create_test_table, alter_table_name, done, new, graph, graph2, graph3, graph749, graph748, graph750, graph677, ttip,graph_close, display_time, graph_close_snap
 from views import graph677_snap, graph748_snap, graph749_snap, graph750_snap, display_initialize, test44, tech_reset,testB
 from views2 import main_password_update
-from views3 import excel_test,manpower_update
+from views3 import excel_test,manpower_update, request_test
 # ***********************************************************************************************************************************************************
 
 
@@ -131,7 +131,7 @@ from views_barcode import barcode_check_10R,barcode_input_10R,barcode_initial_10
 
 # *******************************************  Admin Section ********************************************************************************************
 from views_admin import master
-from views3 import excel_dump, excel_scrap_dump
+from views3 import excel_dump, excel_scrap_dump,training_matrix2
 # ***********************************************************************************************************************************************************
 
 # *******************************************  Scrap Section ********************************************************************************************
@@ -342,6 +342,7 @@ urlpatterns = [
 	#url(r'^schedule_add_job/get/(?P<index>\w{0,50})/$', schedule_add_job),
 	
 	#url(r'^tech/get/complete/(?P<index>\d+)/$', complete),
+	url(r'^training_matrix2/', training_matrix2),
 	
 	
 	# ************************************************************************
@@ -399,6 +400,7 @@ urlpatterns = [
 	url(r'^table_mod1/', table_mod1),
 	url(r'^kiosk_name/', kiosk_name),
 	url(r'^update_column/', update_column),
+	url(r'^request_test/', request_test),
 #	url(r'^hour_check/', hour_check),
 
 	

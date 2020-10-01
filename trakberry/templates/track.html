@@ -13,9 +13,10 @@ window.close();
 <style type="text/css">
 	.mainset{color:black;text-align:center;float:left;width:100%}
 	.wrapper_main {background:chartreuse;width:90%;margin-left: 10px;}
-	.frame1 {color:black;text-align:left;float:left;width:50%;margin-bottom: 5px;}
+	.frame1 {color:black;text-align:left;float:left;width:43%;margin-bottom: 5px;}
 	.frame1_u {color:black;text-align:center;background:rgb(214, 214, 214);float:left;width:60%;margin: 20px;}
-	.frame2{color:black;text-align:left;float:left;width:49%;position:relative;left:5px;margin-bottom: 5px;}
+	.frame2{color:black;text-align:left;float:left;width:42%;position:relative;left:5px;margin-bottom: 5px;}
+	.frame6{color:black;text-align:left;background:rgb(199, 199, 199);float:left;width:14%;position:relative;left:5px;margin-bottom: 5px;}
 	.frame3 {color:black;text-align:center;background:rgb(61, 138, 64);float:left;width:51%;position:relative;}
 	.frame4 {color:black;text-align:center;background:rgb(235, 142, 89);float:left;width:49%;position:relative;left:5px;}
 	.frame5{color:black;text-align:center;background:rgb(168, 168, 168);float:right;width:40%}
@@ -73,7 +74,7 @@ function drawCurveTypes() {
 	data.addRows(obj)
 
     var options = {
-		title: "10R80 Current Shift Chart",
+		title: "",
 		chartArea: {
 			backgroundColor: {
 				stroke: '#4322c0',
@@ -112,7 +113,7 @@ function drawCurveTypes() {
 	google.setOnLoadCallback(drawCurveTypes);
 	function drawCurveTypes() {
 		var obj = [
-				{% for item in GList1 %}
+				{% for item in GList2 %}
 				[new Date({{item.0}}*1000),{{item.1}},{{item.2}},{{item.3}}],
 				{% endfor %}
 			];
@@ -125,7 +126,7 @@ function drawCurveTypes() {
 		data.addRows(obj)
 	
 		var options = {
-			title: "Trilobe Current Shift Chart",
+			title: "",
 			chartArea: {
 				backgroundColor: {
 					stroke: '#4322c0',
@@ -169,17 +170,20 @@ function drawCurveTypes() {
 <div class="head1_u">
 	<font size="6"><b><u>Live Tracking</u></b></font>
 </div>
-<div class="frame1">  
 
-<br> 
+
+
+<div class="frame1">  
+<br> <center>
+	<font style="font-size: 35px; color:rgb(141, 179, 236); text-shadow: 1px 1px 2px black, 0 0 25px rgb(0, 0, 0), 0 0 5px rgb(255, 255, 255);">
+		{{request.session.area1}}
+</font>
+</center>
 <div id="chart_div" style="width: 100%; height: 400px; "></div>
 <br>
-
-
-
 <br><br>
 <table><tr><td>
-Current Shift Count: <b>{{request.session.count}}</b> 
+Current Shift Count: <b>{{request.session.count1}}</b> 
 </td><td>
 {{request.session.wd}} 
 {{request.session.m}}
@@ -189,141 +193,47 @@ Current Shift Count: <b>{{request.session.count}}</b>
 {{request.session.shift}} Shift
 </td></tr>
 <tr><td>
-Current Shift OA : {{request.session.oa}}%
+Current Shift OA : {{request.session.oa1}}%
 </td><td>
-Current shift target: {{request.session.target}}
+Current shift target: {{request.session.target1}}
 </td><td>
-End of Shift Projection : {{request.session.projection}}
+End of Shift Projection : {{request.session.projection1}}
 </td></tr>
 </table>
 <br><br>
-
-
 <b><u>Previous Shifts</u></b>
 <br>
 <table style="width:40%;border: 1px solid black;"><tr><td style="border:1px solid black;">
-<a href="{{request.session.local_toggle}}/track_graph_10r_prev/get/{{request.session.u1}}" onclick="window.open('{{request.session.local_toggle}}/track_graph_10r_prev/get/{{request.session.u1}}', 'newwindow', 'width=1400, height=600'); return false;">
-{{request.session.wd1}} 
-{{request.session.m1}}
-{{request.session.day1}},
+{% for i in datax %}
+<tr><td style="border:1px solid black;">
+<a href="{{request.session.local_toggle}}/track_graph_10r_prev/get/{{i.0}}" onclick="window.open('{{request.session.local_toggle}}/track_graph_10r_prev/get/{{i.0}}', 'newwindow', 'width=1400, height=600'); return false;">
+{{i.1}}
+{{i.2}}
+{{i.3}},
 2020 
-</a>
+</a></td>
+<td style="border:1px solid black;">
+{{i.4}} Shift
 </td><td style="border:1px solid black;">
-{{request.session.shift1}} Shift
-</td><td style="border:1px solid black;">
-{{request.session.count1}}
+{{i.5}}
 </td></tr>
-<tr><td style="border:1px solid black;">
-	<a href="{{request.session.local_toggle}}/track_graph_10r_prev/get/{{request.session.u2}}" onclick="window.open('{{request.session.local_toggle}}/track_graph_10r_prev/get/{{request.session.u2}}', 'newwindow', 'width=1400, height=600'); return false;">
-{{request.session.wd2}} 
-{{request.session.m2}}
-{{request.session.day2}},
-2020 </a>
-</td><td style="border:1px solid black;">
-{{request.session.shift2}} Shift
-</td><td style="border:1px solid black;">
-{{request.session.count2}}
-</td></tr>
-<tr><td style="border:1px solid black;">
-	<a href="{{request.session.local_toggle}}/track_graph_10r_prev/get/{{request.session.u3}}" onclick="window.open('{{request.session.local_toggle}}/track_graph_10r_prev/get/{{request.session.u3}}', 'newwindow', 'width=1400, height=600'); return false;">
-{{request.session.wd3}} 
-{{request.session.m3}}
-{{request.session.day3}},
-2020 </a>
-</td><td style="border:1px solid black;">
-{{request.session.shift3}} Shift
-</td><td style="border:1px solid black;">
-{{request.session.count3}}
-</td></tr>
-<tr><td style="border:1px solid black;">
-	<a href="{{request.session.local_toggle}}/track_graph_10r_prev/get/{{request.session.u4}}" onclick="window.open('{{request.session.local_toggle}}/track_graph_10r_prev/get/{{request.session.u4}}', 'newwindow', 'width=1400, height=600'); return false;">
-{{request.session.wd4}} 
-{{request.session.m4}}
-{{request.session.day4}},
-2020 </a>
-</td><td style="border:1px solid black;">
-{{request.session.shift4}} Shift
-</td><td style="border:1px solid black;">
-{{request.session.count4}}
-</td></tr>
-<tr><td style="border:1px solid black;">
-	<a href="{{request.session.local_toggle}}/track_graph_10r_prev/get/{{request.session.u5}}" onclick="window.open('{{request.session.local_toggle}}/track_graph_10r_prev/get/{{request.session.u5}}', 'newwindow', 'width=1400, height=600'); return false;">
-{{request.session.wd5}} 
-{{request.session.m5}}
-{{request.session.day5}},
-2020 </a>
-</td><td style="border:1px solid black;">
-{{request.session.shift5}} Shift
-</td><td style="border:1px solid black;">
-{{request.session.count5}}
-</td></tr>
-<tr><td style="border:1px solid black;">
-	<a href="{{request.session.local_toggle}}/track_graph_10r_prev/get/{{request.session.u6}}" onclick="window.open('{{request.session.local_toggle}}/track_graph_10r_prev/get/{{request.session.u6}}', 'newwindow', 'width=1400, height=600'); return false;">
-{{request.session.wd6}} 
-{{request.session.m6}}
-{{request.session.day6}},
-2020 </a>
-</td><td style="border:1px solid black;">
-{{request.session.shift6}} Shift
-</td><td style="border:1px solid black;">
-{{request.session.count6}}
-</td></tr>
-<tr><td style="border:1px solid black;">
-	<a href="{{request.session.local_toggle}}/track_graph_10r_prev/get/{{request.session.u7}}" onclick="window.open('{{request.session.local_toggle}}/track_graph_10r_prev/get/{{request.session.u7}}', 'newwindow', 'width=1400, height=600'); return false;">
-{{request.session.wd7}} 
-{{request.session.m7}}
-{{request.session.day7}},
-2020 </a>
-</td><td style="border:1px solid black;">
-{{request.session.shift7}} Shift
-</td><td style="border:1px solid black;">
-{{request.session.count7}}
-</td></tr>
-<tr><td style="border:1px solid black;">
-	<a href="{{request.session.local_toggle}}/track_graph_10r_prev/get/{{request.session.u8}}" onclick="window.open('{{request.session.local_toggle}}/track_graph_10r_prev/get/{{request.session.u8}}', 'newwindow', 'width=1400, height=600'); return false;">
-{{request.session.wd8}} 
-{{request.session.m8}}
-{{request.session.day8}},
-2020 </a>
-</td><td style="border:1px solid black;">
-{{request.session.shift8}} Shift
-</td><td style="border:1px solid black;">
-{{request.session.count8}}
-</td></tr>
-<tr><td style="border:1px solid black;">
-	<a href="{{request.session.local_toggle}}/track_graph_10r_prev/get/{{request.session.u9}}" onclick="window.open('{{request.session.local_toggle}}/track_graph_10r_prev/get/{{request.session.u9}}', 'newwindow', 'width=1400, height=600'); return false;">
-{{request.session.wd9}} 
-{{request.session.m9}}
-{{request.session.day9}},
-2020 </a>
-</td><td style="border:1px solid black;">
-{{request.session.shift9}} Shift
-</td><td style="border:1px solid black;">
-{{request.session.count9}}
-</td></tr>
+{% endfor %}
 </table>
-<!-- <br><br>
-{% for item in GList %}
-{{item.0}}  &nbsp;&nbsp;&nbsp;&nbsp;
-{{item.1}}  &nbsp;&nbsp;&nbsp;&nbsp;
-{{item.2}}  &nbsp;&nbsp;&nbsp;&nbsp;
-{{item.3}}  &nbsp;&nbsp;&nbsp;&nbsp;
-
-<br>
-{% endfor %} -->
 </div>
 
 
 <div class="frame2">  
 
-
-	<br> 
+	<br> <center>
+	<font style="font-size: 35px; color:rgb(141, 179, 236); text-shadow: 1px 1px 2px black, 0 0 25px rgb(0, 0, 0), 0 0 5px rgb(255, 255, 255);">
+		{{request.session.area2}}
+	</font>
+</center>
 	<div id="chart2_div" style="width: 100%; height: 400px; "></div>
 	<br>
-
 	<br><br>
 	<table><tr><td>
-	Current Shift Count: <b>{{request.session.counta}}</b> 
+	Current Shift Count: <b>{{request.session.count2}}</b> 
 	</td><td>
 	{{request.session.wd}} 
 	{{request.session.m}}
@@ -333,121 +243,67 @@ End of Shift Projection : {{request.session.projection}}
 	{{request.session.shift}} Shift
 	</td></tr>
 	<tr><td>
-	Current Shift OA : {{request.session.oaa}}%
+	Current Shift OA : {{request.session.oa2}}%
 	</td><td>
-	Current shift target: {{request.session.targeta}}
+	Current shift target: {{request.session.target2}}
 	</td><td>
-	End of Shift Projection : {{request.session.projectiona}}
+	End of Shift Projection : {{request.session.projection2}}
 	</td></tr>
 	</table>
 	<br><br>
-	
 	<b><u>Previous Shifts</u></b>
 	<br>
 	<table style="width:40%;border: 1px solid black;"><tr><td style="border:1px solid black;">
-		<a href="{{request.session.local_toggle}}/track_graph_tri_prev/get/{{request.session.u1}}" onclick="window.open('{{request.session.local_toggle}}/track_graph_tri_prev/get/{{request.session.u1}}', 'newwindow', 'width=1400, height=600'); return false;">
-	{{request.session.wd1}} 
-	{{request.session.m1}}
-	{{request.session.day1}},
-	2020 </a>
-	</td><td style="border:1px solid black;">
-	{{request.session.shift1}} Shift
-	</td><td style="border:1px solid black;">
-	{{request.session.count1a}}
-	</td></tr>
+	{% for i in datax2 %}
 	<tr><td style="border:1px solid black;">
-		<a href="{{request.session.local_toggle}}/track_graph_tri_prev/get/{{request.session.u2}}" onclick="window.open('{{request.session.local_toggle}}/track_graph_tri_prev/get/{{request.session.u2}}', 'newwindow', 'width=1400, height=600'); return false;">
-	{{request.session.wd2}} 
-	{{request.session.m2}}
-	{{request.session.day2}},
-	2020 </a>
+	<a href="{{request.session.local_toggle}}/track_graph_10r_prev/get/{{i.0}}" onclick="window.open('{{request.session.local_toggle}}/track_graph_10r_prev/get/{{i.0}}', 'newwindow', 'width=1400, height=600'); return false;">
+	{{i.1}}
+	{{i.2}}
+	{{i.3}},
+	2020 
+	</a></td>
+	<td style="border:1px solid black;">
+	{{i.4}} Shift
 	</td><td style="border:1px solid black;">
-	{{request.session.shift2}} Shift
-	</td><td style="border:1px solid black;">
-	{{request.session.count2a}}
+	{{i.5}}
 	</td></tr>
-	<tr><td style="border:1px solid black;">
-		<a href="{{request.session.local_toggle}}/track_graph_tri_prev/get/{{request.session.u3}}" onclick="window.open('{{request.session.local_toggle}}/track_graph_tri_prev/get/{{request.session.u3}}', 'newwindow', 'width=1400, height=600'); return false;">
-	{{request.session.wd3}} 
-	{{request.session.m3}}
-	{{request.session.day3}},
-	2020 </a>
-	</td><td style="border:1px solid black;">
-	{{request.session.shift3}} Shift
-	</td><td style="border:1px solid black;">
-	{{request.session.count3a}}
-	</td></tr>
-	<tr><td style="border:1px solid black;">
-		<a href="{{request.session.local_toggle}}/track_graph_tri_prev/get/{{request.session.u4}}" onclick="window.open('{{request.session.local_toggle}}/track_graph_tri_prev/get/{{request.session.u4}}', 'newwindow', 'width=1400, height=600'); return false;">
-	{{request.session.wd4}} 
-	{{request.session.m4}}
-	{{request.session.day4}},
-	2020 </a>
-	</td><td style="border:1px solid black;">
-	{{request.session.shift4}} Shift
-	</td><td style="border:1px solid black;">
-	{{request.session.count4a}}
-	</td></tr>
-	<tr><td style="border:1px solid black;">
-		<a href="{{request.session.local_toggle}}/track_graph_tri_prev/get/{{request.session.u5}}" onclick="window.open('{{request.session.local_toggle}}/track_graph_tri_prev/get/{{request.session.u5}}', 'newwindow', 'width=1400, height=600'); return false;">
-	{{request.session.wd5}} 
-	{{request.session.m5}}
-	{{request.session.day5}},
-	2020 </a>
-	</td><td style="border:1px solid black;">
-	{{request.session.shift5}} Shift
-	</td><td style="border:1px solid black;">
-	{{request.session.count5a}}
-	</td></tr>
-	<tr><td style="border:1px solid black;">
-		<a href="{{request.session.local_toggle}}/track_graph_tri_prev/get/{{request.session.u6}}" onclick="window.open('{{request.session.local_toggle}}/track_graph_tri_prev/get/{{request.session.u6}}', 'newwindow', 'width=1400, height=600'); return false;">
-	{{request.session.wd6}} 
-	{{request.session.m6}}
-	{{request.session.day6}},
-	2020 </a>
-	</td><td style="border:1px solid black;">
-	{{request.session.shift6}} Shift
-	</td><td style="border:1px solid black;">
-	{{request.session.count6a}}
-	</td></tr>
-	<tr><td style="border:1px solid black;">
-		<a href="{{request.session.local_toggle}}/track_graph_tri_prev/get/{{request.session.u7}}" onclick="window.open('{{request.session.local_toggle}}/track_graph_tri_prev/get/{{request.session.u7}}', 'newwindow', 'width=1400, height=600'); return false;">
-	{{request.session.wd7}} 
-	{{request.session.m7}}
-	{{request.session.day7}},
-	2020 </a>
-	</td><td style="border:1px solid black;">
-	{{request.session.shift7}} Shift
-	</td><td style="border:1px solid black;">
-	{{request.session.count7a}}
-	</td></tr>
-	<tr><td style="border:1px solid black;">
-		<a href="{{request.session.local_toggle}}/track_graph_tri_prev/get/{{request.session.u8}}" onclick="window.open('{{request.session.local_toggle}}/track_graph_tri_prev/get/{{request.session.u8}}', 'newwindow', 'width=1400, height=600'); return false;">
-	{{request.session.wd8}} 
-	{{request.session.m8}}
-	{{request.session.day8}},
-	2020 </a>
-	</td><td style="border:1px solid black;">
-	{{request.session.shift8}} Shift
-	</td><td style="border:1px solid black;">
-	{{request.session.count8a}}
-	</td></tr>
-	<tr><td style="border:1px solid black;">
-		<a href="{{request.session.local_toggle}}/track_graph_tri_prev/get/{{request.session.u9}}" onclick="window.open('{{request.session.local_toggle}}/track_graph_tri_prev/get/{{request.session.9}}', 'newwindow', 'width=1400, height=600'); return false;">
-	{{request.session.wd9}} 
-	{{request.session.m9}}
-	{{request.session.day9}},
-	2020 </a>
-	</td><td style="border:1px solid black;">
-	{{request.session.shift9}} Shift
-	</td><td style="border:1px solid black;">
-	{{request.session.count9a}}
-	</td></tr>
+	{% endfor %}
 	</table>
-	<br><br>
-	
 	</div>
 
+
+	<div class="frame6">
+		<br><br><br>
+
+<center>
+<p><b><u>Production Per Line</u></b></p>	
+
+
+<br>
+<a href="{{request.session.local_toggle}}/chart1_1467" onclick="window.open('{{request.session.local_toggle}}/chart1_1467', 'newwindow', 'width=1400, height=600'); return false;">
+	 Chart 1</a>&nbsp;&nbsp;&nbsp;&nbsp;
+(1467)&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="{{request.session.local_toggle}}/chart2_1467" onclick="window.open('{{request.session.local_toggle}}/chart2_1467', 'newwindow', 'width=1400, height=600'); return false;">
+	Chart 2</a>
+	<br>
+<a href="{{request.session.local_toggle}}/chart1_3050" onclick="window.open('{{request.session.local_toggle}}/chart1_3050', 'newwindow', 'width=1400, height=600'); return false;">
+Chart 1</a>&nbsp;&nbsp;&nbsp;&nbsp;
+(3050)&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="{{request.session.local_toggle}}/chart2_3050" onclick="window.open('{{request.session.local_toggle}}/chart2_3050', 'newwindow', 'width=1400, height=600'); return false;">
+	Chart 2</a>
+	<br>
+<a href="{{request.session.local_toggle}}/chart1_9341" onclick="window.open('{{request.session.local_toggle}}/chart1_9341', 'newwindow', 'width=1400, height=600'); return false;">
+Chart 1</a>&nbsp;&nbsp;&nbsp;&nbsp;
+(9341)&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="{{request.session.local_toggle}}/chart2_9341" onclick="window.open('{{request.session.local_toggle}}/chart2_9341', 'newwindow', 'width=1400, height=600'); return false;">
+	Chart 2</a>
+	<br>
+<a href="{{request.session.local_toggle}}/chart1_0455" onclick="window.open('{{request.session.local_toggle}}/chart1_0455', 'newwindow', 'width=1400, height=600'); return false;">
+Chart 1</a>&nbsp;&nbsp;&nbsp;&nbsp;
+(0455)&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="{{request.session.local_toggle}}/chart2_0455" onclick="window.open('{{request.session.local_toggle}}/chart2_0455', 'newwindow', 'width=1400, height=600'); return false;">
+	Chart 2</a>
+	</div>
 
 
 </div>

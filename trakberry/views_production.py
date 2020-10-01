@@ -55,15 +55,29 @@ def track_10r_data(request,t,u):
 	gr_list, brk1, brk2, multiplier  = Graph_Data(t,u,m,tmp,mrr)
 	return gr_list
 
+def track_data(request,t,u,part,rate):
+	m = '1533'
+	# mrr = (337*(28800))/float(28800)
+	mrr = (rate*(28800))/float(28800)
+	db, cursor = db_set(request)
+	sql = "SELECT * FROM GFxPRoduction where TimeStamp >= '%d' and TimeStamp< '%d' and part = '%s'" %(u,t,part)
+	cursor.execute(sql)
+	tmp = cursor.fetchall()	
+	db.close()
+	gr_list, brk1, brk2, multiplier  = Graph_Data(t,u,m,tmp,mrr)
+	return gr_list
+
 def track_tri_data(request,t,u):
     # m1 = '650R'
     m = '650'
+    pt = '50-1467'
     mrr = (189*(28800))/float(28800)
     db, cursor = db_set(request)
-    sql = "SELECT Id,Left(Machine,3),Part,PerpetualCount,TimeStamp FROM GFxPRoduction where TimeStamp >= '%d' and TimeStamp< '%d' and Left(machine,3) = '%s'" %(u,t,m)
+    sql = "SELECT Id,Machine,Part,PerpetualCount,TimeStamp FROM GFxPRoduction where TimeStamp >= '%d' and TimeStamp< '%d' and Part = '%s'" %(u,t,pt)
     cursor.execute(sql)
     tmp = cursor.fetchall()	
     db.close()
+    t=4/0
     gr_list, brk1, brk2, multiplier  = Graph_Data(t,u,m,tmp,mrr)
     return gr_list
 
@@ -116,6 +130,95 @@ def day_breakdown(tt):
 		mnth='Sep'
 	return wday,mnth,day1,shift
 
+def track_area(request):
+
+	data_area = request.session['data_area'] # Data for 1 or 2 chart
+	target_area = int(request.session['rate_area'])
+	prt = request.session['part_area']
+	rate1 = request.session['rate_area']
+	target = rate1
+
+	t=int(time.time())
+	tm = time.localtime(t)
+	request.session["time"] = t
+	shift_start = -2
+	current_shift = 3
+	if tm[3]<22 and tm[3]>=14:
+		shift_start = 14
+	elif tm[3]<14 and tm[3]>=6:
+		shift_start = 6
+	cur_hour = tm[3]
+	if cur_hour == 22:
+		cur_hour = -1
+	u = t - (((cur_hour-shift_start)*60*60)+(tm[4]*60)+tm[5])    # Starting unix of shift
+
+	shift_time = t-u
+	shift_left = 28800 - shift_time
+	request.session["shift_time"] = shift_time
+
+	# var1 = 'target' + data_area
+	target = target_area / float(3600) 
+	target = shift_time * target
+
+	# request.session[var1] = int(shift_time * target)
+
+	wd, m, day, shift = day_breakdown(u)
+	request.session['wd'] = wd
+	request.session['m'] = m
+	request.session['shift'] = shift
+	request.session['day'] = day
+
+	db, cur = db_set(request)
+	aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s'" % (u,t,prt)
+	cur.execute(aql)
+	tmp2 = cur.fetchall()
+	tmp3 = tmp2[0]
+	cnt = tmp3[0]
+	# var1 = 'count' + data_area
+	# request.session[var1] = cnt
+
+	u1, wd1, m1, day1, shift1, prev_cnt1 = [],[],[],[],[],[]
+	utemp = u
+	for i in range(1,11):
+		unew = utemp - 28800
+		x1, x2, x3, x4 = day_breakdown(unew)
+		u1.append(str(unew))
+		wd1.append(x1)
+		m1.append(x2)
+		day1.append(x3)
+		shift1.append(x4)
+		
+		aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s'" % (unew,utemp,prt)
+		cur.execute(aql)
+		tmp2 = cur.fetchall()
+		tmp3 = tmp2[0]
+		prev_cnt1.append(str(tmp3[0]))
+
+		utemp = unew
+	db.close()
+
+	current_rate = cnt / float(shift_time)
+	projection = int(current_rate * (shift_left)) + cnt
+	
+	oa = cnt / float(target)
+	oa = (int(oa * 10000)) / float(100)
+	check_area = request.session['data_area']
+	if check_area == 1:
+		request.session["oa1"] = oa
+		request.session["projection1"] = projection
+		request.session["count1"] = cnt
+		request.session['target1'] = int(target)
+	else:
+		request.session["oa2"] = oa
+		request.session["projection2"] = projection
+		request.session["count2"] = cnt
+		request.session['target2'] = int(target)
+
+	gr_list = track_data(request,t,u,prt,rate1) # Get the Graph Data
+	data1 = zip(u1,wd1,m1,day1,shift1,prev_cnt1)
+	return data1, gr_list
+
+
 def track_10r(request):
 	t=int(time.time())
 	# t = 1596054870
@@ -135,8 +238,7 @@ def track_10r(request):
 	shift_time = t-u
 	shift_left = 28800 - shift_time
 	request.session["shift_time"] = shift_time
-	# target = 337 / float(3600) # 10R Target
-	target = 332 / float(3600) # Trilobe Target
+	target = 332 / float(3600) # 10R Target
 
 	target = shift_time * target
 	request.session["target"] = int(target)
@@ -289,7 +391,6 @@ def track_tri(request):
 	shift_time = t-u
 	shift_left = 28800 - shift_time
 	request.session["shift_time"] = shift_time
-	# target = 337 / float(3600) # 10R Target
 	target = 189 / float(3600) # Trilobe Target
 
 	target = shift_time * target
@@ -437,9 +538,38 @@ def track_tri(request):
 
 
 def tracking(request):
-	u,tm,gr_list = track_10r(request)
-	u1,tm1,gr_list1 = track_tri(request)
-	return render(request, "track.html",{"tm":u,"dt":tm,'GList':gr_list,"tm1":u1,"dt1":tm1,"GList1":gr_list1})
+	try:
+		request.session['data_area'] = 1
+		request.session['target_area'] = 1
+		request.session['part_area'] = request.session['part_area1']
+		request.session['rate_area'] = request.session['rate_area1']
+		data1, gr_list1 = track_area(request)
+		request.session['data_area'] = 2
+		request.session['target_area'] = 2
+		request.session['part_area'] = request.session['part_area2']
+		request.session['rate_area'] = request.session['rate_area2']
+		data2, gr_list2 = track_area(request)
+
+	except:
+		request.session['area1'] = '50-1467 Inspection'
+		request.session['data_area'] =1 # Data for 1 or 2 chart
+		request.session['target_area'] = 1
+		request.session['part_area'] = '50-1467'
+		request.session['part_area1'] = '50-1467'
+		request.session['rate_area'] = 185
+		request.session['rate_area1'] = 185
+		data1, gr_list1 = track_area(request)
+		request.session['area2'] = '50-3050 Inspection'
+		request.session['data_area'] =2 # Data for 1 or 2 chart
+		request.session['target_area'] = 2
+		request.session['part_area'] = '50-3050'
+		request.session['part_area2'] = '50-3050'
+		request.session['rate_area'] = 58
+		request.session['rate_area2'] = 58
+		data2, gr_list2 = track_area(request)
+
+	return render(request, "track.html",{'GList':gr_list1,"datax":data1,'GList2':gr_list2, "datax2":data2})
+
 
 def mgmt(request):
 	request.session["bounce"] = 0

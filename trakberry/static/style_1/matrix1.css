@@ -1,7 +1,7 @@
 div {
   max-width: 100%;
-  max-height: 700px;
-  overflow: scroll;
+  max-height: 600px;
+  /* overflow: scroll; */
 }
 
 
@@ -11,13 +11,16 @@ div {
 thead th {
   position: -webkit-sticky; /* for Safari */
   position: sticky;
-  top: 0;
+	top: 0;
+	font-size: 15px;
+
 }
 
 tbody th {
   position: -webkit-sticky; /* for Safari */
   position: sticky;
-  left: 0;
+	left: 0;
+	font-size: 15px;
 }
 
 
@@ -25,7 +28,7 @@ tbody th {
 
 thead th:first-child {
   left: 0;
-  z-index: 2;
+  z-index: ;
 }
 
 
@@ -51,5 +54,6 @@ table {
 
 td,
 th {
-  padding: 0.5em;
+  
 }
+

@@ -1,0 +1,129 @@
+
+
+<!DOCTYPE html>
+<html>
+<body>
+
+<head>
+	<link rel="stylesheet" href="/static/style_1/matrix1.css">
+
+	<style>
+		.dropbtn {
+			background-color: #93b0d1;
+			color: white;
+			padding: 0px;
+			font-size: 10px;
+			border: none;
+		}
+		
+		.dropdown {
+			position: relative;
+			display: inline-block;
+		}
+		
+		.dropdown-content {
+			display: none;
+			position: absolute;
+			background-color: #f1f1f1;
+			min-width: 160px;
+			box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+			z-index: 1;
+		}
+		
+		.dropdown-content a {
+			color: black;
+			padding: 12px 16px;
+			text-decoration: none;
+			display: block;
+		}
+		
+		.dropdown-content a:hover {background-color: #ddd;}
+		
+		.dropdown:hover .dropdown-content {display: block;}
+		
+		.dropdown:hover .dropbtn {background-color: #3e8e41;}
+		</style>
+
+
+</head>
+
+
+<div>
+  <table>
+    <thead>
+      <tr>
+				<th style="border:1px solid black;z-index: 99;">
+				<!-- put in Color Key top left-->
+				<button style="text-align: center;width:100%;border-style: solid;border-color:#bbbbbb;border-radius: 0px;background-color:#bbbbbb;">Untrained</button><br>
+				<button style="text-align: center;width:100%;border-style: solid;border-color:#f8f68f;border-radius: 0px;background-color:#f8f68f;">Training</button><br>
+				<button style="text-align: center;width:100%;border-style: solid;border-color:#63e757;border-radius: 0px;background-color:#63e757;">Trained</button><br>
+				<button style="text-align: center;width:100%;border-style: solid;border-color:#8fdaf8;border-radius: 0px;background-color:#8fdaf8;">A Trainer</button><br>
+			</th>
+				{% for item in tmpp %}
+				<th style="border:1px solid black;">{{item.1}}</th>
+			{% endfor %}
+
+      </tr>
+    </thead>
+    <tbody>
+			{% for item2 in tmp %}
+      <tr>
+				<th style="border:1px solid black;z-index: 95;">{{item2.1}}</th>
+				{% for item in tmpp %}
+			<td  style="border:1px solid black;z-index: 2;padding:0px;"> 
+				<center>
+				<div class="dropdown">
+					<button class="dropbtn" style="text-align: center;width:100%;border-style: solid;border-color:#bbbbbb;border-radius: 3px;background-color:#bbbbbb;">
+						Untrained
+					</button>
+					<div class="dropdown-content">
+						<a href="#">Untrained</a>
+						<a href="#">Training</a>
+						<a href="#">Trained</a>
+						<a href="#">A Trainer</a>
+					</div>
+				</div>
+			</center>
+			</td>
+		{% endfor %}
+
+		{% for i in '01234567890123456789012345678901234567890123456789012345678901234567890123456789'|make_list %}
+				<td  style="border:0px solid black;">&nbsp; &nbsp; &nbsp;  </td>
+				{% endfor %}	
+
+
+			</tr>
+			{% endfor %}
+
+			{% for item in tmpp %}
+			<tr>
+				<th style="border:0px solid black;"> &nbsp; &nbsp; &nbsp; </th>
+				{% for item in tmpp %}
+				<td  style="border:0px solid black;">&nbsp; &nbsp; &nbsp;  </td>
+				{% endfor %}
+
+				{% for i in '01234567890123456789012345678901234567890123456789012345678901234567890123456789'|make_list %}
+				<td  style="border:0px solid black;">&nbsp; &nbsp; &nbsp;  </td>
+				{% endfor %}		
+
+			</tr>
+			{% endfor %}
+
+
+			
+		</tbody>
+  </table>
+</div> 
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
