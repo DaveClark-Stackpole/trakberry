@@ -10,13 +10,26 @@ window.close();
 } 
 </script>
 
+<script>
+	function L9341(){location.replace("{{request.session.local_toggle}}/chart1_9341")}
+	function R9341(){location.replace("{{request.session.local_toggle}}/chart2_9341")}
+	function L0455(){location.replace("{{request.session.local_toggle}}/chart1_0455")}
+	function R0455(){location.replace("{{request.session.local_toggle}}/chart2_0455")}
+	function L1467(){location.replace("{{request.session.local_toggle}}/chart1_1467")}
+	function R1467(){location.replace("{{request.session.local_toggle}}/chart2_1467")}
+	function L3050(){location.replace("{{request.session.local_toggle}}/chart1_3050")}
+	function R3050(){location.replace("{{request.session.local_toggle}}/chart2_3050")}
+
+
+</script>
+
 <style type="text/css">
 	.mainset{color:black;text-align:center;float:left;width:100%}
 	.wrapper_main {background:chartreuse;width:90%;margin-left: 10px;}
 	.frame1 {color:black;text-align:left;float:left;width:43%;margin-bottom: 5px;}
 	.frame1_u {color:black;text-align:center;background:rgb(214, 214, 214);float:left;width:60%;margin: 20px;}
 	.frame2{color:black;text-align:left;float:left;width:42%;position:relative;left:5px;margin-bottom: 5px;}
-	.frame6{color:black;text-align:left;background:rgb(199, 199, 199);float:left;width:14%;position:relative;left:5px;margin-bottom: 5px;}
+	.frame6{color:black;text-align:left;background:rgb(235, 235, 235);float:left;width:14%;position:relative;left:5px;margin-bottom: 5px;}
 	.frame3 {color:black;text-align:center;background:rgb(61, 138, 64);float:left;width:51%;position:relative;}
 	.frame4 {color:black;text-align:center;background:rgb(235, 142, 89);float:left;width:49%;position:relative;left:5px;}
 	.frame5{color:black;text-align:center;background:rgb(168, 168, 168);float:right;width:40%}
@@ -276,34 +289,18 @@ End of Shift Projection : {{request.session.projection1}}
 		<br><br><br>
 
 <center>
-<p><b><u>Production Per Line</u></b></p>	
+<p><b><u>Tracking</u></b></p>	
 
 
 <br>
-<a href="{{request.session.local_toggle}}/chart1_1467" onclick="window.open('{{request.session.local_toggle}}/chart1_1467', 'newwindow', 'width=1400, height=600'); return false;">
-	 Chart 1</a>&nbsp;&nbsp;&nbsp;&nbsp;
-(1467)&nbsp;&nbsp;&nbsp;&nbsp;
-<a href="{{request.session.local_toggle}}/chart2_1467" onclick="window.open('{{request.session.local_toggle}}/chart2_1467', 'newwindow', 'width=1400, height=600'); return false;">
-	Chart 2</a>
-	<br>
-<a href="{{request.session.local_toggle}}/chart1_3050" onclick="window.open('{{request.session.local_toggle}}/chart1_3050', 'newwindow', 'width=1400, height=600'); return false;">
-Chart 1</a>&nbsp;&nbsp;&nbsp;&nbsp;
-(3050)&nbsp;&nbsp;&nbsp;&nbsp;
-<a href="{{request.session.local_toggle}}/chart2_3050" onclick="window.open('{{request.session.local_toggle}}/chart2_3050', 'newwindow', 'width=1400, height=600'); return false;">
-	Chart 2</a>
-	<br>
-<a href="{{request.session.local_toggle}}/chart1_9341" onclick="window.open('{{request.session.local_toggle}}/chart1_9341', 'newwindow', 'width=1400, height=600'); return false;">
-Chart 1</a>&nbsp;&nbsp;&nbsp;&nbsp;
-(9341)&nbsp;&nbsp;&nbsp;&nbsp;
-<a href="{{request.session.local_toggle}}/chart2_9341" onclick="window.open('{{request.session.local_toggle}}/chart2_9341', 'newwindow', 'width=1400, height=600'); return false;">
-	Chart 2</a>
-	<br>
-<a href="{{request.session.local_toggle}}/chart1_0455" onclick="window.open('{{request.session.local_toggle}}/chart1_0455', 'newwindow', 'width=1400, height=600'); return false;">
-Chart 1</a>&nbsp;&nbsp;&nbsp;&nbsp;
-(0455)&nbsp;&nbsp;&nbsp;&nbsp;
-<a href="{{request.session.local_toggle}}/chart2_0455" onclick="window.open('{{request.session.local_toggle}}/chart2_0455', 'newwindow', 'width=1400, height=600'); return false;">
-	Chart 2</a>
-	</div>
+<button onclick="L1467()">Left Chart</button> (1467) <button onclick="R1467()">Right Chart</button>
+<br>
+<button onclick="L3050()">Left Chart</button> (3050) <button onclick="R3050()">Right Chart</button>
+<br>
+<button onclick="L9341()">Left Chart</button> (9341) <button onclick="R9341()">Right Chart</button>
+<br>
+<button onclick="L0455()">Left Chart</button> (0455) <button onclick="R0455()">Right Chart</button>
+</div>
 
 
 </div>

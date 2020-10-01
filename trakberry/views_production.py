@@ -556,8 +556,8 @@ def tracking(request):
 		request.session['target_area'] = 1
 		request.session['part_area'] = '50-1467'
 		request.session['part_area1'] = '50-1467'
-		request.session['rate_area'] = 185
-		request.session['rate_area1'] = 185
+		request.session['rate_area'] = 189
+		request.session['rate_area1'] = 189
 		data1, gr_list1 = track_area(request)
 		request.session['area2'] = '50-3050 Inspection'
 		request.session['data_area'] =2 # Data for 1 or 2 chart
@@ -569,6 +569,48 @@ def tracking(request):
 		data2, gr_list2 = track_area(request)
 
 	return render(request, "track.html",{'GList':gr_list1,"datax":data1,'GList2':gr_list2, "datax2":data2})
+
+def chart1_1467(request):
+		request.session['area1'] = '50-1467 Inspection'
+		request.session['part_area1'] = '50-1467'
+		request.session['rate_area1'] = 189
+		return render(request, "redirect_tracking.html")
+
+def chart2_1467(request):
+		request.session['area2'] = '50-1467 Inspection'
+		request.session['part_area2'] = '50-1467'
+		request.session['rate_area2'] = 189
+		return render(request, "redirect_tracking.html")
+def chart1_3050(request):
+		request.session['area1'] = '50-3050 Inspection'
+		request.session['part_area1'] = '50-3050'
+		request.session['rate_area1'] = 58
+		return render(request, "redirect_tracking.html")
+def chart2_3050(request):
+		request.session['area2'] = '50-3050 Inspection'
+		request.session['part_area2'] = '50-3050'
+		request.session['rate_area2'] = 58
+		return render(request, "redirect_tracking.html")
+def chart1_0455(request):
+		request.session['area1'] = '50-0455 Inspection'
+		request.session['part_area1'] = '50-0455'
+		request.session['rate_area1'] = 100
+		return render(request, "redirect_tracking.html")
+def chart2_0455(request):
+		request.session['area2'] = '50-0455 Inspection'
+		request.session['part_area2'] = '50-0455'
+		request.session['rate_area2'] = 100
+		return render(request, "redirect_tracking.html")
+def chart1_9341(request):
+		request.session['area1'] = '50-9341 Inspection'
+		request.session['part_area1'] = '50-9341'
+		request.session['rate_area1'] = 332
+		return render(request, "redirect_tracking.html")
+def chart2_9341(request):
+		request.session['area2'] = '50-9341 Inspection'
+		request.session['part_area2'] = '50-9341'
+		request.session['rate_area2'] = 332
+		return render(request, "redirect_tracking.html")
 
 
 def mgmt(request):
