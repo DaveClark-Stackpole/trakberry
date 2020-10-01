@@ -361,7 +361,8 @@ def Graph_Data(t,u,machine,tmp,multiplier):
 		cr = cr + multiplier
 		cm = cr * .8
 		tst = []
-		[tup(x) for x in tmp if fup(x) == machine and nup(x) < yy]
+		[tup(x) for x in tmp if nup(x) < yy]
+		# [tup(x) for x in tmp if fup(x) == machine and nup(x) < yy]
 
 		by[ab] = sum(int(i) for i in tst)
 

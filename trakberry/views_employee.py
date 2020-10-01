@@ -470,6 +470,7 @@ def matrix_info_reload(request):
 	return render(request, "done_matrix.html")	
 	
 def matrix_info_display(request):
+	
 	try:
 		request.session["position"]
 	except:
@@ -493,6 +494,7 @@ def matrix_info_display(request):
 	jql = "SELECT * FROM tkb_jobs WHERE Position = '%s' ORDER BY  %s %s, %s %s" %(position,'Description','ASC','Job_Name','ASC')
 	cur.execute(jql)
 	jmp = cur.fetchall()
+
 
 	#return render(request, "test22.html", {'jmp':jmp,'job_ctr':job_ctr,'tmp':tmp})
 	

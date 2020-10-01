@@ -58,7 +58,7 @@ from views import display, db_write, create_table, test, details_session, detail
 from views import create_test_table, alter_table_name, done, new, graph, graph2, graph3, graph749, graph748, graph750, graph677, ttip,graph_close, display_time, graph_close_snap
 from views import graph677_snap, graph748_snap, graph749_snap, graph750_snap, display_initialize, test44, tech_reset,testB
 from views2 import main_password_update
-from views3 import excel_test,manpower_update
+from views3 import excel_test,manpower_update, request_test
 # ***********************************************************************************************************************************************************
 
 
@@ -116,6 +116,7 @@ from views_shipping import forklift, forklift_login_form, forklift_logout, forkl
 from views_production import mgmt,mgmt_login_form,mgmt_logout,mgmt_production_hourly,mgmt_production_hourly_edit, mgmt_production, mgmt_display_edit, mgmt_cycletime
 from views_production import mgmt_users_logins, mgmt_users_logins_edit, mgmt_users_logins_update, mgmt_users_logins_add, mgmt_users_logins_add_new
 from views_production import mgmt_test1,track_10r_data,tracking,track_graph_10r_prev,track_graph_tri_prev
+from views_production import chart1_1467,chart2_1467,chart1_3050,chart2_3050,chart1_0455,chart2_0455,chart1_9341,chart2_9341
 
 from views4 import ios_test, IsDone, NotDone, target_fix1, medium_production, multidrop, scantest, target_fix1
 from views4 import target_fix_5401, target_fix_5404, target_fix_5399, target_fix_5214, target_fix_3214
@@ -131,7 +132,7 @@ from views_barcode import barcode_check_10R,barcode_input_10R,barcode_initial_10
 
 # *******************************************  Admin Section ********************************************************************************************
 from views_admin import master
-from views3 import excel_dump, excel_scrap_dump
+from views3 import excel_dump, excel_scrap_dump,training_matrix2
 # ***********************************************************************************************************************************************************
 
 # *******************************************  Scrap Section ********************************************************************************************
@@ -342,6 +343,7 @@ urlpatterns = [
 	#url(r'^schedule_add_job/get/(?P<index>\w{0,50})/$', schedule_add_job),
 	
 	#url(r'^tech/get/complete/(?P<index>\d+)/$', complete),
+	url(r'^training_matrix2/', training_matrix2),
 	
 	
 	# ************************************************************************
@@ -399,6 +401,7 @@ urlpatterns = [
 	url(r'^table_mod1/', table_mod1),
 	url(r'^kiosk_name/', kiosk_name),
 	url(r'^update_column/', update_column),
+	url(r'^request_test/', request_test),
 #	url(r'^hour_check/', hour_check),
 
 	
@@ -490,6 +493,15 @@ urlpatterns = [
 	url(r'^tracking/', tracking),
 	url(r'^track_graph_10r_prev/get/(?P<index>\d+)/$', track_graph_10r_prev),
 	url(r'^track_graph_tri_prev/get/(?P<index>\d+)/$', track_graph_tri_prev),
+
+	url(r'^chart1_1467/', chart1_1467),
+	url(r'^chart2_1467/', chart2_1467),
+	url(r'^chart1_3050/', chart1_3050),
+	url(r'^chart2_3050/', chart2_3050),
+	url(r'^chart1_0455/', chart1_0455),
+	url(r'^chart2_0455/', chart2_0455),
+	url(r'^chart1_9341/', chart1_9341),
+	url(r'^chart2_9341/', chart2_9341),
 
 	# ************************************************************************
 

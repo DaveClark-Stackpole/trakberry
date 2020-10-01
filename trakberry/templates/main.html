@@ -108,6 +108,11 @@ html, body {height: 100%;width: 100%;padding: 0;margin: 0;}
  
 
 
+
+
+
+
+
 {% block styleA %}
 {% endblock %}	
 
@@ -184,7 +189,10 @@ function goBack() {
 		 });
 	 </script>
 	 {% endif %}
-  
+	
+	 
+
+
 	</head>
 	
 
@@ -310,8 +318,8 @@ function goBack() {
                 
                 
 				{%block active_4%}
-				
-				<li><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> Employee<b class="caret"></b></a>
+													
+				<!-- <li><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> Employee<b class="caret"></b></a>
 					<ul class="dropdown-menu multi-level">
 						
 						<li class="dropdown-submenu">
@@ -319,34 +327,34 @@ function goBack() {
                             <ul class="dropdown-menu">
                                 
                                 <li class="dropdown-submenu">
-									<!-- <li><a href="#">Matrix</a></li> -->
+
 									<li><a href="{{request.session.local_toggle}}/matrix_info_init">Matrix</a></li> 
-										 <!-- <li><a href="#">Matrix</a></li> -->
+
                                 </li>
                                 
                                 <li class="dropdown-submenu">
                                      <li><a href="{{request.session.local_toggle}}/job_info_display">Jobs</a> 
-                                    <!-- <li><a href="#">Jobs</a> -->
-										 <!--</a>--></li> 
+             
+										 </li> 
                                 </li>
 
 							</ul>
-                        </li>
+                        </li> -->
 						
 						
 						
-		
-						<li><a href="#">Employee List</a></li> 
+							
+						<!-- <li><a href="#">Employee List</a></li> 
 						
 						<li class="dropdown-submenu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Scheduling</a>
                             <ul class="dropdown-menu">
                                 
                                 <li class="dropdown-submenu">
-									<!-- <li><a href="#">Rotation</a></li>   -->
+					
 									<li><a href="{{request.session.local_toggle}}/rotation_info_display">Rotation</a></li> 
 									<li class="dropdown-submenu"> 
-									<!-- <li><a href="#">Generate Schedule</a></li>  -->
+
 								   <li><a href="{{request.session.local_toggle}}/schedule_set2">Generate Schedule</a></li> 
                                 </li>
 
@@ -357,7 +365,26 @@ function goBack() {
 
 						
 					</ul>
+				</li> -->
+
+
+				<li><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-stats"></span>Employees<b class="caret"></b></a>
+					<ul class="dropdown-menu multi-level">
+                        <li><a href="{{request.session.local_toggle}}/training_matrix2">Training Matrix</a></li>
+                        
+                        
+                        
+						<li class="divider"></li> 
+						<li><a href="#">Schedules</a></li>
+                        <li><a href="#">Extra</a></li>
+						
+						
+                    </ul>
+				
 				</li>
+
+
+
 				{%endblock%}
 				{%block active_5%}
 				<li><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-oil"></span> Machinery<b class="caret"></b></a>
