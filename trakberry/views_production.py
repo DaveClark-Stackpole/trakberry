@@ -37,7 +37,24 @@ def track_graph_10r_prev(request, index):
 	t = int(index) + 28800
 	gr_list = track_10r_data(request,t,u) # Get the Graph Data
 	return render(request, "10r_graph_prev.html",{'GList':gr_list})
-	
+
+def track_graph_prev1(request, index):
+	prt= request.session['part_area1']
+	rate = request.session['rate_area1']
+	u = int(index)
+	t = int(index) + 28800
+	gr_list = track_data(request,t,u,prt,rate) # Get the Graph Data
+	return render(request, "graph_prev1.html",{'GList':gr_list})
+
+def track_graph_prev2(request, index):
+	prt= request.session['part_area2']
+	rate = request.session['rate_area2']
+	u = int(index)
+	t = int(index) + 28800
+
+	gr_list = track_data(request,t,u,prt,rate) # Get the Graph Data
+	return render(request, "graph_prev2.html",{'GList':gr_list})
+
 def track_graph_tri_prev(request, index):
 	u = int(index)
 	t = int(index) + 28800
