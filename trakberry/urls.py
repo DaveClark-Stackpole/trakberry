@@ -58,7 +58,7 @@ from views import display, db_write, create_table, test, details_session, detail
 from views import create_test_table, alter_table_name, done, new, graph, graph2, graph3, graph749, graph748, graph750, graph677, ttip,graph_close, display_time, graph_close_snap
 from views import graph677_snap, graph748_snap, graph749_snap, graph750_snap, display_initialize, test44, tech_reset,testB
 from views2 import main_password_update
-from views3 import excel_test,manpower_update, request_test
+from views3 import excel_test,manpower_update, request_test, scrapdate_fix1
 # ***********************************************************************************************************************************************************
 
 
@@ -556,6 +556,9 @@ urlpatterns = [
 
 	url(r'^scrap_entries_next/', scrap_entries_next),
 	url(r'^scrap_entries_prev/', scrap_entries_prev),
+
+	url(r'^scrapdate_fix1/', scrapdate_fix1),
+
 
 	# url(r'^scrap_display_operation/get/(?P<index>\w{0,50})/$', scrap_display_operation),
 	

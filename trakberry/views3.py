@@ -22,6 +22,19 @@ import xlrd
 from views_vacation import vacation_temp, vacation_set_current, vacation_set_current2,vacation_set_current6, vacation_set_current4
 
 
+def scrapdate_fix1(request):
+	id1 = 30
+	db, cur = db_set(request)
+	sql = "SELECT * FROM tkb_scrap where Id = '%d'" %(id1)
+	cur.execute(sql)
+	tmp = cur.fetchall()
+	tmp2 = tmp[0]
+	tmp3 = tmp2[7]
+	t=4/0
+
+	return render(request,"test71.html")
+
+
 def request_test(request):
 	a,b,c = 5,7,8
 	rtest = []

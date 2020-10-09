@@ -42,6 +42,9 @@ def db_open():
 
 # This will set the correct database based on a error acknowledgement.
 # It will aslo initialize local_toggle which is used for the workaround on templates
+
+
+
 def db_set(request):  # Module to set DB settings to the one that works.  Whether local or Server
 	# db = MySQLdb.connect(host="10.4.1.224",user="dg417",passwd="dg",db='prodrptdb')
 	# cursor = db.cursor()
