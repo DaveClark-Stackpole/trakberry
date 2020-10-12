@@ -33,6 +33,7 @@ from mod_tracking import edit_part, select_date, select_day, select_datetime, gr
 from mod_test import test_mode
 from views_global_mods import test_machine_rate
 from views_vacation import vacation_temp, vacation_backup, vacation_purge, vacation_purge_delete, vacation_rebuild,vacation_restore, message_create
+from views_vacation import scrap_backup,scrap_restore
 from views_admin import retrieve
 from views_db import db_select
 from views_test import place_test, email_test_1, email_test_2
@@ -431,6 +432,8 @@ urlpatterns = [
 	url(r'^kiosk_scrap/', kiosk_scrap), # The Kiosk Scrap Module
 	url(r'^kiosk_scrap_entry/', kiosk_scrap_entry),
 	url(r'^kiosk_scrap_reset/', kiosk_scrap_reset), 
+	url(r'^scrap_backup/', scrap_backup),
+	url(r'^scrap_restore/', scrap_restore),
 	# url(r'^kiosk_mult_entries/', kiosk_mult_entries), 
 
 	url(r'^kiosk_help_form/', kiosk_help_form),

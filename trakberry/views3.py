@@ -23,16 +23,52 @@ from views_vacation import vacation_temp, vacation_set_current, vacation_set_cur
 
 
 def scrapdate_fix1(request):
-	id1 = 30
+	id1 = 13
+	len1 = 5
 	db, cur = db_set(request)
-	sql = "SELECT * FROM tkb_scrap where Id = '%d'" %(id1)
+	sql2 = "SELECT * FROM tkb_scrap where date is NULL"
+	cur.execute(sql2)
+	tmp = cur.fetchall()
+	for x in tmp:
+		id1 = x[0]
+
+		sql3 = "SELECT max(Id) from tkb_scrap where Id < '%d' and date IS NOT NULL" % (id1)
+		cur.execute(sql3)
+		ttmp = cur.fetchall()
+		ttmp2 = ttmp[0]
+		ttmp3 = ttmp2[0]
+
+		sql4 = "SELECT date from tkb_scrap where Id = '%d' and date IS NOT NULL" % (ttmp3)
+		cur.execute(sql4)
+		ttmp = cur.fetchall()
+		ttmp2 = ttmp[0]
+		date_not_null = ttmp2[0]
+
+		mql =( 'update tkb_scrap SET date="%s" WHERE Id="%s"' % (date_not_null,id1))
+		cur.execute(mql)
+		db.commit()
+
+	sql = "SELECT * FROM tkb_scrap where (date_current) is NULL" 
 	cur.execute(sql)
 	tmp = cur.fetchall()
-	tmp2 = tmp[0]
-	tmp3 = tmp2[7]
-	t=4/0
 
-	return render(request,"test71.html")
+	for x in tmp:
+		tmp2 = x[0]
+		tmp3 = x[7]
+		check1 = tmp3[9:10]
+		if check1=='T':
+			left1 = tmp3[:9]
+		else:
+			left1 = tmp3[:10]
+		right1 = tmp3[-5:]
+		clock1 = left1+' ' +right1
+		mql =( 'update tkb_scrap SET date_current="%s" WHERE Id="%s"' % (clock1,tmp2))
+		cur.execute(mql)
+		db.commit()
+
+	db.close()
+
+	return render(request,"master_excel_message2.html")
 
 
 def request_test(request):
