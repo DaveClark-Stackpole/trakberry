@@ -348,6 +348,34 @@ def vacation_backup(request):
 	db.close()
 	return render(request,'done_test.html')
 
+
+def scrap_backup(request):
+	# backup Scrap Table
+	db, cursor = db_set(request)  
+	cursor.execute("""DROP TABLE IF EXISTS tkb_scrap_backup""")
+	cursor.execute("""CREATE TABLE IF NOT EXISTS tkb_scrap_backup LIKE tkb_scrap""")
+	cursor.execute('''INSERT tkb_scrap_backup Select * From tkb_scrap''')
+	db.commit()
+
+	# Below will place a NULL Value someonewhere
+	# tmp2 = 9
+	# mql =( 'update tkb_scrap SET date= NULL WHERE Id="%d"' % (tmp2))
+	# cursor.execute(mql)
+	# db.commit()
+
+	db.close()
+	return render(request,"master_excel_message1.html")
+
+def scrap_restore(request):
+	# restore Scrap Table
+	db, cursor = db_set(request)  
+	cursor.execute("""DROP TABLE IF EXISTS tkb_scrap""")
+	cursor.execute("""CREATE TABLE IF NOT EXISTS tkb_scrap LIKE tkb_scrap_backup""")
+	cursor.execute('''INSERT tkb_scrap Select * From tkb_scrap_backup''')
+	db.commit()
+	db.close()
+	return render(request,"master_excel_message1.html")
+
 def vacation_rebuild(request):
 
 	# backup Vacation Table
