@@ -133,7 +133,7 @@ from views_barcode import barcode_check_10R,barcode_input_10R,barcode_initial_10
 
 # *******************************************  Admin Section ********************************************************************************************
 from views_admin import master
-from views3 import excel_dump, excel_scrap_dump,training_matrix2
+from views3 import excel_dump, excel_scrap_dump,training_matrix2,training_matrix_find
 # ***********************************************************************************************************************************************************
 
 # *******************************************  Scrap Section ********************************************************************************************
@@ -345,6 +345,7 @@ urlpatterns = [
 	
 	#url(r'^tech/get/complete/(?P<index>\d+)/$', complete),
 	url(r'^training_matrix2/', training_matrix2),
+	url(r'^training_matrix_find/get/(?P<index>\w{0,50})/$', training_matrix_find),
 	
 	
 	# ************************************************************************

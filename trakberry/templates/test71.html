@@ -1,18 +1,12 @@
 <html>
 <body>
-{{datax}}
 
-<br><br>
+{% for i in index %}
 
-
-{% for i in datax %}
-test:
-{{ i}} <br>
+{{i.0}}     ----     {{i.1}}
+<br>
 {% endfor %}
-<br><br>
+<br>
 
 
-
-<br><br>
-Done !
 </body></html>
