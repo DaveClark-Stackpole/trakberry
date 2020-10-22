@@ -4,7 +4,6 @@ div {
   /* overflow: scroll; */
 }
 
-
 /* Use position: sticky to have it stick to the edge
  * and top, right, or left to choose which edge to stick to: */
 
@@ -42,8 +41,8 @@ thead th {
 }
 
 tbody th {
-  background: #FFF;
-  border-right: 1px solid #CCC;
+  background: rgb(255, 255, 255);
+  border-right: 1px solid rgb(185, 107, 107);
   /* Browsers tend to drop borders on sticky elements, so we emulate the border-right using a box-shadow to ensure it stays: */
   box-shadow: 1px 0 0 0 #ccc;
 }

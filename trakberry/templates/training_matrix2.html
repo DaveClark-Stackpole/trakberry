@@ -5,47 +5,77 @@
 <body>
 
 <head>
-	<link rel="stylesheet" href="/static/style_1/matrix1.css">
 
 	<style>
-		.dropbtn {
-			background-color: #93b0d1;
-			color: white;
-			padding: 0px;
-			font-size: 10px;
-			border: none;
-		}
-		
-		.dropdown {
-			position: relative;
-			display: inline-block;
-		}
-		
-		.dropdown-content {
-			display: none;
-			position: absolute;
-			background-color: #f1f1f1;
-			min-width: 160px;
-			box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-			z-index: 1;
-		}
-		
-		.dropdown-content a {
-			color: black;
-			padding: 12px 16px;
-			text-decoration: none;
-			display: block;
-		}
-		
-		.dropdown-content a:hover {background-color: #ddd;}
-		
-		.dropdown:hover .dropdown-content {display: block;}
-		
-		.dropdown:hover .dropbtn {background-color: #3e8e41;}
-		</style>
+div {
+  max-width: 100%;
+  max-height: 600px;
+  /* overflow: scroll; */
+}
 
+/* Use position: sticky to have it stick to the edge
+ * and top, right, or left to choose which edge to stick to: */
+
+thead th {
+  position: -webkit-sticky; /* for Safari */
+  position: sticky;
+	top: 0;
+	font-size: 15px;
+
+}
+
+tbody th {
+  position: -webkit-sticky; /* for Safari */
+  position: sticky;
+	left: 0;
+	font-size: 15px;
+}
+
+
+/* To have the header in the first column stick to the left: */
+
+thead th:first-child {
+  left: 0;
+  z-index: ;
+}
+
+
+/* Just to display it nicely: */
+
+thead th {
+  background: rgb(51, 63, 116);
+  color: #FFF;
+  /* Ensure this stays above the emulated border right in tbody th {}: */
+  z-index: 1;
+}
+
+tbody th {
+  background: rgb(255, 255, 255);
+  border-right: 1px solid rgb(255, 255, 255);
+  /* Browsers tend to drop borders on sticky elements, so we emulate the border-right using a box-shadow to ensure it stays: */
+  box-shadow: 1px 0 0 0 #ccc;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+td,
+th {
+  
+}
+</style>
+
+<script>
+	function myFunction() {
+			document.querySelectorAll("input[type=submit]")[0].click();
+	}
+
+</script>
 
 </head>
+
+<form action="" method="post">{% csrf_token %}
 
 
 <div>
@@ -54,39 +84,80 @@
       <tr>
 				<th style="border:1px solid black;z-index: 99;">
 				<!-- put in Color Key top left-->
-				<button style="text-align: center;width:100%;border-style: solid;border-color:#bbbbbb;border-radius: 0px;background-color:#bbbbbb;">Untrained</button><br>
-				<button style="text-align: center;width:100%;border-style: solid;border-color:#f8f68f;border-radius: 0px;background-color:#f8f68f;">Training</button><br>
-				<button style="text-align: center;width:100%;border-style: solid;border-color:#63e757;border-radius: 0px;background-color:#63e757;">Trained</button><br>
-				<button style="text-align: center;width:100%;border-style: solid;border-color:#8fdaf8;border-radius: 0px;background-color:#8fdaf8;">A Trainer</button><br>
-			</th>
-				{% for item in tmpp %}
+				<input style="background-color: #a5ebf3;border-radius: 5px;width:90%;height:90%;font-weight: 500;font-size:15px;align=left;" type="submit" value="SAVE">
+			<br>
+			<select id="matrix_shift" style="font-size:15px;" onchange="myFunction();" list="browsers" name="matrix_shift" {{request.session.matrix_shift}}>	
+				<option value="{{request.session.matrix_shift}}" selected>{{request.session.matrix_shift}}</option>
+				<option value="Plant 1 Mid">Area 1 Mid</option>
+				<option value="Plant 1 Aft">Area 1 Aft</option>
+				<option value="Plant 1 Days">Area 1 Day</option>
+				<option value="Plant 3 Mid">Area 2 Mid</option>
+				<option value="Plant 3 Aft">Area 2 Aft</option>
+				<option value="Plant 3 Days">Area 2 Day</option>
+				<option value="Plant 4 Mid">Area 3 Mid</option>
+				<option value="Plant 4 Aft">Area 3 Aft</option>
+				<option value="Plant 4 Day">Area 3 Day</option>
+			</select>
+
+				</th>
+				{% for item in jobs %}
 				<th style="border:1px solid black;">{{item.1}}</th>
 			{% endfor %}
 
-      </tr>
+			</tr>
+
     </thead>
     <tbody>
-			{% for item2 in tmp %}
+			{% for item2 in matrix %}
       <tr>
-				<th style="border:1px solid black;z-index: 95;font-size:70%;">{{item2.1}}</th>
-				{% for item in tmpp %}
-			<td  style="border:1px solid black;z-index: 2;padding:0px;"> 
+
+
+				<th style="border:1px solid black;z-index: 95;font-size:70%;background-color: #b3b3b3;">
+					<button style="text-align: left;width:100%;font-size: 100%;border-style: solid;border-color:#b3b3b3;border-radius: 0px;background-color:#b3b3b3;" type="button" 
+				onclick="window.location.href = '{{request.session.local_toggle}}/training_matrix_find/get/{{item2.2.0}}';">
+				{{item2.0.0}}
+			</button></th>
+
+				{% for item in item2.1 %}
+			{% if item|slice:"6:" = 'Trained' %}
+			<td  style="border:1px solid black;z-index: 2;padding:0px;background-color: #90f078;"> 
 				<center>
-				<div class="dropdown">
-					<button class="dropbtn" style="text-align: center;border-style: solid;border-color:#bbbbbb;font-size: 70%;
-					border-radius: 3px;background-color:#bbbbbb;
-					">
-						Untrained
-					</button>
-					<div class="dropdown-content">
-						<a href="#">Untrained</a>
-						<a href="#">Training</a>
-						<a href="#">Trained</a>
-						<a href="#">A Trainer</a>
-					</div>
-				</div>
+					<select style="font-size:70%;text-align:center;background-color: #90f078;" name='{{item|slice:":6"}}' type="text">
+						<option selected = "selected">{{item|slice:"6:"}}</option>
+			{% elif item|slice:"6:" = 'Training <5 days' %}
+			<td  style="border:1px solid black;z-index: 2;padding:0px;background-color: #f77bea;"> 
+				<center>
+					<select style="font-size:70%;text-align:center;background-color: #f77bea;" name='{{item|slice:":6"}}' type="text">
+						<option selected = "selected">{{item|slice:"6:"}}</option>
+			{% elif item|slice:"6:" = 'Training >4 days' %}
+			<td  style="border:1px solid black;z-index: 2;padding:0px;background-color: #f8ed4e;"> 
+				<center>
+					<select style="font-size:70%;text-align:center;background-color: #f8ed4e;" name='{{item|slice:":6"}}' type="text">
+						<option selected = "selected">{{item|slice:"6:"}}</option>
+
+			{% elif item|slice:"6:" = 'A Trainer' %}
+			<td  style="border:1px solid black;z-index: 2;padding:0px;background-color: #5eaace;"> 
+				<center>
+					<select style="font-size:70%;text-align:center;background-color: #5eaace;" name='{{item|slice:":6"}}' type="text">
+						<option selected = "selected">{{item|slice:"6:"}}</option>
+			{% else %}
+			<td  style="border:1px solid black;z-index: 2;padding:0px;background-color: #c7c7c7;"> 
+				<center>
+					<select style="font-size:70%;text-align:center;background-color: #c7c7c7;" name='{{item|slice:":6"}}' type="text">
+						<option selected = "selected"></option>
+			{% endif %}
+
+						
+						<option style="color:rgb(0, 0, 0);">Not Trained</option>
+						<option style="color:rgb(0, 0, 0);">Training <5 days</option>
+						<option style="color:rgb(0, 0, 0);">Training >4 days</option>
+						<option style="color:rgb(0, 0, 0);">Trained</option>
+						<option style="color:rgb(0, 0, 0);">A Trainer</option>
+					</select>
+
 			</center>
 			</td>
+
 		{% endfor %}
 
 		{% for i in '01234567890123456789012345678901234567890123456789012345678901234567890123456789'|make_list %}
@@ -97,10 +168,10 @@
 			</tr>
 			{% endfor %}
 
-			{% for item in tmpp %}
+			{% for item in jobs %}
 			<tr>
 				<th style="border:0px solid black;"> &nbsp; &nbsp; &nbsp; </th>
-				{% for item in tmpp %}
+				{% for item in jobs %}
 				<td  style="border:0px solid black;">&nbsp; &nbsp; &nbsp;  </td>
 				{% endfor %}
 
@@ -122,7 +193,7 @@
 
 
 
-
+</form>
 
 
 
