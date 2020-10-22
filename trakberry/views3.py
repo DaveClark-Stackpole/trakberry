@@ -742,6 +742,15 @@ def training_matrix_find(request,index):
 	enabled1 = 'active'
 
 
+
+	a1 = []
+	a2 = []
+	a3 = []
+	a4 = []
+	a5 = []
+	a6 = []
+
+
 	db, cur = db_set(request)
 	sql1 = "SELECT * FROM tkb_allocation where Area = '%s'"%(area1)
 	cur.execute(sql1)
@@ -769,9 +778,17 @@ def training_matrix_find(request,index):
 		if int(count1) > 4:
 			trained1 = 'Training >4 days'
 		if int(count1) >9:
-			trained = 'Trained'
+			trained1 = 'Trained'
 		if int(count1) > 25:
-			trained = 'A Trainer'
+			trained1 = 'A Trainer'
+
+		a1.append(job1)
+		a2.append(asset1)
+		a3.append(count1)
+		a4.append(trained1)
+		a5.append(clock1)
+		a6.append(name1)
+
 
 
 		sql3= "SELECT COUNT(*) FROM tkb_matrix where Employee = '%s' and job = '%s'" % (name1,job1)
@@ -790,8 +807,9 @@ def training_matrix_find(request,index):
 		elif count1 > 0 and count3 == 0:
 			cur.execute('''INSERT INTO tkb_matrix(Employee,Job,Trained,Shift,Enabled) VALUES(%s,%s,%s,%s,%s)''', (name1,job1,trained1,shift1,enabled1))
 			db.commit()
-		
+	
+	aa = zip(a1,a2,a3,a4,a5,a6)
 	db.close()
 
-
+	# return render(request,"test71.html",{'matrix':aa})
 	return render(request,"redirect_training_matrix2.html")
