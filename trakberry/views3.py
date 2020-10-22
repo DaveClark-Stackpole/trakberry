@@ -460,8 +460,8 @@ def manpower_initial(request):
 # Update DB so it has current manpower
 def manpower_update(request):
 	# comment below when running local
-	# label_link = '/home/file/import1/Inventory/importedxls'
-	# os.chdir(label_link)
+	label_link = '/home/file/import1/Inventory/importedxls'
+	os.chdir(label_link)
 	# ********************************
 
 	sheet = 'inventory.xlsx'
