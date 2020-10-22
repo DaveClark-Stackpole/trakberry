@@ -451,7 +451,7 @@ def manpower_initial(request):
 	cursor.execute("""CREATE TABLE IF NOT EXISTS tkb_manpower(Id INT PRIMARY KEY AUTO_INCREMENT,Employee CHAR(80), Shift CHAR(80),Clock CHAR(80))""")
 	cursor.execute("""DROP TABLE IF EXISTS tkb_allocation""")
 	cursor.execute("""CREATE TABLE IF NOT EXISTS tkb_allocation(Id INT PRIMARY KEY AUTO_INCREMENT,Job CHAR(80), Area CHAR(80),Asset CHAR(20),Sig1 Char(10), Part CHAR(20))""")
-	cursor.execute("""DROP TABLE IF EXISTS tkb_matrix""")
+	# cursor.execute("""DROP TABLE IF EXISTS tkb_matrix""")
 	cursor.execute("""CREATE TABLE IF NOT EXISTS tkb_matrix(Id INT PRIMARY KEY AUTO_INCREMENT,Employee CHAR(80), Shift CHAR(80),Job Char(100), Trained Char(100),Enabled CHAR(10),Clock CHAR(80))""")
 	db.commit()
 	db.close()
