@@ -473,9 +473,9 @@ def manpower_update(request):
 	toc = 35   # Col on Excel Sheet
 	tdate = tot+1
 	jj = 1
-	a = [[] for x in range(600)]
-	b = [[] for y in range(600)]
-	c = [[] for y in range(600)]
+	a = []
+	b = []
+	c = []
 
 	job1 = [[] for xx in range(600)]
 	area1 = [[] for yy in range(600)]
@@ -499,11 +499,16 @@ def manpower_update(request):
 					xlen = len(x)
 					x = x[:(xlen-1)]
 				y = str(working.cell(start1,ii).value) 
-				a[jj].append(x)
-				b[jj].append(y)
-				c[jj].append(z)
-				jj = jj + 1
+				a.append(x)
+				b.append(y)
+				c.append(z)
 
+				jj = jj + 1
+	a=tuple(a)
+	b=tuple(b)
+	c=tuple(c)
+	abc=zip(a,b,c)
+	# return render(request,"test71.html",{'matrix':abc})
 	for fnd in range(start1,900):  # Determine what row to start reading manpower from
 		fnd_cell = str(working.cell(fnd,0).value)
 		if fnd_cell == 'Area 1':
@@ -534,10 +539,10 @@ def manpower_update(request):
 	manpower_initial(request)   # Initialize the Manpower list
 	db, cur = db_set(request)
 	x = 1
-	for i in range(1,jj):
-		y = str(a[i][0])
-		yy = str(b[i][0])
-		yyy = str(c[i][0])
+	for i in abc:
+		y = str(i[0])
+		yy = str(i[1])
+		yyy = str(i[2])
 		cur.execute('''INSERT INTO tkb_manpower(Employee,Shift,Clock) VALUES(%s,%s,%s)''', (y,yy,yyy))
 		db.commit()
 	for i in range(1,kk):
@@ -579,7 +584,6 @@ def manpower_update(request):
 
 
 def training_matrix2(request):
-	
 	try:
 		shift = request.session["matrix_shift"] 
 		area = request.session["matrix_area"]
@@ -588,51 +592,62 @@ def training_matrix2(request):
 		request.session["matrix_area"] = 'Area 1'
 		shift = 'Plant 1 Mid'
 		area = 'Area 1'
+	try:
+		dummy = request.session["bounce_matrix"]
+	except:
+		request.session["bounce_matrix"] = 0
 
-	db, cur = db_set(request)
-	sql = "SELECT * FROM tkb_manpower where Shift = '%s'" %(shift)
-	cur.execute(sql)
-	tmp = cur.fetchall()
-	sql2 = "SELECT * FROM tkb_allocation where Area = '%s'" %(area)
-	cur.execute(sql2)
-	jobs = cur.fetchall()
-	x=[]
-	z2=[]
-	z3=[]
-	zz=0
-	xaxis=1
-	yaxis=1
-	y = []
-	for i in tmp:
-		w=[]
-		for ii in jobs:
-			z1=[]
-			zindex1 = []
-			a = i[1]
-			b = ii[1]
-			z1.append(a)
-			zindex1.append(i[0])
-			try:
-				sql3 = "SELECT * FROM tkb_matrix where Employee = '%s' and Job = '%s'"%(a,b)
-				cur.execute(sql3)
-				tmp3 = cur.fetchall()
-				tmp32 = tmp3[0][4]
-			except:
-				tmp32 = 'Not Trained'
-			xa,ya = three_digit(xaxis,yaxis)
-			tmp32=ya+xa+tmp32
-			w.append(tmp32)
-			xaxis=xaxis+1
+	if request.session["bounce_matrix"] == 0:
+		db, cur = db_set(request)
+		sql = "SELECT * FROM tkb_manpower where Shift = '%s'" %(shift)
+		cur.execute(sql)
+		tmp = cur.fetchall()
+		request.session["matrix"] = tmp
+		sql2 = "SELECT * FROM tkb_allocation where Area = '%s'" %(area)
+		cur.execute(sql2)
+		jobs = cur.fetchall()
+		x=[]
+		z2=[]
+		z3=[]
+		zz=0
 		xaxis=1
-		yaxis=yaxis+1
-		w=tuple(w)
-		x.append(w)
-		z1=tuple(z1)
-		zindex1=tuple(zindex1)
-		z2.append(z1)
-		z3.append(zindex1)
-	x=tuple(x)
-	matrix = zip(z2,x,z3)  # matrix will have first tuple name second tuple are all jobs
+		yaxis=1
+		y = []
+		for i in tmp:
+			w=[]
+			for ii in jobs:
+				z1=[]
+				zindex1 = []
+				a = i[1]
+				b = ii[1]
+				z1.append(a)
+				zindex1.append(i[0])
+				try:
+					sql3 = '''SELECT * FROM tkb_matrix where Employee = "%s" and Job = "%s"'''%(a,b)
+					cur.execute(sql3)
+					tmp3 = cur.fetchall()
+					tmp32 = tmp3[0][4]
+				except:
+					tmp32 = 'Not Trained'
+				xa,ya = three_digit(xaxis,yaxis)
+				tmp32=ya+xa+tmp32
+				w.append(tmp32)
+				xaxis=xaxis+1
+			xaxis=1
+			yaxis=yaxis+1
+			w=tuple(w)
+			x.append(w)
+			z1=tuple(z1)
+			zindex1=tuple(zindex1)
+			z2.append(z1)
+			z3.append(zindex1)
+		x=tuple(x)
+		matrix = zip(z2,x,z3)  # matrix will have first tuple name second tuple are all jobs third is clock number
+
+	else:
+		matrix = request.session["data_matrix"]
+		jobs = request.session["data_jobs"]
+
 
 	xaxis = 1
 	yaxis = 1
@@ -674,12 +689,9 @@ def training_matrix2(request):
 
 		# Below is input of any new Shift to review
 		matrix_shift = request.POST.get('matrix_shift')
-
 		matrix_area = shift_area(matrix_shift)
-
 		request.session["matrix_shift"] = matrix_shift
 		request.session["matrix_area"] = matrix_area
-
 
 		return render(request,"redirect_training_matrix2.html")
 
@@ -690,7 +702,13 @@ def training_matrix2(request):
 	args['form'] = form
 
 	# return render(request,"test71.html",{'matrix':matrix,'jobs':jobs})
+	request.session['data_matrix'] = matrix
+	request.session['data_jobs'] = jobs
 	return render(request,"training_matrix2.html",{'args':args,'matrix':matrix,'jobs':jobs})
+
+def bounce_matrix(request):
+	request.session["bounce_matrix"] = 1
+	return render(request,'redirect_training_matrix2.html')
 
 def three_digit(xaxis,yaxis):
 	xa=str(xaxis)
@@ -728,7 +746,6 @@ def shift_area(matrix_shift):
 	return matrix_area
 
 def training_matrix_find(request,index):
-
 	db, cur = db_set(request)
 	sql = "SELECT * FROM tkb_manpower where Id = '%s'" %(index)
 	cur.execute(sql)
@@ -741,8 +758,6 @@ def training_matrix_find(request,index):
 	area1 = shift_area(shift1)
 	enabled1 = 'active'
 
-
-
 	a1 = []
 	a2 = []
 	a3 = []
@@ -750,24 +765,26 @@ def training_matrix_find(request,index):
 	a5 = []
 	a6 = []
 
-
 	db, cur = db_set(request)
 	sql1 = "SELECT * FROM tkb_allocation where Area = '%s'"%(area1)
 	cur.execute(sql1)
 	tmp1 = cur.fetchall()
-
+	ew=4/0
 	for i in tmp1:
 		job1 = i[1]
 		asset1 = i[3]
 		sig1 = i[4]
 		part1 = i[5]
 
-
-
 		asset1 = float(asset1)
 		asset1 = int(asset1)
 
-		sql2= "SELECT COUNT(*) FROM sc_production1 where comments = '%s' and asset_num = '%s'" % (clock1,asset1)
+		if sig1 == 1:
+			sql2= '''SELECT COUNT(*) FROM sc_production1 where comments = "%s" and asset_num = "%s" and partno = "%s"''' % (clock1,asset1,part1)
+			r=4/0
+		else:
+			sql2= '''SELECT COUNT(*) FROM sc_production1 where comments = "%s" and asset_num = "%s"''' % (clock1,asset1)
+
 		cur.execute(sql2)
 		tmp2 = cur.fetchall()
 		count1 = int(tmp2[0][0])
@@ -789,9 +806,86 @@ def training_matrix_find(request,index):
 		a5.append(clock1)
 		a6.append(name1)
 
+		sql3= '''SELECT COUNT(*) FROM tkb_matrix where Employee = "%s" and job = "%s"''' % (name1,job1)
+		cur.execute(sql3)
+		tmp3 = cur.fetchall()
+		count3 = int(tmp3[0][0])
+		if count1 == 0 and count3 == 1:
+			dql = ('DELETE FROM tkb_matrix WHERE Employee="%s" and Job="%s"' % (name1,job1))
+			cur.execute(dql)
+			db.commit()
+		elif count1 > 0 and count3 == 1:
+			cql = ('update tkb_matrix SET Trained = "%s" WHERE Employee ="%s" and Job = "%s"' % (trained1,name1,job1))
+			cur.execute(cql)
+			db.commit()
+		elif count1 > 0 and count3 == 0:
+			cur.execute('''INSERT INTO tkb_matrix(Employee,Job,Trained,Shift,Enabled) VALUES(%s,%s,%s,%s,%s)''', (name1,job1,trained1,shift1,enabled1))
+			db.commit()
 
+	aa = zip(a1,a2,a3,a4,a5,a6)
+	db.close()
 
-		sql3= "SELECT COUNT(*) FROM tkb_matrix where Employee = '%s' and job = '%s'" % (name1,job1)
+	# return render(request,"test71.html",{'matrix':aa})
+	return render(request,"redirect_training_matrix2.html")
+
+def training_matrix_update_all(request):
+	matrix1 = request.session['matrix']
+	for x in matrix1:
+		index = x[0]
+		update_matrix_all(index,request)
+	request.session['bounce_matrix'] = 0
+	return render(request,"redirect_training_matrix2.html")
+
+def update_matrix_cancel(request):
+	request.session['bounce_matrix'] = 0
+	return render(request,"redirect_training_matrix2.html")
+
+def update_matrix_all(index,request):
+	db, cur = db_set(request)
+	sql = "SELECT * FROM tkb_manpower where Id = '%s'" %(index)
+	cur.execute(sql)
+	tmp = cur.fetchall()
+	name1 = tmp[0][1]
+	clock1 = float(tmp[0][3])
+	clock1 = int(clock1)
+	clock1 = str(clock1)
+	shift1 = tmp[0][2]
+	area1 = shift_area(shift1)
+	enabled1 = 'active'
+
+	db, cur = db_set(request)
+	sql1 = "SELECT * FROM tkb_allocation where Area = '%s'"%(area1)
+	cur.execute(sql1)
+	tmp1 = cur.fetchall()
+
+	for i in tmp1:
+		job1 = i[1]
+		asset1 = i[3]
+		sig1 = i[4]
+		part1 = i[5]
+
+		asset1 = float(asset1)
+		asset1 = int(asset1)
+
+		if sig1 == 1:
+			sql2= '''SELECT COUNT(*) FROM sc_production1 where comments = "%s" and asset_num = "%s" and partno = "%s"''' % (clock1,asset1,part1)
+		else:
+			sql2= '''SELECT COUNT(*) FROM sc_production1 where comments = "%s" and asset_num = "%s"''' % (clock1,asset1)
+		cur.execute(sql2)
+		tmp2 = cur.fetchall()
+		count1 = int(tmp2[0][0])
+
+		trained1 = 'Not Trained'
+		if int(count1) > 0:
+			trained1 = 'Training <5 days'
+		if int(count1) > 4:
+			trained1 = 'Training >4 days'
+		if int(count1) >9:
+			trained1 = 'Trained'
+		if int(count1) > 25:
+			trained1 = 'A Trainer'
+
+		sql3= '''SELECT COUNT(*) FROM tkb_matrix where Employee = "%s" and job = "%s"''' % (name1,job1)
 		cur.execute(sql3)
 		tmp3 = cur.fetchall()
 		count3 = int(tmp3[0][0])
@@ -807,9 +901,6 @@ def training_matrix_find(request,index):
 		elif count1 > 0 and count3 == 0:
 			cur.execute('''INSERT INTO tkb_matrix(Employee,Job,Trained,Shift,Enabled) VALUES(%s,%s,%s,%s,%s)''', (name1,job1,trained1,shift1,enabled1))
 			db.commit()
-	
-	aa = zip(a1,a2,a3,a4,a5,a6)
 	db.close()
 
-	# return render(request,"test71.html",{'matrix':aa})
-	return render(request,"redirect_training_matrix2.html")
+	return
