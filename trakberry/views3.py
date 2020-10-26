@@ -769,7 +769,6 @@ def training_matrix_find(request,index):
 	sql1 = "SELECT * FROM tkb_allocation where Area = '%s'"%(area1)
 	cur.execute(sql1)
 	tmp1 = cur.fetchall()
-	ew=4/0
 	for i in tmp1:
 		job1 = i[1]
 		asset1 = i[3]
