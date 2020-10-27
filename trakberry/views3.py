@@ -845,9 +845,12 @@ def update_matrix_all(index,request):
 	cur.execute(sql)
 	tmp = cur.fetchall()
 	name1 = tmp[0][1]
-	clock1 = float(tmp[0][3])
-	clock1 = int(clock1)
-	clock1 = str(clock1)
+	try:
+		clock1 = float(tmp[0][3])
+		clock1 = int(clock1)
+		clock1 = str(clock1)
+	except:
+		clock1 = ''
 	shift1 = tmp[0][2]
 	area1 = shift_area(shift1)
 	enabled1 = 'active'
