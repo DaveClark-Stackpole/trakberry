@@ -53,6 +53,7 @@ def db_set(request):  # Module to set DB settings to the one that works.  Whethe
 	# tmp2 = cursor.fetchall()
 	# return db, cursor
 
+ # update
 
 	try:
 		db = MySQLdb.connect(host="127.0.0.1",user="dg417",passwd="dg",db='prodrptdb')
