@@ -460,8 +460,8 @@ def manpower_initial(request):
 # Update DB so it has current manpower
 def manpower_update(request):
 	# comment below when running local
-	label_link = '/home/file/import1/Inventory/importedxls'
-	os.chdir(label_link)
+	# label_link = '/home/file/import1/Inventory/importedxls'
+	# os.chdir(label_link)
 	# ********************************
 
 	sheet = 'inventory.xlsx'
@@ -751,19 +751,16 @@ def training_matrix_find(request,index):
 	cur.execute(sql)
 	tmp = cur.fetchall()
 	name1 = tmp[0][1]
-	clock1 = float(tmp[0][3])
+	try:
+		clock1 = float(tmp[0][3])
+	except:
+		clock1 = '0'
 	clock1 = int(clock1)
 	clock1 = str(clock1)
 	shift1 = tmp[0][2]
 	area1 = shift_area(shift1)
 	enabled1 = 'active'
 
-	a1 = []
-	a2 = []
-	a3 = []
-	a4 = []
-	a5 = []
-	a6 = []
 
 	db, cur = db_set(request)
 	sql1 = "SELECT * FROM tkb_allocation where Area = '%s'"%(area1)
@@ -774,19 +771,20 @@ def training_matrix_find(request,index):
 		asset1 = i[3]
 		sig1 = i[4]
 		part1 = i[5]
-
 		asset1 = float(asset1)
 		asset1 = int(asset1)
 
-		if sig1 == 1:
-			sql2= '''SELECT COUNT(*) FROM sc_production1 where comments = "%s" and asset_num = "%s" and partno = "%s"''' % (clock1,asset1,part1)
-			r=4/0
-		else:
-			sql2= '''SELECT COUNT(*) FROM sc_production1 where comments = "%s" and asset_num = "%s"''' % (clock1,asset1)
+		if int(clock1) != 0:
+			if sig1 == 1:
+				sql2= '''SELECT COUNT(*) FROM sc_production1 where comments = "%s" and asset_num = "%s" and partno = "%s"''' % (clock1,asset1,part1)
+			else:
+				sql2= '''SELECT COUNT(*) FROM sc_production1 where comments = "%s" and asset_num = "%s"''' % (clock1,asset1)
+			cur.execute(sql2)
+			tmp2 = cur.fetchall()
+			count1 = int(tmp2[0][0])
 
-		cur.execute(sql2)
-		tmp2 = cur.fetchall()
-		count1 = int(tmp2[0][0])
+		else:
+			count1 = 0
 
 		trained1 = 'Not Trained'
 		if int(count1) > 0:
@@ -797,14 +795,6 @@ def training_matrix_find(request,index):
 			trained1 = 'Trained'
 		if int(count1) > 25:
 			trained1 = 'A Trainer'
-
-		a1.append(job1)
-		a2.append(asset1)
-		a3.append(count1)
-		a4.append(trained1)
-		a5.append(clock1)
-		a6.append(name1)
-
 		sql3= '''SELECT COUNT(*) FROM tkb_matrix where Employee = "%s" and job = "%s"''' % (name1,job1)
 		cur.execute(sql3)
 		tmp3 = cur.fetchall()
@@ -821,7 +811,6 @@ def training_matrix_find(request,index):
 			cur.execute('''INSERT INTO tkb_matrix(Employee,Job,Trained,Shift,Enabled) VALUES(%s,%s,%s,%s,%s)''', (name1,job1,trained1,shift1,enabled1))
 			db.commit()
 
-	aa = zip(a1,a2,a3,a4,a5,a6)
 	db.close()
 
 	# return render(request,"test71.html",{'matrix':aa})
@@ -845,14 +834,17 @@ def update_matrix_all(index,request):
 	cur.execute(sql)
 	tmp = cur.fetchall()
 	name1 = tmp[0][1]
+
+
 	try:
 		clock1 = float(tmp[0][3])
-		clock1 = int(clock1)
-		clock1 = str(clock1)
 	except:
-		clock1 = ''
+		clock1 = '0'
+	clock1 = int(clock1)
+	clock1 = str(clock1)
 	shift1 = tmp[0][2]
 	area1 = shift_area(shift1)
+
 	enabled1 = 'active'
 
 	db, cur = db_set(request)
