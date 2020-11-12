@@ -448,18 +448,14 @@ def manpower_initial(request):
 	# create inventory table if one doesn't exist
 	db, cursor = db_set(request)  
 
-	# cursor.execute("""DROP TABLE IF EXISTS tkb_matrix_cache""")
+	cursor.execute("""DROP TABLE IF EXISTS tkb_matrix_cache""")
 	cursor.execute("""CREATE TABLE IF NOT EXISTS tkb_matrix_cache(Id INT PRIMARY KEY AUTO_INCREMENT,Area CHAR(80), Shift CHAR(80), Matrix TEXT(1000000), Job TEXT(1000000))""")
 
-
-	cursor.execute("""CREATE TABLE IF NOT EXISTS tkb_manpower(Id INT PRIMARY KEY AUTO_INCREMENT,Employee CHAR(80), Shift CHAR(80),Clock CHAR(80))""")
-	cursor.execute("""CREATE TABLE IF NOT EXISTS tkb_allocation(Id INT PRIMARY KEY AUTO_INCREMENT,Job CHAR(80), Area CHAR(80),Asset CHAR(20),Sig1 Char(10), Part CHAR(20))""")
-
 # #	Use below line to recreate the table format
-	cursor.execute("""DROP TABLE IF EXISTS tkb_manpower2""")
-	cursor.execute("""CREATE TABLE IF NOT EXISTS tkb_manpower2(Id INT PRIMARY KEY AUTO_INCREMENT,Employee CHAR(80), Shift CHAR(80),Clock CHAR(80))""")
-	cursor.execute("""DROP TABLE IF EXISTS tkb_allocation2""")
-	cursor.execute("""CREATE TABLE IF NOT EXISTS tkb_allocation2(Id INT PRIMARY KEY AUTO_INCREMENT,Job CHAR(80), Area CHAR(80),Asset CHAR(20),Sig1 Char(10), Part CHAR(20))""")
+	cursor.execute("""DROP TABLE IF EXISTS tkb_manpower""")
+	cursor.execute("""CREATE TABLE IF NOT EXISTS tkb_manpower(Id INT PRIMARY KEY AUTO_INCREMENT,Employee CHAR(80), Shift CHAR(80),Clock CHAR(80))""")
+	cursor.execute("""DROP TABLE IF EXISTS tkb_allocation""")
+	cursor.execute("""CREATE TABLE IF NOT EXISTS tkb_allocation(Id INT PRIMARY KEY AUTO_INCREMENT,Job CHAR(80), Area CHAR(80),Asset CHAR(20),Sig1 Char(10), Part CHAR(20))""")
 # 	# cursor.execute("""DROP TABLE IF EXISTS tkb_matrix""")
 	cursor.execute("""CREATE TABLE IF NOT EXISTS tkb_matrix(Id INT PRIMARY KEY AUTO_INCREMENT,Employee CHAR(80), Shift CHAR(80),Job Char(100), Trained Char(100),Enabled CHAR(10),Clock CHAR(80))""")
 	db.commit()
@@ -469,8 +465,8 @@ def manpower_initial(request):
 # Update DB so it has current manpower
 def manpower_update(request):
 	# comment below when running local
-	label_link = '/home/file/import1/Inventory/importedxls'
-	os.chdir(label_link)
+	# label_link = '/home/file/import1/Inventory/importedxls'
+	# os.chdir(label_link)
 	# ********************************
 
 	sheet = 'inventory.xlsx'
@@ -546,14 +542,13 @@ def manpower_update(request):
 
 
 	manpower_initial(request)   # Initialize the Manpower list
-	matrix_cache_matrix(request) # Transfer current cache to matrix table
 	db, cur = db_set(request)
 	x = 1
 	for i in abc:
 		y = str(i[0])
 		yy = str(i[1])
 		yyy = str(i[2])
-		cur.execute('''INSERT INTO tkb_manpower2(Employee,Shift,Clock) VALUES(%s,%s,%s)''', (y,yy,yyy))
+		cur.execute('''INSERT INTO tkb_manpower(Employee,Shift,Clock) VALUES(%s,%s,%s)''', (y,yy,yyy))
 		db.commit()
 	for i in range(1,kk):
 		y = str(job1[i][0])
@@ -562,41 +557,35 @@ def manpower_update(request):
 		yyyy = str(sig1[i][0])
 		yyyyy =  str(part1[i][0])
 
-		cur.execute('''INSERT INTO tkb_allocation2(Job,Area,Asset,Sig1,Part) VALUES(%s,%s,%s,%s,%s)''', (y,yy,yyy,yyyy,yyyyy))
+		cur.execute('''INSERT INTO tkb_allocation(Job,Area,Asset,Sig1,Part) VALUES(%s,%s,%s,%s,%s)''', (y,yy,yyy,yyyy,yyyyy))
 		db.commit()
 
-	sql = "SELECT * From tkb_manpower2 WHERE tkb_manpower2.Employee NOT IN (SELECT Employee From tkb_manpower)"
-	cur.execute(sql)
-	tmp = cur.fetchall()   # This shows all new employees to add to manpower
 
-	sql = "SELECT * From tkb_manpower WHERE tkb_manpower.Employee NOT IN (SELECT Employee From tkb_manpower2)"
+	sql = "SELECT * From tkb_manpower WHERE tkb_manpower.Employee NOT IN (SELECT Employee From tkb_matrix)"
 	cur.execute(sql)
-	tmp2 = cur.fetchall()   # This shows all employees that should be removed, or made inactive
+	tmp = cur.fetchall()
 
-	sql = "SELECT * From tkb_allocation2 WHERE tkb_allocation2.job NOT IN (SELECT job From tkb_allocation)"
+	sql = "SELECT * From tkb_matrix WHERE tkb_matrix.Employee NOT IN (SELECT Employee From tkb_manpower)"
 	cur.execute(sql)
-	tmp_job = cur.fetchall()   # This shows all new jobs to add
+	tmp2 = cur.fetchall()
 
-	sql = "SELECT * From tkb_allocation WHERE tkb_allocation.job NOT IN (SELECT job From tkb_allocation2)"
-	cur.execute(sql)
-	tmp_job2 = cur.fetchall()   # This shows all new jobs to add
+	# stp = 7/0
 
 	active = 'active'
 	inactive = 'inactive'
 
 	# Add employee if they show new from manpower to matrix
 	for a in tmp:
-		cur.execute('''INSERT INTO tkb_manpower(Employee,Shift,Clock) VALUES(%s,%s,%s)''', (a[1],a[2],a[3]))
+		cur.execute('''INSERT INTO tkb_matrix(Employee,Shift,Enabled,Clock) VALUES(%s,%s,%s,%s)''', (a[1],a[2],active,a[3]))
 		db.commit()
 
 	# Change Employee to inactive if they've been removed from manpower
-	# for a in tmp2:
-	# 	sql =( 'update tkb_matrix SET Enabled="%s" WHERE Employee="%s"' % (inactive,a[1]))
-	# 	cur.execute(sql)
-	# 	db.commit()
-	# db.close()
-	cur.execute("""DROP TABLE IF EXISTS tkb_matrix_cache""") # Clear all Cache and start fresh
-	cur.execute("""CREATE TABLE IF NOT EXISTS tkb_matrix_cache(Id INT PRIMARY KEY AUTO_INCREMENT,Area CHAR(80), Shift CHAR(80), Matrix TEXT(1000000), Job TEXT(1000000))""")
+	for a in tmp2:
+		sql =( 'update tkb_matrix SET Enabled="%s" WHERE Employee="%s"' % (inactive,a[1]))
+		cur.execute(sql)
+		db.commit()
+	db.close()
+
 	shift ,area = 'Plant 1 Mid','Area 1'
 	matrix_read(shift,area,request)
 	shift ,area = 'Plant 1 Aft','Area 1'
@@ -645,7 +634,7 @@ def matrix_read(shift,area,request):
 			a = i[1]
 			b = ii[1]
 			z1.append(a)
-			zindex1.append(i[3])
+			zindex1.append(i[0])
 			try:
 				sql3 = '''SELECT * FROM tkb_matrix where Employee = "%s" and Job = "%s"'''%(a,b)
 				cur.execute(sql3)
@@ -667,14 +656,16 @@ def matrix_read(shift,area,request):
 		z3.append(zindex1)
 	x=tuple(x)
 	area1=tuple(area1)
-
-	z2 = tuple(z2)
-	z3 = tuple(z3)
-
 	matrix = zip(z2,x,z3,area1)  # matrix will have first tuple name second tuple are all jobs third is clock number
+
+
+	# else:
+	# 	matrix = request.session["data_matrix"]
+	# 	jobs = request.session["data_jobs"]
 
 	mmatrix = str(matrix)
 	jjobs = str(jobs)
+
 	hhh = len(mmatrix)
 	db, cur = db_set(request)
 	cur.execute('''INSERT INTO tkb_matrix_cache(Area,Shift,Matrix,Job) VALUES(%s,%s,%s,%s)''', (area,shift,mmatrix,jjobs))
@@ -682,63 +673,7 @@ def matrix_read(shift,area,request):
 	db.close()
 	return
 
-def matrix_cache_matrix(request): # Transfer Cache to clean Matrix
-	db, cur = db_set(request)
-	cur.execute("""DROP TABLE IF EXISTS tkb_matrix""")
-	cur.execute("""CREATE TABLE IF NOT EXISTS tkb_matrix(Id INT PRIMARY KEY AUTO_INCREMENT,Employee CHAR(80), Shift CHAR(80),Job Char(100), Trained Char(100),Enabled CHAR(10),Clock CHAR(80))""")
-	db.close()
-
-	shift ,area = 'Plant 1 Mid','Area 1'
-	matrix_cache_transfer(shift,area,request)
-	shift ,area = 'Plant 1 Mid','Area 1'
-	matrix_cache_transfer(shift,area,request)
-	shift ,area = 'Plant 1 Aft','Area 1'
-	matrix_cache_transfer(shift,area,request)
-	shift ,area = 'Plant 1 Days','Area 1'
-	matrix_cache_transfer(shift,area,request)
-	shift ,area = 'Plant 3 Days','Area 2'
-	matrix_cache_transfer(shift,area,request)
-	shift ,area = 'Plant 3 Mid','Area 2'
-	matrix_cache_transfer(shift,area,request)
-	shift ,area = 'Plant 3 Aft','Area 2'
-	matrix_cache_transfer(shift,area,request)
-	shift ,area = 'Plant 4 Day','Area 3'
-	matrix_cache_transfer(shift,area,request)
-	shift ,area = 'Plant 4 Aft','Area 3'
-	matrix_cache_transfer(shift,area,request)
-	shift ,area = 'Plant 4 Mid','Area 3'
-	matrix_cache_transfer(shift,area,request)
-	return 
-
-def matrix_cache_transfer(shift,area,request):
-	db, cur = db_set(request)
-	sql3 = '''SELECT * FROM tkb_matrix_cache where Area = "%s" and Shift = "%s"'''%(area,shift)
-	cur.execute(sql3)
-	tmp = cur.fetchall()
-	tmp2 = tmp[0]
-	matrix = tmp2[3]
-	jobs = tmp2[4]
-	matrix = eval(matrix)
-	jobs = eval(jobs)
-	clock = 1
-	enabled = 'active'
-	for i in matrix:
-		name1 = i[0][0]   # Name
-		x=0
-		for ii in jobs:
-			level = i[1][x]
-			level = level[6:]
-			job1 = ii[1]
-			if level != 'Not Trained':
-				cur.execute('''INSERT INTO tkb_matrix(Employee,Shift,Job,Trained,Enabled,Clock) VALUES(%s,%s,%s,%s,%s,%s)''', (name1,shift,job1,level,enabled,clock))
-				db.commit()
-			x = x + 1
-	db.close()
-
-	return
-
 def training_matrix2(request):
-	request.session['matrix_update'] = 0   # This variable is determining if we update all or one person
 	try:
 		shift = request.session["matrix_shift"] 
 		area = request.session["matrix_area"]
@@ -747,7 +682,6 @@ def training_matrix2(request):
 		request.session["matrix_area"] = 'Area 1'
 		shift = 'Plant 1 Mid'
 		area = 'Area 1'
-
 	try:
 		dummy = request.session["bounce_matrix"]
 	except:
@@ -762,12 +696,9 @@ def training_matrix2(request):
 	tmp2 = tmp[0]
 	matrix = tmp2[3]
 	jobs = tmp2[4]
-	Id1 = tmp2[0]
 	matrix = eval(matrix) # Convert string from database read to required tuple
-	jobs_current = jobs
 	jobs = eval(jobs) # Convert string from database read to required tuple
 	db.close()
-
 
 	xaxis = 1
 	yaxis = 1
@@ -778,10 +709,6 @@ def training_matrix2(request):
 	matrix_area = []
 
 	if request.POST:
-
-		z2=[]
-		z3=[]
-
 		for i in matrix:
 			name1 = i[0][0]
 			area1 = i[3]
@@ -790,58 +717,64 @@ def training_matrix2(request):
 			x1=[]
 
 			for ii in i[1]:
-				z1=[]
-				zindex1 = []
-				z1.append(name1)
-				zindex1.append(i[2][0])
-
 				xa,ya = three_digit(xaxis,yaxis)
-				digit1 = str(ya + xa)
+				digit1 = ya + xa
 				matrix_temp = request.POST.get(digit1)
 				if matrix_temp =='':
 					matrix_temp = 'Not Trained'
 				ii_temp = ii[6:]
-				matrix_temp=str(matrix_temp)
+
 				# This section is trial to rebuild Matrix
-				temp_var1 = digit1 + matrix_temp
-				x1.append(temp_var1)
+				x1.append(digit1)
+				x1.append(matrix_temp)
+
+
+
+
+
+				# ****************************************
+
+				if ii_temp != matrix_temp:  # old and new different so do something
+					bbb = jobs[int(xa)-1][1]
+					if ii_temp == 'Not Trained':
+						enabled1='active'
+						# db, cur = db_set(request)
+						# cur.execute('''INSERT INTO tkb_matrix(Employee,Job,Trained,Shift,Enabled) VALUES(%s,%s,%s,%s,%s)''', (name1,bbb,matrix_temp,shift,enabled1))
+						# db.commit()
+						# db.close()
+					elif matrix_temp == 'Not Trained':
+						dummy = 1
+						# db, cur = db_set(request)
+						# dql = ('DELETE FROM tkb_matrix WHERE Employee="%s" and Job="%s"' % (name1,bbb))
+						# cur.execute(dql)
+						# db.commit()
+						# db.close()
+					else:
+						dummy=2
+						# db, cur = db_set(request)
+						# cql = ('update tkb_matrix SET Trained = "%s" WHERE Employee ="%s" and Job = "%s" and Shift = "%s"' % (matrix_temp,name1,bbb,shift))
+						# cur.execute(cql)
+						# db.commit()
+						# db.close()
 				xaxis = xaxis + 1
 			yaxis = yaxis + 1
 			xaxis = 1
 
-			z1=tuple(z1)
-			zindex1=tuple(zindex1)
-			z2.append(z1)
-			z3.append(zindex1)
 			x1=tuple(x1)
 			matrix_new.append(x1)
-			matrix_name.append(name1)
-			matrix_area.append(area1)
+			# matrix_name.append(name1)
+			# matrix_area.append(area1)
 			# matrix_new=tuple(matrix_new)
 			# matrix_area=tuple(matrix_area)
-		z2=tuple(z2)
-
-		mmm  = zip(z2,matrix_new,z3,matrix_area)
-		
+		mmm  = zip(name1,matrix_new,area1)
 		# Below is input of any new Shift to review
-		current_shift = shift
-		current_area = area
 		matrix_shift = request.POST.get('matrix_shift')
 		matrix_area = shift_area(matrix_shift)
 		request.session["matrix_shift"] = matrix_shift
 		request.session["matrix_area"] = matrix_area
-		matrix_cache1 = str(mmm)  # The updated cache
 
-		db,cur = db_set(request)
-		matrix_shift = str(matrix_shift)
 
-		dql = ('DELETE FROM tkb_matrix_cache WHERE Id="%s"' % (Id1))
-		cur.execute(dql)
-		db.commit()
-
-		cur.execute('''INSERT INTO tkb_matrix_cache(Area,Shift,Matrix,Job) VALUES(%s,%s,%s,%s)''', (current_area,current_shift,matrix_cache1,jobs_current))
-		db.commit()
-
+		e=3/0
 		return render(request,"redirect_training_matrix2.html")
 
 	else:
@@ -850,6 +783,7 @@ def training_matrix2(request):
 	args.update(csrf(request))
 	args['form'] = form
 
+	# return render(request,"test71.html",{'matrix':matrix,'jobs':jobs})
 	request.session['data_matrix'] = matrix
 	request.session['data_jobs'] = jobs
 
@@ -895,37 +829,26 @@ def shift_area(matrix_shift):
 	return matrix_area
 
 def training_matrix_find(request,index):
-	shift1 = request.session["matrix_shift"]
-	area1 = request.session["matrix_area"]
-	clock2 = str(index) + '.0'
-	clock1 = str(index)
 	db, cur = db_set(request)
-
-	sql = "SELECT * FROM tkb_matrix_cache where Area = '%s' and Shift = '%s'" %(area1,shift1)
+	sql = "SELECT * FROM tkb_manpower where Id = '%s'" %(index)
 	cur.execute(sql)
 	tmp = cur.fetchall()
-	tmp2 = tmp[0]
-	Id1 = tmp2[0]
-
-	sql="SELECT * FROM tkb_manpower where Clock = '%s'" % (clock2)
-	cur.execute(sql)
-	tmp=cur.fetchall()
 	name1 = tmp[0][1]
-
-	cur.execute("""DROP TABLE IF EXISTS tkb_matrix""")
-	cur.execute("""CREATE TABLE IF NOT EXISTS tkb_matrix(Id INT PRIMARY KEY AUTO_INCREMENT,Employee CHAR(80), Shift CHAR(80),Job Char(100), Trained Char(100),Enabled CHAR(10),Clock CHAR(80))""")
-	db.close()
-	matrix_cache_transfer(shift1,area1,request)  # Develop the temp matrix
-
+	try:
+		clock1 = float(tmp[0][3])
+	except:
+		clock1 = '0'
+	clock1 = int(clock1)
+	clock1 = str(clock1)
+	shift1 = tmp[0][2]
 	area1 = shift_area(shift1)
 	enabled1 = 'active'
+
 
 	db, cur = db_set(request)
 	sql1 = "SELECT * FROM tkb_allocation where Area = '%s'"%(area1)
 	cur.execute(sql1)
 	tmp1 = cur.fetchall()
-
-	
 	for i in tmp1:
 		job1 = i[1]
 		asset1 = i[3]
@@ -935,7 +858,6 @@ def training_matrix_find(request,index):
 		asset1 = int(asset1)
 
 		if int(clock1) != 0:
-
 			if sig1 == 1:
 				sql2= '''SELECT COUNT(*) FROM sc_production1 where comments = "%s" and asset_num = "%s" and partno = "%s"''' % (clock1,asset1,part1)
 			else:
@@ -943,8 +865,10 @@ def training_matrix_find(request,index):
 			cur.execute(sql2)
 			tmp2 = cur.fetchall()
 			count1 = int(tmp2[0][0])
+
 		else:
 			count1 = 0
+
 		trained1 = 'Not Trained'
 		if int(count1) > 0:
 			trained1 = 'Training <5 days'
@@ -958,9 +882,6 @@ def training_matrix_find(request,index):
 		cur.execute(sql3)
 		tmp3 = cur.fetchall()
 		count3 = int(tmp3[0][0])
-
-
-
 		if count1 == 0 and count3 == 1:
 			dql = ('DELETE FROM tkb_matrix WHERE Employee="%s" and Job="%s"' % (name1,job1))
 			cur.execute(dql)
@@ -973,40 +894,18 @@ def training_matrix_find(request,index):
 			cur.execute('''INSERT INTO tkb_matrix(Employee,Job,Trained,Shift,Enabled) VALUES(%s,%s,%s,%s,%s)''', (name1,job1,trained1,shift1,enabled1))
 			db.commit()
 
-	dql = ('DELETE FROM tkb_matrix_cache WHERE Id="%s"' % (Id1))
-	cur.execute(dql)
-	db.commit()
 	db.close()
 
-	matrix_read(shift1,area1,request)   # Transfer the matrix to cache
-
-	if request.session['matrix_update'] == 1:
-		return
-	else:
-		return render(request,"redirect_training_matrix2.html")
-
-def training_matrix_update_all(request):
-	matrix = request.session['data_matrix']
-	request.session['matrix_update'] = 1
-	for x in matrix:
-		clock = str(x[2][0])
-		clock = clock[:-2]
-		if clock == '':
-			clock = 0
-		else:
-			clock = int(clock)
-			training_matrix_find(request,clock)
-	request.session['bounce_matrix'] = 0
-	request.session['matrix_update'] = 0
+	# return render(request,"test71.html",{'matrix':aa})
 	return render(request,"redirect_training_matrix2.html")
 
-	# matrix1 = request.session['matrix']
-	# for x in matrix1:
-	# 	index = x[0]
-	# 	update_matrix_all(index,request)
-	# request.session['bounce_matrix'] = 0
-	# request.session['matrix_update'] = 0
-	# return render(request,"redirect_training_matrix2.html")
+def training_matrix_update_all(request):
+	matrix1 = request.session['matrix']
+	for x in matrix1:
+		index = x[0]
+		update_matrix_all(index,request)
+	request.session['bounce_matrix'] = 0
+	return render(request,"redirect_training_matrix2.html")
 
 def update_matrix_cancel(request):
 	request.session['bounce_matrix'] = 0
