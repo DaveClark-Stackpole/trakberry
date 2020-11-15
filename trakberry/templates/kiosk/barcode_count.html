@@ -1,0 +1,25 @@
+{% extends "kiosk/barcode_main.html" %}
+{% block content %}
+<body style="background-color:rgb(167, 190, 199);">
+<form action="" method="post">{% csrf_token %}
+<br><br><br><br><br><br><br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<font style="font-size: 75px; color:rgb(176, 161, 240); text-shadow: 1px 1px 2px black, 1px 1px 2px blue, 1px 1px 2px rgb(95, 184, 11);">
+
+Enter Skid Count
+
+</font>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<input style="font-size:23px;width:500px;height:60px;text-align:center;" name="skid_count" type="number"  autofocus/ >
+<br><br>
+<input style="background-color: #73dfdb;border-radius: 10px;width:140px;height:60px;font-weight: 700;font-size:23px;align=left;" type="submit" value="Enter">
+</form>
+
+<br><br><br><br>
+<br><br><br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+</body>
+{% endblock %}
