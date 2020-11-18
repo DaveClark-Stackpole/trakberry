@@ -286,6 +286,15 @@ def barcode_check(request):
 		part = request.session["barcode_part"]
 		part = int(part)
 		current_part = request.session["current_part"]
+
+		h = len(bar1)
+		if len(bar1) >24:
+			return render(request,"barcode_warning.html")
+		if len(bar1) <22:
+			if len(bar1) != 16:
+				return render(request,"barcode_warning.html")
+
+
 		try:  # if last_part sv doesn't exist make it current_part
 			last_part = request.session["last_part"]
 		except:
@@ -294,15 +303,11 @@ def barcode_check(request):
 		if current_part != last_part :
 
 			# Go to warning message saying this part is a different part
+			
 			request.session["route_1"] = 'barcode_wrong_part'
 			return direction(request)
 
-		h = len(bar1)
-		if len(bar1) >24:
-			return render(request,"barcode_warning.html")
-		if len(bar1) <22:
-			if len(bar1) != 16:
-				return render(request,"barcode_warning.html")
+		
 	
 
 		db, cur = db_set(request)
@@ -386,5 +391,6 @@ def barcode_wrong_part(request):
 	last_part = request.session["last_part"]
 	current_part = request.session["current_part"]
 	request.session["current_part"] = last_part
+	request.session["barcode_part_number"] = last_part
 
 	return render(request,"barcode_warning_part.html",{'last_part':last_part,'current_part':current_part})
