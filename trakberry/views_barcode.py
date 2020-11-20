@@ -405,8 +405,8 @@ def barcode_wrong_part(request):
 	message_subject = 'AB1V Barcode Alert !'
 	message3 = "AB1V Scanner detected a wrong part number scanned in reference to the current ones being scanned."
 	message2 = "click link to reset alarm :   http://pmdsdata.stackpole.ca:8986/trakberry/barcode_wrong_part_reset"
-    #toaddrs = ["sbrownlee@stackpole.com,jmcmaster@stackpole.com","dmiller@stackpole.com","dclark@stackpole.com","sherman@stackpole.com","pmurphy@stackpole.com","ghundt@stackpole.com","kfrey@stackpole.com","asmith@stackpole.com","smcmahon@stackpole.com","mclarke@stackpole.com","gharvey@stackpole.com","rstanley@stackpole.com","nkleingeltink@stackpole.com"]
-	toaddrs = ["dclark@stackpole.com"]
+
+	toaddrs = ["rzylstra@stackpole.com","dmilne@stackpole.com","sbrownlee@stackpole.com","pmurphy@stackpole.com","pstreet@stackpole.com","kfrey@stackpole.com","asmith@stackpole.com","smcmahon@stackpole.com","gharvey@stackpole.com","ashoemaker@stackpole.com","jreid@stackpole.com"]
 
 	fromaddr = 'stackpole@stackpole.com'
 	frname = 'Dave'
