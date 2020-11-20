@@ -1,6 +1,11 @@
 
 {% extends "kiosk/barcode_main.html" %}
 {% block content %}
+
+
+<meta http-equiv="refresh" content="5; url={{request.session.local_toggle}}/barcode_wrong_part2" />
+
+
 <body style="background-color:rgb(253, 146, 146);">
 
 <!-- this is atom text editor -->
@@ -11,10 +16,10 @@
 
 <br><br>
 <font style="font-size: 50px; color:rgb(176, 161, 240); text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkgoldenrod;">
-New Part Scanned:{{current_part}}
+New Part Scanned:{{request.session.cp}}
 </font> <br>
 <font style="font-size: 50px; color:rgb(176, 161, 240); text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkgoldenrod;">
-Part that was being scanned:{{last_part}}
+Part that was being scanned:{{request.session.lp}}
     </font>
 <br><br><br>
 <font style="font-size: 80px; color:rgb(176, 161, 240); text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkgoldenrod;">CONTACT YOUR SUPERVISOR !
@@ -22,7 +27,6 @@ Part that was being scanned:{{last_part}}
 <!-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <button onclick="location.href = '{{request.session.local_toggle}}/barcode_input';" id="myButton" class="float-left submit-button" style="width: 225px;height: 100px;font-size: 37px;"><b>OK</b></button> -->
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<button onclick="location.href = '{{request.session.local_toggle}}/barcode_input';" id="myButton" class="float-left submit-button" style="width: 325px;height: 100px;font-size: 37px;" ><b>Acknowledge</b></button>
 
 </font>
 </body>

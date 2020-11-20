@@ -127,7 +127,7 @@ from mod1 import index_template,track_10r
 
 from views_mod2 import hrly_display, butter
 from views_barcode import barcode_check, barcode_input, barcode_initial, barcode_reset, barcode_search, barcode_search_check, barcode_verify, barcode_verify_check
-from views_barcode import barcode_check_10R,barcode_input_10R,barcode_initial_10R, barcode_wrong_part, barcode_count
+from views_barcode import barcode_check_10R,barcode_input_10R,barcode_initial_10R, barcode_wrong_part, barcode_count, barcode_wrong_part2, barcode_wrong_part_reset
 
 # ***********************************************************************************************************************************************************
 
@@ -557,6 +557,8 @@ urlpatterns = [
 	url(r'^barcode_check_10R/', barcode_check_10R),
 	url(r'^barcode_initial_10R/', barcode_initial_10R),
 	url(r'^barcode_wrong_part/', barcode_wrong_part),
+	url(r'^barcode_wrong_part2/', barcode_wrong_part2),
+	url(r'^barcode_wrong_part_reset/', barcode_wrong_part_reset),
 	url(r'^barcode_count/', barcode_count),
 
 	# *************  Scrap Section *********************************************

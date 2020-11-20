@@ -294,21 +294,16 @@ def barcode_check(request):
 			if len(bar1) != 16:
 				return render(request,"barcode_warning.html")
 
-
+		# This section checks for the wrong part
 		try:  # if last_part sv doesn't exist make it current_part
 			last_part = request.session["last_part"]
 		except:
 			last_part = current_part
-
 		if current_part != last_part :
-
 			# Go to warning message saying this part is a different part
-			
 			request.session["route_1"] = 'barcode_wrong_part'
 			return direction(request)
 
-		
-	
 
 		db, cur = db_set(request)
 		if len(bar1) == 16:
@@ -388,9 +383,66 @@ def barcode_check(request):
 		return direction(request)
 
 def barcode_wrong_part(request):
+	a='1'
 	last_part = request.session["last_part"]
 	current_part = request.session["current_part"]
+	request.session["lp"] = last_part
+	request.session["cp"] = current_part
 	request.session["current_part"] = last_part
 	request.session["barcode_part_number"] = last_part
+	
+	db, cur = db_set(request)
+	cur.execute("""DROP TABLE IF EXISTS barcode_alarms""")
+	cur.execute("""CREATE TABLE IF NOT EXISTS barcode_alarms(Id INT PRIMARY KEY AUTO_INCREMENT, alarm Char(10))""")
+	db.commit()
+	cur.execute('''INSERT INTO barcode_alarms(alarm) VALUES(%s)''', (a))
+
+	db.commit()
+	db.close()
+	
+	b = "\r\n"
+	ctr = 0
+	message_subject = 'AB1V Barcode Alert !'
+	message3 = "AB1V Scanner detected a wrong part number scanned in reference to the current ones being scanned."
+	message2 = "click link to reset alarm :   http://pmdsdata.stackpole.ca:8986/trakberry/barcode_wrong_part_reset"
+    #toaddrs = ["sbrownlee@stackpole.com,jmcmaster@stackpole.com","dmiller@stackpole.com","dclark@stackpole.com","sherman@stackpole.com","pmurphy@stackpole.com","ghundt@stackpole.com","kfrey@stackpole.com","asmith@stackpole.com","smcmahon@stackpole.com","mclarke@stackpole.com","gharvey@stackpole.com","rstanley@stackpole.com","nkleingeltink@stackpole.com"]
+	toaddrs = ["dclark@stackpole.com"]
+
+	fromaddr = 'stackpole@stackpole.com'
+	frname = 'Dave'
+	server = SMTP('smtp.gmail.com', 587)
+	server.ehlo()
+	server.starttls()
+	server.ehlo()
+	server.login('StackpolePMDS@gmail.com', 'stacktest6060')
+	message = "From: %s\r\n" % frname + "To: %s\r\n" % ', '.join(toaddrs) + "Subject: %s\r\n" % message_subject + "\r\n" 
+	message = message+message_subject + "\r\n\r\n" + "\r\n\r\n" + message3 + "\r\n\r\n" + message2
+	server.sendmail(fromaddr, toaddrs, message)
+	server.quit()
+
 
 	return render(request,"barcode_warning_part.html",{'last_part':last_part,'current_part':current_part})
+
+def barcode_wrong_part2(request):
+	a = 1
+	db, cur = db_set(request)
+	sql3 = '''SELECT * FROM barcode_alarms where alarm = "%d"'''%(a)
+	cur.execute(sql3)
+	tmp = cur.fetchall()
+	db.close()
+	try:
+		tmp2 = tmp[0]
+		return render(request,"barcode_warning_part.html")
+	except:
+		request.session["route_1"] = 'barcode_input'
+		return direction(request)
+
+def barcode_wrong_part_reset(request):
+	a = 0
+	b = 1
+	db, cur = db_set(request)
+	mql =( 'update barcode_alarms SET alarm="%s" WHERE alarm="%s"' % (a,b))
+	cur.execute(mql)
+	db.commit()
+	db.close()
+	return render(request,"test72.html")
