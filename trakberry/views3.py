@@ -469,8 +469,8 @@ def manpower_initial(request):
 # Update DB so it has current manpower
 def manpower_update(request):
 	# comment below when running local
-	# label_link = '/home/file/import1/Inventory/importedxls'
-	# os.chdir(label_link)
+	label_link = '/home/file/import1/Inventory/importedxls'
+	os.chdir(label_link)
 	# ********************************
 
 	sheet = 'inventory.xlsx'
@@ -518,7 +518,7 @@ def manpower_update(request):
 	c=tuple(c)
 	abc=zip(a,b,c)
 	# return render(request,"test71.html",{'matrix':abc})
-	for fnd in range(start1,900):  # Determine what row to start reading manpower from
+	for fnd in range(start1,900):  # Determine what row to start reading jobs from
 		fnd_cell = str(working.cell(fnd,0).value)
 		if fnd_cell == 'Area 1':
 			start2 = fnd-1
@@ -616,6 +616,10 @@ def manpower_update(request):
 	shift ,area = 'Plant 4 Mid','Area 3'
 	matrix_read(shift,area,request)
 
+
+	full_update(request)   # Fully update the matrix
+
+	# return   # Return from module call of updating manpower
 	return render(request,"test4.html")
 
 # This will be needed to read data directly and write to cache
@@ -984,6 +988,39 @@ def training_matrix_find(request,index):
 		return
 	else:
 		return render(request,"redirect_training_matrix2.html")
+
+# This will update all shifts training matrix
+def full_update(request):
+	shift = ['Plant 1 Mid','Plant 1 Aft','Plant 1 Days','Plant 3 Mid','Plant 3 Aft','Plant 3 Days','Plant 4 Mid','Plant 4 Aft','Plant 4 Day']
+	for i in shift:
+		shift1 = i
+		area1 = shift_area(shift1)
+		request.session["matrix_shift"] = shift1
+		request.session["matrix_area"] = area1
+		db, cur = db_set(request)
+		sql = "SELECT * FROM tkb_matrix_cache where Area = '%s' and Shift = '%s'" %(area1,shift1)
+		cur.execute(sql)
+		tmp = cur.fetchall()
+		tmp2 = tmp[0]
+		db.close()
+		matrix = tmp2[3]
+		matrix = eval(matrix) # Convert string from database read to required tuple
+		for x in matrix:
+			clock = str(x[2][0])
+			clock = clock[:-2]
+			if clock == '':
+				clock = 0
+			else:
+				try:
+					clock = int(clock)
+					training_matrix_find(request,clock)
+				except:
+					clock = 0
+	request.session['bounce_matrix'] = 0
+	request.session['matrix_update'] = 0
+
+	return
+	# return render(request,"redirect_training_matrix2.html")
 
 def training_matrix_update_all(request):
 	matrix = request.session['data_matrix']

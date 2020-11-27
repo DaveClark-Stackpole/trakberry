@@ -134,7 +134,7 @@ from views_barcode import barcode_check_10R,barcode_input_10R,barcode_initial_10
 # *******************************************  Admin Section ********************************************************************************************
 from views_admin import master
 from views3 import excel_dump, excel_scrap_dump,training_matrix2,training_matrix_find,training_matrix_update_all
-from views3 import bounce_matrix,update_matrix_cancel,matrix_cache_matrix
+from views3 import bounce_matrix,update_matrix_cancel,matrix_cache_matrix, full_update
 # ***********************************************************************************************************************************************************
 
 # *******************************************  Scrap Section ********************************************************************************************
@@ -353,6 +353,7 @@ urlpatterns = [
 
 	
 	url(r'^training_matrix_update_all/', training_matrix_update_all),
+	url(r'^full_update/', full_update),
 	
 	# ************************************************************************
 	
