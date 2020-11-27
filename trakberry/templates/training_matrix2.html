@@ -117,7 +117,7 @@ th {
 				<!-- put in Color Key top left-->
 				
 
-			<select id="matrix_shift" style="background-color: #315238;font-size:10px;" onchange="myFunction();" list="browsers" name="matrix_shift" {{request.session.matrix_shift}}>	
+			<select id="matrix_shift" style="background-color: #315238;font-size:15px;" onchange="myFunction();" list="browsers" name="matrix_shift" {{request.session.matrix_shift}}>	
 				<option value="{{request.session.matrix_shift}}" selected>{{request.session.matrix_shift}}</option>
 				<option value="Plant 1 Mid">Area 1 Mid</option>
 				<option value="Plant 1 Aft">Area 1 Aft</option>
@@ -129,12 +129,12 @@ th {
 				<option value="Plant 4 Aft">Area 3 Aft</option>
 				<option value="Plant 4 Day">Area 3 Day</option>
 			</select>
-			<br><br>
-			<input style="background-color: #315357;border-radius: 5px;width:90%;font-weight: 500;font-size:10px;align=left;" type="submit" value="SAVE">
-			<br><br>
-			<button style="background-color: #555231;border-radius: 5px;width:90%;height:90%;font-size:10px;align=left;" type="button"
+			<br>
+			
+
+			<!-- <button style="background-color: #555231;border-radius: 5px;width:90%;height:90%;font-size:10px;align=left;" type="button"
 			onclick="window.location.href = '{{request.session.local_toggle}}/bounce_matrix';">Update All</button>
-				<br>
+				<br> -->
 				</th>
 
 
@@ -208,7 +208,7 @@ th {
 
 		{% for i in '01234567890123456789012345678901234567890123456789012345678901234567890123456789'|make_list %}
 				<td  style="border:0px solid black;">&nbsp; &nbsp; &nbsp;  </td>
-				{% endfor %}	
+		{% endfor %}	
 
 
 			</tr>
@@ -222,7 +222,7 @@ th {
 				{% endfor %}
 
 				{% for i in '01234567890123456789012345678901234567890123456789012345678901234567890123456789'|make_list %}
-				<td  style="border:0px solid black;">&nbsp; &nbsp; &nbsp;  </td>
+					<td  style="border:0px solid black;">&nbsp; &nbsp; &nbsp;  </td>
 				{% endfor %}		
 
 			</tr>
@@ -238,7 +238,7 @@ th {
 
 
 
-
+<input style="background-color: #315357;border-radius: 5px;width:1%;font-weight: 500;font-size:10px;align=left;" type="submit" value="">
 </form>
 
 <!-- Modal For Are you sure to Close -->
@@ -257,7 +257,7 @@ th {
 								<b>You are about to Update Entire Shift. Are you sure?.<br>It Will take about 10min after clicking OK</b><br><br>
 								&nbsp;&nbsp;&nbsp;
 								<button style="background-color: #AAAAAA;border-radius: 10px;width:62px;height:33px;font-weight: 500;font-size:14px;align=left;" 
-								type="button" onclick="window.location.href = '{{request.session.local_toggle}}/training_matrix_update_all';">OK</button>
+								type="button" onclick="window.location.href = '{{request.session.local_toggle}}/full_update';">OK</button>
 								&nbsp;&nbsp;&nbsp;
 								<button style="background-color: #AAAAAA;border-radius: 10px;width:62px;height:33px;font-weight: 500;font-size:14px;align=left;" 
 								type="button" onclick="window.location.href = '{{request.session.local_toggle}}/update_matrix_cancel';">Cancel</button>
