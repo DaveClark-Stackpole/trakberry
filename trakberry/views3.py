@@ -465,13 +465,55 @@ def manpower_initial(request):
 	db.commit()
 	db.close()
 	return
-	
-# Update DB so it has current manpower
-def manpower_update(request):
+
+def manpower_update(request):  # This will run every 30 min on the refresh page to see if update occurs
+	t=int(time.time())
+	tm = time.localtime(t)
+	x1 = tm[1]
+	c = 0 
+	hr1 = str(tm[3])
+	min1 = str(tm[4])
+	time1 = str(tm[1])+"/"+str(tm[2])+"/"+str(tm[0])+" 12:00 am"  # Sets the update time to midnight each day
+	check = 0
+	# Determing if current time is stored to check and if that time has been run
+	db, cur = db_set(request)  
+	cur.execute("""CREATE TABLE IF NOT EXISTS tkb_manpower_updater(Id INT PRIMARY KEY AUTO_INCREMENT,timestamp CHAR(80), dummy int(10))""")
+	try:
+		sql = "SELECT * From tkb_manpower_updater where timestamp = '%s'" % (time1)
+		cur.execute(sql)
+		tmp = cur.fetchall()
+		tmp2 = tmp[0]
+	except:
+		cur.execute('''INSERT INTO tkb_manpower_updater(timestamp,dummy) VALUES(%s,%s)''', (time1,c))
+		db.commit()
+		check = 1
+		# return manpower_tester(request)
+		return manpower_update_run(request)
+		# This is where you run the update
+	sql = "SELECT MAX(Id) From tkb_manpower_updater"
+	cur.execute(sql)
+	tmp = cur.fetchall()
+	tmp2 = tmp[0]
+	tmp3 = tmp2[0]
+
+	sql = "SELECT timestamp From tkb_manpower_updater where Id = '%s'" % (tmp3)
+	cur.execute(sql)
+	finished1 = cur.fetchall()
+	request.session["finished_update"] = finished1[0]
+
+
+	return render(request,'manpower_updater.html')
+
+def manpower_tester(request):
+	return render(request,"manpower_updater.html")
+
+def manpower_update_run(request):
 	# comment below when running local
-	label_link = '/home/file/import1/Inventory/importedxls'
-	os.chdir(label_link)
+	# label_link = '/home/file/import1/Inventory/importedxls'
+	# os.chdir(label_link)
 	# ********************************
+	
+	# request.session["time_manpower_update"] = tm
 
 	sheet = 'inventory.xlsx'
 	sheet_name = 'Sheet1'
@@ -620,7 +662,7 @@ def manpower_update(request):
 	full_update(request)   # Fully update the matrix
 
 	# return   # Return from module call of updating manpower
-	return render(request,"test4.html")
+	return render(request,"manpower_updater.html")
 
 # This will be needed to read data directly and write to cache
 def matrix_read(shift,area,request):

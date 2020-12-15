@@ -1,6 +1,8 @@
 <html>
 <body>
-
-
-DONE !!!
+	{% if request.session.update_manpower = 1 %}
+		<meta http-equiv="refresh" content="0; url={{request.session.local_toggle}}/manpower_update" />
+	{% endif %}
+	<br><br><br>
+	Checking for update time
 </body></html>
