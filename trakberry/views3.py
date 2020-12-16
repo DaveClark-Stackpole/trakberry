@@ -509,8 +509,8 @@ def manpower_tester(request):
 
 def manpower_update_run(request):
 	# comment below when running local
-	# label_link = '/home/file/import1/Inventory/importedxls'
-	# os.chdir(label_link)
+	label_link = '/home/file/import1/Inventory/importedxls'
+	os.chdir(label_link)
 	# ********************************
 	
 	# request.session["time_manpower_update"] = tm
