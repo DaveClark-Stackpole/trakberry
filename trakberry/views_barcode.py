@@ -403,10 +403,10 @@ def barcode_wrong_part(request):
 	b = "\r\n"
 	ctr = 0
 	message_subject = 'AB1V Barcode Alert !'
-	message3 = "AB1V Scanner detected a wrong part number scanned in reference to the current ones being scanned."
+	message3 = "AB1V Scanner detected a wrong part number scanned in reference to the current ones being scanned.  Scanned " + current_part + " but should be " + last_part
 	message2 = "click link to reset alarm :   http://pmdsdata.stackpole.ca:8986/trakberry/barcode_wrong_part_reset"
 
-	toaddrs = ["rzylstra@stackpole.com","dmilne@stackpole.com","sbrownlee@stackpole.com","pmurphy@stackpole.com","pstreet@stackpole.com","kfrey@stackpole.com","asmith@stackpole.com","smcmahon@stackpole.com","gharvey@stackpole.com","ashoemaker@stackpole.com","jreid@stackpole.com"]
+	toaddrs = ["rzylstra@stackpole.com","lbaker@stackpole.com","dmilne@stackpole.com","sbrownlee@stackpole.com","pmurphy@stackpole.com","pstreet@stackpole.com","kfrey@stackpole.com","asmith@stackpole.com","smcmahon@stackpole.com","gharvey@stackpole.com","ashoemaker@stackpole.com","jreid@stackpole.com"]
 
 	fromaddr = 'stackpole@stackpole.com'
 	frname = 'Dave'
@@ -419,8 +419,6 @@ def barcode_wrong_part(request):
 	message = message+message_subject + "\r\n\r\n" + "\r\n\r\n" + message3 + "\r\n\r\n" + message2
 	server.sendmail(fromaddr, toaddrs, message)
 	server.quit()
-
-
 	return render(request,"barcode_warning_part.html",{'last_part':last_part,'current_part':current_part})
 
 def barcode_wrong_part2(request):
