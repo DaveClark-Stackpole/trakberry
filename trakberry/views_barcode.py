@@ -287,6 +287,29 @@ def barcode_check(request):
 		part = int(part)
 		current_part = request.session["current_part"]
 
+
+		short1 = request.session["barcode_part_short"]
+		if short1 == 'BB' or short1 == 'CB':
+			try:
+				last_short = request.session["last_part"]
+			except:
+				last_short = short1
+
+			if short1 != last_short:
+				request.session["route_1"] = 'barcode_wrong_part'
+				return direction(request)
+			
+			request.session["last_part"] = short1
+			ctr = request.session["barcode_part"]
+			ctr = ctr + 1
+			request.session["barcode_part"] = ctr
+			if short1 == 'BB':
+				request.session["barcode_part_number"] = '50-5214'
+			else:
+				request.session["barcode_part_number"] = '50-3214'
+			return render(request,"barcode_ok.html")
+
+
 		h = len(bar1)
 		if len(bar1) >24:
 			return render(request,"barcode_warning.html")
@@ -386,6 +409,20 @@ def barcode_wrong_part(request):
 	a='1'
 	last_part = request.session["last_part"]
 	current_part = request.session["current_part"]
+	part_short = request.session["barcode_part_short"]
+	
+	if part_short == "CB" or part_short == "BB":
+		last_part = last_part[-2:]
+		current_part = current_part[-2:]
+		if last_part == 'BB':
+			last_part = "50-5214"
+		else:
+			last_part = "50-3214"
+		if current_part == 'BB':
+			current_part = "50-5214"
+		else:
+			current_part = "50-3214"
+
 	request.session["lp"] = last_part
 	request.session["cp"] = current_part
 	request.session["current_part"] = last_part
@@ -405,6 +442,7 @@ def barcode_wrong_part(request):
 	message_subject = 'AB1V Barcode Alert !'
 	message3 = "AB1V Scanner detected a wrong part number scanned in reference to the current ones being scanned.  Scanned " + current_part + " but should be " + last_part
 	message2 = "click link to reset alarm :   http://pmdsdata.stackpole.ca:8986/trakberry/barcode_wrong_part_reset"
+
 
 	toaddrs = ["rzylstra@stackpole.com","lbaker@stackpole.com","dmilne@stackpole.com","sbrownlee@stackpole.com","pmurphy@stackpole.com","pstreet@stackpole.com","kfrey@stackpole.com","asmith@stackpole.com","smcmahon@stackpole.com","gharvey@stackpole.com","ashoemaker@stackpole.com","jreid@stackpole.com"]
 
