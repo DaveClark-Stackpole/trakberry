@@ -168,38 +168,29 @@ th {
 			{% if item|slice:"6:" = 'Trained' %}
 			<td  style="border:1px solid black;z-index: 2;padding:0px;background-color: #90f078;"> 
 				<center>
-					<select style="font-size:70%;text-align:center;background-color: #90f078;" name='{{item|slice:":6"}}' type="text">
-						<option selected = "selected">{{item|slice:"6:"}}</option>
+					{{item|slice:"6:"}}
+					
 			{% elif item|slice:"6:" = 'Training <5 days' %}
 			<td  style="border:1px solid black;z-index: 2;padding:0px;background-color: #f77bea;"> 
 				<center>
-					<select style="font-size:70%;text-align:center;background-color: #f77bea;" name='{{item|slice:":6"}}' type="text">
-						<option selected = "selected">{{item|slice:"6:"}}</option>
+					{{item|slice:"6:"}}
 			{% elif item|slice:"6:" = 'Training >4 days' %}
 			<td  style="border:1px solid black;z-index: 2;padding:0px;background-color: #f8ed4e;"> 
 				<center>
-					<select style="font-size:70%;text-align:center;background-color: #f8ed4e;" name='{{item|slice:":6"}}' type="text">
-						<option selected = "selected">{{item|slice:"6:"}}</option>
+					{{item|slice:"6:"}}
 
 			{% elif item|slice:"6:" = 'A Trainer' %}
 			<td  style="border:1px solid black;z-index: 2;padding:0px;background-color: #5eaace;"> 
 				<center>
-					<select style="font-size:70%;text-align:center;background-color: #5eaace;" name='{{item|slice:":6"}}' type="text">
-						<option selected = "selected">{{item|slice:"6:"}}</option>
+					{{item|slice:"6:"}}
 			{% else %}
 			<td  style="border:1px solid black;z-index: 2;padding:0px;background-color: #c7c7c7;"> 
 				<center>
-					<select style="font-size:70%;text-align:center;background-color: #c7c7c7;" name='{{item|slice:":6"}}' type="text">
-						<option selected = "selected"></option>
+					
 			{% endif %}
 
 						
-						<option style="color:rgb(0, 0, 0);">Not Trained</option>
-						<option style="color:rgb(0, 0, 0);">Training <5 days</option>
-						<option style="color:rgb(0, 0, 0);">Training >4 days</option>
-						<option style="color:rgb(0, 0, 0);">Trained</option>
-						<option style="color:rgb(0, 0, 0);">A Trainer</option>
-					</select>
+					
 
 			</center>
 			</td>

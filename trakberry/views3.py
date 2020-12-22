@@ -509,103 +509,104 @@ def manpower_tester(request):
 
 def manpower_update_run(request):
 	# comment below when running local
-	label_link = '/home/file/import1/Inventory/importedxls'
-	os.chdir(label_link)
+	# label_link = '/home/file/import1/Inventory/importedxls'
+	# os.chdir(label_link)
 	# ********************************
 	
 	# request.session["time_manpower_update"] = tm
 
-	sheet = 'inventory.xlsx'
-	sheet_name = 'Sheet1'
+	# sheet = 'inventory.xlsx'
+	# sheet_name = 'Sheet1'
 
-	book = xlrd.open_workbook(sheet)
-	working = book.sheet_by_name(sheet_name)
-	tot = 266  # Row on Excel Sheet
-	toc = 35   # Col on Excel Sheet
-	tdate = tot+1
-	jj = 1
-	a = []
-	b = []
-	c = []
+	# book = xlrd.open_workbook(sheet)
+	# working = book.sheet_by_name(sheet_name)
+	# tot = 266  # Row on Excel Sheet
+	# toc = 35   # Col on Excel Sheet
+	# tdate = tot+1
+	# jj = 1
+	# a = []
+	# b = []
+	# c = []
 
-	job1 = [[] for xx in range(600)]
-	area1 = [[] for yy in range(600)]
-	asset1 = [[] for zz in range(600)]
-	sig1 = [[] for ww in range(600)]
-	part1 = [[] for uu in range(600)]
+	# job1 = [[] for xx in range(600)]
+	# area1 = [[] for yy in range(600)]
+	# asset1 = [[] for zz in range(600)]
+	# sig1 = [[] for ww in range(600)]
+	# part1 = [[] for uu in range(600)]
 
-	for fnd in range(1,400):  # Determine what row to start reading manpower from
-		fnd_cell = str(working.cell(fnd,0).value)
-		if fnd_cell == 'Plant 1 Days':
-			start1 = fnd
-			break
+	# for fnd in range(1,400):  # Determine what row to start reading manpower from
+	# 	fnd_cell = str(working.cell(fnd,0).value)
+	# 	if fnd_cell == 'Plant 1 Days':
+	# 		start1 = fnd
+	# 		break
 	
-	for i in range((start1+1),(start1+60)):
-		for ii in range(0,21):
-			if len(str(working.cell(i,ii).value)) > 5:
-				zz = ii + 21
-				z = str(working.cell(i,zz).value)
-				x = str(working.cell(i,ii).value) 
-				if x[-1:] == ';':
-					xlen = len(x)
-					x = x[:(xlen-1)]
-				y = str(working.cell(start1,ii).value) 
-				a.append(x)
-				b.append(y)
-				c.append(z)
+	# for i in range((start1+1),(start1+60)):
+	# 	for ii in range(0,21):
+	# 		if len(str(working.cell(i,ii).value)) > 5:
+	# 			zz = ii + 21
+	# 			z = str(working.cell(i,zz).value)
+	# 			x = str(working.cell(i,ii).value) 
+	# 			if x[-1:] == ';':
+	# 				xlen = len(x)
+	# 				x = x[:(xlen-1)]
+	# 			y = str(working.cell(start1,ii).value) 
+	# 			a.append(x)
+	# 			b.append(y)
+	# 			c.append(z)
 
-				jj = jj + 1
-	a=tuple(a)
-	b=tuple(b)
-	c=tuple(c)
-	abc=zip(a,b,c)
-	# return render(request,"test71.html",{'matrix':abc})
-	for fnd in range(start1,900):  # Determine what row to start reading jobs from
-		fnd_cell = str(working.cell(fnd,0).value)
-		if fnd_cell == 'Area 1':
-			start2 = fnd-1
-			break
-
-	kk = 1
-	for i in range((start2+1),(start2+180)):
-		try:
-			if len(str(working.cell(i,0).value)) > 5:
-				x = str(working.cell(i,0).value) 
-				y = str(working.cell(i,1).value) 
-				z = str(working.cell(i,2).value) 
-				w = str(working.cell(i,3).value) 
-				u = str(working.cell(i,4).value) 
-				area1[kk].append(x)
-				job1[kk].append(y)
-				asset1[kk].append(z)
-				sig1[kk].append(w)
-				part1[kk].append(u)
-				kk = kk + 1
-			else:
-				break
-		except:
-			break
+	# 			jj = jj + 1
+	# a=tuple(a)
+	# b=tuple(b)
+	# c=tuple(c)
+	# abc=zip(a,b,c)
 
 
-	manpower_initial(request)   # Initialize the Manpower list
-	matrix_cache_matrix(request) # Transfer current cache to matrix table
-	db, cur = db_set(request)
-	x = 1
-	for i in abc:
-		y = str(i[0])
-		yy = str(i[1])
-		yyy = str(i[2])
-		cur.execute('''INSERT INTO tkb_manpower2(Employee,Shift,Clock) VALUES(%s,%s,%s)''', (y,yy,yyy))
-		db.commit()
-	for i in range(1,kk):
-		y = str(job1[i][0])
-		yy = str(area1[i][0])
-		yyy = str(asset1[i][0])
-		yyyy = str(sig1[i][0])
-		yyyyy =  str(part1[i][0])
+	# # return render(request,"test71.html",{'matrix':abc})
+	# for fnd in range(start1,900):  # Determine what row to start reading jobs from
+	# 	fnd_cell = str(working.cell(fnd,0).value)
+	# 	if fnd_cell == 'Area 1':
+	# 		start2 = fnd-1
+	# 		break
 
-		cur.execute('''INSERT INTO tkb_allocation2(Job,Area,Asset,Sig1,Part) VALUES(%s,%s,%s,%s,%s)''', (y,yy,yyy,yyyy,yyyyy))
-		db.commit()
+	# kk = 1
+	# for i in range((start2+1),(start2+180)):
+	# 	try:
+	# 		if len(str(working.cell(i,0).value)) > 5:
+	# 			x = str(working.cell(i,0).value) 
+	# 			y = str(working.cell(i,1).value) 
+	# 			z = str(working.cell(i,2).value) 
+	# 			w = str(working.cell(i,3).value) 
+	# 			u = str(working.cell(i,4).value) 
+	# 			area1[kk].append(x)
+	# 			job1[kk].append(y)
+	# 			asset1[kk].append(z)
+	# 			sig1[kk].append(w)
+	# 			part1[kk].append(u)
+	# 			kk = kk + 1
+	# 		else:
+	# 			break
+	# 	except:
+	# 		break
+
+
+	# manpower_initial(request)   # Initialize the Manpower list
+	# matrix_cache_matrix(request) # Transfer current cache to matrix table
+	# db, cur = db_set(request)
+	# x = 1
+	# for i in abc:
+	# 	y = str(i[0])
+	# 	yy = str(i[1])
+	# 	yyy = str(i[2])
+	# 	cur.execute('''INSERT INTO tkb_manpower2(Employee,Shift,Clock) VALUES(%s,%s,%s)''', (y,yy,yyy))
+	# 	db.commit()
+	# for i in range(1,kk):
+	# 	y = str(job1[i][0])
+	# 	yy = str(area1[i][0])
+	# 	yyy = str(asset1[i][0])
+	# 	yyyy = str(sig1[i][0])
+	# 	yyyyy =  str(part1[i][0])
+	# 	cur.execute('''INSERT INTO tkb_allocation2(Job,Area,Asset,Sig1,Part) VALUES(%s,%s,%s,%s,%s)''', (y,yy,yyy,yyyy,yyyyy))
+	# 	db.commit()
 
 	sql = "SELECT * From tkb_manpower2 WHERE tkb_manpower2.Employee NOT IN (SELECT Employee From tkb_manpower)"
 	cur.execute(sql)
@@ -623,6 +624,10 @@ def manpower_update_run(request):
 	cur.execute(sql)
 	tmp_job2 = cur.fetchall()   # This shows all new jobs to add
 
+
+	e=r/0
+
+	
 	active = 'active'
 	inactive = 'inactive'
 
@@ -656,6 +661,8 @@ def manpower_update_run(request):
 	shift ,area = 'Plant 4 Aft','Area 3'
 	matrix_read(shift,area,request)
 	shift ,area = 'Plant 4 Mid','Area 3'
+	matrix_read(shift,area,request)
+	shift ,area = 'A Days P1','Area 1'
 	matrix_read(shift,area,request)
 
 
@@ -717,6 +724,9 @@ def matrix_read(shift,area,request):
 	z2 = tuple(z2)
 	z3 = tuple(z3)
 
+	if shift =='A Days P1':
+		shift = 'Plant 1 Days'
+
 	matrix = zip(z2,x,z3,area1)  # matrix will have first tuple name second tuple are all jobs third is clock number
 
 	mmatrix = str(matrix)
@@ -734,8 +744,6 @@ def matrix_cache_matrix(request): # Transfer Cache to clean Matrix
 	cur.execute("""CREATE TABLE IF NOT EXISTS tkb_matrix(Id INT PRIMARY KEY AUTO_INCREMENT,Employee CHAR(80), Shift CHAR(80),Job Char(100), Trained Char(100),Enabled CHAR(10),Clock CHAR(80))""")
 	db.close()
 
-	shift ,area = 'Plant 1 Mid','Area 1'
-	matrix_cache_transfer(shift,area,request)
 	shift ,area = 'Plant 1 Mid','Area 1'
 	matrix_cache_transfer(shift,area,request)
 	shift ,area = 'Plant 1 Aft','Area 1'
