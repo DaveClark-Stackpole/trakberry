@@ -98,6 +98,7 @@ from views_kiosk import kiosk_production, kiosk_production_entry,flex_test,manua
 from views_kiosk import entry_recent, manual_cycletime_table, tenr_fix2, tenr_fix3,kiosk_hourly_entry,kiosk_initial_9HP,kiosk_initial_6L_Output
 from views_kiosk import kiosk_initial_GF9,kiosk_initial_6L_IN,kiosk_initial_AB1V, kiosk_sub_menu, kiosk_manual, kiosk_kiosk
 from views_kiosk import kiosk_help_form, kiosk_forklift_form, kiosk_scrap, kiosk_scrap_entry, kiosk_scrap_reset #, kiosk_mult_entries
+from views_kiosk import production_entry_check
 
 
 # ***********************************************************************************************************************************************************
@@ -142,6 +143,9 @@ from views_scrap import scrap_mgmt, scrap_mgmt_login_form,scrap_display,scrap_di
 from views_scrap import scrap_entries_next, scrap_entries_prev,scrap_entries_update,scrap_display_date_pick,scrap_display_24hr,operation_department,oper_dept_edit_selection,operation_entries_next, operation_entries_prev,operation_entries_update,kiosk_add_category,kiosk_initiate
 # ***********************************************************************************************************************************************************
 
+# *******************************************  Manpower Section ********************************************************************************************
+from views_manpower import manpower_update_v2, training_matrix3
+# ***********************************************************************************************************************************************************
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
@@ -447,7 +451,7 @@ urlpatterns = [
 	url(r'^kiosk_help_form/', kiosk_help_form),
 	url(r'^kiosk_forklift_form/', kiosk_forklift_form),
 	
-
+	url(r'^production_entry_check/', production_entry_check),
 
 
 	url(r'^tenr2/', tenr2),
@@ -568,11 +572,15 @@ urlpatterns = [
 	url(r'^scrap_display/', scrap_display),
 	url(r'^scrap_display_24hr/', scrap_display_24hr),
 	url(r'^scrap_display_date_pick/', scrap_display_date_pick),
-
 	url(r'^scrap_entries_next/', scrap_entries_next),
 	url(r'^scrap_entries_prev/', scrap_entries_prev),
-
 	url(r'^scrapdate_fix1/', scrapdate_fix1),
+	# **************************************************************************
+
+	# *************  Manpower Section *********************************************
+	url(r'^manpower_update_v2/', manpower_update_v2),
+	url(r'^training_matrix3/', training_matrix3),
+	# **************************************************************************
 
 
 	# url(r'^scrap_display_operation/get/(?P<index>\w{0,50})/$', scrap_display_operation),

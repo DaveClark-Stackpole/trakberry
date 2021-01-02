@@ -8,7 +8,7 @@ from views_mod1 import find_current_date
 from trakberry.views2 import login_initial
 from trakberry.views_testing import machine_list_display
 from trakberry.views_vacation import vacation_temp, vacation_set_current, vacation_set_current2, vacation_set_current5
-from views_vacation import vacation_set_current77,vacation_set_current4,vacation_set_current9
+from views_vacation import vacation_set_current77,vacation_set_current4,vacation_set_current9, vacation_set_current5
 from django.http import QueryDict
 import MySQLdb
 import json
@@ -2543,5 +2543,88 @@ def kiosk_scrap_entry(request):
 
 	return render(request,'kiosk_scrap_entry.html',{'args':args})
 
+def production_entry_check(request):
+	date1, shift2 = vacation_set_current5()
+	date1='2020-12-07'
+	shift = 'Plant 1 Days'
+
+	db, cur = db_set(request)
+	cur.execute("""DROP TABLE IF EXISTS tkb_scheduled""")
+	# cur.execute("""CREATE TABLE IF NOT EXISTS tkb_scheduled(Id INT PRIMARY KEY AUTO_INCREMENT,timestamp CHAR(80), dummy int(10))""")
+	cur.execute("""CREATE TABLE IF NOT EXISTS tkb_scheduled(Id INT PRIMARY KEY AUTO_INCREMENT,Date1 Char(80), Employee CHAR(80), Clock CHAR(80), Job CHAR(80), Part CHAR(80), Shift Char(80), Hrs Char(80))""")
 
 
+	# This will have to be tweaked for continental
+	sql = "SELECT * FROM tkb_manpower where Shift = '%s'" %(shift)
+	cur.execute(sql)
+	tmp = cur.fetchall()  # List of all current employees on the shift
+	name1 =[]
+	clock1 =[]
+	job1 = []
+	part1 = []
+	name_good = []
+	clock_good = []
+	job_good = []
+	part_good = []
+	for i in tmp:
+		try:
+			clock_num = int(i[3][:-2])
+		except:
+			clock_num = 0
+		# sql = "SELECT EXISTS(SELECT * FROM sc_production1 where comments = '%s' and pdate = '%s')" %(clock_num,date1)
+		sql = "SELECT * FROM sc_production1 where comments = '%s' and pdate ='%s'" % (clock_num,date1)
+		cur.execute(sql)
+		tmp=cur.fetchall()
+		nm = i[1]
+		check1 = 0
+		job = 'no entry'
+		try:
+			asset4 = tmp[0][1]
+			part4 = tmp[0][3]
+		except:
+			asset4 = '------'
+			part4 = '------'
+		try:
+			yy = 1
+			tmp2 = (tmp[0])
+			asset = tmp2[1] + '.0'
+			sql2 = "SELECT Job,Sig1 From tkb_allocation where Asset = '%s'" % (asset)
+			cur.execute(sql2)
+			tmp3 = cur.fetchall()
+			sig = int(tmp3[0][1][:-2])
+			hrs = tmp2[12]
+			check1 = 1
+			if sig == 1:
+				sql2a = "SELECT Job From tkb_allocation where Asset = '%s' and Part = '%s'" % (asset,tmp2[3])
+				cur.execute(sql2a)
+				tmp3 = cur.fetchall()
+			part = tmp2[3]
+			job = tmp3[0][0]
+
+
+			# Below is just for displaying
+			name_good.append(nm)
+			clock_good.append(clock_num)
+			job_good.append(job)
+			part_good.append(tmp2[3])
+		except:
+			hrs = ""
+			part = ""
+			name1.append(nm)
+			clock1.append(clock_num)
+			job1.append(asset4)
+			part1.append(part4)
+
+
+		if check1 == 1:
+			t=5/1
+
+		cur.execute('''INSERT INTO tkb_scheduled(Date1,Employee,Clock,Job,Part,Shift,Hrs) VALUES(%s,%s,%s,%s,%s,%s,%s)''', (date1,nm,clock_num,job,part,shift,hrs))
+		db.commit()
+
+	data1 = zip(name_good,clock_good,job_good,part_good)
+	data2 = zip(name1,clock1,job1,part1)   # Data containing all those on the shift that didn't enter anything on the day
+	request.session["shift_manpower"] = data2
+	db.close()
+
+	return render(request,"test71.html",{'data1':data1,'data2':data2})
