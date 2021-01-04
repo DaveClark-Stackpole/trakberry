@@ -2586,7 +2586,7 @@ def kiosk_scrap_entry(request):
 def production_entry_check(request):
 	date1, shift2 = vacation_set_current5()
 	date1='2020-12-02'
-	shift = 'Plant 3 Days'
+	shift = 'Plant 1 Days'
 
 	# production_duplicate_fix(request,date1)
 
@@ -2614,6 +2614,10 @@ def production_entry_check(request):
 	part_qty = []
 
 	for i in tmp:
+		hrs_verify = 8
+		if i[2] != i[4]:
+			hrs_verify = 12
+
 		cur.execute("""DROP TABLE IF EXISTS tkb_scheduled_temp""")
 		cur.execute("""CREATE TABLE IF NOT EXISTS tkb_scheduled_temp(Id INT PRIMARY KEY AUTO_INCREMENT,Id1 CHAR(80), Employee CHAR(80),Clock CHAR(80), Asset Char(80), Job Char(80), Part Char(80), Hrs Int(10), Qty Int(10))""")
 		db.commit()
@@ -2719,8 +2723,33 @@ def production_entry_check(request):
 			cur.execute(dql)
 			db.commit()
 
-		if clock_num == 3344:
-			t=5/0
+		job1 = []
+		hrs1 = []
+		hrs_total = 0
+		# SQ2 = "SELECT * FROM tkb_logins where department = '%s' order by active1 DESC, user_name ASC" % (dep1)
+		sql = "SELECT * FROM tkb_scheduled_temp ORDER BY Job DESC, Hrs DESC" 
+		# sql = "SELECT * FROM tkb_scheduled_temp ORDER BY %s %s %s %s" %('Job','DESC','Hrs','DESC')
+		cur.execute(sql)
+		tmp=cur.fetchall()
+		job_current = ''
+		hrs_current = 0
+		for x in tmp:
+			if job_current != x[5]:
+				job1.append(x[5])
+				hrs1.append(int(x[7]))
+				hrs_total = hrs_total + int(x[7])
+				job_current = x[5]
+		if hrs_total == hrs_verify:
+			complete1 = 'Good'
+		else:
+			complete1 = 'Bad'
+		data3 = zip(job1,hrs1)
+		for x in data3:
+			cur.execute('''INSERT INTO tkb_scheduled(Employee,Clock,Job,Hrs,Shift) VALUES(%s,%s,%s,%s,%s)''', (nm,clock_num,x[0],x[1],complete1))
+			db.commit()
+
+		if clock_num == 3964:
+			t=5/1
 
 
 
