@@ -934,6 +934,8 @@ def kiosk_production_entry(request):
 					except:
 						kiosk_id = "Unknown Kiosk"
 					# y = y / 0
+					if job[:1] == '3':
+						job = job + request.session['furnace']
 					cur.execute('''INSERT INTO sc_production1(asset_num,partno,actual_produced,shift_hours_length,down_time,comments,shift,pdate,machine,scrap,More_than_2_percent,total,target,planned_downtime_min_forshift,sheet_id,Updated,low_production,manual_sent,kiosk_id) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)''', (job,part,prod,hrs,dwn,clock_number,shift_time,kiosk_date,m,zy,zy,zy,target1,zy,sheet_id,zy,low_production,manual_sent,kiosk_id))
 					db.commit()
 
@@ -1186,6 +1188,7 @@ def kiosk_job_assign(request):
 		request.session["kiosk_job4"] = kiosk_job4
 		request.session["kiosk_job5"] = kiosk_job5
 		request.session["kiosk_job6"] = kiosk_job6
+		request.session["furnace"] = 'none'
 			
 		job_chk = 0
 		try:
@@ -1214,6 +1217,24 @@ def kiosk_job_assign(request):
 			return direction(request)
 		# ***************************************************************************************************
 
+		if kiosk_job1[:1] == '3':
+			request.session["route_1"] = 'kiosk_job_furnace'
+			return direction(request)
+		if kiosk_job2[:1] == '3':
+			request.session["route_1"] = 'kiosk_job_furnace'
+			return direction(request)
+		if kiosk_job3[:1] == '3':
+			request.session["route_1"] = 'kiosk_job_furnace'
+			return direction(request)
+		if kiosk_job4[:1] == '3':
+			request.session["route_1"] = 'kiosk_job_furnace'
+			return direction(request)
+		if kiosk_job5[:1] == '3':
+			request.session["route_1"] = 'kiosk_job_furnace'
+			return direction(request)
+		if kiosk_job6[:1] == '3':
+			request.session["route_1"] = 'kiosk_job_furnace'
+			return direction(request)
 		return kiosk_job_assign_enter(request)
 
 	else:
@@ -1243,6 +1264,24 @@ def kiosk_job_assign(request):
 	args['form'] = form  
 	
 	return render(request, "kiosk/kiosk_job_assign.html",{'tmp':tmp,'args':args})
+
+def kiosk_job_furnace(request):
+	if request.POST:
+		kiosk_button1 = int(request.POST.get("kiosk_assign_button1"))
+		if kiosk_button1 == -1:
+			furnace = ''
+		elif kiosk_button1 == -2:
+			furnace = 's'
+		else:
+			furnace = 'u'
+		request.session["furnace"] = furnace
+		return kiosk_job_assign_enter(request)
+	else:
+		form = kiosk_dispForm3()
+	args = {}
+	args.update(csrf(request))
+	args['form'] = form  
+	return render(request, "kiosk/kiosk_job_furnace.html",{'args':args})
 
 def kiosk_error_badjobnumber(request):
 	request.session["route_1"] = 'kiosk_job_assign'
@@ -1601,6 +1640,7 @@ def kiosk_menu(request):
 	request.session["cycletime4"] = 0
 	request.session["cycletime5"] = 0
 	request.session["cycletime6"] = 0
+	request.session["furnace"] = ''
 	try:
 		test1 = request.session["whiteboard_message"] 
 	except:
@@ -2545,14 +2585,15 @@ def kiosk_scrap_entry(request):
 
 def production_entry_check(request):
 	date1, shift2 = vacation_set_current5()
-	date1='2020-12-07'
-	shift = 'Plant 1 Days'
+	date1='2020-12-02'
+	shift = 'Plant 3 Days'
+
+	# production_duplicate_fix(request,date1)
 
 	db, cur = db_set(request)
 	cur.execute("""DROP TABLE IF EXISTS tkb_scheduled""")
 	# cur.execute("""CREATE TABLE IF NOT EXISTS tkb_scheduled(Id INT PRIMARY KEY AUTO_INCREMENT,timestamp CHAR(80), dummy int(10))""")
-	cur.execute("""CREATE TABLE IF NOT EXISTS tkb_scheduled(Id INT PRIMARY KEY AUTO_INCREMENT,Date1 Char(80), Employee CHAR(80), Clock CHAR(80), Job CHAR(80), Part CHAR(80), Shift Char(80), Hrs Char(80))""")
-
+	cur.execute("""CREATE TABLE IF NOT EXISTS tkb_scheduled(Id INT PRIMARY KEY AUTO_INCREMENT,Date1 Char(80), Employee CHAR(80), Clock CHAR(80), Asset CHAR(80), Job CHAR(80), Part CHAR(80), Shift Char(80), Hrs Char(80))""")
 
 	# This will have to be tweaked for continental
 	sql = "SELECT * FROM tkb_manpower where Shift = '%s'" %(shift)
@@ -2562,69 +2603,144 @@ def production_entry_check(request):
 	clock1 =[]
 	job1 = []
 	part1 = []
+	hrs1 = []
 	name_good = []
 	clock_good = []
 	job_good = []
 	part_good = []
+	hrs_good = []
+	count_good = []
+	asset_good = []
+	part_qty = []
+
 	for i in tmp:
+		cur.execute("""DROP TABLE IF EXISTS tkb_scheduled_temp""")
+		cur.execute("""CREATE TABLE IF NOT EXISTS tkb_scheduled_temp(Id INT PRIMARY KEY AUTO_INCREMENT,Id1 CHAR(80), Employee CHAR(80),Clock CHAR(80), Asset Char(80), Job Char(80), Part Char(80), Hrs Int(10), Qty Int(10))""")
+		db.commit()
+		nm = i[1]
+		job7 = []
+		qty7 = []
+		hrs7 = []
 		try:
 			clock_num = int(i[3][:-2])
 		except:
 			clock_num = 0
-		# sql = "SELECT EXISTS(SELECT * FROM sc_production1 where comments = '%s' and pdate = '%s')" %(clock_num,date1)
+		# Check all sc_production for the clock and the date .   Assign to tmp_sc
 		sql = "SELECT * FROM sc_production1 where comments = '%s' and pdate ='%s'" % (clock_num,date1)
 		cur.execute(sql)
-		tmp=cur.fetchall()
-		nm = i[1]
-		check1 = 0
-		job = 'no entry'
-		try:
-			asset4 = tmp[0][1]
-			part4 = tmp[0][3]
-		except:
-			asset4 = '------'
-			part4 = '------'
-		try:
-			yy = 1
-			tmp2 = (tmp[0])
-			asset = tmp2[1] + '.0'
-			sql2 = "SELECT Job,Sig1 From tkb_allocation where Asset = '%s'" % (asset)
-			cur.execute(sql2)
-			tmp3 = cur.fetchall()
-			sig = int(tmp3[0][1][:-2])
-			hrs = tmp2[12]
-			check1 = 1
-			if sig == 1:
-				sql2a = "SELECT Job From tkb_allocation where Asset = '%s' and Part = '%s'" % (asset,tmp2[3])
-				cur.execute(sql2a)
-				tmp3 = cur.fetchall()
-			part = tmp2[3]
-			job = tmp3[0][0]
+		tmp_sc=cur.fetchall()
+		# Assign count to number of finds of above filter
+		sql_count= "SELECT COUNT(*) FROM sc_production1 where comments = '%s' and pdate ='%s'" % (clock_num,date1)
+		cur.execute(sql_count)
+		tmp_count = cur.fetchall()
+		count = int(tmp_count[0][0])
+
+		# Do below if found data for the clock on that day in sc_production
+		if count > 0:
+			for x in tmp_sc:
+				asset = x[1] + '.0'
+				part = x[3]
+				hrs = x[12]
+				qty = x[4]
+				id1 = x[0]
+
+				try:
+					sql2 = "SELECT Job,Sig1 From tkb_allocation where (Asset1 = '%s' or Asset2 = '%s' or Asset3 = '%s' or Asset4 = '%s' or Asset5 = '%s' or Asset6 = '%s')" % (asset,asset,asset,asset,asset,asset)
+					cur.execute(sql2)
+					tmp3 = cur.fetchall()
+					sig = int(tmp3[0][1][:-2])
+					if sig == 1:
+						sql2a = "SELECT Job From tkb_allocation where (Asset1 = '%s' or Asset2 = '%s' or Asset3 = '%s' or Asset4 = '%s' or Asset5 = '%s' or Asset6 = '%s') and (Part1 = '%s' or Part2 = '%s' or Part3 = '%s' or Part4 = '%s')" % (asset,asset,asset,asset,asset,asset,part,part,part,part)
+						cur.execute(sql2a)
+						tmp3 = cur.fetchall()
+					job = tmp3[0][0]
+				except:
+					job = 'not a job'
+
+				name_good.append(nm)
+				clock_good.append(clock_num)
+				job_good.append(job)
+				part_good.append(part)
+				hrs_good.append(hrs)
+				asset_good.append(asset)
+				part_qty.append(qty)
+
+				job7.append(job)
+				hrs7.append(hrs)
+
+				cur.execute('''INSERT INTO tkb_scheduled_temp(Id1,Employee,Clock,Asset,Job,Part,Hrs,Qty) VALUES(%s,%s,%s,%s,%s,%s,%s,%s)''', (id1,nm,clock_num,asset,job,part,hrs,qty))
+				db.commit()
+
+				# 
+				# cur.execute('''INSERT INTO tkb_scheduled(Date1,Employee,Clock,Asset,Job,Part,Shift,Hrs) VALUES(%s,%s,%s,%s,%s,%s,%s,%s)''', (date1,nm,clock_num,asset,job,part,shift,hrs))
+				# db.commit()
+			total7=zip(job7,hrs7)
+			
 
 
-			# Below is just for displaying
-			name_good.append(nm)
-			clock_good.append(clock_num)
-			job_good.append(job)
-			part_good.append(tmp2[3])
-		except:
-			hrs = ""
+
+		# Do below if no data found for clock on that day in sc_production
+		else:
+			asset = 'no entry'
+			part = '------'
+			hrs4 = 0
+			hrs = 0
+			qty = 0
 			part = ""
+			job = ""
 			name1.append(nm)
 			clock1.append(clock_num)
-			job1.append(asset4)
-			part1.append(part4)
+			job1.append('no entry made')
+			part1.append('no part')
+			cur.execute('''INSERT INTO tkb_scheduled_temp(Employee,Clock,Asset,Job,Part,Hrs,Qty) VALUES(%s,%s,%s,%s,%s,%s,%s)''', (nm,clock_num,asset,job,part,hrs,qty))
+			db.commit()
 
 
-		if check1 == 1:
-			t=5/1
+		# Perform task on tkb_scheduled_temp
+		# 1)delete duplicates
+		# 2)group jobs and hours
+		# 3)determine if Continental or 8hrs
+		# 4)if less than 8 or 12 then mark as incomplete
+		sql = "SELECT * FROM tkb_scheduled_temp ORDER BY %s %s" %('id','DESC')
+		cur.execute(sql)
+		tmp=cur.fetchall()
+		for x in tmp:
+			id1 = x[0]
+			dql = ('DELETE FROM tkb_scheduled_temp WHERE Id < "%d" and Asset = "%s" and Part = "%s" and Qty ="%s" and Hrs = "%s"' %(x[0],x[4],x[6],x[8],x[7]))
+			cur.execute(dql)
+			db.commit()
 
-		cur.execute('''INSERT INTO tkb_scheduled(Date1,Employee,Clock,Job,Part,Shift,Hrs) VALUES(%s,%s,%s,%s,%s,%s,%s)''', (date1,nm,clock_num,job,part,shift,hrs))
-		db.commit()
+		sql = "SELECT * FROM sc_production1 WHERE pdate = '%s' and comments = '%s' ORDER BY %s %s" %(date1,clock_num,'id','DESC')
+		cur.execute(sql)
+		tmp=cur.fetchall()
+		for x in tmp:
+			id1 = x[0]
+			dql = ('DELETE FROM sc_production1 WHERE id < "%d" and asset_num = "%s" and partno = "%s" and actual_produced ="%s" and comments = "%s" and shift_hours_length = "%s"' %(x[0],x[1],x[3],x[4],x[9],x[12]))
+			cur.execute(dql)
+			db.commit()
 
-	data1 = zip(name_good,clock_good,job_good,part_good)
+		if clock_num == 3344:
+			t=5/0
+
+
+
+
+	data1 = zip(name_good,clock_good,job_good,part_good,hrs_good,asset_good,part_qty)
 	data2 = zip(name1,clock1,job1,part1)   # Data containing all those on the shift that didn't enter anything on the day
 	request.session["shift_manpower"] = data2
 	db.close()
 
 	return render(request,"test71.html",{'data1':data1,'data2':data2})
+
+def production_duplicate_fix(request,date1):
+	db, cur = db_set(request)
+	sql = "SELECT * FROM sc_production1 WHERE pdate = '%s' ORDER BY %s %s" %(date1,'id','DESC')
+	cur.execute(sql)
+	tmp=cur.fetchall()
+	for x in tmp:
+		id1 = x[0]
+		dql = ('DELETE FROM sc_production1 WHERE id < "%d" and asset_num = "%s" and partno = "%s" and actual_produced ="%s" and comments = "%s" and shift_hours_length = "%s"' %(x[0],x[1],x[3],x[4],x[9],x[12]))
+		cur.execute(dql)
+		db.commit()
+
+	return
