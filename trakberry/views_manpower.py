@@ -293,7 +293,7 @@ def training_matrix3(request):
 		matrix_area = shift_area(matrix_shift)
 		request.session["matrix_shift"] = matrix_shift
 		request.session["matrix_area"] = matrix_area
-		return render(request,"redirect_training_matrix2.html")
+		return render(request,"redirect_training_matrix3.html")
 	else:
 		form = kiosk_dispForm4()
 	args = {}
