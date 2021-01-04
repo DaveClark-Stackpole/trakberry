@@ -157,12 +157,11 @@ th {
 
 
 					<th style="border:1px solid black;z-index: 95;font-size:70%;background-color: #b3b3b3;">
-					<button style="text-align: left;width:100%;font-size: 100%;border-style: solid;border-color:#b3b3b3;border-radius: 0px;background-color:#b3b3b3;" type="button" 
-				onclick="window.location.href = '{{request.session.local_toggle}}/training_matrix_find/get/{{item2.2.0|slice:"-2"}}';">
+					
 				{{item2.0.0}}
 
 
-			</button></th>
+			</th>
 
 				{% for item in item2.1 %}
 			{% if item|slice:"6:" = 'Trained' %}
