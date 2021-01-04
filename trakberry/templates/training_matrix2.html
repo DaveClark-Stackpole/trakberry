@@ -167,21 +167,19 @@ th {
 			{% if item|slice:"6:" = 'Trained' %}
 			<td  style="border:1px solid black;z-index: 2;padding:0px;background-color: #90f078;"> 
 				<center>
-					{{item|slice:"6:"}}
-					
+					Trained
 			{% elif item|slice:"6:" = 'Training <5 days' %}
 			<td  style="border:1px solid black;z-index: 2;padding:0px;background-color: #f77bea;"> 
 				<center>
-					{{item|slice:"6:"}}
+					Training
 			{% elif item|slice:"6:" = 'Training >4 days' %}
 			<td  style="border:1px solid black;z-index: 2;padding:0px;background-color: #f8ed4e;"> 
 				<center>
-					{{item|slice:"6:"}}
-
+					Training
 			{% elif item|slice:"6:" = 'A Trainer' %}
 			<td  style="border:1px solid black;z-index: 2;padding:0px;background-color: #5eaace;"> 
 				<center>
-					{{item|slice:"6:"}}
+					Trainer
 			{% else %}
 			<td  style="border:1px solid black;z-index: 2;padding:0px;background-color: #c7c7c7;"> 
 				<center>
