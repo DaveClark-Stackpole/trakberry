@@ -2585,8 +2585,8 @@ def kiosk_scrap_entry(request):
 
 def production_entry_check(request):
 	date1, shift2 = vacation_set_current5()
-	date1='2020-12-02'
-	shift = 'Plant 1 Days'
+	date1='2021-01-04'
+	shift = 'Plant 1 Aft'
 
 	# production_duplicate_fix(request,date1)
 
@@ -2705,6 +2705,7 @@ def production_entry_check(request):
 		# 2)group jobs and hours
 		# 3)determine if Continental or 8hrs
 		# 4)if less than 8 or 12 then mark as incomplete
+
 		sql = "SELECT * FROM tkb_scheduled_temp ORDER BY %s %s" %('id','DESC')
 		cur.execute(sql)
 		tmp=cur.fetchall()
@@ -2725,6 +2726,7 @@ def production_entry_check(request):
 
 		job1 = []
 		hrs1 = []
+		asset1 = []
 		hrs_total = 0
 		# SQ2 = "SELECT * FROM tkb_logins where department = '%s' order by active1 DESC, user_name ASC" % (dep1)
 		sql = "SELECT * FROM tkb_scheduled_temp ORDER BY Job DESC, Hrs DESC" 
@@ -2737,15 +2739,16 @@ def production_entry_check(request):
 			if job_current != x[5]:
 				job1.append(x[5])
 				hrs1.append(int(x[7]))
+				asset1.append(x[4])
 				hrs_total = hrs_total + int(x[7])
 				job_current = x[5]
 		if hrs_total == hrs_verify:
 			complete1 = 'Good'
 		else:
 			complete1 = 'Bad'
-		data3 = zip(job1,hrs1)
+		data3 = zip(job1,hrs1,asset1)
 		for x in data3:
-			cur.execute('''INSERT INTO tkb_scheduled(Employee,Clock,Job,Hrs,Shift) VALUES(%s,%s,%s,%s,%s)''', (nm,clock_num,x[0],x[1],complete1))
+			cur.execute('''INSERT INTO tkb_scheduled(Employee,Clock,Job,Hrs,Shift,Asset) VALUES(%s,%s,%s,%s,%s,%s)''', (nm,clock_num,x[0],x[1],complete1,x[2]))
 			db.commit()
 
 		if clock_num == 3964:
