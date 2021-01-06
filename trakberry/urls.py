@@ -134,7 +134,7 @@ from views_barcode import barcode_check_10R,barcode_input_10R,barcode_initial_10
 
 # *******************************************  Admin Section ********************************************************************************************
 from views_admin import master
-from views3 import excel_dump, excel_scrap_dump,training_matrix_find,training_matrix_update_all
+from views3 import excel_dump, excel_scrap_dump,training_matrix2,training_matrix_find,training_matrix_update_all
 from views3 import bounce_matrix,update_matrix_cancel,matrix_cache_matrix, full_update
 # ***********************************************************************************************************************************************************
 
@@ -352,7 +352,7 @@ urlpatterns = [
 	#url(r'^schedule_add_job/get/(?P<index>\w{0,50})/$', schedule_add_job),
 	
 	#url(r'^tech/get/complete/(?P<index>\d+)/$', complete),
-	# url(r'^training_matrix2/', training_matrix2),
+	url(r'^training_matrix2/', training_matrix3),
 	url(r'^training_matrix_find/get/(?P<index>\w{0,50})/$', training_matrix_find),
 
 	
