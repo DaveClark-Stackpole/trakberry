@@ -2613,7 +2613,10 @@ def production_entry_check(request):
 	asset_good = []
 	part_qty = []
 
+	flow1 = 'go'
 	for i in tmp:
+		r=0
+
 		hrs_verify = 8
 		if i[2] != i[4]:
 			hrs_verify = 12
@@ -2698,7 +2701,7 @@ def production_entry_check(request):
 			part1.append('no part')
 			cur.execute('''INSERT INTO tkb_scheduled_temp(Employee,Clock,Asset,Job,Part,Hrs,Qty) VALUES(%s,%s,%s,%s,%s,%s,%s)''', (nm,clock_num,asset,job,part,hrs,qty))
 			db.commit()
-
+			flow1 = 'stop'
 
 		# Perform task on tkb_scheduled_temp
 		# 1)delete duplicates
@@ -2728,6 +2731,7 @@ def production_entry_check(request):
 		hrs1 = []
 		asset1 = []
 		hrs_total = 0
+
 		# SQ2 = "SELECT * FROM tkb_logins where department = '%s' order by active1 DESC, user_name ASC" % (dep1)
 		sql = "SELECT * FROM tkb_scheduled_temp ORDER BY Job DESC, Hrs DESC" 
 		# sql = "SELECT * FROM tkb_scheduled_temp ORDER BY %s %s %s %s" %('Job','DESC','Hrs','DESC')
@@ -2736,7 +2740,12 @@ def production_entry_check(request):
 		job_current = ''
 		hrs_current = 0
 		for x in tmp:
-			if job_current != x[5]:
+			if asset == 'no entry':
+				job1.append('no entry')
+				hrs1.append('no entry')
+				asset1.append('no entry')
+
+			elif job_current != x[5]:
 				job1.append(x[5])
 				hrs1.append(int(x[7]))
 				asset1.append(x[4])
@@ -2745,12 +2754,19 @@ def production_entry_check(request):
 		if hrs_total == hrs_verify:
 			complete1 = 'Good'
 		else:
-			complete1 = 'Bad'
+			if asset == 'no entry':
+				complete1 = 'Bad No Entry'
+			else:
+				complete1 = 'Bad Entry'
 		data3 = zip(job1,hrs1,asset1)
+		if r==400:
+			t=5/1
 		for x in data3:
 			cur.execute('''INSERT INTO tkb_scheduled(Employee,Clock,Job,Hrs,Shift,Asset) VALUES(%s,%s,%s,%s,%s,%s)''', (nm,clock_num,x[0],x[1],complete1,x[2]))
 			db.commit()
 
+		if flow1=='stop':
+			st=4/1
 		if clock_num == 3964:
 			t=5/1
 
