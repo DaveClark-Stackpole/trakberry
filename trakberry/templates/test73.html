@@ -1,0 +1,73 @@
+{% extends "master.html" %}
+
+{% block content %}
+<!-- <meta http-equiv="refresh" content="5; url={{request.session.local_toggle}}/production_entry_check" /> -->
+<form action="" method="post">{% csrf_token %}
+
+<table>
+	<tr>
+		<td style="font-size: 24px; color:rgb(53, 47, 47);border:1px solid rgb(255, 238, 0);background-color:rgb(158, 158, 158);">
+			&nbsp;&nbsp;&nbsp;ID&nbsp;&nbsp;&nbsp;
+		</td>
+		<td style="font-size: 24px; color:rgb(53, 47, 47);border:1px solid rgb(255, 238, 0);background-color:rgb(158, 158, 158);">
+			&nbsp;&nbsp;&nbsp;Employee&nbsp;&nbsp;&nbsp;
+		</td>
+		<td style="font-size: 24px; color:rgb(53, 47, 47);border:1px solid rgb(255, 238, 0);background-color:rgb(158, 158, 158);">
+			&nbsp;&nbsp;&nbsp;Clock&nbsp;&nbsp;&nbsp;
+		</td>
+		<td style="font-size: 24px; color:rgb(53, 47, 47);border:1px solid rgb(255, 238, 0);background-color:rgb(158, 158, 158);">
+			&nbsp;&nbsp;&nbsp;Machine&nbsp;&nbsp;&nbsp;
+		</td>
+		<td style="font-size: 24px; color:rgb(53, 47, 47);border:1px solid rgb(255, 238, 0);background-color:rgb(158, 158, 158);">
+			&nbsp;&nbsp;&nbsp;Job&nbsp;&nbsp;&nbsp;
+		</td>
+		<td style="font-size: 24px; color:rgb(53, 47, 47);border:1px solid rgb(255, 238, 0);background-color:rgb(158, 158, 158);">
+			&nbsp;&nbsp;&nbsp;Part&nbsp;&nbsp;&nbsp;
+		</td>
+		<td style="font-size: 24px; color:rgb(53, 47, 47);border:1px solid rgb(255, 238, 0);background-color:rgb(158, 158, 158);">
+			&nbsp;&nbsp;&nbsp;Hours&nbsp;&nbsp;&nbsp;
+		</td>
+		<td style="font-size: 24px; color:rgb(53, 47, 47);border:1px solid rgb(255, 238, 0);background-color:rgb(158, 158, 158);">
+			&nbsp;&nbsp;&nbsp;Status&nbsp;&nbsp;&nbsp;
+		</td>
+	</tr>
+	{% for i in data %}
+		<tr>
+			<td style="font-size: 24px; color:rgb(196, 196, 196);border:1px solid rgb(255, 238, 0);">
+				{% if i.1 == '0' %}
+				
+				<button style="column-fill: auto;background-color: rgb(34, 34, 28);border:none;outline:none;"
+						type="submit" name="delete1" value="{{i.0}}" /><b><font style="font-size: 15px";>Not Scheduled</font>
+				</b></button>
+				{% else %}
+				&nbsp;&nbsp;&nbsp;{{i.1}}&nbsp;&nbsp;&nbsp;
+				{% endif %}
+			</td>
+			<td style="font-size: 24px; color:rgb(196, 196, 196);border:1px solid rgb(255, 238, 0);">
+				&nbsp;&nbsp;&nbsp;{{i.3}}&nbsp;&nbsp;&nbsp;
+			</td>
+			<td style="font-size: 24px; color:rgb(196, 196, 196);border:1px solid rgb(255, 238, 0);">
+				&nbsp;&nbsp;&nbsp;{{i.4}}&nbsp;&nbsp;&nbsp;
+			</td>
+			<td style="font-size: 24px; color:rgb(196, 196, 196);border:1px solid rgb(255, 238, 0);">
+				&nbsp;&nbsp;&nbsp;{{i.5}}&nbsp;&nbsp;&nbsp;
+			</td>
+			<td style="font-size: 24px; color:rgb(196, 196, 196);border:1px solid rgb(255, 238, 0);">
+				&nbsp;&nbsp;&nbsp;{{i.6}}&nbsp;&nbsp;&nbsp;
+			</td>
+			<td style="font-size: 24px; color:rgb(196, 196, 196);border:1px solid rgb(255, 238, 0);">
+				&nbsp;&nbsp;&nbsp;{{i.7}}&nbsp;&nbsp;&nbsp;
+			</td>
+			<td style="font-size: 24px; color:rgb(196, 196, 196);border:1px solid rgb(255, 238, 0);">
+				&nbsp;&nbsp;&nbsp;{{i.9}}&nbsp;&nbsp;&nbsp;
+			</td>
+			<td style="font-size: 24px; color:rgb(196, 196, 196);border:1px solid rgb(255, 238, 0);">
+				&nbsp;&nbsp;&nbsp;{{i.10}}&nbsp;&nbsp;&nbsp;
+			</td>
+		</tr>
+	{% endfor %}
+</table>
+
+</form>
+
+{% endblock %}

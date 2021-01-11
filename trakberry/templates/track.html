@@ -107,9 +107,9 @@ function drawCurveTypes() {
 			gridlines: { count: 15 }
         },
         series: {
-            1: {
-                curveType: 'function'
-            }
+            0: { curveType: 'function', color: '#08d40c'},
+						1: { curveType: 'function', color: '#005eff'},
+						2: { curveType: 'function', color: '#ffa033'},
         }
     };
     var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
@@ -159,9 +159,10 @@ function drawCurveTypes() {
 				gridlines: { count: 15 }
 			},
 			series: {
-				1: {
-					curveType: 'function'
-				}
+            0: { curveType: 'function', color: '#08d40c'},
+						1: { curveType: 'function', color: '#005eff'},
+						2: { curveType: 'function', color: '#ffa033'},
+        }
 			}
 		};
 		var chart = new google.visualization.LineChart(document.getElementById('chart2_div'));
