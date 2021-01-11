@@ -2593,7 +2593,7 @@ def production_entry_check(request):
 	db, cur = db_set(request)
 
 	# Delete Assets we don't use
-	asset9 = ['1542','859','1514','1531','1541','1509','594','650']
+	asset9 = ['1542','859','1514','1531','1541','1509','594','650','215']
 	for b in asset9:
 		dql = ('DELETE FROM sc_production1 WHERE asset_num = "%s"' %(b))
 		cur.execute(dql)
@@ -2865,18 +2865,26 @@ def production_entry_fix(request):
 	date1='2021-01-08'
 	shift = 'Plant 1 Days'
 	status1 = 'Good'
+	status2 = 'Pending'
 
 	db, cur = db_set(request)
-	sql = "SELECT * FROM tkb_scheduled WHERE Date1 = '%s' and Shift = '%s' and Status != '%s' ORDER BY %s %s" %(date1,shift,status1,'Status','DESC')
+	sql = "SELECT * FROM tkb_scheduled WHERE Date1 = '%s' and Shift = '%s' and Status != '%s' and Status != '%s' ORDER BY %s %s" %(date1,shift,status1,status2,'Status','DESC')
 	cur.execute(sql)
 	tmp=cur.fetchall()
 
 	if request.POST:
 		delete_answer = request.POST.get('delete1')
-		dql = ('DELETE FROM tkb_scheduled WHERE Id = "%s"' %(delete_answer))
-		cur.execute(dql)
-		db.commit()
+		status_answer = request.POST.get('pending1')
 
+		if status_answer > 0:
+			status2 = 'Pending'
+			cql = ('update tkb_scheduled SET Status = "%s" WHERE Id ="%s"' % (status2,status_answer))
+			cur.execute(cql)
+			db.commit()
+		elif delete_answer > 0:
+			dql = ('DELETE FROM tkb_scheduled WHERE Id = "%s"' %(delete_answer))
+			cur.execute(dql)
+			db.commit()
 		return render(request,"redirect_production_entry_fix.html")
 	else:
 		form = kiosk_dispForm4()
