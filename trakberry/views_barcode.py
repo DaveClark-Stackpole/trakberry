@@ -423,6 +423,12 @@ def barcode_wrong_part(request):
 		else:
 			current_part = "50-3214"
 
+	last_verify = request.session["last_part"]
+	if last_verify == 'BB':
+		last_part = '50-5214'
+	elif last_verify == 'CB':
+		last_part = '50-3214'
+
 	request.session["lp"] = last_part
 	request.session["cp"] = current_part
 	request.session["current_part"] = last_part
@@ -445,6 +451,7 @@ def barcode_wrong_part(request):
 
 
 	toaddrs = ["rrompen@stackpole.com","rbiram@stackpole.com","rzylstra@stackpole.com","lbaker@stackpole.com","dmilne@stackpole.com","sbrownlee@stackpole.com","pmurphy@stackpole.com","pstreet@stackpole.com","kfrey@stackpole.com","asmith@stackpole.com","smcmahon@stackpole.com","gharvey@stackpole.com","ashoemaker@stackpole.com","jreid@stackpole.com"]
+	#toaddrs = ["rrompen@stackpole.com","rbiram@stackpole.com","rzylstra@stackpole.com","lbaker@stackpole.com","dmilne@stackpole.com","sbrownlee@stackpole.com","pmurphy@stackpole.com","pstreet@stackpole.com","kfrey@stackpole.com","asmith@stackpole.com","smcmahon@stackpole.com","gharvey@stackpole.com","ashoemaker@stackpole.com","jreid@stackpole.com"]
 
 	fromaddr = 'stackpole@stackpole.com'
 	frname = 'Dave'

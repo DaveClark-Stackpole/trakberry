@@ -47,8 +47,8 @@ def manpower_initial_v2(request):
 
 def manpower_update_v2(request):
 		# comment below when running local
-	label_link = '/home/file/import1/Inventory/importedxls'
-	os.chdir(label_link)
+	# label_link = '/home/file/import1/Inventory/importedxls'
+	# os.chdir(label_link)
 	# ********************************
 
 	sheet = 'inventory.xlsx'
@@ -182,29 +182,29 @@ def manpower_update_v2(request):
 		cur.execute(mql)
 		db.commit()
 
-	matrix_update_v2(request)
-	# cur.execute("""DROP TABLE IF EXISTS tkb_matrix_cache""") # Clear all Cache and start fresh
-	# cur.execute("""CREATE TABLE IF NOT EXISTS tkb_matrix_cache(Id INT PRIMARY KEY AUTO_INCREMENT,Area CHAR(80), Shift CHAR(80), Matrix TEXT(1000000), Job TEXT(1000000))""")
-	shift ,area = 'Plant 1 Mid','Area 1'
-	matrix_read(shift,area,request)
-	shift ,area = 'Plant 1 Aft','Area 1'
-	matrix_read(shift,area,request)
-	shift ,area = 'Plant 1 Days','Area 1'
-	matrix_read(shift,area,request)
-	shift ,area = 'Plant 3 Days','Area 2'
-	matrix_read(shift,area,request)
-	shift ,area = 'Plant 3 Mid','Area 2'
-	matrix_read(shift,area,request)
-	shift ,area = 'Plant 3 Aft','Area 2'
-	matrix_read(shift,area,request)
-	shift ,area = 'Plant 4 Day','Area 3'
-	matrix_read(shift,area,request)
-	shift ,area = 'Plant 4 Aft','Area 3'
-	matrix_read(shift,area,request)
-	shift ,area = 'Plant 4 Mid','Area 3'
-	matrix_read(shift,area,request)
-	shift ,area = 'A Days P1','Area 1'
-	matrix_read(shift,area,request)
+	# matrix_update_v2(request)
+	# # cur.execute("""DROP TABLE IF EXISTS tkb_matrix_cache""") # Clear all Cache and start fresh
+	# # cur.execute("""CREATE TABLE IF NOT EXISTS tkb_matrix_cache(Id INT PRIMARY KEY AUTO_INCREMENT,Area CHAR(80), Shift CHAR(80), Matrix TEXT(1000000), Job TEXT(1000000))""")
+	# shift ,area = 'Plant 1 Mid','Area 1'
+	# matrix_read(shift,area,request)
+	# shift ,area = 'Plant 1 Aft','Area 1'
+	# matrix_read(shift,area,request)
+	# shift ,area = 'Plant 1 Days','Area 1'
+	# matrix_read(shift,area,request)
+	# shift ,area = 'Plant 3 Days','Area 2'
+	# matrix_read(shift,area,request)
+	# shift ,area = 'Plant 3 Mid','Area 2'
+	# matrix_read(shift,area,request)
+	# shift ,area = 'Plant 3 Aft','Area 2'
+	# matrix_read(shift,area,request)
+	# shift ,area = 'Plant 4 Day','Area 3'
+	# matrix_read(shift,area,request)
+	# shift ,area = 'Plant 4 Aft','Area 3'
+	# matrix_read(shift,area,request)
+	# shift ,area = 'Plant 4 Mid','Area 3'
+	# matrix_read(shift,area,request)
+	# shift ,area = 'A Days P1','Area 1'
+	# matrix_read(shift,area,request)
 	return render(request,"test71.html")
 	return render(request,"manpower_updater.html")
 

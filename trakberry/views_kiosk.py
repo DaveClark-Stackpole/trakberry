@@ -2585,20 +2585,71 @@ def kiosk_scrap_entry(request):
 
 def production_entry_check(request):
 	date1, shift2 = vacation_set_current5()
-	date1='2021-01-04'
-	shift = 'Plant 1 Aft'
+	date1='2021-01-08'
+	shift = 'Plant 1 Days'
 
 	# production_duplicate_fix(request,date1)
 
 	db, cur = db_set(request)
+
+	# Delete Assets we don't use
+	asset9 = ['1542','859','1514','1531','1541','1509','594','650']
+	for b in asset9:
+		dql = ('DELETE FROM sc_production1 WHERE asset_num = "%s"' %(b))
+		cur.execute(dql)
+		db.commit()
+
+
 	cur.execute("""DROP TABLE IF EXISTS tkb_scheduled""")
 	# cur.execute("""CREATE TABLE IF NOT EXISTS tkb_scheduled(Id INT PRIMARY KEY AUTO_INCREMENT,timestamp CHAR(80), dummy int(10))""")
-	cur.execute("""CREATE TABLE IF NOT EXISTS tkb_scheduled(Id INT PRIMARY KEY AUTO_INCREMENT,Date1 Char(80), Employee CHAR(80), Clock CHAR(80), Asset CHAR(80), Job CHAR(80), Part CHAR(80), Shift Char(80), Hrs Char(80))""")
-
+	cur.execute("""CREATE TABLE IF NOT EXISTS tkb_scheduled(Id INT PRIMARY KEY AUTO_INCREMENT,Id1 Char(80),Date1 Char(80), Employee CHAR(80), Clock CHAR(80), Asset CHAR(80), Job CHAR(80), Part CHAR(80), Shift Char(80), Hrs Char(80),Status Char(80),Shift_Mod Char(80))""")
 	# This will have to be tweaked for continental
 	sql = "SELECT * FROM tkb_manpower where Shift = '%s'" %(shift)
 	cur.execute(sql)
+	tmp_all = cur.fetchall()  # List of all current employees on the shift
+
+# Determing which Continental Shift to use and assign to shift_mod3
+	count1 = 0
+	cshift1 = ''
+	count2 = 0
+	cshift2 = ''
+	for i in tmp_all:
+		if i[2] != i[4]:
+			if cshift1 != i[4] and cshift1 != '':
+				cshift2 = i[4]
+			elif cshift1 == '':
+				cshift1 = i[4]
+	sql = "SELECT * FROM tkb_manpower where Shift_Mod = '%s'" %(cshift1)
+	cur.execute(sql)
+	tmp_all1 = cur.fetchall()  # List of all current employees on the shift
+	for i in tmp_all1:
+		cclock1 = i[3][:-2]
+		sql_count= "SELECT COUNT(*) FROM sc_production1 where comments = '%s' and pdate ='%s'" % (cclock1,date1)
+		cur.execute(sql_count)
+		tmp_count1 = cur.fetchall()
+		cnt1 = int(tmp_count1[0][0])
+		count1 = count1 + cnt1
+	sql = "SELECT * FROM tkb_manpower where Shift_Mod = '%s'" %(cshift2)
+	cur.execute(sql)
+	tmp_all2 = cur.fetchall()  # List of all current employees on the shift
+	for i in tmp_all2:
+		cclock2 = i[3][:-2]
+		sql_count= "SELECT COUNT(*) FROM sc_production1 where comments = '%s' and pdate ='%s'" % (cclock2,date1)
+		cur.execute(sql_count)
+		tmp_count2 = cur.fetchall()
+		cnt2 = int(tmp_count2[0][0])
+		count2 = count2 + cnt2
+	shift_mod3 = ''
+	if count1 > count2:
+		shift_mod3 = cshift1
+	elif count2 > 0:
+		shift_mod3 = cshift2
+	
+
+	sql = "SELECT * FROM tkb_manpower where Shift_Mod = '%s' or Shift_Mod = '%s'" %(shift,shift_mod3)
+	cur.execute(sql)
 	tmp = cur.fetchall()  # List of all current employees on the shift
+
 	name1 =[]
 	clock1 =[]
 	job1 = []
@@ -2622,9 +2673,10 @@ def production_entry_check(request):
 			hrs_verify = 12
 
 		cur.execute("""DROP TABLE IF EXISTS tkb_scheduled_temp""")
-		cur.execute("""CREATE TABLE IF NOT EXISTS tkb_scheduled_temp(Id INT PRIMARY KEY AUTO_INCREMENT,Id1 CHAR(80), Employee CHAR(80),Clock CHAR(80), Asset Char(80), Job Char(80), Part Char(80), Hrs Int(10), Qty Int(10))""")
+		cur.execute("""CREATE TABLE IF NOT EXISTS tkb_scheduled_temp(Id INT PRIMARY KEY AUTO_INCREMENT,Id1 CHAR(80), Employee CHAR(80),Clock CHAR(80), Asset Char(80), Job Char(80), Part Char(80), Hrs Int(10), Qty Int(10),Shift_Mod Char(80))""")
 		db.commit()
 		nm = i[1]
+		shift_mod = i[4]
 		job7 = []
 		qty7 = []
 		hrs7 = []
@@ -2662,7 +2714,15 @@ def production_entry_check(request):
 						tmp3 = cur.fetchall()
 					job = tmp3[0][0]
 				except:
-					job = 'not a job'
+					if x[1] == '500':
+						job = 'Cleaning'
+					elif asset == '800':
+						job = 'Covid Cleaner'
+					else:
+						job = 'not a job'
+				# if x[9]=='7079':
+				# 	ttt=5/0
+
 
 				name_good.append(nm)
 				clock_good.append(clock_num)
@@ -2675,7 +2735,7 @@ def production_entry_check(request):
 				job7.append(job)
 				hrs7.append(hrs)
 
-				cur.execute('''INSERT INTO tkb_scheduled_temp(Id1,Employee,Clock,Asset,Job,Part,Hrs,Qty) VALUES(%s,%s,%s,%s,%s,%s,%s,%s)''', (id1,nm,clock_num,asset,job,part,hrs,qty))
+				cur.execute('''INSERT INTO tkb_scheduled_temp(Id1,Employee,Clock,Asset,Job,Part,Hrs,Qty,Shift_Mod) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s)''', (id1,nm,clock_num,asset,job,part,hrs,qty,shift_mod))
 				db.commit()
 
 				# 
@@ -2699,7 +2759,7 @@ def production_entry_check(request):
 			clock1.append(clock_num)
 			job1.append('no entry made')
 			part1.append('no part')
-			cur.execute('''INSERT INTO tkb_scheduled_temp(Employee,Clock,Asset,Job,Part,Hrs,Qty) VALUES(%s,%s,%s,%s,%s,%s,%s)''', (nm,clock_num,asset,job,part,hrs,qty))
+			cur.execute('''INSERT INTO tkb_scheduled_temp(Employee,Clock,Asset,Job,Part,Hrs,Qty,Shift_Mod) VALUES(%s,%s,%s,%s,%s,%s,%s,%s)''', (nm,clock_num,asset,job,part,hrs,qty,shift_mod))
 			db.commit()
 			flow1 = 'stop'
 
@@ -2730,6 +2790,9 @@ def production_entry_check(request):
 		job1 = []
 		hrs1 = []
 		asset1 = []
+		part1 = []
+		ida = []
+		shift_mod1 =[]
 		hrs_total = 0
 
 		# SQ2 = "SELECT * FROM tkb_logins where department = '%s' order by active1 DESC, user_name ASC" % (dep1)
@@ -2744,35 +2807,36 @@ def production_entry_check(request):
 				job1.append('no entry')
 				hrs1.append('no entry')
 				asset1.append('no entry')
+				part1.append('no part')
+				ida.append(0)
+				shift_mod1.append(shift)
 
 			elif job_current != x[5]:
 				job1.append(x[5])
 				hrs1.append(int(x[7]))
 				asset1.append(x[4])
+				part1.append(x[6])
+				ida.append(x[1])
+				shift_mod1.append(x[9])
 				hrs_total = hrs_total + int(x[7])
 				job_current = x[5]
 		if hrs_total == hrs_verify:
-			complete1 = 'Good'
+			if job == 'not a job':
+				complete1 = 'Bad Entry'
+			else:
+				complete1 = 'Good'
 		else:
 			if asset == 'no entry':
-				complete1 = 'Bad No Entry'
+				complete1 = 'No Entry'
 			else:
-				complete1 = 'Bad Entry'
-		data3 = zip(job1,hrs1,asset1)
+				complete1 = 'Hrs Wrong'
+
+		data3 = zip(job1,hrs1,asset1,part1,ida,shift_mod1)
 		if r==400:
 			t=5/1
 		for x in data3:
-			cur.execute('''INSERT INTO tkb_scheduled(Employee,Clock,Job,Hrs,Shift,Asset) VALUES(%s,%s,%s,%s,%s,%s)''', (nm,clock_num,x[0],x[1],complete1,x[2]))
+			cur.execute('''INSERT INTO tkb_scheduled(Id1,Date1,Employee,Clock,Job,Hrs,Shift,Asset,Part,Status,Shift_Mod) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)''', (x[4],date1,nm,clock_num,x[0],x[1],shift,x[2],x[3],complete1,x[5]))
 			db.commit()
-
-		if flow1=='stop':
-			st=4/1
-		if clock_num == 3964:
-			t=5/1
-
-
-
-
 	data1 = zip(name_good,clock_good,job_good,part_good,hrs_good,asset_good,part_qty)
 	data2 = zip(name1,clock1,job1,part1)   # Data containing all those on the shift that didn't enter anything on the day
 	request.session["shift_manpower"] = data2
@@ -2792,3 +2856,33 @@ def production_duplicate_fix(request,date1):
 		db.commit()
 
 	return
+
+def production_entry_fix(request):
+	# do the fix
+	# delete all entries in tkb_scheduled with date and shift
+	# rerun production_entry_check
+	date1, shift2 = vacation_set_current5()
+	date1='2021-01-08'
+	shift = 'Plant 1 Days'
+	status1 = 'Good'
+
+	db, cur = db_set(request)
+	sql = "SELECT * FROM tkb_scheduled WHERE Date1 = '%s' and Shift = '%s' and Status != '%s' ORDER BY %s %s" %(date1,shift,status1,'Status','DESC')
+	cur.execute(sql)
+	tmp=cur.fetchall()
+
+	if request.POST:
+		delete_answer = request.POST.get('delete1')
+		dql = ('DELETE FROM tkb_scheduled WHERE Id = "%s"' %(delete_answer))
+		cur.execute(dql)
+		db.commit()
+
+		return render(request,"redirect_production_entry_fix.html")
+	else:
+		form = kiosk_dispForm4()
+	args = {}
+	args.update(csrf(request))
+	args['form'] = form
+
+
+	return render(request,"test73.html",{'data':tmp,'args':args})
