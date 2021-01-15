@@ -474,7 +474,27 @@ def supervisor_down(request):
 		priority = str(var1)
 
 		db, cur = db_set(request)
-		cur.execute('''INSERT INTO pr_downtime1(machinenum,problem,priority,whoisonit,called4helptime) VALUES(%s,%s,%s,%s,%s)''', (machinenum,problem,priority,whoisonit,t))
+
+		try:
+			asset3 = machinenum[:4]
+			asset2 = machinenum[:3]
+			try:
+				int(asset3)
+				asset4 = asset3
+			except:
+				asset4 = asset2
+
+			aql = "SELECT * FROM vw_asset_eam_lp WHERE Asset LIKE '%s'" % ("%" + asset4 + "%")
+			cur.execute(aql)
+			tmp2 = cur.fetchall()
+			tmp3 = tmp2[0]
+			asset5 = tmp3[1] + " - " + tmp3[2] + " - " + tmp3[3]
+		except:
+			asset5 = machinenum
+
+
+
+		cur.execute('''INSERT INTO pr_downtime1(machinenum,problem,priority,whoisonit,called4helptime) VALUES(%s,%s,%s,%s,%s)''', (asset5,problem,priority,whoisonit,t))
 		db.commit()
 		db.close()
 
@@ -491,12 +511,12 @@ def supervisor_down(request):
 	rlist = machine_list_display()
 	
 	# New Method
-	#db, cur =db_open()
-	#sql = "SELECT * FROM vw_asset_eam_lp"
-	#cur.execute(sql)
-	#tmp = cur.fetchall()
-	#rlist = tmp[0]
-	
+	# db, cur = db_set(request)
+	# sql = "SELECT * FROM vw_asset_eam_lp"
+	# cur.execute(sql)
+	# tmp = cur.fetchall()
+	# rlist = tmp[0]
+
 	
 	#return render(request,"test6.html",{'list':rlist})
 	#request.session["login_tech"] = "none"

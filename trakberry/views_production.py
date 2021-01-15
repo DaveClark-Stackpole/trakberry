@@ -214,6 +214,7 @@ def track_area(request):
 
 	u1, wd1, m1, day1, shift1, prev_cnt1 = [],[],[],[],[],[]
 	utemp = u
+	total_test = 0
 	for i in range(1,11):
 		unew = utemp - 28800
 		x1, x2, x3, x4 = day_breakdown(unew)
@@ -228,10 +229,14 @@ def track_area(request):
 		tmp2 = cur.fetchall()
 		tmp3 = tmp2[0]
 		prev_cnt1.append(str(tmp3[0]))
-
+		total_test = total_test + int(tmp3[0])
 		utemp = unew
 	db.close()
+	request.session['total_test'] = total_test
 
+	tt=5/0
+
+	
 	current_rate = cnt / float(shift_time)
 	projection = int(current_rate * (shift_left)) + cnt
 	
@@ -251,6 +256,8 @@ def track_area(request):
 
 	gr_list = track_data(request,t,u,prt,rate1) # Get the Graph Data
 	data1 = zip(u1,wd1,m1,day1,shift1,prev_cnt1)
+
+	
 	return data1, gr_list
 
 
