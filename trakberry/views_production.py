@@ -234,7 +234,6 @@ def track_area(request):
 	db.close()
 	request.session['total_test'] = total_test
 
-	tt=5/0
 
 	
 	current_rate = cnt / float(shift_time)
