@@ -59,8 +59,8 @@ def db_set(request):  # Module to set DB settings to the one that works.  Whethe
 		db = MySQLdb.connect(host="127.0.0.1",user="dg417",passwd="dg",db='prodrptdb')
 		cursor = db.cursor()
 		sql = "SELECT * from testtest" 
-  		cursor.execute(sql)
-  		tmp2 = cursor.fetchall()
+		cursor.execute(sql)
+		tmp2 = cursor.fetchall()
 		request.session["local_toggle"]="/trakberry"
 		return db, cursor
 	except:

@@ -831,7 +831,7 @@ def maint_job_history(request):
 
 	name = request.session["login_maint"]
 	db, cursor = db_set(request)
-	sql = "SELECT * FROM pr_downtime1 WHERE whoisonit = '%s' ORDER BY called4helptime DESC limit 60" %(name)
+	sql = "SELECT * FROM pr_downtime1 WHERE whoisonit LIKE '%s' ORDER BY called4helptime DESC limit 60" %("%" + name + "%")
 	cursor.execute(sql)
 	tmp = cursor.fetchall()
 	db.close

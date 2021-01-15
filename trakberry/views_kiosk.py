@@ -2585,7 +2585,7 @@ def kiosk_scrap_entry(request):
 
 def production_entry_check(request):
 	date1, shift2 = vacation_set_current5()
-	date1='2021-01-08'
+	date1='2021-01-11'
 	shift = 'Plant 1 Days'
 
 	# production_duplicate_fix(request,date1)
@@ -2670,7 +2670,7 @@ def production_entry_check(request):
 
 		hrs_verify = 8
 		if i[2] != i[4]:
-			hrs_verify = 12
+			hrs_verify = 8  # Change this to 12 once we figure out Continental 
 
 		cur.execute("""DROP TABLE IF EXISTS tkb_scheduled_temp""")
 		cur.execute("""CREATE TABLE IF NOT EXISTS tkb_scheduled_temp(Id INT PRIMARY KEY AUTO_INCREMENT,Id1 CHAR(80), Employee CHAR(80),Clock CHAR(80), Asset Char(80), Job Char(80), Part Char(80), Hrs Int(10), Qty Int(10),Shift_Mod Char(80))""")
@@ -2820,7 +2820,8 @@ def production_entry_check(request):
 				shift_mod1.append(x[9])
 				hrs_total = hrs_total + int(x[7])
 				job_current = x[5]
-		if hrs_total == hrs_verify:
+		if hrs_total >= 8 and hrs_total <=12:
+		# if hrs_total == hrs_verify:
 			if job == 'not a job':
 				complete1 = 'Bad Entry'
 			else:
@@ -2841,7 +2842,7 @@ def production_entry_check(request):
 	data2 = zip(name1,clock1,job1,part1)   # Data containing all those on the shift that didn't enter anything on the day
 	request.session["shift_manpower"] = data2
 	db.close()
-
+	return render(request,"redirect_production_entry_fix.html")
 	return render(request,"test71.html",{'data1':data1,'data2':data2})
 
 def production_duplicate_fix(request,date1):
@@ -2862,13 +2863,13 @@ def production_entry_fix(request):
 	# delete all entries in tkb_scheduled with date and shift
 	# rerun production_entry_check
 	date1, shift2 = vacation_set_current5()
-	date1='2021-01-08'
+	date1='2021-01-11'
 	shift = 'Plant 1 Days'
 	status1 = 'Good'
 	status2 = 'Pending'
 
 	db, cur = db_set(request)
-	sql = "SELECT * FROM tkb_scheduled WHERE Date1 = '%s' and Shift = '%s' and Status != '%s' and Status != '%s' ORDER BY %s %s" %(date1,shift,status1,status2,'Status','DESC')
+	sql = "SELECT * FROM tkb_scheduled WHERE Date1 = '%s' and Shift = '%s' and Status != '%s' and Status != '%s' ORDER BY %s %s, %s %s" %(date1,shift,status1,status2,'Status','DESC','Employee','ASC')
 	cur.execute(sql)
 	tmp=cur.fetchall()
 
