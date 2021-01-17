@@ -85,6 +85,15 @@ def supervisor_display(request):
 	email_hour_check()
 #	******************************************************************************************
 
+# Below this will check if we need to add a Column to an existing table
+	try:
+		db, cur = db_set(request)
+		cur.execute("Alter Table pr_downtime1 ADD Column whoisonit_full VARCHAR(100)")  # Add a Column
+		db.commit()
+		db.close()
+	except:
+		dummy2 = 1
+
 	
 	try:
 		request.session["login_name"] 

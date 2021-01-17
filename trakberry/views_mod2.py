@@ -309,9 +309,9 @@ def seperate_string(tx):
 
 # Takes total string and name to add.   Either adds name or deletes it if it's in
 def generate_string(tmp3,tec):  
-    nm = []
-    nm2 = []
-    if tmp3 != 'Electrician' and tmp3 != 'Millwright':
+	nm = []
+	nm2 = []
+	if tmp3 != 'Electrician' and tmp3 != 'Millwright':
 		nm = seperate_string(tmp3)
 		add_job = 0
 		match1 = 0
@@ -321,7 +321,6 @@ def generate_string(tmp3,tec):
 			if h1 != tec:
 				nm2.append(h1)
 				add_job = 1
-
 		if match1 == 0:
 			add_job = 0
 		if add_job == 1:
@@ -334,11 +333,40 @@ def generate_string(tmp3,tec):
 				t = 'Electrician'
 			else:
 				t = tmp3 + " | " + tec
-    else:
+	else:
 		t = tec
+	return t
 
-    return t
+def generate_full_string(tmp4,tec):  
+	nm = []
+	nm2 = []
+	t = ''
+	tec = str(tec)
+	if tmp4 is not None:
+		nm = seperate_string(tmp4)
 
+		add_job = 0
+		match1 = 0
+		for h1 in nm:
+			if h1 == tec:
+				match1 = 1
+			# if h1 != tec:
+			# 	nm2.append(h1)
+				# add_job = 1
+		if match1 == 0:
+			nm.append(tec)
+		ctr = 0
+		for a in nm:
+			ctr = ctr + 1
+			if len(t) < 3:
+				t = a
+			else:
+				t = t + ' | ' + a
+			# if ctr == 3:
+			# 	rrr = 4/0
+	else:
+		t = tec
+	return t
 
 def create_new_table(request):
     # create a blank tkb_maint_list table with format similar to tkb_tech_list

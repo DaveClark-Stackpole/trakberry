@@ -4,7 +4,7 @@ from django.http import HttpResponseRedirect
 from trakberry.forms import maint_closeForm, maint_loginForm, maint_searchForm, tech_loginForm, sup_downForm
 from views_db import db_open, db_set
 from views_mod1 import find_current_date
-from views_mod2 import seperate_string, create_new_table,generate_string
+from views_mod2 import seperate_string, create_new_table,generate_string,generate_full_string
 from views_email import e_test
 from views_vacation import vacation_temp, vacation_set_current, vacation_set_current2
 from views_supervisor import supervisor_tech_call
@@ -717,16 +717,18 @@ def tech_message_reply1(request):
 
 def maint_call(request, index):
 
-	tec = request.session["login_maint"]
+	tec = request.session["login_maint"]  # this is the person logged in's name
 	db, cur = db_set(request)
-	sql1 = "SELECT whoisonit FROM pr_downtime1 where idnumber='%s'" %(index)
+	sql1 = "SELECT whoisonit,whoisonit_full FROM pr_downtime1 where idnumber='%s'" %(index)  # Call up that job in downtime table by index# that was passed
 	cur.execute(sql1)
 	tmp = cur.fetchall()
 	tmp2 = tmp[0]
-	tmp3 = tmp2[0]
+	tmp3 = tmp2[0]  # This is the current name / string of names/ 
+	tmp4 = tmp2[1]  # This is the total names worked on job
 	t = generate_string(tmp3,tec)
+	tfull = generate_full_string(tmp4,tec)
 
-	sql =( 'update pr_downtime1 SET whoisonit="%s" WHERE idnumber="%s"' % (t,index))
+	sql =( 'update pr_downtime1 SET whoisonit="%s", whoisonit_full="%s" WHERE idnumber="%s"' % (t,tfull,index))
 	cur.execute(sql)
 	db.commit()
 	db.close()
@@ -831,7 +833,7 @@ def maint_job_history(request):
 
 	name = request.session["login_maint"]
 	db, cursor = db_set(request)
-	sql = "SELECT * FROM pr_downtime1 WHERE whoisonit LIKE '%s' ORDER BY called4helptime DESC limit 60" %("%" + name + "%")
+	sql = "SELECT * FROM pr_downtime1 WHERE whoisonit_full LIKE '%s' ORDER BY called4helptime DESC limit 60" %("%" + name + "%")
 	cursor.execute(sql)
 	tmp = cursor.fetchall()
 	db.close

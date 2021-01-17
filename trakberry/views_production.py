@@ -645,12 +645,12 @@ def chart2_0455(request):
 def chart1_9341(request):
 		request.session['area1'] = '50-9341 Inspection'
 		request.session['part_area1'] = '50-9341'
-		request.session['rate_area1'] = 332
+		request.session['rate_area1'] = 400
 		return render(request, "redirect_tracking.html")
 def chart2_9341(request):
 		request.session['area2'] = '50-9341 Inspection'
 		request.session['part_area2'] = '50-9341'
-		request.session['rate_area2'] = 332
+		request.session['rate_area2'] = 400
 		return render(request, "redirect_tracking.html")
 
 
@@ -659,6 +659,7 @@ def mgmt(request):
 	tcur=int(time.time())
 
 	mgmt_24hr_production(request)
+	return render(request, "mgmt.html",{'TCUR':tcur})
 	return render(request, "mgmt_start.html",{'TCUR':tcur})
 
 def mgmt_initialize_cat_table(request):
