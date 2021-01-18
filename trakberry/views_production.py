@@ -9,6 +9,7 @@ from views_mod1 import find_current_date, mgmt_display, mgmt_display_edit
 from trakberry.views2 import login_initial
 from trakberry.views_testing import machine_list_display
 from trakberry.views_vacation import vacation_temp, vacation_set_current, vacation_set_current2_1, vacation_set_current5,vacation_set_current6,vacation_set_current77
+from views_vacation import vacation_1
 from django.http import QueryDict
 import MySQLdb
 import json
@@ -174,6 +175,8 @@ def track_area(request):
 	target = rate1
 
 	t=int(time.time())
+	t=int(1610761821)  # Temporary time.   just force it for this time
+	x = int(t - 489600)
 	tm = time.localtime(t)
 	request.session["time"] = t
 	shift_start = -2
@@ -190,6 +193,20 @@ def track_area(request):
 	shift_time = t-u
 	shift_left = 28800 - shift_time
 	request.session["shift_time"] = shift_time
+
+	# Calculate start of week unix (Monday 00:00am)
+	a1 = tm[6] * 86400
+	a2 = tm[3] * 60 * 60
+	a3 = tm[4] * 60
+	a4 = tm[5]
+	week_start1 = t - a1 - a2 - a3 - a4
+	week_current_seconds = t - week_start1
+	weekend_start = week_start1 + 43200
+	weekend_current_seconds = t - weekend_start
+
+
+	week_start2 = week_start1 - 604800
+	week_start3 = week_start2 - 604800
 
 	# var1 = 'target' + data_area
 	target = target_area / float(3600) 
@@ -211,6 +228,28 @@ def track_area(request):
 	cnt = tmp3[0]
 	# var1 = 'count' + data_area
 	# request.session[var1] = cnt
+	if week_current_seconds > 43200:
+		bql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s'" % (weekend_start,t,prt)
+		cur.execute(bql)
+		tmp8 = cur.fetchall()
+		tmp9 = tmp8[0]
+		weekend_cnt = tmp9[0]
+
+	bql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s'" % (week_start1,t,prt)
+	cur.execute(bql)
+	tmp8 = cur.fetchall()
+	tmp9 = tmp8[0]
+	week_cnt = tmp9[0]
+	bql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s'" % (week_start2,week_start1,prt)
+	cur.execute(bql)
+	tmp8 = cur.fetchall()
+	tmp9 = tmp8[0]
+	week_cnt2 = tmp9[0]
+	bql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s'" % (week_start3,week_start2,prt)
+	cur.execute(bql)
+	tmp8 = cur.fetchall()
+	tmp9 = tmp8[0]
+	week_cnt3 = tmp9[0]
 
 	u1, wd1, m1, day1, shift1, prev_cnt1 = [],[],[],[],[],[]
 	utemp = u
@@ -234,8 +273,32 @@ def track_area(request):
 	db.close()
 	request.session['total_test'] = total_test
 
+	# 5 day week 432000
+	# 7 day week 604800
+	# the weekend is 172800
+	wrm = 0
+	if prt == '50-9341':
+		wrm = .4
+	elif prt == '50-1467':
+		wrm = 1
 
-	
+	if week_current_seconds < 432000:
+		week_left = 432000 - week_current_seconds
+		week_rate = week_cnt / float(week_current_seconds)
+		week_projection = int(week_rate * (week_left)) + week_cnt 
+		weekend_projection = int(week_rate * (172800)* wrm) 
+		week_pojection = week_projection + weekend_projection
+		
+	else:
+		weekend_left = 172800 - weekend_current_seconds
+		weekend_rate = weekend_cnt / float(weekend_current_seconds)
+		week_projection = int(weekend_rate * (weekend_left)) + week_cnt
+
+	# if prt == '50-9341':
+	# 	week_rate2 = week_rate / float(2)
+	# 	week_rate2 = week_rate2 * 172800
+	# 	week_projection = week_projection - week_rate2 
+
 	current_rate = cnt / float(shift_time)
 	projection = int(current_rate * (shift_left)) + cnt
 	
@@ -246,11 +309,19 @@ def track_area(request):
 		request.session["oa1"] = oa
 		request.session["projection1"] = projection
 		request.session["count1"] = cnt
+		request.session["week_count1"] = week_cnt
+		request.session["week_projection1"] = week_projection
+		request.session["week_count1a"] = week_cnt2
+		request.session["week_count1b"] = week_cnt3
 		request.session['target1'] = int(target)
 	else:
 		request.session["oa2"] = oa
 		request.session["projection2"] = projection
 		request.session["count2"] = cnt
+		request.session["week_count2"] = week_cnt
+		request.session["week_projection2"] = week_projection
+		request.session["week_count2a"] = week_cnt2
+		request.session["week_count2b"] = week_cnt3
 		request.session['target2'] = int(target)
 
 	gr_list = track_data(request,t,u,prt,rate1) # Get the Graph Data

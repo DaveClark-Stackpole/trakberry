@@ -8,7 +8,10 @@ import datetime
 from views_db import db_open, db_set
 
 def vacation_1(i):
-	td = datetime.datetime.fromtimestamp(int(i)).strftime('%Y-%m-%d %H:%M:%S')
+	td = datetime.datetime.now()
+
+
+	# td = datetime.datetime.fromtimestamp(int(i)).strftime('%Y-%m-%d %H:%M:%S')
 	return td
 
 def back_db(request):
