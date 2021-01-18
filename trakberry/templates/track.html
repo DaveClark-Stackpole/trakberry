@@ -1,123 +1,72 @@
 
 <html>
-<body>
-<head>
-
-<script language="javascript" type="text/javascript"> 
-function windowClose() { 
-window.open('','_parent',''); 
-window.close();
-} 
-</script>
-
-<script>
-	function L9341(){location.replace("{{request.session.local_toggle}}/chart1_9341")}
-	function R9341(){location.replace("{{request.session.local_toggle}}/chart2_9341")}
-	function L0455(){location.replace("{{request.session.local_toggle}}/chart1_0455")}
-	function R0455(){location.replace("{{request.session.local_toggle}}/chart2_0455")}
-	function L1467(){location.replace("{{request.session.local_toggle}}/chart1_1467")}
-	function R1467(){location.replace("{{request.session.local_toggle}}/chart2_1467")}
-	function L3050(){location.replace("{{request.session.local_toggle}}/chart1_3050")}
-	function R3050(){location.replace("{{request.session.local_toggle}}/chart2_3050")}
-
-
-</script>
-
-<style type="text/css">
-	.mainset{color:black;text-align:center;float:left;width:100%}
-	.wrapper_main {background:chartreuse;width:90%;margin-left: 10px;}
-	.frame1 {color:black;text-align:left;float:left;width:43%;margin-bottom: 5px;}
-	.frame1_u {color:black;text-align:center;background:rgb(214, 214, 214);float:left;width:60%;margin: 20px;}
-	.frame2{color:black;text-align:left;float:left;width:42%;position:relative;left:5px;margin-bottom: 5px;}
-	.frame6{color:black;text-align:left;background:rgb(235, 235, 235);float:left;width:14%;position:relative;left:5px;margin-bottom: 5px;}
-	.frame3 {color:black;text-align:center;background:rgb(61, 138, 64);float:left;width:51%;position:relative;}
-	.frame4 {color:black;text-align:center;background:rgb(235, 142, 89);float:left;width:49%;position:relative;left:5px;}
-	.frame5{color:black;text-align:center;background:rgb(168, 168, 168);float:right;width:40%}
-	.head1{color:black;text-align:center;border: .4px solid rgb(0, 0, 0);background:rgb(114, 159, 243);width:85%}
-	.head1_u{color:black;text-align:center;border: .4px solid rgb(0, 0, 0);background:rgb(255, 221, 169);width:100%}
-	.head2_u{color:black;text-align:center;float:left;font-size: 60%;border: .4px solid rgb(0, 0, 0);background: rgb(184, 167, 142);width:25%}
-	.body1_u{color:black;text-align:left;float: left;border: 1px solid rgb(0, 0, 0);width:25%}
-	.head2{color:black;text-align:center;float:left;font-size: 60%;border: .4px solid rgb(222, 231, 95);background: rgb(184, 167, 142);width:65%}
-	.body1{color:black;text-align:left;float: left;border: 1px solid rgb(0, 0, 0);width:85%}
-	.body2{color:black;text-align:left;float: left;border: 1px solid rgb(0, 0, 0);width:65%}
-	.body3{color:black;text-align:center;background:rgb(199, 187, 166);float:left;width:33%;border: .4px solid rgb(0, 0, 0)}
-	.body3h{color:black;text-align:center;background:rgb(187, 186, 184);float:left;width:33%;border: .4px solid rgb(0, 0, 0)}
-	.body3t{color:black;text-align:center;background:rgb(187, 186, 184);float:left;font-size:medium;width:99%;border: .4px solid rgb(0, 0, 0)}
-
+	<body>
+	<head>
 	
-</style>
-<style>
-	table {
-          border-collapse: collapse;
-          border-spacing: 0;
-          width: 85%;
-
-        }
-        th, td {
-          text-align: left;
-          padding: 2px;
-        }
-
-</style>
-</head>
-<!-- ******   Load Scripts for graphs  ****** -->
-	<!-- <script type="text/javascript" src="https://www.google.com/jsapi"></script> -->
-
-	<script type="text/javascript" src="/static/style_1/loader.js"></script>
-
-
-<script type="text/javascript">
-<!-- **************************************** -->
-google.load('visualization', '1', {
-    packages: ['corechart', 'line']
-});
-google.setOnLoadCallback(drawCurveTypes);
-function drawCurveTypes() {
-	var obj = [
-			{% for item in GList %}
-            [new Date({{item.0}}*1000),{{item.1}},{{item.2}},{{item.3}}],
-            {% endfor %}
-        ];
-
-    var data = new google.visualization.DataTable();
-    data.addColumn('datetime', 'Date');
-    data.addColumn('number', 'Production');
-    data.addColumn('number', 'Target');
-	data.addColumn('number', '85% Target');
-	data.addRows(obj)
-
-    var options = {
-		title: "",
-		chartArea: {
-			backgroundColor: {
-				stroke: '#4322c0',
-				strokeWidth: 3
-			}
-		},
-		//backgroundColor: '#F5EBE1',
-        hAxis: {
-            title: 'Time',
-			format: "HH:mm",
-			gridlines: { count: 20 }
-			
-        },
+	<script language="javascript" type="text/javascript"> 
+	function windowClose() { 
+	window.open('','_parent',''); 
+	window.close();
+	} 
+	</script>
+	
+	<script>
+		function L9341(){location.replace("{{request.session.local_toggle}}/chart1_9341")}
+		function R9341(){location.replace("{{request.session.local_toggle}}/chart2_9341")}
+		function L0455(){location.replace("{{request.session.local_toggle}}/chart1_0455")}
+		function R0455(){location.replace("{{request.session.local_toggle}}/chart2_0455")}
+		function L1467(){location.replace("{{request.session.local_toggle}}/chart1_1467")}
+		function R1467(){location.replace("{{request.session.local_toggle}}/chart2_1467")}
+		function L3050(){location.replace("{{request.session.local_toggle}}/chart1_3050")}
+		function R3050(){location.replace("{{request.session.local_toggle}}/chart2_3050")}
+	
+	
+	</script>
+	
+	<style type="text/css">
+		.mainset{color:black;text-align:center;float:left;width:100%}
+		.wrapper_main {background:chartreuse;width:90%;margin-left: 10px;}
+		.frame1 {color:black;text-align:left;float:left;width:43%;margin-bottom: 5px;}
+		.frame1_u {color:black;text-align:center;background:rgb(214, 214, 214);float:left;width:60%;margin: 20px;}
+		.frame2{color:black;text-align:left;float:left;width:42%;position:relative;left:5px;margin-bottom: 5px;}
+		.frame6{color:black;text-align:left;background:rgb(235, 235, 235);float:left;width:14%;position:relative;left:5px;margin-bottom: 5px;}
+		.frame3 {color:black;text-align:center;background:rgb(61, 138, 64);float:left;width:51%;position:relative;}
+		.frame4 {color:black;text-align:center;background:rgb(235, 142, 89);float:left;width:49%;position:relative;left:5px;}
+		.frame5{color:black;text-align:center;background:rgb(168, 168, 168);float:right;width:40%}
+		.head1{color:black;text-align:center;border: .4px solid rgb(0, 0, 0);background:rgb(114, 159, 243);width:85%}
+		.head1_u{color:black;text-align:center;border: .4px solid rgb(0, 0, 0);background:rgb(255, 221, 169);width:100%}
+		.head2_u{color:black;text-align:center;float:left;font-size: 60%;border: .4px solid rgb(0, 0, 0);background: rgb(184, 167, 142);width:25%}
+		.body1_u{color:black;text-align:left;float: left;border: 1px solid rgb(0, 0, 0);width:25%}
+		.head2{color:black;text-align:center;float:left;font-size: 60%;border: .4px solid rgb(222, 231, 95);background: rgb(184, 167, 142);width:65%}
+		.body1{color:black;text-align:left;float: left;border: 1px solid rgb(0, 0, 0);width:85%}
+		.body2{color:black;text-align:left;float: left;border: 1px solid rgb(0, 0, 0);width:65%}
+		.body3{color:black;text-align:center;background:rgb(199, 187, 166);float:left;width:33%;border: .4px solid rgb(0, 0, 0)}
+		.body3h{color:black;text-align:center;background:rgb(187, 186, 184);float:left;width:33%;border: .4px solid rgb(0, 0, 0)}
+		.body3t{color:black;text-align:center;background:rgb(187, 186, 184);float:left;font-size:medium;width:99%;border: .4px solid rgb(0, 0, 0)}
+	
 		
-        vAxis: {
-            title: 'Quantity',
-			gridlines: { count: 15 }
-        },
-        series: {
-            0: { curveType: 'function', color: '#08d40c'},
-						1: { curveType: 'function', color: '#005eff'},
-						2: { curveType: 'function', color: '#ffa033'},
-        }
-    };
-    var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
-    chart.draw(data, options);
-}
-    </script>	
-
-<script type="text/javascript">
+	</style>
+	<style>
+		table {
+						border-collapse: collapse;
+						border-spacing: 0;
+						width: 85%;
+	
+					}
+					th, td {
+						text-align: left;
+						padding: 2px;
+					}
+	
+	</style>
+	</head>
+	<!-- ******   Load Scripts for graphs  ****** -->
+		<!-- <script type="text/javascript" src="https://www.google.com/jsapi"></script> -->
+	
+		<script type="text/javascript" src="/static/style_1/loader.js"></script>
+	
+	
+	<script type="text/javascript">
 	<!-- **************************************** -->
 	google.load('visualization', '1', {
 			packages: ['corechart', 'line']
@@ -125,7 +74,7 @@ function drawCurveTypes() {
 	google.setOnLoadCallback(drawCurveTypes);
 	function drawCurveTypes() {
 		var obj = [
-				{% for item in GList2 %}
+				{% for item in GList %}
 							[new Date({{item.0}}*1000),{{item.1}},{{item.2}},{{item.3}}],
 							{% endfor %}
 					];
@@ -163,132 +112,125 @@ function drawCurveTypes() {
 							2: { curveType: 'function', color: '#ffa033'},
 					}
 			};
-			var chart = new google.visualization.LineChart(document.getElementById('chart2_div'));
+			var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
 			chart.draw(data, options);
 	}
 			</script>	
 	
-<!-- Begin HTML of Graph  -->
-
-
-<!-- End of Menu Bar -->
-
-<!-- <br><br>
-<input type="button" value="Close this window" onclick="windowClose();"> -->
-
-
-<meta http-equiv="refresh" content="30; url={{request.session.local_toggle}}/tracking" />
-
-<div class="wrapper_main">
-<div class="head1_u">
-	<font size="6"><b><u>Live Tracking</u></b></font>
-</div>
-
-
-
-<div class="frame1">  
-<br> <center>
-	<font style="font-size: 35px; color:rgb(141, 179, 236); text-shadow: 1px 1px 2px black, 0 0 25px rgb(0, 0, 0), 0 0 5px rgb(255, 255, 255);">
-		{{request.session.area1}}
-</font>
-</center>
-<div id="chart_div" style="width: 100%; height: 400px; "></div>
-<br>
-<br><br>
-<table><tr><td>
-Current Shift Count: <b>{{request.session.count1}}</b> 
-</td><td>
-{{request.session.wd}} 
-{{request.session.m}}
-{{request.session.day}},
-2020 
-</td><td>
-{{request.session.shift}} Shift
-</td></tr>
-<tr><td>
-Current Shift OA : {{request.session.oa1}}%
-</td><td>
-Current shift target: {{request.session.target1}}
-</td><td>
-End of Shift Projection : {{request.session.projection1}}
-</td></tr>
-<tr><td>
-	Week to Date: {{request.session.week_count1}}
-	</td><td>
-	Week Projection: {{request.session.week_projection1}}
-</td><td>
-	Last Week: {{request.session.week_count1a}}
-</td><td>
-	2 Weeks Ago: {{request.session.week_count1b}}
-	</td></tr>
-
-</table>
-<br><br>
-<b><u>Previous Shifts</u>  {{request.session.total_test}}</b>
-<br>
-<table style="width:40%;border: 1px solid black;"><tr><td style="border:1px solid black;">
-{% for i in datax %}
-<tr><td style="border:1px solid black;">
-<a href="{{request.session.local_toggle}}/track_graph_prev1/get/{{i.0}}" onclick="window.open('{{request.session.local_toggle}}/track_graph_prev1/get/{{i.0}}', 'newwindow', 'width=1400, height=600'); return false;">
-{{i.1}}
-{{i.2}}
-{{i.3}},
-2020 
-</a></td>
-<td style="border:1px solid black;">
-{{i.4}} Shift
-</td><td style="border:1px solid black;">
-{{i.5}}
-</td></tr>
-{% endfor %}
-</table>
-</div>
-
-
-<div class="frame2">  
-
+	<script type="text/javascript">
+		<!-- **************************************** -->
+		google.load('visualization', '1', {
+				packages: ['corechart', 'line']
+		});
+		google.setOnLoadCallback(drawCurveTypes);
+		function drawCurveTypes() {
+			var obj = [
+					{% for item in GList2 %}
+								[new Date({{item.0}}*1000),{{item.1}},{{item.2}},{{item.3}}],
+								{% endfor %}
+						];
+		
+				var data = new google.visualization.DataTable();
+				data.addColumn('datetime', 'Date');
+				data.addColumn('number', 'Production');
+				data.addColumn('number', 'Target');
+			data.addColumn('number', '85% Target');
+			data.addRows(obj)
+		
+				var options = {
+				title: "",
+				chartArea: {
+					backgroundColor: {
+						stroke: '#4322c0',
+						strokeWidth: 3
+					}
+				},
+				//backgroundColor: '#F5EBE1',
+						hAxis: {
+								title: 'Time',
+					format: "HH:mm",
+					gridlines: { count: 20 }
+					
+						},
+				
+						vAxis: {
+								title: 'Quantity',
+					gridlines: { count: 15 }
+						},
+						series: {
+								0: { curveType: 'function', color: '#08d40c'},
+								1: { curveType: 'function', color: '#005eff'},
+								2: { curveType: 'function', color: '#ffa033'},
+						}
+				};
+				var chart = new google.visualization.LineChart(document.getElementById('chart2_div'));
+				chart.draw(data, options);
+		}
+				</script>	
+		
+	<!-- Begin HTML of Graph  -->
+	
+	
+	<!-- End of Menu Bar -->
+	
+	<!-- <br><br>
+	<input type="button" value="Close this window" onclick="windowClose();"> -->
+	
+	
+	<meta http-equiv="refresh" content="30; url={{request.session.local_toggle}}/tracking" />
+	
+	<div class="wrapper_main">
+	<div class="head1_u">
+		<font size="6"><b><u>Live Tracking</u></b></font>
+	</div>
+	
+	
+	
+	<div class="frame1">  
 	<br> <center>
-	<font style="font-size: 35px; color:rgb(141, 179, 236); text-shadow: 1px 1px 2px black, 0 0 25px rgb(0, 0, 0), 0 0 5px rgb(255, 255, 255);">
-		{{request.session.area2}}
+		<font style="font-size: 35px; color:rgb(141, 179, 236); text-shadow: 1px 1px 2px black, 0 0 25px rgb(0, 0, 0), 0 0 5px rgb(255, 255, 255);">
+			{{request.session.area1}}
 	</font>
-</center>
-	<div id="chart2_div" style="width: 100%; height: 400px; "></div>
+	</center>
+	<div id="chart_div" style="width: 100%; height: 400px; "></div>
 	<br>
 	<br><br>
-	<table><tr><td>
-	Current Shift Count: <b>{{request.session.count2}}</b> 
-	</td><td>
+	
+	<table style="width:90%;border: 1px solid black;"<tr><td style="border:1px solid black;">
+	<u>Current Shift Count:</u><br> <b>{{request.session.count1}}</b> 
+	</td><td style="border:1px solid black;">
 	{{request.session.wd}} 
 	{{request.session.m}}
 	{{request.session.day}},
 	2020 
-	</td><td>
+	</td><td style="border:1px solid black;">
 	{{request.session.shift}} Shift
 	</td></tr>
-	<tr><td>
-	Current Shift OA : {{request.session.oa2}}%
-	</td><td>
-	Current shift target: {{request.session.target2}}
-	</td><td>
-	End of Shift Projection : {{request.session.projection2}}
+	<tr><td style="border:1px solid black;">
+	<u>Current Shift OA :</u><br> {{request.session.oa1}}%
+	</td><td style="border:1px solid black;">
+	<u>Current shift target: </u><br>{{request.session.target1}}
+	</td><td style="border:1px solid black;">
+	<u>End of Shift Projection : </u><br>{{request.session.projection1}}
 	</td></tr>
 	<tr><td>
-		Week to Date: {{request.session.week_count2}}
-		</td><td>
-		Week Projection: {{request.session.week_projection2}}
-	</td><td>
-		Last Week: {{request.session.week_count2a}}
-	</td><td>
-		2 Weeks Ago: {{request.session.week_count2b}}
+		<u>Week to Date:</u> <br>{{request.session.week_count1}}
+		</td><td style="border:1px solid black;">
+		<u>Week Projection: </u><br>{{request.session.week_projection1}}
+	</td><td style="border:1px solid black;">
+		<u>Last Week: </u><br>{{request.session.week_count1a}}
+	</td><td style="border:1px solid black;">
+		<u>2 Weeks Ago: </u><br>{{request.session.week_count1b}}
 		</td></tr>
+	
 	</table>
 	<br><br>
-	<b><u>Previous Shifts</u></b>
+	<b><u>Previous Shifts</u>  {{request.session.total_test}}</b>
 	<br>
 	<table style="width:40%;border: 1px solid black;"><tr><td style="border:1px solid black;">
-	{% for i in datax2 %}
+	{% for i in datax %}
 	<tr><td style="border:1px solid black;">
-	<a href="{{request.session.local_toggle}}/track_graph_prev2/get/{{i.0}}" onclick="window.open('{{request.session.local_toggle}}/track_graph_prev2/get/{{i.0}}', 'newwindow', 'width=1400, height=600'); return false;">
+	<a href="{{request.session.local_toggle}}/track_graph_prev1/get/{{i.0}}" onclick="window.open('{{request.session.local_toggle}}/track_graph_prev1/get/{{i.0}}', 'newwindow', 'width=1400, height=600'); return false;">
 	{{i.1}}
 	{{i.2}}
 	{{i.3}},
@@ -302,32 +244,93 @@ End of Shift Projection : {{request.session.projection1}}
 	{% endfor %}
 	</table>
 	</div>
-
-
-	<div class="frame6">
-		<br><br><br>
-
-<center>
-<p><b><u>Tracking</u></b></p>	
-
-
-<br>
-<button onclick="L1467()">Left Chart</button> (1467) <button onclick="R1467()">Right Chart</button>
-<br>
-<button onclick="L3050()">Left Chart</button> (3050) <button onclick="R3050()">Right Chart</button>
-<br>
-<button onclick="L9341()">Left Chart</button> (9341) <button onclick="R9341()">Right Chart</button>
-<br>
-<button onclick="L0455()">Left Chart</button> (0455) <button onclick="R0455()">Right Chart</button>
-</div>
-
-
-</div>
-
-
-<br><br>
-
-
-</body>
-
-</html>
+	
+	
+	<div class="frame2">  
+	
+		<br> <center>
+		<font style="font-size: 35px; color:rgb(141, 179, 236); text-shadow: 1px 1px 2px black, 0 0 25px rgb(0, 0, 0), 0 0 5px rgb(255, 255, 255);">
+			{{request.session.area2}}
+		</font>
+	</center>
+		<div id="chart2_div" style="width: 100%; height: 400px; "></div>
+		<br>
+		<br><br>
+		
+	<table style="width:90%;border: 1px solid black;"<tr><td style="border:1px solid black;">
+	<u>Current Shift Count:</u><br> <b>{{request.session.count2}}</b> 
+	</td><td style="border:1px solid black;">
+	{{request.session.wd}} 
+	{{request.session.m}}
+	{{request.session.day}},
+	2020 
+	</td><td style="border:1px solid black;">
+	{{request.session.shift}} Shift
+	</td></tr>
+	<tr><td style="border:1px solid black;">
+	<u>Current Shift OA :</u><br> {{request.session.oa2}}%
+	</td><td style="border:1px solid black;">
+	<u>Current shift target: </u><br>{{request.session.target2}}
+	</td><td style="border:1px solid black;">
+	<u>End of Shift Projection : </u><br>{{request.session.projection2}}
+	</td></tr>
+	<tr><td>
+		<u>Week to Date:</u> <br>{{request.session.week_count2}}
+		</td><td style="border:1px solid black;">
+		<u>Week Projection: </u><br>{{request.session.week_projection2}}
+	</td><td style="border:1px solid black;">
+		<u>Last Week: </u><br>{{request.session.week_count2a}}
+	</td><td style="border:1px solid black;">
+		<u>2 Weeks Ago: </u><br>{{request.session.week_count2b}}
+		</td></tr>
+	
+	</table>
+		<br><br>
+		<b><u>Previous Shifts</u></b>
+		<br>
+		<table style="width:40%;border: 1px solid black;"><tr><td style="border:1px solid black;">
+		{% for i in datax2 %}
+		<tr><td style="border:1px solid black;">
+		<a href="{{request.session.local_toggle}}/track_graph_prev2/get/{{i.0}}" onclick="window.open('{{request.session.local_toggle}}/track_graph_prev2/get/{{i.0}}', 'newwindow', 'width=1400, height=600'); return false;">
+		{{i.1}}
+		{{i.2}}
+		{{i.3}},
+		2020 
+		</a></td>
+		<td style="border:1px solid black;">
+		{{i.4}} Shift
+		</td><td style="border:1px solid black;">
+		{{i.5}}
+		</td></tr>
+		{% endfor %}
+		</table>
+		</div>
+	
+	
+		<div class="frame6">
+			<br><br><br>
+	
+	<center>
+	<p><b><u>Tracking</u></b></p>	
+	
+	
+	<br>
+	<button onclick="L1467()">Left Chart</button> (1467) <button onclick="R1467()">Right Chart</button>
+	<br>
+	<button onclick="L3050()">Left Chart</button> (3050) <button onclick="R3050()">Right Chart</button>
+	<br>
+	<button onclick="L9341()">Left Chart</button> (9341) <button onclick="R9341()">Right Chart</button>
+	<br>
+	<button onclick="L0455()">Left Chart</button> (0455) <button onclick="R0455()">Right Chart</button>
+	</div>
+	
+	
+	</div>
+	
+	
+	<br><br>
+	
+	
+	</body>
+	
+	</html>

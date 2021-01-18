@@ -45,9 +45,22 @@ def maint_mgmt(request):
 	whoisonit2 = 'Engineering'
 	maint_login_check(request) #check if login table exists.   If not then create it
 	db, cursor = db_set(request)
-	SQ_Sup = "SELECT * FROM pr_downtime1 where closed IS NULL and whoisonit != '%s' and whoisonit != '%s' ORDER BY priority ASC" % (whoisonit1,whoisonit2)
+	SQ_Sup = "SELECT * FROM pr_downtime1 where closed IS NULL and whoisonit != '%s' and whoisonit != '%s' ORDER By (priority) ASC" % (whoisonit1,whoisonit2)
 	cursor.execute(SQ_Sup)
 	tmp = cursor.fetchall()
+
+	# tmp_list = list(tmp)
+	# # tmp_list[5] = ('55','66')
+	# # new_tmp = []
+	# # tmp_len = len(tmp)
+	# for a1 in range(0,tmp_len - 1):
+	# 	for a2 in range(a1+1,tmp_len):
+	# 		num1 = int(a1[5])
+	# 		num2 = int(a2[5])
+
+	# # s1 = tmp[8]
+	# # t = len(tmp)
+	# rr=5/0
 
 	if request.session["maint_mgmt_main_switch"] == 0:
 		# Determine a list of names currently active
