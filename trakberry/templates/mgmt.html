@@ -148,7 +148,8 @@
 
 			
             <a class="navbar-brand" href="#" style="position:absolute;left:0px;top:-10px;">
-                <img src="/static/media/JElogo.gif?{{TCUR}}"  style="border-radius: 25px;" height="40" width="150">
+								<!-- <img src="/static/media/JElogo.gif?{{TCUR}}"  style="border-radius: 25px;" height="40" width="150"> -->
+								<img src="/static/media/JELogo.gif?"  style="border-radius: 25px;" height="40" width="150">   
             </a>
 
         </div>
@@ -156,7 +157,7 @@
 			
             <ul class="nav navbar-nav">
                 
-                {% if request.session.mgmt_login_password = 'bort' %}
+
                 <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
                 <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
 				<li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
@@ -198,7 +199,6 @@
 			         <li><font size ="2" style="color:rgb(100, 100, 100)">Welcome:<b>{{request.session.mgmt_login_name}}</b></li>
                      <li><a href="{{request.session.local_toggle}}/mgmt_logout" style="color:rgb(100, 100, 100)"><span class="glyphicon glyphicon-log-out"></span> Log out</a></li>
 
-                    {% endif %}
 
             </ul>
 			
