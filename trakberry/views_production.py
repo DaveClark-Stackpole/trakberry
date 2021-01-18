@@ -175,7 +175,7 @@ def track_area(request):
 	target = rate1
 
 	t=int(time.time())
-	t=int(1610761821)  # Temporary time.   just force it for this time
+	# t=int(1610761821)  # Temporary time.   just force it for this time
 	x = int(t - 489600)
 	tm = time.localtime(t)
 	request.session["time"] = t
