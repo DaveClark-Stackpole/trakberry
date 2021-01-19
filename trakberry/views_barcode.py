@@ -77,6 +77,7 @@ def barcode_check_10R(request):
 
 
 def barcode_initial(request):
+	
 	db_set(request)
 	db, cur = db_set(request)
 	sql = "SELECT max(scrap) FROM barcode"
@@ -121,14 +122,16 @@ def barcode_input(request):
 		# cur.execute(sql)
 		# tmp2 = cur.fetchall()
 
-
+		
 		if request.POST:
+				
 				bc1 = request.POST.get("barcode")
 				request.session["barcode"] = bc1
 				request.session["barcode_part_number"] = bc1[-4:]
 				request.session["current_part"] = bc1[-4:]
 				request.session["barcode_part_short"] = bc1[-2:]
 				request.session["route_1"] = 'barcode_check'
+				
 				return direction(request)
 		else:
 			form = kiosk_dispForm1()
@@ -218,7 +221,10 @@ def barcode_verify(request):
 		return render(request,"kiosk/barcode_verify.html",{'args':args})
 
 def barcode_verify_check(request):
+
+		
 		bar1 = request.session["barcode"]
+	
 		bar1=str(bar1)
 		stamp = time.time()
 		part = request.session["barcode_part"]
@@ -228,10 +234,15 @@ def barcode_verify_check(request):
 		len_bar1 = len(bar1)
 		bar3 = bar1[:(len_bar1 - 4)]
 
+	
 		db, cur = db_set(request)
 		mql = "SELECT * FROM barcode WHERE left(asset_num,length(asset_num)-4) = '%s'" %(bar3)
 		cur.execute(mql)
 		tmp2 = cur.fetchall()
+
+
+		# added
+
 
 
 
@@ -240,8 +251,11 @@ def barcode_verify_check(request):
 			tmp4=tmp3[0]
 			timestamp = tmp3[2]
 			request.session["barcode"] = tmp3[1]
+			abv = tmp3[1]
+
 
 			tmp3=tmp2[1]
+
 			tmp4=tmp3[0]
 			timestamp2 = tmp3[2]
 			request.session["barcode2"] = tmp3[1]
@@ -250,13 +264,14 @@ def barcode_verify_check(request):
 			dd = vacation_1(stamp)
 			d = vacation_1(timestamp)
 			d2 = vacation_1(timestamp2)
-
+			
 			request.session["alert_time"] = d
 			request.session["alert_time2"] = d2
 			request.session["now_time"] = dd
 			request.session["diff_time"] = int(stamp - timestamp)
 			request.session["diff_time2"] = int(stamp - timestamp2)
 
+			
 
 			return render(request,"barcode_verify_found2.html")
 		
@@ -271,21 +286,28 @@ def barcode_verify_check(request):
 				request.session["alert_time"] = d
 				request.session["now_time"] = dd
 				request.session["diff_time"] = int(stamp - timestamp)
+
 				return render(request,"barcode_verify_found1.html")
 
 			except:
 				dummy = 5
 
+
+		
 		return render(request,"barcode_verify_clear.html")
 
 
 def barcode_check(request):
+		
 		bar1 = request.session["barcode"]
+		
 		bar1=str(bar1)
 		stamp = time.time()
 		part = request.session["barcode_part"]
 		part = int(part)
 		current_part = request.session["current_part"]
+
+		
 
 
 		short1 = request.session["barcode_part_short"]
@@ -346,19 +368,23 @@ def barcode_check(request):
 		# kk = request.session["bbummy"]
 
 		
+		
+
+
 		try:
-		 tmp3=tmp2[0]
-		 tmp4=tmp3[0]
-		 timestamp = tmp3[2]
-		 dd = vacation_1(stamp)
-		 d = vacation_1(timestamp)
-		 request.session["alert_time"] = d
-		 request.session["now_time"] = dd
-		 request.session["diff_time"] = int(stamp - timestamp)
-		 return render(request,"barcode_alert.html")
+			tmp3=tmp2[0]
+			tmp4=tmp3[0]
+			timestamp = tmp3[2]
+			dd = vacation_1(stamp)
+			d = vacation_1(timestamp)
+			request.session["alert_time"] = d
+			request.session["now_time"] = dd
+			request.session["diff_time"] = int(stamp - timestamp)
+			return render(request,"barcode_alert.html")
 
 		except:
 			dummy = 1
+
 
 		part = part + 1
 		skid = 1
