@@ -47,8 +47,8 @@ def manpower_initial_v2(request):
 
 def manpower_update_v2(request):
 		# comment below when running local
-	# label_link = '/home/file/import1/Inventory/importedxls'
-	# os.chdir(label_link)
+	label_link = '/home/file/import1/Inventory/importedxls'
+	os.chdir(label_link)
 	# ********************************
 
 	sheet = 'inventory.xlsx'
