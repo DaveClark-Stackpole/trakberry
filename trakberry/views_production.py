@@ -54,6 +54,10 @@ def track_graph_prev1(request, index):
 def track_graph_prev2(request, index):
 	prt= request.session['part_area2']
 	rate = request.session['rate_area2']
+	request.session['asset1_area'] = request.session['asset1_area2']
+	request.session['asset2_area'] = request.session['asset2_area2']
+	request.session['asset3_area'] = request.session['asset3_area2']
+	request.session['asset4_area'] = request.session['asset4_area2']
 	u = int(index)
 	t = int(index) + 28800
 
