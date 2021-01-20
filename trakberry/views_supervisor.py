@@ -484,6 +484,9 @@ def supervisor_down(request):
 
 		db, cur = db_set(request)
 
+
+		asset_test = machinenum[:4]
+
 		try:
 			asset3 = machinenum[:4]
 			asset2 = machinenum[:3]
@@ -493,15 +496,14 @@ def supervisor_down(request):
 			except:
 				asset4 = asset2
 
-			aql = "SELECT * FROM vw_asset_eam_lp WHERE Asset LIKE '%s'" % ("%" + asset4 + "%")
+			aql = "SELECT * FROM vw_asset_eam_lp where left(Asset,4) = '%s'" %(asset4)
+			# aql = "SELECT * FROM vw_asset_eam_lp WHERE Asset LIKE '%s'" % ("%" + asset4 + "%")
 			cur.execute(aql)
 			tmp2 = cur.fetchall()
 			tmp3 = tmp2[0]
 			asset5 = tmp3[1] + " - " + tmp3[3]
 		except:
 			asset5 = machinenum
-
-
 
 		cur.execute('''INSERT INTO pr_downtime1(machinenum,problem,priority,whoisonit,called4helptime) VALUES(%s,%s,%s,%s,%s)''', (asset5,problem,priority,whoisonit,t))
 		db.commit()
