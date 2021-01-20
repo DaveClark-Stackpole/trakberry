@@ -497,7 +497,7 @@ def supervisor_down(request):
 			cur.execute(aql)
 			tmp2 = cur.fetchall()
 			tmp3 = tmp2[0]
-			asset5 = tmp3[1] + " - " + tmp3[2] + " - " + tmp3[3]
+			asset5 = tmp3[1] + " - " + tmp3[3]
 		except:
 			asset5 = machinenum
 

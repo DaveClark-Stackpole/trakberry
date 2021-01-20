@@ -119,6 +119,7 @@ from views_production import mgmt,mgmt_login_form,mgmt_logout,mgmt_production_ho
 from views_production import mgmt_users_logins, mgmt_users_logins_edit, mgmt_users_logins_update, mgmt_users_logins_add, mgmt_users_logins_add_new
 from views_production import mgmt_test1,track_10r_data,tracking,track_graph_10r_prev,track_graph_tri_prev, track_graph_prev1,track_graph_prev2
 from views_production import chart1_1467,chart2_1467,chart1_3050,chart2_3050,chart1_0455,chart2_0455,chart1_9341,chart2_9341
+from views_production import chart1_9341_OP30, chart2_9341_OP30
 
 from views4 import ios_test, IsDone, NotDone, target_fix1, medium_production, multidrop, scantest, target_fix1
 from views4 import target_fix_5401, target_fix_5404, target_fix_5399, target_fix_5214, target_fix_3214
@@ -520,6 +521,8 @@ urlpatterns = [
 	url(r'^chart2_0455/', chart2_0455),
 	url(r'^chart1_9341/', chart1_9341),
 	url(r'^chart2_9341/', chart2_9341),
+	url(r'^chart1_9341_OP30/', chart1_9341_OP30),
+	url(r'^chart2_9341_OP30/', chart2_9341_OP30),
 
 	# ************************************************************************
 
