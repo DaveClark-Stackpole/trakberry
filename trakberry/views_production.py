@@ -42,6 +42,10 @@ def track_graph_10r_prev(request, index):
 def track_graph_prev1(request, index):
 	prt= request.session['part_area1']
 	rate = request.session['rate_area1']
+	request.session['asset1_area'] = request.session['asset1_area1']
+	request.session['asset2_area'] = request.session['asset2_area1']
+	request.session['asset3_area'] = request.session['asset3_area1']
+	request.session['asset4_area'] = request.session['asset4_area1']
 	u = int(index)
 	t = int(index) + 28800
 	gr_list = track_data(request,t,u,prt,rate) # Get the Graph Data
