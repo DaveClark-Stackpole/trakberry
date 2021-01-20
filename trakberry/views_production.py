@@ -75,10 +75,14 @@ def track_10r_data(request,t,u):
 
 def track_data(request,t,u,part,rate):
 	m = '1533'
+	asset1 = request.session['asset1_area']
+	asset2 = request.session['asset2_area']
+	asset3 = request.session['asset3_area']
+	asset4 = request.session['asset4_area']
 	# mrr = (337*(28800))/float(28800)
 	mrr = (rate*(28800))/float(28800)
 	db, cursor = db_set(request)
-	sql = "SELECT * FROM GFxPRoduction where TimeStamp >= '%d' and TimeStamp< '%d' and part = '%s'" %(u,t,part)
+	sql = "SELECT * FROM GFxPRoduction where TimeStamp >= '%d' and TimeStamp< '%d' and part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" %(u,t,part,asset1,asset2,asset3,asset4)
 	cursor.execute(sql)
 	tmp = cursor.fetchall()	
 	db.close()
@@ -172,6 +176,10 @@ def track_area(request):
 	target_area = int(request.session['rate_area'])
 	prt = request.session['part_area']
 	rate1 = request.session['rate_area']
+	asset1 = request.session['asset1_area']
+	asset2 = request.session['asset2_area']
+	asset3 = request.session['asset3_area']
+	asset4 = request.session['asset4_area']
 	target = rate1
 
 	t=int(time.time())
@@ -221,31 +229,33 @@ def track_area(request):
 	request.session['day'] = day
 
 	db, cur = db_set(request)
-	aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s'" % (u,t,prt)
+
+	aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (u,t,prt,asset1,asset2,asset3,asset4)
 	cur.execute(aql)
 	tmp2 = cur.fetchall()
 	tmp3 = tmp2[0]
 	cnt = tmp3[0]
+
 	# var1 = 'count' + data_area
 	# request.session[var1] = cnt
 	if week_current_seconds > 43200:
-		bql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s'" % (weekend_start,t,prt)
+		bql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (weekend_start,t,prt,asset1,asset2,asset3,asset4)
 		cur.execute(bql)
 		tmp8 = cur.fetchall()
 		tmp9 = tmp8[0]
 		weekend_cnt = tmp9[0]
 
-	bql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s'" % (week_start1,t,prt)
+	bql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (week_start1,t,prt,asset1,asset2,asset3,asset4)
 	cur.execute(bql)
 	tmp8 = cur.fetchall()
 	tmp9 = tmp8[0]
 	week_cnt = tmp9[0]
-	bql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s'" % (week_start2,week_start1,prt)
+	bql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (week_start2,week_start1,prt,asset1,asset2,asset3,asset4)
 	cur.execute(bql)
 	tmp8 = cur.fetchall()
 	tmp9 = tmp8[0]
 	week_cnt2 = tmp9[0]
-	bql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s'" % (week_start3,week_start2,prt)
+	bql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (week_start3,week_start2,prt,asset1,asset2,asset3,asset4)
 	cur.execute(bql)
 	tmp8 = cur.fetchall()
 	tmp9 = tmp8[0]
@@ -263,7 +273,7 @@ def track_area(request):
 		day1.append(x3)
 		shift1.append(x4)
 		
-		aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s'" % (unew,utemp,prt)
+		aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (unew,utemp,prt,asset1,asset2,asset3,asset4)
 		cur.execute(aql)
 		tmp2 = cur.fetchall()
 		tmp3 = tmp2[0]
@@ -287,8 +297,8 @@ def track_area(request):
 		week_rate = week_cnt / float(week_current_seconds)
 		week_projection = int(week_rate * (week_left)) + week_cnt 
 		weekend_projection = int(week_rate * (172800)* wrm) 
-		week_pojection = week_projection + weekend_projection
-		
+		week_projection = week_projection + weekend_projection
+
 	else:
 		weekend_left = 172800 - weekend_current_seconds
 		weekend_rate = weekend_cnt / float(weekend_current_seconds)
@@ -655,21 +665,34 @@ def tracking(request):
 		request.session['target_area'] = 1
 		request.session['part_area'] = request.session['part_area1']
 		request.session['rate_area'] = request.session['rate_area1']
+		request.session['asset1_area'] = request.session['asset1_area1']
+		request.session['asset2_area'] = request.session['asset2_area1']
+		request.session['asset3_area'] = request.session['asset3_area1']
+		request.session['asset4_area'] = request.session['asset4_area1']
 		data1, gr_list1 = track_area(request)
+
 		request.session['data_area'] = 2
 		request.session['target_area'] = 2
 		request.session['part_area'] = request.session['part_area2']
 		request.session['rate_area'] = request.session['rate_area2']
+		request.session['asset1_area'] = request.session['asset1_area2']
+		request.session['asset2_area'] = request.session['asset2_area2']
+		request.session['asset3_area'] = request.session['asset3_area2']
+		request.session['asset4_area'] = request.session['asset4_area2']
 		data2, gr_list2 = track_area(request)
 
 	except:
-		request.session['area1'] = '50-1467 Inspection'
+		request.session['area1'] = '50-9341 Inspection'
 		request.session['data_area'] =1 # Data for 1 or 2 chart
 		request.session['target_area'] = 1
-		request.session['part_area'] = '50-1467'
-		request.session['part_area1'] = '50-1467'
-		request.session['rate_area'] = 189
-		request.session['rate_area1'] = 189
+		request.session['part_area'] = '50-9341'
+		request.session['part_area1'] = '50-9341'
+		request.session['rate_area'] = 400
+		request.session['rate_area1'] = 400
+		request.session['asset1_area'] = '1533'
+		request.session['asset2_area'] = '1533'
+		request.session['asset3_area'] = '1533'
+		request.session['asset4_area'] = '1533'
 		data1, gr_list1 = track_area(request)
 		request.session['area2'] = '50-3050 Inspection'
 		request.session['data_area'] =2 # Data for 1 or 2 chart
@@ -678,6 +701,10 @@ def tracking(request):
 		request.session['part_area2'] = '50-3050'
 		request.session['rate_area'] = 58
 		request.session['rate_area2'] = 58
+		request.session['asset1_area'] = '769'
+		request.session['asset2_area'] = '769'
+		request.session['asset3_area'] = '769'
+		request.session['asset4_area'] = '769'
 		data2, gr_list2 = track_area(request)
 
 	return render(request, "track.html",{'GList':gr_list1,"datax":data1,'GList2':gr_list2, "datax2":data2})
@@ -686,42 +713,91 @@ def chart1_1467(request):
 		request.session['area1'] = '50-1467 Inspection'
 		request.session['part_area1'] = '50-1467'
 		request.session['rate_area1'] = 189
+		request.session['asset1_area1'] = '650L'
+		request.session['asset2_area1'] = '650R'
+		request.session['asset3_area1'] = '769'
+		request.session['asset4_area1'] = '769'
 		return render(request, "redirect_tracking.html")
-
 def chart2_1467(request):
 		request.session['area2'] = '50-1467 Inspection'
 		request.session['part_area2'] = '50-1467'
 		request.session['rate_area2'] = 189
+		request.session['asset1_area2'] = '650L'
+		request.session['asset2_area2'] = '650R'
+		request.session['asset3_area2'] = '769'
+		request.session['asset4_area2'] = '769'
 		return render(request, "redirect_tracking.html")
 def chart1_3050(request):
 		request.session['area1'] = '50-3050 Inspection'
 		request.session['part_area1'] = '50-3050'
 		request.session['rate_area1'] = 58
+		request.session['asset1_area1'] = '769'
+		request.session['asset2_area1'] = '769'
+		request.session['asset3_area1'] = '769'
+		request.session['asset4_area1'] = '769'
 		return render(request, "redirect_tracking.html")
 def chart2_3050(request):
 		request.session['area2'] = '50-3050 Inspection'
 		request.session['part_area2'] = '50-3050'
 		request.session['rate_area2'] = 58
+		request.session['asset1_area2'] = '769'
+		request.session['asset2_area2'] = '769'
+		request.session['asset3_area2'] = '769'
+		request.session['asset4_area2'] = '769'
 		return render(request, "redirect_tracking.html")
 def chart1_0455(request):
 		request.session['area1'] = '50-0455 Inspection'
 		request.session['part_area1'] = '50-0455'
 		request.session['rate_area1'] = 100
+		request.session['asset1_area1'] = '1816'
+		request.session['asset2_area1'] = '1816'
+		request.session['asset3_area1'] = '1816'
+		request.session['asset4_area1'] = '1816'
 		return render(request, "redirect_tracking.html")
 def chart2_0455(request):
 		request.session['area2'] = '50-0455 Inspection'
 		request.session['part_area2'] = '50-0455'
 		request.session['rate_area2'] = 100
+		request.session['asset1_area2'] = '1816'
+		request.session['asset2_area2'] = '1816'
+		request.session['asset3_area2'] = '1816'
+		request.session['asset4_area2'] = '1816'
 		return render(request, "redirect_tracking.html")
 def chart1_9341(request):
 		request.session['area1'] = '50-9341 Inspection'
 		request.session['part_area1'] = '50-9341'
 		request.session['rate_area1'] = 400
+		request.session['asset1_area1'] = '1533'
+		request.session['asset2_area1'] = '1533'
+		request.session['asset3_area1'] = '1533'
+		request.session['asset4_area1'] = '1533'
 		return render(request, "redirect_tracking.html")
 def chart2_9341(request):
 		request.session['area2'] = '50-9341 Inspection'
 		request.session['part_area2'] = '50-9341'
 		request.session['rate_area2'] = 400
+		request.session['asset1_area2'] = '1533'
+		request.session['asset2_area2'] = '1533'
+		request.session['asset3_area2'] = '1533'
+		request.session['asset4_area2'] = '1533'
+		return render(request, "redirect_tracking.html")
+def chart1_9341_OP30(request):
+		request.session['area1'] = '50-9341 OP30'
+		request.session['part_area1'] = '50-9341'
+		request.session['rate_area1'] = 400
+		request.session['asset1_area1'] = '1502'
+		request.session['asset2_area1'] = '1507'
+		request.session['asset3_area1'] = '1539'
+		request.session['asset4_area1'] = '1540'
+		return render(request, "redirect_tracking.html")
+def chart2_9341_OP30(request):
+		request.session['area2'] = '50-9341 OP30'
+		request.session['part_area2'] = '50-9341'
+		request.session['rate_area2'] = 400
+		request.session['asset1_area2'] = '1502'
+		request.session['asset2_area2'] = '1507'
+		request.session['asset3_area2'] = '1539'
+		request.session['asset4_area2'] = '1540'
 		return render(request, "redirect_tracking.html")
 
 
