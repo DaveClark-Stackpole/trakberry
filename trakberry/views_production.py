@@ -702,17 +702,17 @@ def tracking(request):
 		request.session['asset3_area'] = '1533'
 		request.session['asset4_area'] = '1533'
 		data1, gr_list1 = track_area(request)
-		request.session['area2'] = '50-3050 Inspection'
+		request.session['area2'] = '50-9341 OP 30'
 		request.session['data_area'] =2 # Data for 1 or 2 chart
 		request.session['target_area'] = 2
-		request.session['part_area'] = '50-3050'
-		request.session['part_area2'] = '50-3050'
-		request.session['rate_area'] = 58
-		request.session['rate_area2'] = 58
-		request.session['asset1_area'] = '769'
-		request.session['asset2_area'] = '769'
-		request.session['asset3_area'] = '769'
-		request.session['asset4_area'] = '769'
+		request.session['part_area'] = '50-9341'
+		request.session['part_area2'] = '50-9341'
+		request.session['rate_area'] = 400
+		request.session['rate_area2'] = 400
+		request.session['asset1_area'] = '1502'
+		request.session['asset2_area'] = '1507'
+		request.session['asset3_area'] = '1539'
+		request.session['asset4_area'] = '1540'
 		data2, gr_list2 = track_area(request)
 
 	return render(request, "track.html",{'GList':gr_list1,"datax":data1,'GList2':gr_list2, "datax2":data2})
