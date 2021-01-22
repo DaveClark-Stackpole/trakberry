@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
 from trakberry.forms import maint_closeForm, maint_loginForm, maint_searchForm, tech_loginForm, sup_downForm
-from views_db import db_open, db_set
+from views_db import db_open, db_set, net1
 from views_mod1 import find_current_date
 from views_mod2 import seperate_string, create_new_table,generate_string,generate_full_string
 from views_email import e_test
@@ -436,6 +436,7 @@ def tech_email_test(request):
 	return render(request, "email_downtime_cycle.html")
 
 def maint(request):
+	net1(request)   # Sets the app to server or local
 	# Initialize Request Sessions if they don't exist
 	try:
 		request.session["bounce2_switch"]
@@ -454,7 +455,7 @@ def maint(request):
 	except:
 		request.session["maint_ctr"] = 0
 
-
+	
 	b = request.session["bounce2"]
 	bs = request.session["bounce2_switch"]
 	# t=8/0
