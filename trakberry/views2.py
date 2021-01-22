@@ -623,7 +623,10 @@ def switch_net(request):
 	request.session["local_toggle"] = "/trakberry"
 	return render(request, "master.html")
 	
-	
+def net1(request):
+	request.session["local_switch"] = 0
+	request.session["local_toggle"] = "/trakberry"
+	return
 
 
 

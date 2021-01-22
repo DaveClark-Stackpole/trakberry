@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
 from trakberry.forms import tech_closeForm, tech_loginForm, tech_searchForm, tech_message_Form
-from views_db import db_open, db_set
+from views_db import db_open, db_set,net1
 from views_mod1 import find_current_date
 from views_email import e_test
 from views_supervisor import supervisor_tech_call
@@ -112,6 +112,7 @@ def time_write():
 	
 	
 def tech(request):
+	net1(request)
 	#Do the Hour Check to see if email needs sending
 
 	#return email_hour_check(request)
