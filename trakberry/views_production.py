@@ -305,7 +305,7 @@ def track_area(request):
 		week_rate = week_cnt / float(week_current_seconds)
 		week_projection = int(week_rate * (week_left)) + week_cnt 
 		weekend_projection = int(week_rate * (172800)* wrm) 
-		week_projection = week_projection + weekend_projection
+		# week_projection = week_projection + weekend_projection
 
 	else:
 		weekend_left = 172800 - weekend_current_seconds
