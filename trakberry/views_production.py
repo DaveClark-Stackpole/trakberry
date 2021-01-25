@@ -20,7 +20,7 @@ from django.core.context_processors import csrf
 from views_routes import direction
 from time import mktime
 from datetime import datetime, date
-from views_db import db_open, db_set
+from views_db import db_open, db_set,net1
 from mod_tracking import Graph_Data
 # from datetime import datetime 
 from time import strftime
@@ -668,6 +668,7 @@ def track_tri(request):
 
 
 def tracking(request):
+	# net1(request)   # Sets the app to server or local
 	try:
 		request.session['data_area'] = 1
 		request.session['target_area'] = 1
@@ -701,6 +702,11 @@ def tracking(request):
 		request.session['asset2_area'] = '1533'
 		request.session['asset3_area'] = '1533'
 		request.session['asset4_area'] = '1533'
+		request.session['asset1_area1'] = '1533'
+		request.session['asset2_area1'] = '1533'
+		request.session['asset3_area1'] = '1533'
+		request.session['asset4_area1'] = '1533'
+
 		data1, gr_list1 = track_area(request)
 		request.session['area2'] = '50-9341 OP 30'
 		request.session['data_area'] =2 # Data for 1 or 2 chart
@@ -713,6 +719,10 @@ def tracking(request):
 		request.session['asset2_area'] = '1507'
 		request.session['asset3_area'] = '1539'
 		request.session['asset4_area'] = '1540'
+		request.session['asset1_area2'] = '1502'
+		request.session['asset2_area2'] = '1507'
+		request.session['asset3_area2'] = '1539'
+		request.session['asset4_area2'] = '1540'
 		data2, gr_list2 = track_area(request)
 
 	return render(request, "track.html",{'GList':gr_list1,"datax":data1,'GList2':gr_list2, "datax2":data2})

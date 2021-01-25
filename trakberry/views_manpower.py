@@ -47,8 +47,8 @@ def manpower_initial_v2(request):
 
 def manpower_update_v2(request):
 		# comment below when running local
-	label_link = '/home/file/import1/Inventory/importedxls'
-	os.chdir(label_link)
+	# label_link = '/home/file/import1/Inventory/importedxls'
+	# os.chdir(label_link)
 	# ********************************
 
 	sheet = 'inventory.xlsx'
@@ -146,7 +146,7 @@ def manpower_update_v2(request):
 		except:
 			break
 	manpower_initial_v2(request)
-	# Write new Manpower and Allocation
+# 	# Write new Manpower and Allocation
 	db, cur = db_set(request)
 	x = 1
 	adj_shift = [('A Days P1','Plant 1 Days'),('B Days P1','Plant 1 Days'),('A Days A3','Plant 4 Day'),('B Days A3','Plant 4 Day'),('A Nights P1','Plant 1 Mid'),('B Nights P1','Plant 1 Mid'),('A Nights A3','Plant 4 Mid'),('B Nights A3','Plant 4 Mid')]
@@ -182,6 +182,8 @@ def manpower_update_v2(request):
 		cur.execute(mql)
 		db.commit()
 
+
+
 	matrix_update_v2(request)
 	cur.execute("""DROP TABLE IF EXISTS tkb_matrix_cache""") # Clear all Cache and start fresh
 	cur.execute("""CREATE TABLE IF NOT EXISTS tkb_matrix_cache(Id INT PRIMARY KEY AUTO_INCREMENT,Area CHAR(80), Shift CHAR(80), Matrix TEXT(1000000), Job TEXT(1000000))""")
@@ -209,12 +211,17 @@ def manpower_update_v2(request):
 	return render(request,"manpower_updater.html")
 
 def matrix_update_v2(request):
+	asset_test = []
+	trained_test = []
 	shift = ['Plant 1 Mid','Plant 1 Aft','Plant 1 Days','Plant 3 Mid','Plant 3 Aft','Plant 3 Days','Plant 4 Mid','Plant 4 Aft','Plant 4 Day']
+
 	for i in shift:
 		shift1 = i
 		area1 = shift_area(i)
 		enabled1 = '1'
 		db, cur = db_set(request)
+		# clock_test = '4532.0'  # Use this to test one person
+		# sql="SELECT * FROM tkb_manpower where Shift = '%s' and Clock = '%s'" % (shift1,clock_test)
 		sql="SELECT * FROM tkb_manpower where Shift = '%s'" % (shift1)
 		cur.execute(sql)
 		tmp1=cur.fetchall()
@@ -246,6 +253,12 @@ def matrix_update_v2(request):
 				tmp3 = cur.fetchall()
 				count1 = int(tmp3[0][0])
 
+				# Testing.  Removce when done
+				asset_test.append(job1)
+				trained_test.append(count1)
+				#####################
+
+
 				trained1 = 'Not Trained'
 				if int(count1) > 0:
 					trained1 = 'Training <5 days'
@@ -256,9 +269,12 @@ def matrix_update_v2(request):
 				if int(count1) > 25:
 					trained1 = 'A Trainer'
 				if count1 > 0:
+					dummy = 1
 					cur.execute('''INSERT INTO tkb_matrix(Employee,Job,Trained,Shift,Enabled) VALUES(%s,%s,%s,%s,%s)''', (name1,job1,trained1,shift1,enabled1))
 					db.commit()
 		db.close()
+		maa = zip(asset_test,trained_test)
+
 	return
 
 def training_matrix3(request):
