@@ -29,10 +29,10 @@ def hyphon_fix(tx):
     tps = list(tx)
     if (tx.find("'"))>0:
         ty = list(tx)
-        ta = tx.find("'")
-        ty[ta] = ""
+        ta = tx.find("'") 
+        ty[ta] = "`"
         tc = "".join(ty)
-    else:
+    else: 
         tc = tx
 
     return tc

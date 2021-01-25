@@ -1039,7 +1039,7 @@ def done(request):
 	try:
 		callroute = request.session["call_route"]
 	except:
-		callroute = "sup"	
+		callroute = "sup"
 	if callroute == "tech":
 		request.session["refresh_tech"] = '1'
 		return render(request, "tech.html")

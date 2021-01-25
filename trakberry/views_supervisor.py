@@ -5,6 +5,7 @@ from trakberry.forms import sup_downForm, sup_dispForm, sup_closeForm, report_em
 from trakberry.views import done
 from views2 import main_login_form
 from views_mod1 import find_current_date
+from mod1 import hyphon_fix
 from trakberry.views2 import login_initial
 from trakberry.views_testing import machine_list_display
 from trakberry.views_vacation import vacation_temp, vacation_set_current, vacation_set_current2
@@ -428,7 +429,7 @@ def supervisor_down(request):
 	
 
 	if request.POST:
-        			
+
 		machinenum = request.POST.get("machine")
 		problem = request.POST.get("reason")
 		priority = request.POST.get("priority")
@@ -456,23 +457,14 @@ def supervisor_down(request):
 
 			
 			
-			
-		if (tx.find("'"))>0:
-			#return render(request,'test_temp2.html', {'variable':tx})	
-			#request.session["test_comment"] = tx
-			#return out(request)
-			ty = list(tx)
-			ta = tx.find("'")
-			#tb = tx.rfind("'")
-			ty[ta] = ""
-			#ty[tb] = "'"
-			tc = "".join(ty)
-			
-			return render(request,'test_temp2.html', {'v1':ty,'v2':tc})	
-		else:
-			tc = tx
-		problem = tc
-		
+		# Genius appostrophe fix
+		problem = hyphon_fix(tx)
+		# if (tx.find("'"))>0:
+		# 	tc = hyphon_fix(tx)
+		# else:
+		# 	tc = tx
+		# problem = tc
+		# ***********************
 		
 		# call external function to produce datetime.datetime.now()
 		t = vacation_temp()
@@ -487,6 +479,9 @@ def supervisor_down(request):
 
 		asset_test = machinenum[:4]
 
+		side1 = '0'
+		location1='G'
+		side2 = '0'
 		try:
 			asset3 = machinenum[:4]
 			asset2 = machinenum[:3]
@@ -495,20 +490,37 @@ def supervisor_down(request):
 				asset4 = asset3
 			except:
 				asset4 = asset2
-
 			aql = "SELECT * FROM vw_asset_eam_lp where left(Asset,4) = '%s'" %(asset4)
 			# aql = "SELECT * FROM vw_asset_eam_lp WHERE Asset LIKE '%s'" % ("%" + asset4 + "%")
 			cur.execute(aql)
 			tmp2 = cur.fetchall()
 			tmp3 = tmp2[0]
 			asset5 = tmp3[1] + " - " + tmp3[3]
+			location1 = tmp3[3]
 		except:
 			asset5 = machinenum
 
-		cur.execute('''INSERT INTO pr_downtime1(machinenum,problem,priority,whoisonit,called4helptime) VALUES(%s,%s,%s,%s,%s)''', (asset5,problem,priority,whoisonit,t))
-		db.commit()
-		db.close()
+# This will determine side of asset and put in breakdown
+		location_check = location1[:1]
+		if location_check < 'G':
+			side1 = '2'
+		elif location_check > 'G':
+			side1 = '1'
+		else:
+			side1 = '0'
 
+		try:
+			cur.execute('''INSERT INTO pr_downtime1(machinenum,problem,priority,whoisonit,called4helptime,side) VALUES(%s,%s,%s,%s,%s,%s)''', (asset5,problem,priority,whoisonit,t,side1))
+			db.commit()
+			db.close()
+		except:
+			cur.execute("Alter Table pr_downtime1 ADD Column side VARCHAR(100) DEFAULT '0'") #% (side2)  # Add a Column
+			db.commit()
+			cur.execute('''INSERT INTO pr_downtime1(machinenum,problem,priority,whoisonit,called4helptime,side) VALUES(%s,%s,%s,%s,%s,%s)''', (asset5,problem,priority,whoisonit,t,side1))
+			db.commit()
+			db.close()
+
+		
 		return done(request)
 		
 	else:

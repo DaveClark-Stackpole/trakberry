@@ -28,7 +28,7 @@ def maint_initialize_rv(request):
 	return
 
 def maint_mgmt(request):
-
+	net1(request)   # Sets the app to server or local
 	request.session["TCUR"] = int(time.time())  # Assign current Timestamp to TCUR for proper image and include refresh 
 	maint_initialize_rv(request)  #initialize request variables
 
@@ -447,15 +447,17 @@ def maint(request):
 	except:
 		request.session["bounce2"] = 0
 	try:
-		request.session["login_maint"]
-	except:
-		request.session["login_maint"] = "none"
-	try:
 		request.session["maint_ctr"]
 	except:
 		request.session["maint_ctr"] = 0
 
-	
+	try:
+		login2 = request.session['login_maint']
+	except:
+		login2 = 'none'
+		request.session['login_maint'] = 'none'
+
+
 	b = request.session["bounce2"]
 	bs = request.session["bounce2_switch"]
 	# t=8/0
@@ -489,8 +491,8 @@ def maint(request):
 	tch = []
 	nm = []
 	maint = []
-	# maint = ["Rich Clifford","Wes Guest","Shawn Gilbert","Jeff Jacobs","Steven Niu"]
 
+	# maint = ["Rich Clifford","Wes Guest","Shawn Gilbert","Jeff Jacobs","Steven Niu"]
 
 
 
@@ -498,9 +500,36 @@ def maint(request):
 	# Select prodrptdb db located in views_db
 	db, cursor = db_set(request)
 	dep = "Maintenance"
+
+
+	try:
+		sql = "SELECT side FROM tkb_logins WHERE department = '%s' and user_name = '%s'" %(dep,login2)  # Select only those in the department  (dep)
+		cursor.execute(sql)
+		tmp = cursor.fetchall()
+	except:
+		cursor.execute("Alter Table tkb_logins ADD Column side VARCHAR(100) DEFAULT '0'")  # Add a Column
+		db.commit()
+		sql = "SELECT side FROM tkb_logins WHERE department = '%s' and user_name = '%s'" %(dep,login2)  # Select only those in the department  (dep)
+		cursor.execute(sql)
+		tmp = cursor.fetchall()
+	try:
+		sideA = tmp[0][0]
+	except:
+		sideA = '0'
+
+	if sideA == '0':
+		sideB = '1'
+		sideA = '2'
+		sideC = '0'
+	else:
+		sideB = sideA
+		sideC = sideA
+
 	sql = "SELECT user_name FROM tkb_logins WHERE department = '%s' ORDER BY user_name ASC" %(dep)  # Select only those in the department  (dep)
 	cursor.execute(sql)
 	tmp = cursor.fetchall()
+	
+
 	for i in tmp:
 		maint.append(i[0])
 	# maint = list(tmp)
@@ -528,7 +557,7 @@ def maint(request):
 	a9 =  "-------"
 	a10 = "-------"
 
-	sqlT = "Select * From pr_downtime1 where closed IS NULL"
+	sqlT = "Select * From pr_downtime1 where closed IS NULL and (side = '%s' or side = '%s' or side = '%s')" % (sideA,sideB,sideC)
 	cursor.execute(sqlT)
 	tmp = cursor.fetchall()
 
