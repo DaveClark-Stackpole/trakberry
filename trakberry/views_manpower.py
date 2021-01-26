@@ -202,6 +202,7 @@ def matrix_update_v2(request):
 	shift = ['Plant 1 Mid','Plant 1 Aft','Plant 1 Days','Plant 3 Mid','Plant 3 Aft','Plant 3 Days','Plant 4 Mid','Plant 4 Aft','Plant 4 Day']
 	# shift = ['Plant 1 Mid','Plant 1 Aft']
 
+	
 	for i in shift:
 		shift1 = i
 		area1 = shift_area(i)
@@ -221,7 +222,7 @@ def matrix_update_v2(request):
 		sql = "SELECT * FROM tkb_allocation where Area = '%s'"%(area1)
 		cur.execute(sql)
 		tmp2 = cur.fetchall()
-
+		ctr9 = 0
 		for i in tmp1:
 			try:
 				clock = int(i[3][:-2])
@@ -238,17 +239,26 @@ def matrix_update_v2(request):
 				asset5 = ii[7][:-2]
 				asset6 = ii[8][:-2]
 				sig = ii[9]
-
+				
 				if sig == 1:
 					sql2= '''SELECT COUNT(*) FROM sc_production1 where comments = "%s" and (asset_num = "%s" or asset_num = "%s" or asset_num = "%s" or asset_num = "%s" or asset_num = "%s" or asset_num = "%s") and partno = "%s"''' % (clock,asset1,asset2,asset3,asset4,asset5,asset6,part1)
+					cur.execute(sql2)
+					tmp3 = cur.fetchall()
+					count1 = tmp3[0][0]
+					count1 = int(tmp3[0][0])
 				else:
 					sql2= '''SELECT COUNT(*) FROM sc_production1 where comments = "%s" and (asset_num = "%s" or asset_num = "%s" or asset_num = "%s" or asset_num = "%s" or asset_num = "%s" or asset_num = "%s")''' % (clock,asset1,asset2,asset3,asset4,asset5,asset6)
-				cur.execute(sql2)
-				tmp3 = cur.fetchall()
-				count1 = int(tmp3[0][0])
+					cur.execute(sql2)
+					tmp3 = cur.fetchall()
+					count1 = tmp3[0][0]
+					count1 = int(tmp3[0][0])
 
-				asset_test.append(job1)
-				trained_test.append(count1)
+
+				ctr9 = ctr9 + 1
+				# if ctr9 > 100:
+				# 	t=5/0
+				# asset_test.append(job1)
+				# trained_test.append(count1)
 				trained1 = 'Not Trained'
 				if int(count1) > 0 and int(count1) < 5:
 					trained1 = 'Training <5 days'
@@ -260,7 +270,7 @@ def matrix_update_v2(request):
 					trained1 = 'A Trainer'
 				if int(count1) > 0 and int(count1) < 99999:
 					dummy = 4
-					cur.execute('''INSERT INTO tkb_matrix(Employee,Job,Trained,Shift,Enabled) VALUES(%s,%s,%s,%s,%s)''', (name1,job1,trained1,shift1,enabled1))
+					cur.execute('''INSERT INTO tkb_matrix(Employee,Job,Trained,Shift,Clock) VALUES(%s,%s,%s,%s,%s)''', (name1,job1,trained1,shift1,count1))
 					db.commit()
 		db.close()
 
