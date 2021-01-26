@@ -194,6 +194,13 @@ def manpower_update_v2(request):
 
 
 def matrix_update_v2(request):
+	db, cur = db_set(request)
+	t1 = '111'
+	s1 = ''
+	mql =( 'update sc_production1 SET asset_num = "%s" WHERE asset_num = "%s"' % (t1,s1))
+	cur.execute(mql)
+	db.commit()
+	db.close()
 
 	matrix_initial_v2(request)
 
@@ -252,7 +259,6 @@ def matrix_update_v2(request):
 					tmp3 = cur.fetchall()
 					count1 = tmp3[0][0]
 					count1 = int(tmp3[0][0])
-
 
 				ctr9 = ctr9 + 1
 				# if ctr9 > 100:
