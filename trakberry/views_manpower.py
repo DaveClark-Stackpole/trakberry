@@ -29,6 +29,17 @@ def manpower_layout(request):
 	tmp = cur.fetchall()
 	return render(request, "kiosk/kiosk_test.html",{'tmp':tmp})
 
+def matrix_initial_v2(request):
+	db, cursor = db_set(request)  
+	cursor.execute("""DROP TABLE IF EXISTS tkb_matrix_cache""")
+	cursor.execute("""CREATE TABLE IF NOT EXISTS tkb_matrix_cache(Id INT PRIMARY KEY AUTO_INCREMENT,Area CHAR(80), Shift CHAR(80), Matrix TEXT(1000000), Job TEXT(1000000))""")
+	cursor.execute("""DROP TABLE IF EXISTS tkb_matrix""")
+	cursor.execute("""CREATE TABLE IF NOT EXISTS tkb_matrix(Id INT PRIMARY KEY AUTO_INCREMENT,Employee CHAR(80), Shift CHAR(80),Job Char(100), Trained Char(100),Enabled CHAR(10),Clock CHAR(80))""")
+	db.commit()
+	db.close()
+
+	return
+
 def manpower_initial_v2(request):
 	db, cursor = db_set(request)  
 	cursor.execute("""DROP TABLE IF EXISTS tkb_manpower2""")
@@ -37,18 +48,14 @@ def manpower_initial_v2(request):
 	cursor.execute("""DROP TABLE IF EXISTS tkb_allocation""")
 	cursor.execute("""DROP TABLE IF EXISTS tkb_allocation2""")
 	cursor.execute("""CREATE TABLE IF NOT EXISTS tkb_allocation(Id INT PRIMARY KEY AUTO_INCREMENT,Job CHAR(80), Area CHAR(80),Asset1 CHAR(20),Asset2 CHAR(20),Asset3 CHAR(20),Asset4 CHAR(20),Asset5 CHAR(20),Asset6 CHAR(20),Sig1 Char(10), Part1 CHAR(20), Part2 CHAR(20), Part3 CHAR(20), Part4 CHAR(20))""")
-	cursor.execute("""DROP TABLE IF EXISTS tkb_matrix_cache""")
-	cursor.execute("""CREATE TABLE IF NOT EXISTS tkb_matrix_cache(Id INT PRIMARY KEY AUTO_INCREMENT,Area CHAR(80), Shift CHAR(80), Matrix TEXT(1000000), Job TEXT(1000000))""")
-	cursor.execute("""DROP TABLE IF EXISTS tkb_matrix""")
-	cursor.execute("""CREATE TABLE IF NOT EXISTS tkb_matrix(Id INT PRIMARY KEY AUTO_INCREMENT,Employee CHAR(80), Shift CHAR(80),Job Char(100), Trained Char(100),Enabled CHAR(10),Clock CHAR(80))""")
 	db.commit()
 	db.close()
 	return
 
 def manpower_update_v2(request):
 		# comment below when running local
-	# label_link = '/home/file/import1/Inventory/importedxls'
-	# os.chdir(label_link)
+	label_link = '/home/file/import1/Inventory/importedxls'
+	os.chdir(label_link)
 	# ********************************
 
 	sheet = 'inventory.xlsx'
@@ -146,7 +153,7 @@ def manpower_update_v2(request):
 		except:
 			break
 	manpower_initial_v2(request)
-# 	# Write new Manpower and Allocation
+# # 	# Write new Manpower and Allocation
 	db, cur = db_set(request)
 	x = 1
 	adj_shift = [('A Days P1','Plant 1 Days'),('B Days P1','Plant 1 Days'),('A Days A3','Plant 4 Day'),('B Days A3','Plant 4 Day'),('A Nights P1','Plant 1 Mid'),('B Nights P1','Plant 1 Mid'),('A Nights A3','Plant 4 Mid'),('B Nights A3','Plant 4 Mid')]
@@ -183,48 +190,34 @@ def manpower_update_v2(request):
 		db.commit()
 
 
+	return render(request,"test77.html")
 
-	matrix_update_v2(request)
-	cur.execute("""DROP TABLE IF EXISTS tkb_matrix_cache""") # Clear all Cache and start fresh
-	cur.execute("""CREATE TABLE IF NOT EXISTS tkb_matrix_cache(Id INT PRIMARY KEY AUTO_INCREMENT,Area CHAR(80), Shift CHAR(80), Matrix TEXT(1000000), Job TEXT(1000000))""")
-	shift ,area = 'Plant 1 Mid','Area 1'
-	matrix_read(shift,area,request)
-	shift ,area = 'Plant 1 Aft','Area 1'
-	matrix_read(shift,area,request)
-	shift ,area = 'Plant 1 Days','Area 1'
-	matrix_read(shift,area,request)
-	shift ,area = 'Plant 3 Days','Area 2'
-	matrix_read(shift,area,request)
-	shift ,area = 'Plant 3 Mid','Area 2'
-	matrix_read(shift,area,request)
-	shift ,area = 'Plant 3 Aft','Area 2'
-	matrix_read(shift,area,request)
-	shift ,area = 'Plant 4 Day','Area 3'
-	matrix_read(shift,area,request)
-	shift ,area = 'Plant 4 Aft','Area 3'
-	matrix_read(shift,area,request)
-	shift ,area = 'Plant 4 Mid','Area 3'
-	matrix_read(shift,area,request)
-	shift ,area = 'A Days P1','Area 1'
-	matrix_read(shift,area,request)
-	return render(request,"test71.html")
-	return render(request,"manpower_updater.html")
 
 def matrix_update_v2(request):
+
+	matrix_initial_v2(request)
+
 	asset_test = []
 	trained_test = []
 	shift = ['Plant 1 Mid','Plant 1 Aft','Plant 1 Days','Plant 3 Mid','Plant 3 Aft','Plant 3 Days','Plant 4 Mid','Plant 4 Aft','Plant 4 Day']
+	# shift = ['Plant 1 Mid','Plant 1 Aft']
 
 	for i in shift:
 		shift1 = i
 		area1 = shift_area(i)
 		enabled1 = '1'
 		db, cur = db_set(request)
+
+		# Comment below to run normal
 		# clock_test = '4532.0'  # Use this to test one person
 		# sql="SELECT * FROM tkb_manpower where Shift = '%s' and Clock = '%s'" % (shift1,clock_test)
+
+		# Uncomment this line
 		sql="SELECT * FROM tkb_manpower where Shift = '%s'" % (shift1)
+
 		cur.execute(sql)
 		tmp1=cur.fetchall()
+
 		sql = "SELECT * FROM tkb_allocation where Area = '%s'"%(area1)
 		cur.execute(sql)
 		tmp2 = cur.fetchall()
@@ -235,6 +228,7 @@ def matrix_update_v2(request):
 			except:
 				clock = 0
 			name1 = i[1]
+			ctr6 = 0
 			for ii in tmp2:
 				job1 = ii[1]
 				asset1 = ii[3][:-2]
@@ -253,12 +247,8 @@ def matrix_update_v2(request):
 				tmp3 = cur.fetchall()
 				count1 = int(tmp3[0][0])
 
-				# Testing.  Removce when done
 				asset_test.append(job1)
 				trained_test.append(count1)
-				#####################
-
-
 				trained1 = 'Not Trained'
 				if int(count1) > 0:
 					trained1 = 'Training <5 days'
@@ -269,13 +259,35 @@ def matrix_update_v2(request):
 				if int(count1) > 25:
 					trained1 = 'A Trainer'
 				if count1 > 0:
-					dummy = 1
+					dummy = 4
 					cur.execute('''INSERT INTO tkb_matrix(Employee,Job,Trained,Shift,Enabled) VALUES(%s,%s,%s,%s,%s)''', (name1,job1,trained1,shift1,enabled1))
 					db.commit()
 		db.close()
-		maa = zip(asset_test,trained_test)
 
-	return
+	db, cur = db_set(request)
+	cur.execute("""DROP TABLE IF EXISTS tkb_matrix_cache""") # Clear all Cache and start fresh
+	cur.execute("""CREATE TABLE IF NOT EXISTS tkb_matrix_cache(Id INT PRIMARY KEY AUTO_INCREMENT,Area CHAR(80), Shift CHAR(80), Matrix TEXT(1000000), Job TEXT(1000000))""")
+	db.close()
+	shift ,area = 'Plant 1 Mid','Area 1'
+	matrix_read(shift,area,request)
+	shift ,area = 'Plant 1 Aft','Area 1'
+	matrix_read(shift,area,request)
+	shift ,area = 'Plant 1 Days','Area 1'
+	matrix_read(shift,area,request)
+	shift ,area = 'Plant 3 Days','Area 2'
+	matrix_read(shift,area,request)
+	shift ,area = 'Plant 3 Mid','Area 2'
+	matrix_read(shift,area,request)
+	shift ,area = 'Plant 3 Aft','Area 2'
+	matrix_read(shift,area,request)
+	shift ,area = 'Plant 4 Day','Area 3'
+	matrix_read(shift,area,request)
+	shift ,area = 'Plant 4 Aft','Area 3'
+	matrix_read(shift,area,request)
+	shift ,area = 'Plant 4 Mid','Area 3'
+	matrix_read(shift,area,request)
+	return render(request,"test78.html")
+	return render(request,"manpower_updater.html")
 
 def training_matrix3(request):
 	request.session['matrix_update'] = 0   # This variable is determining if we update all or one person

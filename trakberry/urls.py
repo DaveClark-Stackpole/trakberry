@@ -145,7 +145,7 @@ from views_scrap import scrap_entries_next, scrap_entries_prev,scrap_entries_upd
 # ***********************************************************************************************************************************************************
 
 # *******************************************  Manpower Section ********************************************************************************************
-from views_manpower import manpower_update_v2, training_matrix3
+from views_manpower import manpower_update_v2, training_matrix3, matrix_update_v2
 # ***********************************************************************************************************************************************************
 
 urlpatterns = [
@@ -583,6 +583,7 @@ urlpatterns = [
 
 	# *************  Manpower Section *********************************************
 	url(r'^manpower_update_v2/', manpower_update_v2),
+	url(r'^matrix_update_v2/', matrix_update_v2),
 	url(r'^training_matrix3/', training_matrix3),
 	# **************************************************************************
 
