@@ -473,7 +473,14 @@ def manpower_update(request):  # This will run every 30 min on the refresh page 
 	check = 0
 	# Determing if current time is stored to check and if that time has been run
 	db, cur = db_set(request)  
-	cur.execute("""CREATE TABLE IF NOT EXISTS tkb_manpower_updater(Id INT PRIMARY KEY AUTO_INCREMENT,timestamp CHAR(80), dummy int(10))""")
+	cur.execute("""CREATE TABLE IF NOT EXISTS tkb_updater(Id INT PRIMARY KEY AUTO_INCREMENT,current_date CHAR(80),updated_date CHAR(80),set_time CHAR(80),program CHAR(80))""")
+	sql = "SELECT * From tkb_updater" 
+	cur.execute(sql)
+	tmp = cur.fetchall()
+
+	
+	
+	
 	try:
 		sql = "SELECT * From tkb_manpower_updater where timestamp = '%s'" % (time1)
 		cur.execute(sql)
