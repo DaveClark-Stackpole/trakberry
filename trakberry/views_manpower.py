@@ -250,15 +250,15 @@ def matrix_update_v2(request):
 				asset_test.append(job1)
 				trained_test.append(count1)
 				trained1 = 'Not Trained'
-				if int(count1) > 0:
+				if int(count1) > 0 and int(count1) < 5:
 					trained1 = 'Training <5 days'
-				if int(count1) > 4:
+				elif int(count1) > 4 and int(count1) < 10:
 					trained1 = 'Training >4 days'
-				if int(count1) >9:
+				elif int(count1) >9 and int(count1) < 26:
 					trained1 = 'Trained'
-				if int(count1) > 25:
+				elif int(count1) > 25 and int(count1) < 99999:
 					trained1 = 'A Trainer'
-				if count1 > 0:
+				if int(count1) > 0 and int(count1) < 99999:
 					dummy = 4
 					cur.execute('''INSERT INTO tkb_matrix(Employee,Job,Trained,Shift,Enabled) VALUES(%s,%s,%s,%s,%s)''', (name1,job1,trained1,shift1,enabled1))
 					db.commit()
