@@ -54,8 +54,8 @@ def manpower_initial_v2(request):
 
 def manpower_update_v2(request):
 		# comment below when running local
-	label_link = '/home/file/import1/Inventory/importedxls'
-	os.chdir(label_link)
+	# label_link = '/home/file/import1/Inventory/importedxls'
+	# os.chdir(label_link)
 	# ********************************
 
 	sheet = 'inventory.xlsx'
@@ -190,10 +190,11 @@ def manpower_update_v2(request):
 		db.commit()
 
 
-	return render(request,"test77.html")
+	return render(request,"redirect_auto_updater.html")
 
 
 def matrix_update_v2(request):
+	# The below section fixes any blank asset entries so they don't mess up the matrix update
 	db, cur = db_set(request)
 	t1 = '111'
 	s1 = ''
@@ -201,7 +202,8 @@ def matrix_update_v2(request):
 	cur.execute(mql)
 	db.commit()
 	db.close()
-
+	# **************************************************************************************
+	
 	matrix_initial_v2(request)
 
 	asset_test = []

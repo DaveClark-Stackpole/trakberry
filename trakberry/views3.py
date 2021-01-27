@@ -1214,3 +1214,32 @@ def update_matrix_all(index,request):
 	db.close()
 	return
 
+def auto_updater(request):  # This will run every 30 min on the refresh page to see if update occurs
+	t=int(time.time())
+	tm = time.localtime(t)
+	hr1 = str(tm[3])
+	min1 = str(tm[4])
+	cur_time = hr1 + min1
+	cur_date  = str(tm[1])+"/"+str(tm[2])+"/"+str(tm[0]) # Sets the current date
+	db, cur = db_set(request)  
+	# cur.execute("""DROP TABLE IF EXISTS tkb_updater""")
+	cur.execute("""CREATE TABLE IF NOT EXISTS tkb_updater(Id INT PRIMARY KEY AUTO_INCREMENT,cur_date CHAR(80),set_time CHAR(80), program Char(80))""")
+	sql= '''SELECT * FROM tkb_updater'''
+	cur.execute(sql)
+	tmp = cur.fetchall()
+	for i in tmp:
+		date2 = i[1]
+		id2 = i[0]
+		set_time = i[2]
+		if date2 != cur_date:
+			if int(cur_time) > int(set_time):
+				mql =( 'update tkb_updater SET cur_date = "%s" WHERE Id ="%s"' % (cur_date,id2))
+				cur.execute(mql)
+				db.commit()
+				sql = "SELECT program FROM tkb_updater where Id = '%s'"%(id2)
+				cur.execute(sql)
+				tmp2 = cur.fetchall()
+				program1 = tmp2[0][0]
+				request.session['tkb_program'] = program1
+				return render(request,'redirect_program.html')
+	return render(request,'tkb_updater.html')
