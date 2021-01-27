@@ -12,6 +12,8 @@ from trakberry.views_testing import machine_list_display
 from mod1 import hyphon_fix, multi_name_breakdown
 import MySQLdb
 
+
+
 from trakberry.views_vacation import vacation_temp, vacation_set_current, vacation_set_current2
 import time
 
@@ -52,9 +54,23 @@ def maint_mgmt(request):
 	tmp = list(tmp)
 	# tmp_list[5] = ('55','66')
 	new_tmp = []
+	time4 = []
+	
+	
+	# hh = tmp[2][2]
+	
+	# start_stamp = int(time.mktime(hh.timetuple()))
+	# time_dif = int((t - start_stamp) / float(60))
+	# tt=4/0
+
+	
+
+
 	tmp_len = len(tmp)
 	for a1 in range(0,tmp_len - 1):
+		
 		for a2 in range(a1+1,tmp_len):
+			
 			num1 = int(tmp[a1][3])
 			num2 = int(tmp[a2][3])
 			if num2 < num1:
@@ -63,7 +79,16 @@ def maint_mgmt(request):
 				tmp[a1] = ttmp
 
 	tmp = tuple(tmp)
-	# rr=5/0
+
+	t = int(time.time())
+	for i in tmp:
+		date1 = i[2]
+		stamp1 = int(time.mktime(date1.timetuple()))
+		diff1 = int((t - stamp1) / float(60)) 
+		time4.append(diff1)	
+	time4 = tuple(time4)
+	new_tmp = zip(tmp,time4)
+
 
 	if request.session["maint_mgmt_main_switch"] == 0:
 		# Determine a list of names currently active
@@ -171,7 +196,7 @@ def maint_mgmt(request):
 	args.update(csrf(request))
 	args['form'] = form
 
-	return render(request, "maint_mgmt.html",{'index':tmp,'args':args})
+	return render(request, "maint_mgmt.html",{'index':new_tmp,'args':args})
 
 # Login for Maintenance Manager App
 def maint_mgmt_login_form(request):
