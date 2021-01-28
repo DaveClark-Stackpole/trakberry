@@ -1,0 +1,21 @@
+
+
+
+	{% extends "supervisor.html" %}
+
+	
+{% block header %}
+
+
+
+
+<center style="margin-left:-20%;">
+
+{% for x in request.session.training_performance_employees %}
+
+{{x}}<br>
+
+{% endfor %}
+
+</center>
+{% endblock %}

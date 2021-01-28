@@ -304,8 +304,9 @@ def matrix_update_v2(request):
 	matrix_read(shift,area,request)
 	shift ,area = 'Plant 4 Mid','Area 3'
 	matrix_read(shift,area,request)
-	return render(request,"test78.html")
-	return render(request,"manpower_updater.html")
+	
+	return render(request,"redirect_auto_updater.html")
+
 
 def training_matrix3(request):
 	request.session['matrix_update'] = 0   # This variable is determining if we update all or one person
@@ -355,3 +356,52 @@ def training_matrix3(request):
 	request.session['data_jobs'] = jobs
 
 	return render(request,"training_matrix2.html",{'args':args,'matrix':matrix,'jobs':jobs})
+
+def training_performance(request):
+
+	if request.POST:
+		asset_performance = request.POST.get('asset_performance')
+
+		# Do the search for list of those that are good on this asset
+		db, cur = db_set(request)
+		a= []
+		cnt = []
+
+
+		sql = "SELECT * FROM sc_production1 WHERE asset_num LIKE '%s' ORDER BY actual_produced DESC limit 100" %("%" + asset_performance + "%")
+		cur.execute(sql)
+		tmp = cur.fetchall()
+
+		for i in tmp:
+			clock1 = i[9] + '.0'
+
+			sql = "SELECT Employee FROM tkb_manpower WHERE Clock = '%s'" %(clock1)
+			cur.execute(sql)
+			tmp2 = cur.fetchall()
+			b = 0
+			try:
+				employee1 = tmp2[0][0]
+			except:
+				employee1 = ''
+				b=1
+			check = 0
+			for ii in a:
+				e1 = ii
+				e2 = employee1
+				if e1==e2:
+					check == 1
+			if check == 0:
+				if b == 0:
+					a.append(employee1)
+
+		request.session['training_performance_employees'] = a
+
+		return render(request,"training_performance.html")
+
+	else:
+		form = kiosk_dispForm4()
+	args = {}
+	args.update(csrf(request))
+	args['form'] = form
+
+	return render(request,"training_performance_form.html",{'args':args})
