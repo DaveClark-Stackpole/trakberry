@@ -1221,8 +1221,10 @@ def auto_updater(request):  # This will run every 30 min on the refresh page to 
 	tm = time.localtime(t)
 	hr1 = str(tm[3])
 	min1 = str(tm[4])
-	cur_time = hr1 + min1
 	cur_date  = str(tm[1])+"/"+str(tm[2])+"/"+str(tm[0]) # Sets the current date
+	if len(min1) == 1: # Add a 0 if it's less than 10 min so it's the correct length
+		min1 = '0'+min1
+	cur_time = hr1 + min1
 	update_time = cur_date + " " + hr1 + ":" + min1
 	db, cur = db_set(request)  
 	# cur.execute("""DROP TABLE IF EXISTS tkb_updater""")
