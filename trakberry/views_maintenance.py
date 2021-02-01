@@ -507,6 +507,7 @@ def maint(request):
 	prob = []
 	job = []
 	priority = []
+	side = []
 	id = []
 	machine = []
 	count = []
@@ -582,7 +583,8 @@ def maint(request):
 	a9 =  "-------"
 	a10 = "-------"
 
-	sqlT = "Select * From pr_downtime1 where closed IS NULL and (side = '%s' or side = '%s' or side = '%s')" % (sideA,sideB,sideC)
+	# sqlT = "Select * From pr_downtime1 where closed IS NULL and (side = '%s' or side = '%s' or side = '%s')" % (sideA,sideB,sideC)
+	sqlT = "Select * From pr_downtime1 where closed IS NULL" 
 	cursor.execute(sqlT)
 	tmp = cursor.fetchall()
 
@@ -604,22 +606,6 @@ def maint(request):
 		add_job = 0   # Determines if we add this job to list to display
 		tmp2 = (tmp[ctr2])
 		temp_pr = tmp2[3]
-		# if temp_pr == "A":
-		# 	tp = 1
-		# elif temp_pr =="c":
-		# 	tp = 3
-		# elif temp_pr =="b" :
-		# 	tp = 2
-		# elif temp_pr =="B" :
-		# 	tp = 2
-		# elif temp_pr =="C" :
-		# 	tp = 3
-		# elif temp_pr =="D"	:
-		# 	tp = 4
-		# elif temp_pr =="E":
-		# 	tp = 5
-
-
 		tmp3 = tmp2[4]
 
 		if tmp3 == "Electrician":
@@ -647,6 +633,7 @@ def maint(request):
 			prob.append(tmp2[1]) # Assign problem to prob
 			priority.append(int(tmp2[3]))  #Assign priority number to priority
 			id.append(tmp2[11])  # Assign idnumber to id
+			side.append(tmp2[13])
 			tch.append(tmp3)   # Assign Name to tch
 			ctr = ctr + 1
 		ctr2 = ctr2 + 1
@@ -670,12 +657,29 @@ def maint(request):
 				ttch = tch[i]
 				tch[i] = tch[ii]
 				tch[ii] = ttch
+				sside = side[i]
+				side[i] = side[ii]
+				side[ii] = sside
 	if request.session["maint_ctr"] == ctr:
 		request.session["maint_alarm"] = "/media/clock2.wav"
 	else:
 		request.session["maint_alarm"] = "/media/clock.wav"
 		request.session["maint_ctr"] = ctr
-	LList = zip(job,prob,id,tch,priority)
+	LList = zip(job,prob,id,tch,priority,side)
+
+
+	ListA = []
+	ListB = []
+	ListC = []
+
+	for a in LList:
+		if a[5] == '1':
+			ListA.append(a)
+		elif a[5] == '2':
+			ListB.append(a)
+		elif a[5] == '3':
+			ListC.append(a)
+
 
 	db.close()
 	n = "none"
@@ -748,7 +752,7 @@ def maint(request):
 	M = 'Need Millwright'
 	E = 'Maintenance'
 
-	return render(request,"maint.html",{'L':LList,'N':n,'M':M,'E':E})
+	return render(request,"maint.html",{'L':LList,'L1':ListA,'L2':ListB,'L3':ListC,'N':n,'M':M,'E':E})
 
 def maint_close_item(request):
 	index=request.session["index"]

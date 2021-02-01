@@ -501,6 +501,7 @@ def supervisor_down(request):
 			asset5 = machinenum
 
 # This will determine side of asset and put in breakdown
+		location_check2 = location1[1:2]
 		location_check = location1[:1]
 		if location_check < 'G':
 			side1 = '2'
@@ -508,6 +509,8 @@ def supervisor_down(request):
 			side1 = '1'
 		else:
 			side1 = '0'
+		if location_check2 == 'A' or location_check2 == 'B':
+			side1 = '3'
 
 		try:
 			cur.execute('''INSERT INTO pr_downtime1(machinenum,problem,priority,whoisonit,called4helptime,side) VALUES(%s,%s,%s,%s,%s,%s)''', (asset5,problem,priority,whoisonit,t,side1))

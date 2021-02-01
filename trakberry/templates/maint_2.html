@@ -79,21 +79,14 @@
 <style type="text/css">
 	.mainset{color:black;text-align:center;float:left;width:100%}
 	.wrapper_main {background:chartreuse;width:90%;margin-left: 10px;}
-	.frame1{color:black;text-align:left;float:left;position:relative;width:32%;margin-bottom: 5px;}
+	.frame1 {color:black;text-align:left;float:left;width:32%;margin-bottom: 5px;}
+	.frame1_u {color:black;text-align:center;background:rgb(214, 214, 214);float:left;width:32%;margin: 20px;}
 	.frame2{color:black;text-align:left;float:left;width:32%;position:relative;left:5px;margin-bottom: 5px;}
-	.frame3{color:black;text-align:left;float:left;width:32%;position:relative;left:10px;}
-	.head1{color:black;text-align:center;border: 1px solid rgb(0, 0, 0);background:rgb(226, 226, 226);border-radius: 10px;width:60%}
 
 	.body1{color:black;text-align:left; background: rgb(252, 244, 136);border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;height:30px;width:100%}
 	.body1a{color:black;text-align:left; background: rgb(216, 213, 173);border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;height:30px;width:100%}
+	.frame3{color:black;text-align:left;float:left;width:32%;position:relative;left:5px;margin-bottom: 5px;}
 
-	.body2{color:black;text-align:left; background: #999999;border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;height:30px;width:100%}
-	.body2a{color:black;text-align:left; background: #999999;border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;height:30px;width:40%}
-	.body2b{color:black;text-align:left; background: #DCDCDC;border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;height:30px;width:40%}
-
-
-	.body4{color:black;text-align:center;background:#999999;float:left;border: 1px solid rgb(0, 0, 0);border-radius: 15px;width:50%}
-	.body4a{color:black;text-align:center;background: #DCDCDC;float:left;border: 1px solid rgb(0, 0, 0);border-radius: 15px;width:50%}
 
 </style>
 
@@ -196,13 +189,10 @@
 	<div class="wrapper_main">
 
 		<div class="frame1">   <!-- Frame Start-->
-			<br><center>
-			<div class="head1"><font color="#000000" size ="4" border="1">&nbsp;&nbsp;Area 1</font></div>
-			</center>
-			<br>
+			<br><br>
 				{% for i in L1 %}
 					{% if i.3 == M %}
-						<div class="body2">
+						<div class="body1">
 							<font color="#000000" size ="4" border="1">&nbsp;&nbsp;{{i.0}} : {{ i.1}}</font>
 						</div>
 						<div class="body1a">
@@ -213,108 +203,68 @@
 						<div class="body1">
 							<font color="#000000" size ="4" border="1">&nbsp;&nbsp;{{i.0}} : {{ i.1}}</font>
 						</div>
-						<div class="body1a">
-							<a href="{{request.session.local_toggle}}/mcall/get/{{ i.2 }}">
-								<font color="#000000" size ="4" border="1">&nbsp;&nbsp;{{ i.3}}</font></a>
-						</div>
+						<a href="{{request.session.local_toggle}}/mcall/get/{{ i.2 }}" style="color: black">{{i.3}}</b></a>
 					{% else %}
-						<div class="body2">
+						<div class="body1">
 							<font color="#000000" size ="4" border="1">&nbsp;&nbsp;{{i.0}} : {{ i.1}}</font>
 						</div>
-						<div class="body4">
-							<a href="{{request.session.local_toggle}}/mcall/get/{{ i.2 }}" style="color: black">
-								<font color="#000000" size ="4" border="1">&nbsp;&nbsp;{{ i.3}}</font></a>
-						</div>
-						<div class ="body4a">
-							<a href="{{request.session.local_toggle}}/mclose/get/{{ i.2 }}" style="color: black">
-								<font color="#000000" size ="4" border="1">&nbsp;&nbsp;Job Finished</font></a>
-						</div>
-						<br><br>
+						<a href="{{request.session.local_toggle}}/mcall/get/{{ i.2 }}" style="color: black">{{i.3}}</b></a>
+						<a href="{{request.session.local_toggle}}/mclose/get/{{ i.2 }}" style="color: black">Complete</b></a>
 					{% endif %}
-					<br><br>
+					<br>
 				{% endfor %}
 		</div>  <!-- Frame1 end -->
 
-		<div class="frame2">   <!-- Frame Start-->
-			<br><center>
-				<div class="head1"><font color="#000000" size ="4" border="1">&nbsp;&nbsp;Area 2</font></div>
-				</center>
+<div class="frame2">   <!-- Frame Start-->
+
+		<br><br>
+		
+		{% for i in L2 %}
+			{% if i.3 == M %}
+			<div class="body1">
+				{{i.0}} : {{ i.1}}
 				<br>
-				{% for i in L2 %}
-					{% if i.3 == M %}
-						<div class="body2">
-							<font color="#000000" size ="4" border="1">&nbsp;&nbsp;{{i.0}} : {{ i.1}}</font>
-						</div>
-						<div class="body1a">
-							<a href="{{request.session.local_toggle}}/mcall/get/{{ i.2 }}" style="color: black">{{i.3}}</a>
-						</div>
-						<a href="{{request.session.local_toggle}}/mclose/get/{{ i.2 }}" style="color: black">Complete</b></a>
-					{% elif i.3 == E %}
-						<div class="body1">
-							<font color="#000000" size ="4" border="1">&nbsp;&nbsp;{{i.0}} : {{ i.1}}</font>
-						</div>
-						<div class="body1a">
-							<a href="{{request.session.local_toggle}}/mcall/get/{{ i.2 }}">
-								<font color="#000000" size ="4" border="1">&nbsp;&nbsp;{{ i.3}}</font></a>
-						</div>
-					{% else %}
-						<div class="body2">
-							<font color="#000000" size ="4" border="1">&nbsp;&nbsp;{{i.0}} : {{ i.1}}</font>
-						</div>
-						<div class="body4">
-							<a href="{{request.session.local_toggle}}/mcall/get/{{ i.2 }}" style="color: black">
-								<font color="#000000" size ="4" border="1">&nbsp;&nbsp;{{ i.3}}</font></a>
-						</div>
-						<div class ="body4a">
-							<a href="{{request.session.local_toggle}}/mclose/get/{{ i.2 }}" style="color: black">
-								<font color="#000000" size ="4" border="1">&nbsp;&nbsp;Job Finished</font></a>
-						</div>
-						<br><br>
-					{% endif %}
-					<br><br>
-				{% endfor %}
-		</div>  <!-- Frame2 end -->
+				<a href="{{request.session.local_toggle}}/mcall/get/{{ i.2 }}" style="color: black">{{i.3}}</b></center></a>
+			</div>
+			<div class ="body1a">
+					<center><a href="{{request.session.local_toggle}}/mclose/get/{{ i.2 }}" style="color: black">Complete</b></a></center>
+			</div>
+				</div>
+		{% elif i.3 == E %}
+			<div class="body1">
+			{{i.0}} : {{ i.1}}
+			</div>
+			<div class ="body1a">
+			<a href="{{request.session.local_toggle}}/mcall/get/{{ i.2 }}" style="color: black">{{i.3}}4444</b></center></a>
+				</div>
+			
+		{% else %}
+				<div class="row">
+				<div class="col-sm-8" style="background-color: #999999;border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;height:30px;"><font color="#000000" size ="4" border="1">{{i.0}} : {{ i.1}}</div>
+		</div>	
+		<div class="row">
+				<div class="col-sm-4" style="background-color: #999999;border-radius: 25px;border-style: solid;border-width: 1px;border-color: #000000;height:30px;"><font color="#000000" size ="3" border="1"><b>
+				<center><a href="{{request.session.local_toggle}}/mcall/get/{{ i.2 }}" style="color: black">{{i.3}}gggg</b></center></a>
+				</div>
+				<div class="col-sm-4" style="background-color: #DCDCDC;border-radius: 25px;border-style: solid;border-width: 1px;border-color: #000000;height:30px;"><font color="#000000" size ="3" border="1"><b>
+						<!-- <center><a href="{{request.session.local_toggle}}/mclose/get/{{ i.2 }}" style="color: black">Complete</b></a></center> -->
+						<center><a href="{{request.session.local_toggle}}/mclose/get/{{ i.2 }}" style="color: black">Complete</b></a></center>
+				</div>
+			</div>
+		{% endif %}
+		<br>
+		{% endfor %}
+		</div>  <!-- Frame end -->
 
 
-		<div class="frame3">   <!-- Frame Start-->
-			<br><center>
-				<div class="head1"><font color="#000000" size ="4" border="1">&nbsp;&nbsp;Area 3</font></div>
-				</center>
-				<br>
-				{% for i in L3 %}
-					{% if i.3 == M %}
-						<div class="body2">
-							<font color="#000000" size ="4" border="1">&nbsp;&nbsp;{{i.0}} : {{ i.1}}</font>
-						</div>
-						<div class="body1a">
-							<a href="{{request.session.local_toggle}}/mcall/get/{{ i.2 }}" style="color: black">{{i.3}}</a>
-						</div>
-						<a href="{{request.session.local_toggle}}/mclose/get/{{ i.2 }}" style="color: black">Complete</b></a>
-					{% elif i.3 == E %}
-						<div class="body1">
-							<font color="#000000" size ="4" border="1">&nbsp;&nbsp;{{i.0}} : {{ i.1}}</font>
-						</div>
-						<div class="body1a">
-							<a href="{{request.session.local_toggle}}/mcall/get/{{ i.2 }}">
-								<font color="#000000" size ="4" border="1">&nbsp;&nbsp;{{ i.3}}</font></a>
-						</div>
-					{% else %}
-						<div class="body2">
-							<font color="#000000" size ="4" border="1">&nbsp;&nbsp;{{i.0}} : {{ i.1}}</font>
-						</div>
-						<div class="body4">
-							<a href="{{request.session.local_toggle}}/mcall/get/{{ i.2 }}" style="color: black">
-								<font color="#000000" size ="4" border="1">&nbsp;&nbsp;{{ i.3}}</font></a>
-						</div>
-						<div class ="body4a">
-							<a href="{{request.session.local_toggle}}/mclose/get/{{ i.2 }}" style="color: black">
-								<font color="#000000" size ="4" border="1">&nbsp;&nbsp;Job Finished</font></a>
-						</div>
-						<br><br>
-					{% endif %}
-					<br><br>
-				{% endfor %}
-		</div>  <!-- Frame3 end -->
+</div>
+
+<div class="frame3">   <!-- Frame Start-->
+
+	Test
+	
+	
+	</div>
 
 </div>
 
