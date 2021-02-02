@@ -363,6 +363,37 @@ def matrix_update_v2(request):
 # ***************************************************************************************************************************
 	return render(request,"redirect_auto_updater.html")
 
+def trained_email(request):
+	try:
+		trained1 = request.session['trained_email']
+	except:
+		trained1=''
+	if len(trained1) > 0 :
+		b = "\r\n"
+		ctr = 0
+		message_subject = 'Training Document Required !'
+		message3 = "The following people require training documents for the noted jobs." 
+		toaddrs = ["dclark@stackpole.com"]
+		#toaddrs = ["rrompen@stackpole.com","rbiram@stackpole.com","rzylstra@stackpole.com","lbaker@stackpole.com","dmilne@stackpole.com","sbrownlee@stackpole.com","pmurphy@stackpole.com","pstreet@stackpole.com","kfrey@stackpole.com","asmith@stackpole.com","smcmahon@stackpole.com","gharvey@stackpole.com","ashoemaker@stackpole.com","jreid@stackpole.com"]
+		fromaddr = 'stackpole@stackpole.com'
+		frname = 'Dave'
+		server = SMTP('smtp.gmail.com', 587)
+		server.ehlo()
+		server.starttls()
+		server.ehlo()
+		server.login('StackpolePMDS@gmail.com', 'stacktest6060')
+		message = "From: %s\r\n" % frname + "To: %s\r\n" % ', '.join(toaddrs) + "Subject: %s\r\n" % message_subject + "\r\n" 
+		message = message + "\r\n\r\n" + message3 + "\r\n\r\n" + "\r\n\r\n" 
+		for i in trained1:
+			employee1 = i[0]
+			job1 = i[1]
+			b = "\r\n"
+			message = message + employee1 + "  [" + job1 + "]" + b + b
+		server.sendmail(fromaddr, toaddrs, message)
+		server.quit()
+	return render(request,"redirect_master.html")
+	return render(request,"redirect_auto_updater.html")
+
 
 def training_matrix3(request):
 	request.session['matrix_update'] = 0   # This variable is determining if we update all or one person
