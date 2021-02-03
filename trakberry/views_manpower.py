@@ -54,8 +54,8 @@ def manpower_initial_v2(request):
 
 def manpower_update_v2(request):
 		# comment below when running local
-	# label_link = '/home/file/import1/Inventory/importedxls'
-	# os.chdir(label_link)
+	label_link = '/home/file/import1/Inventory/importedxls'
+	os.chdir(label_link)
 	# ********************************
 
 	sheet = 'inventory.xlsx'
@@ -361,6 +361,7 @@ def matrix_update_v2(request):
 			dummy='skip'
 	request.session['trained_email'] = zip(a,b)
 # ***************************************************************************************************************************
+	trained_email()  # Email the list, if any, to Melissa
 	return render(request,"redirect_auto_updater.html")
 
 def trained_email(request):
@@ -391,8 +392,9 @@ def trained_email(request):
 			message = message + employee1 + "  [" + job1 + "]" + b + b
 		server.sendmail(fromaddr, toaddrs, message)
 		server.quit()
-	return render(request,"redirect_master.html")
-	return render(request,"redirect_auto_updater.html")
+	return
+	# return render(request,"redirect_master.html")
+	# return render(request,"redirect_auto_updater.html")
 
 
 def training_matrix3(request):

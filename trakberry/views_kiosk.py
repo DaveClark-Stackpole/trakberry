@@ -2583,72 +2583,108 @@ def kiosk_scrap_entry(request):
 
 	return render(request,'kiosk_scrap_entry.html',{'args':args})
 
+def shift_select(shift):
+	shift4 = ''
+	if shift == 'Plant 1 Days' or shift == 'Plant 3 Days' or shift == 'Plant 4 Day':
+		shift4 = '7am-3pm'
+	if shift == 'Plant 1 Mid' or shift == 'Plant 3 Mid' or shift == 'Plant 4 Mid':
+		shift4 = '11pm-7am'
+	if shift == 'Plant 1 Aft' or shift == 'Plant 3 Aft' or shift == 'Plant 4 Aft':
+		shift4 = '3pm-11pm'
+	return shift4
+
+
 def production_entry_check(request):
 	date1, shift2 = vacation_set_current5()
 	date1='2021-01-11'
-	shift = 'Plant 1 Days'
-
+	shift = 'Plant 4 Day'
+	shift = request.session["production_shift"]
+	shift4 = shift_select(shift)
+	ewwe=8/0
 	# production_duplicate_fix(request,date1)
 
 	db, cur = db_set(request)
 
-	# Delete Assets we don't use
+	# Delete Assets we don't use or track from allocation
 	asset9 = ['1542','859','1514','1531','1541','1509','594','650','215']
 	for b in asset9:
 		dql = ('DELETE FROM sc_production1 WHERE asset_num = "%s"' %(b))
 		cur.execute(dql)
 		db.commit()
 
-
 	cur.execute("""DROP TABLE IF EXISTS tkb_scheduled""")
 	# cur.execute("""CREATE TABLE IF NOT EXISTS tkb_scheduled(Id INT PRIMARY KEY AUTO_INCREMENT,timestamp CHAR(80), dummy int(10))""")
 	cur.execute("""CREATE TABLE IF NOT EXISTS tkb_scheduled(Id INT PRIMARY KEY AUTO_INCREMENT,Id1 Char(80),Date1 Char(80), Employee CHAR(80), Clock CHAR(80), Asset CHAR(80), Job CHAR(80), Part CHAR(80), Shift Char(80), Hrs Char(80),Status Char(80),Shift_Mod Char(80))""")
-	# This will have to be tweaked for continental
+	# This will have to be tweaked for continental of who is working.
+	# maybe some type of calander calculator 
 	sql = "SELECT * FROM tkb_manpower where Shift = '%s'" %(shift)
 	cur.execute(sql)
 	tmp_all = cur.fetchall()  # List of all current employees on the shift
 
-# Determing which Continental Shift to use and assign to shift_mod3
-	count1 = 0
-	cshift1 = ''
-	count2 = 0
-	cshift2 = ''
+# Determine which Continental Shift to use and assign to shift_mod3
+	cshift4 = 'none'
+	break4 = 0
 	for i in tmp_all:
+		clock4 = i[3][:-2]
 		if i[2] != i[4]:
-			if cshift1 != i[4] and cshift1 != '':
-				cshift2 = i[4]
-			elif cshift1 == '':
-				cshift1 = i[4]
-	sql = "SELECT * FROM tkb_manpower where Shift_Mod = '%s'" %(cshift1)
+			try:
+				sql_cont = "SELECT * FROM sc_production1 where pdate = '%s' and comments = '%s'" % (date1,clock4)
+				cur.execute(sql_cont)
+				tmp_all_4 = cur.fetchall()
+				tmp_all_42 = tmp_all_4[0]
+				cshift4 = i[4]
+				break4 = 1
+			except:
+				dummy = 1
+		if break4 == 1:
+			break
+##################################################################
+
+	# eee=5/0
+	# count1 = 0
+	# cshift1 = ''
+	# count2 = 0
+	# cshift2 = ''
+	# for i in tmp_all:
+	# 	if i[2] != i[4]:
+	# 		if cshift1 != i[4] and cshift1 != '':
+	# 			cshift2 = i[4]
+	# 		elif cshift1 == '':
+	# 			cshift1 = i[4]
+	sql = "SELECT * FROM tkb_manpower where Shift_Mod = '%s' or Shift_Mod = '%s'" %(shift,cshift4)
 	cur.execute(sql)
-	tmp_all1 = cur.fetchall()  # List of all current employees on the shift
-	for i in tmp_all1:
-		cclock1 = i[3][:-2]
-		sql_count= "SELECT COUNT(*) FROM sc_production1 where comments = '%s' and pdate ='%s'" % (cclock1,date1)
-		cur.execute(sql_count)
-		tmp_count1 = cur.fetchall()
-		cnt1 = int(tmp_count1[0][0])
-		count1 = count1 + cnt1
-	sql = "SELECT * FROM tkb_manpower where Shift_Mod = '%s'" %(cshift2)
-	cur.execute(sql)
-	tmp_all2 = cur.fetchall()  # List of all current employees on the shift
-	for i in tmp_all2:
-		cclock2 = i[3][:-2]
-		sql_count= "SELECT COUNT(*) FROM sc_production1 where comments = '%s' and pdate ='%s'" % (cclock2,date1)
-		cur.execute(sql_count)
-		tmp_count2 = cur.fetchall()
-		cnt2 = int(tmp_count2[0][0])
-		count2 = count2 + cnt2
-	shift_mod3 = ''
-	if count1 > count2:
-		shift_mod3 = cshift1
-	elif count2 > 0:
-		shift_mod3 = cshift2
+	tmp = cur.fetchall()  # List of all current employees on the shift including proper Continental
+
+
+
+
+	# for i in tmp_all1:
+	# 	cclock1 = i[3][:-2]
+	# 	sql_count= "SELECT COUNT(*) FROM sc_production1 where comments = '%s' and pdate ='%s'" % (cclock1,date1)
+	# 	cur.execute(sql_count)
+	# 	tmp_count1 = cur.fetchall()
+	# 	cnt1 = int(tmp_count1[0][0])
+	# 	count1 = count1 + cnt1
+	# sql = "SELECT * FROM tkb_manpower where Shift_Mod = '%s'" %(cshift2)
+	# cur.execute(sql)
+	# tmp_all2 = cur.fetchall()  # List of all current employees on the shift
+	# for i in tmp_all2:
+	# 	cclock2 = i[3][:-2]
+	# 	sql_count= "SELECT COUNT(*) FROM sc_production1 where comments = '%s' and pdate ='%s'" % (cclock2,date1)
+	# 	cur.execute(sql_count)
+	# 	tmp_count2 = cur.fetchall()
+	# 	cnt2 = int(tmp_count2[0][0])
+	# 	count2 = count2 + cnt2
+	# shift_mod3 = ''
+	# if count1 > count2:
+	# 	shift_mod3 = cshift1
+	# elif count2 > 0:
+	# 	shift_mod3 = cshift2
 	
 
-	sql = "SELECT * FROM tkb_manpower where Shift_Mod = '%s' or Shift_Mod = '%s'" %(shift,shift_mod3)
-	cur.execute(sql)
-	tmp = cur.fetchall()  # List of all current employees on the shift
+	# sql = "SELECT * FROM tkb_manpower where Shift_Mod = '%s' or Shift_Mod = '%s'" %(shift,shift_mod3)
+	# cur.execute(sql)
+	# tmp = cur.fetchall()  # List of all current employees on the shift
 
 	name1 =[]
 	clock1 =[]
@@ -2667,7 +2703,6 @@ def production_entry_check(request):
 	flow1 = 'go'
 	for i in tmp:
 		r=0
-
 		hrs_verify = 8
 		if i[2] != i[4]:
 			hrs_verify = 8  # Change this to 12 once we figure out Continental 
@@ -2702,7 +2737,6 @@ def production_entry_check(request):
 				hrs = x[12]
 				qty = x[4]
 				id1 = x[0]
-
 				try:
 					sql2 = "SELECT Job,Sig1 From tkb_allocation where (Asset1 = '%s' or Asset2 = '%s' or Asset3 = '%s' or Asset4 = '%s' or Asset5 = '%s' or Asset6 = '%s')" % (asset,asset,asset,asset,asset,asset)
 					cur.execute(sql2)
@@ -2723,7 +2757,6 @@ def production_entry_check(request):
 				# if x[9]=='7079':
 				# 	ttt=5/0
 
-
 				name_good.append(nm)
 				clock_good.append(clock_num)
 				job_good.append(job)
@@ -2738,7 +2771,6 @@ def production_entry_check(request):
 				cur.execute('''INSERT INTO tkb_scheduled_temp(Id1,Employee,Clock,Asset,Job,Part,Hrs,Qty,Shift_Mod) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s)''', (id1,nm,clock_num,asset,job,part,hrs,qty,shift_mod))
 				db.commit()
 
-				# 
 				# cur.execute('''INSERT INTO tkb_scheduled(Date1,Employee,Clock,Asset,Job,Part,Shift,Hrs) VALUES(%s,%s,%s,%s,%s,%s,%s,%s)''', (date1,nm,clock_num,asset,job,part,shift,hrs))
 				# db.commit()
 			total7=zip(job7,hrs7)
@@ -2864,7 +2896,8 @@ def production_entry_fix(request):
 	# rerun production_entry_check
 	date1, shift2 = vacation_set_current5()
 	date1='2021-01-11'
-	shift = 'Plant 1 Days'
+	shift = 'Plant 4 Day'
+	eeee=5/0
 	status1 = 'Good'
 	status2 = 'Pending'
 
@@ -2876,6 +2909,7 @@ def production_entry_fix(request):
 	if request.POST:
 		delete_answer = request.POST.get('delete1')
 		status_answer = request.POST.get('pending1')
+		fix_answer = request.POST.get('fix1')
 
 		if status_answer > 0:
 			status2 = 'Pending'
@@ -2885,6 +2919,24 @@ def production_entry_fix(request):
 		elif delete_answer > 0:
 			dql = ('DELETE FROM tkb_scheduled WHERE Id = "%s"' %(delete_answer))
 			cur.execute(dql)
+			db.commit()
+		elif fix_answer > 0:
+			fql = "SELECT Clock FROM tkb_scheduled WHERE Id = '%s'" % (fix_answer)
+			cur.execute(fql)
+			fql2 = cur.fetchall()
+			clock_fix = fql2[0][0]  # Assign clock number of the person
+
+			sql_count= "SELECT COUNT(*) FROM tkb_scheduled where Clock = '%s' and Date1 ='%s'" % (clock_fix,date1)
+			cur.execute(sql_count)
+			tmp_count = cur.fetchall()
+			count_fix = int(tmp_count[0][0])  # Number of entries by this person
+
+			new_hrs = int(8 / float(count_fix))
+			cql = ('update tkb_scheduled SET Hrs = "%s" WHERE (Clock="%s" and Date1 = "%s")' % (new_hrs,clock_fix,date1))
+			cur.execute(cql)
+			db.commit()
+			cql = ('update tkb_scheduled SET Status = "%s" WHERE (Clock="%s" and Date1 = "%s")' % (status1,clock_fix,date1))
+			cur.execute(cql)
 			db.commit()
 		return render(request,"redirect_production_entry_fix.html")
 	else:
