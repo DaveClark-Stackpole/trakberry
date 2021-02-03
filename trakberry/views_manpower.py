@@ -54,8 +54,8 @@ def manpower_initial_v2(request):
 
 def manpower_update_v2(request):
 		# comment below when running local
-	# label_link = '/home/file/import1/Inventory/importedxls'
-	# os.chdir(label_link)
+	label_link = '/home/file/import1/Inventory/importedxls'
+	os.chdir(label_link)
 	# ********************************
 
 	sheet = 'inventory.xlsx'
@@ -194,7 +194,9 @@ def manpower_update_v2(request):
 
 
 def matrix_update_v2(request):
+	request.session["trained_email"] = ''
 	# The below section fixes any blank asset entries so they don't mess up the matrix update
+	# **************************************************************************************
 	db, cur = db_set(request)
 	t1 = '111'
 	s1 = ''
@@ -203,8 +205,22 @@ def matrix_update_v2(request):
 	db.commit()
 	db.close()
 	# **************************************************************************************
-	
-	matrix_initial_v2(request)
+
+	# Dump old matrix into tkb_matrix2 for future coparison
+	# ******************************************************************************
+	db, cur = db_set(request)
+	cur.execute("""DROP TABLE IF EXISTS tkb_matrix_old""")
+	cur.execute("""CREATE TABLE IF NOT EXISTS tkb_matrix_old LIKE tkb_matrix""")
+	cur.execute('''INSERT tkb_matrix_old Select * From tkb_matrix''')
+	db.commit()
+	db.close()
+	#*******************************************************************************
+
+	matrix_initial_v2(request)  # Empty Cache and Matrix to start fresh.
+
+# Select RollNo,Name,Subject from(select RollNo,Name,Subject from students union all select RollNo,Name,Subject from Student1)as std GROUP BY RollNo,Name,Subject HAVING Count(*) = 1 ORDER BY RollNo;
+
+
 
 	asset_test = []
 	trained_test = []
@@ -305,7 +321,80 @@ def matrix_update_v2(request):
 	shift ,area = 'Plant 4 Mid','Area 3'
 	matrix_read(shift,area,request)
 	
+
+	# ************************************************************************************************************************
+	# This will find any employees from before Matrix update that weren't trained but now are and
+	# will put them in a[] and their job in b[] and produce tuple trained_email
+	level='Trained'
+	db,cur=db_set(request)
+	sql = "select * from tkb_matrix where Trained = '%s'"%(level)
+	cur.execute(sql)
+	tmp7=cur.fetchall()
+	a=[]
+	b=[]
+	for i in tmp7:
+		name1 = i[1]
+		# small problem with people and the ' in their name
+		job1 = i[3]
+		level1 = i[4]
+		level2='Trained'
+		try:
+			sql2="select * from tkb_matrix_old where Employee='%s' and Job='%s' and Trained!='%s'"%(name1,job1,level2)
+			cur.execute(sql2)
+			tmp8=cur.fetchall()
+			try:
+				# Make sure another job same name doesn't have this person trained
+				sql3="select * from tkb_matrix_old where Employee='%s' and Job='%s' and Trained='%s'" %(name1,job1,level2)
+				cur.execute(sql3)
+				tmp9=cur.fetchall()
+				try:
+					tmp99=tmp9[0]
+				# If it doesn't then do the except if it does then ignore
+				except:
+					n1 = tmp8[0][1]
+					j1=tmp8[0][3]
+					a.append(n1)
+					b.append(j1)
+			except:
+				dummy='skip'
+		except:
+			dummy='skip'
+	request.session['trained_email'] = zip(a,b)
+# ***************************************************************************************************************************
+	trained_email()  # Email the list, if any, to Melissa
 	return render(request,"redirect_auto_updater.html")
+
+def trained_email(request):
+	try:
+		trained1 = request.session['trained_email']
+	except:
+		trained1=''
+	if len(trained1) > 0 :
+		b = "\r\n"
+		ctr = 0
+		message_subject = 'Training Document Required !'
+		message3 = "The following people require training documents for the noted jobs." 
+		toaddrs = ["dclark@stackpole.com"]
+		#toaddrs = ["rrompen@stackpole.com","rbiram@stackpole.com","rzylstra@stackpole.com","lbaker@stackpole.com","dmilne@stackpole.com","sbrownlee@stackpole.com","pmurphy@stackpole.com","pstreet@stackpole.com","kfrey@stackpole.com","asmith@stackpole.com","smcmahon@stackpole.com","gharvey@stackpole.com","ashoemaker@stackpole.com","jreid@stackpole.com"]
+		fromaddr = 'stackpole@stackpole.com'
+		frname = 'Dave'
+		server = SMTP('smtp.gmail.com', 587)
+		server.ehlo()
+		server.starttls()
+		server.ehlo()
+		server.login('StackpolePMDS@gmail.com', 'stacktest6060')
+		message = "From: %s\r\n" % frname + "To: %s\r\n" % ', '.join(toaddrs) + "Subject: %s\r\n" % message_subject + "\r\n" 
+		message = message + "\r\n\r\n" + message3 + "\r\n\r\n" + "\r\n\r\n" 
+		for i in trained1:
+			employee1 = i[0]
+			job1 = i[1]
+			b = "\r\n"
+			message = message + employee1 + "  [" + job1 + "]" + b + b
+		server.sendmail(fromaddr, toaddrs, message)
+		server.quit()
+	return
+	# return render(request,"redirect_master.html")
+	# return render(request,"redirect_auto_updater.html")
 
 
 def training_matrix3(request):

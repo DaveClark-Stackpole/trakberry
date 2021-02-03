@@ -532,14 +532,44 @@ def test_scrap1(request):
 	
 	return render(request,"test_a.html")
 	
-  
-  
-  
-  
-	
+def time_test1(request):
+	t=int(time.time())
+	tm = time.localtime(t)
+	hr1 = str(tm[3])
+	min1 = str(tm[4])
+	cur_time = hr1 + min1
+	cur_date  = str(tm[1])+"/"+str(tm[2])+"/"+str(tm[0])
+	update_time = cur_date + " " + hr1 + ":" + min1
+	return update_time
 
-	
-	
-	
-	
-	
+def test_update_blue(request):
+	prog = 'blue'
+	db, cur = db_set(request)
+	cur.execute("""CREATE TABLE IF NOT EXISTS tkb_test(Id INT PRIMARY KEY AUTO_INCREMENT,cur_date CHAR(80), program Char(80))""")
+	update_time = time_test1(request)
+	cur.execute('''INSERT INTO tkb_test(cur_date,program) VALUES(%s,%s)''', (update_time,prog))
+	db.commit()
+	db.close()
+	return render(request,"redirect_auto_updater.html")
+
+def test_update_red(request):
+	prog = 'red'
+	db, cursor = db_set(request)
+	cursor.execute("""DROP TABLE IF EXISTS tkb_matrix2""")
+	cursor.execute("""CREATE TABLE IF NOT EXISTS tkb_matrix2 LIKE tkb_matrix""")
+	cursor.execute('''INSERT tkb_matrix2 Select * From tkb_matrix''')
+
+	# cur.execute("""CREATE TABLE IF NOT EXISTS tkb_test(Id INT PRIMARY KEY AUTO_INCREMENT,cur_date CHAR(80), program Char(80))""")
+	# update_time = time_test1(request)
+	# cur.execute('''INSERT INTO tkb_test(cur_date,program) VALUES(%s,%s)''', (update_time,prog))
+	db.commit()
+	return render(request,"test71.html")
+
+def test_update_yellow(request):
+	prog = 'yellow'
+	db, cur = db_set(request)
+	cur.execute("""CREATE TABLE IF NOT EXISTS tkb_test(Id INT PRIMARY KEY AUTO_INCREMENT,cur_date CHAR(80), program Char(80))""")
+	update_time = time_test1(request)
+	cur.execute('''INSERT INTO tkb_test(cur_date,program) VALUES(%s,%s)''', (update_time,prog))
+	db.commit()
+	return render(request,"redirect_auto_updater.html")

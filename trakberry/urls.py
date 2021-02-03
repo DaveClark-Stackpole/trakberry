@@ -47,7 +47,7 @@ from views_test import test_list, toggle_1, layer_test, layer_entry, layer_trans
 from views_test import layer_retrieve,sup_mess, test_scrap1
 from views_test_email import email1, done_email_1
 from views_testing import clear_login
-from views_test import create_scrap_table, test_scrap_production
+from views_test import create_scrap_table, test_scrap_production, test_update_blue, test_update_yellow, test_update_red
 from test_test import table_mod1
 from view_test1 import kiosk_name,update_column
 from mod_test import wildcard_test
@@ -146,6 +146,7 @@ from views_scrap import scrap_entries_next, scrap_entries_prev,scrap_entries_upd
 
 # *******************************************  Manpower Section ********************************************************************************************
 from views_manpower import manpower_update_v2, training_matrix3, matrix_update_v2, training_performance
+from views_manpower import trained_email
 # ***********************************************************************************************************************************************************
 
 urlpatterns = [
@@ -417,7 +418,9 @@ urlpatterns = [
 	url(r'^update_column/', update_column),
 	url(r'^request_test/', request_test),
 #	url(r'^hour_check/', hour_check),
-
+	url(r'^test_update_blue/', test_update_blue),
+	url(r'^test_update_red/', test_update_red),
+	url(r'^test_update_yellow/', test_update_yellow),
 	
 	# ************************************************************************
 	
@@ -587,6 +590,7 @@ urlpatterns = [
 	url(r'^matrix_update_v2/', matrix_update_v2),
 	url(r'^training_matrix3/', training_matrix3),
 	url(r'^training_performance/', training_performance),
+	url(r'^trained_email/', trained_email),
 	# **************************************************************************
 
 

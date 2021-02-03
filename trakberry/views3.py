@@ -1221,12 +1221,14 @@ def auto_updater(request):  # This will run every 30 min on the refresh page to 
 	tm = time.localtime(t)
 	hr1 = str(tm[3])
 	min1 = str(tm[4])
-	cur_time = hr1 + min1
 	cur_date  = str(tm[1])+"/"+str(tm[2])+"/"+str(tm[0]) # Sets the current date
+	if len(min1) == 1: # Add a 0 if it's less than 10 min so it's the correct length
+		min1 = '0'+min1
+	cur_time = hr1 + min1
 	update_time = cur_date + " " + hr1 + ":" + min1
 	db, cur = db_set(request)  
 	# cur.execute("""DROP TABLE IF EXISTS tkb_updater""")
-	cur.execute("""CREATE TABLE IF NOT EXISTS tkb_updater(Id INT PRIMARY KEY AUTO_INCREMENT,cur_date CHAR(80),set_time CHAR(80), program Char(80))""")
+	cur.execute("""CREATE TABLE IF NOT EXISTS tkb_updater(Id INT PRIMARY KEY AUTO_INCREMENT,cur_date CHAR(80),set_time CHAR(80), program Char(80), var1 Char(80))""")
 	sql= '''SELECT * FROM tkb_updater'''
 	cur.execute(sql)
 	tmp = cur.fetchall()
@@ -1239,11 +1241,13 @@ def auto_updater(request):  # This will run every 30 min on the refresh page to 
 				mql =( 'update tkb_updater SET cur_date = "%s" WHERE Id ="%s"' % (cur_date,id2))
 				cur.execute(mql)
 				db.commit()
-				sql = "SELECT program FROM tkb_updater where Id = '%s'"%(id2)
+				sql = "SELECT program,var1 FROM tkb_updater where Id = '%s'"%(id2)
 				cur.execute(sql)
 				tmp2 = cur.fetchall()
 				program1 = tmp2[0][0]
+				variable1 = tmp2[0][1]
 				request.session['tkb_program'] = program1
+				request.session['variable1'] = variable1
 				request.session['tkb_update_time'] = update_time
 				return render(request,'redirect_program.html')
 	return render(request,'tkb_updater.html')

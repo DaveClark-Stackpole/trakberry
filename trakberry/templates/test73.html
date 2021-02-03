@@ -71,6 +71,12 @@
 					<button style="column-fill: auto;background-color: rgb(247, 199, 159);border:none;outline:none;"
 						type="submit" name="pending1" value="{{i.0}}" /><b><font style="font-size: 15px";>&nbsp;&nbsp;&nbsp;Talked To&nbsp;&nbsp;</font>
 						</b></button>
+				{% elif i.10 == 'Hrs Wrong' %}
+				<td style="font-size: 24px; color:rgb(196, 196, 196);border:1px solid rgb(255, 238, 0);">
+					&nbsp;&nbsp;{{i.9}}&nbsp;&nbsp;
+					<button style="column-fill: auto;background-color: rgb(176, 243, 255);border:none;outline:none;"
+						type="submit" name="fix1" value="{{i.0}}" /><b><font style="font-size: 15px;color:rgb(71, 64, 64);";>&nbsp;Fix&nbsp;</font>
+						</b></button>
 				{% else %}
 				<td style="font-size: 24px; color:rgb(196, 196, 196);border:1px solid rgb(255, 238, 0);">
 						&nbsp;&nbsp;&nbsp;{{i.9}}&nbsp;&nbsp;&nbsp;
