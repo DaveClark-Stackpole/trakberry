@@ -2596,11 +2596,11 @@ def shift_select(shift):
 
 def production_entry_check(request):
 	date1, shift2 = vacation_set_current5()
-	date1='2021-01-11'
-	shift = 'Plant 4 Day'
-	shift = request.session["production_shift"]
+	date1='2021-02-03'
+	shift = 'Plant 1 Days'
+	# shift = request.session["production_shift"]
 	shift4 = shift_select(shift)
-	ewwe=8/0
+	# ewwe=8/0
 	# production_duplicate_fix(request,date1)
 
 	db, cur = db_set(request)
@@ -2728,7 +2728,7 @@ def production_entry_check(request):
 		cur.execute(sql_count)
 		tmp_count = cur.fetchall()
 		count = int(tmp_count[0][0])
-
+		
 		# Do below if found data for the clock on that day in sc_production
 		if count > 0:
 			for x in tmp_sc:
@@ -2776,7 +2776,8 @@ def production_entry_check(request):
 			total7=zip(job7,hrs7)
 			
 
-
+		if int(clock_num) == 118:
+			tkljt=4/0
 
 		# Do below if no data found for clock on that day in sc_production
 		else:
@@ -2806,6 +2807,7 @@ def production_entry_check(request):
 		tmp=cur.fetchall()
 		for x in tmp:
 			id1 = x[0]
+			#need to mod this for dups
 			dql = ('DELETE FROM tkb_scheduled_temp WHERE Id < "%d" and Asset = "%s" and Part = "%s" and Qty ="%s" and Hrs = "%s"' %(x[0],x[4],x[6],x[8],x[7]))
 			cur.execute(dql)
 			db.commit()
@@ -2895,9 +2897,9 @@ def production_entry_fix(request):
 	# delete all entries in tkb_scheduled with date and shift
 	# rerun production_entry_check
 	date1, shift2 = vacation_set_current5()
-	date1='2021-01-11'
-	shift = 'Plant 4 Day'
-	eeee=5/0
+	date1='2021-02-03'
+	shift = 'Plant 1 Days'
+	# eeee=5/0
 	status1 = 'Good'
 	status2 = 'Pending'
 
