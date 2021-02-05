@@ -361,7 +361,7 @@ def matrix_update_v2(request):
 			dummy='skip'
 	request.session['trained_email'] = zip(a,b)
 # ***************************************************************************************************************************
-	trained_email()  # Email the list, if any, to Melissa
+	trained_email(request)  # Email the list, if any, to Melissa
 	return render(request,"redirect_auto_updater.html")
 
 def trained_email(request):
@@ -374,7 +374,7 @@ def trained_email(request):
 		ctr = 0
 		message_subject = 'Training Document Required !'
 		message3 = "The following people require training documents for the noted jobs." 
-		toaddrs = ["dclark@stackpole.com"]
+		toaddrs = ["dclark@stackpole.com","menns@stackpole.com"]
 		#toaddrs = ["rrompen@stackpole.com","rbiram@stackpole.com","rzylstra@stackpole.com","lbaker@stackpole.com","dmilne@stackpole.com","sbrownlee@stackpole.com","pmurphy@stackpole.com","pstreet@stackpole.com","kfrey@stackpole.com","asmith@stackpole.com","smcmahon@stackpole.com","gharvey@stackpole.com","ashoemaker@stackpole.com","jreid@stackpole.com"]
 		fromaddr = 'stackpole@stackpole.com'
 		frname = 'Dave'
