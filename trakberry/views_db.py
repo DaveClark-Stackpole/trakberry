@@ -17,12 +17,12 @@ def net1(request):
 
 # Methods for opening database for all and returning db and cur
 def db_open():
-	# db = MySQLdb.connect(host="10.4.1.224",user="dg417",passwd="dg",db='prodrptdb')
-	# cursor = db.cursor()
-	# sql = "SELECT * from testtest" 
-	# cursor.execute(sql)
-	# tmp2 = cursor.fetchall()
-	# return db, cursor
+	db = MySQLdb.connect(host="10.4.1.224",user="dg417",passwd="dg",db='prodrptdb')
+	cursor = db.cursor()
+	sql = "SELECT * from testtest" 
+	cursor.execute(sql)
+	tmp2 = cursor.fetchall()
+	return db, cursor
 	# Will try and connect to the PMDS Server first and test it but if it doesn't work will do local
 	try:
 		db = MySQLdb.connect(host="127.0.0.1",user="dg417",passwd="dg",db='prodrptdb')
@@ -53,12 +53,12 @@ def db_open():
 
 
 def db_set(request):  # Module to set DB settings to the one that works.  Whether local or Server
-	# db = MySQLdb.connect(host="10.4.1.224",user="dg417",passwd="dg",db='prodrptdb')
-	# cursor = db.cursor()
-	# sql = "SELECT * from testtest" 
-	# cursor.execute(sql)
-	# tmp2 = cursor.fetchall()
-	# return db, cursor
+	db = MySQLdb.connect(host="10.4.1.224",user="dg417",passwd="dg",db='prodrptdb')
+	cursor = db.cursor()
+	sql = "SELECT * from testtest" 
+	cursor.execute(sql)
+	tmp2 = cursor.fetchall()
+	return db, cursor
 
  # update
 
