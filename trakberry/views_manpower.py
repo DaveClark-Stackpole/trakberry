@@ -17,6 +17,7 @@ from smtplib import SMTP
 import xlrd
 #import pandas
 from views_vacation import vacation_temp, vacation_set_current, vacation_set_current2,vacation_set_current6, vacation_set_current4
+from views_vacation import vacation_set_current5
 from views3 import matrix_read,shift_area
 
 def manpower_layout(request):
@@ -370,6 +371,15 @@ def trained_email(request):
 	except:
 		trained1=''
 	if len(trained1) > 0 :
+		db,cur=db_set(request)
+		date1, shift2 = vacation_set_current5()
+		cur.execute("""CREATE TABLE IF NOT EXISTS tkb_trained(Id INT PRIMARY KEY AUTO_INCREMENT,Date CHAR(80), Employee CHAR(80), Job CHAR(80))""")
+		db.commit()
+		for x in trained:
+			cur.execute('''INSERT INTO tkb_trained(Date,Employee,Job) VALUES(%s,%s,%s)''', (date1,x[0],x[1]))
+			db.commit()
+		db.close()
+
 		b = "\r\n"
 		ctr = 0
 		message_subject = 'Training Document Required !'

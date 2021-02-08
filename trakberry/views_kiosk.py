@@ -2598,7 +2598,6 @@ def shift_select(shift):
 def production_entry_check(request):
 	date1, shift2 = vacation_set_current5()
 
-
 	date1='2021-01-11'
 	shift = 'Plant 4 Day'
 	request.session['date_prod'] = date1
