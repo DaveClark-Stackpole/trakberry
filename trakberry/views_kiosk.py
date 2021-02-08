@@ -2597,15 +2597,18 @@ def shift_select(shift):
 
 def production_entry_check(request):
 	date1, shift2 = vacation_set_current5()
-
-	date1='2021-01-11'
-	shift = 'Plant 4 Day'
+	# date1='2021-01-06'
+	# shift = 'Plant 4 Day'
+	shift = request.session["variable1"]
+	
 	request.session['date_prod'] = date1
 	request.session['shift_prod'] = shift
+	status3 = 'Pending'
+	status4 = 'No Entry'
 
 	# shift = request.session["production_shift"]
 	shift4 = shift_select(shift)
-	# ewwe=8/0
+
 	# production_duplicate_fix(request,date1)
 
 	db, cur = db_set(request)
@@ -2617,11 +2620,21 @@ def production_entry_check(request):
 		cur.execute(dql)
 		db.commit()
 
-	cur.execute("""DROP TABLE IF EXISTS tkb_scheduled""")
+	# cur.execute("""DROP TABLE IF EXISTS tkb_scheduled""")
 	# cur.execute("""CREATE TABLE IF NOT EXISTS tkb_scheduled(Id INT PRIMARY KEY AUTO_INCREMENT,timestamp CHAR(80), dummy int(10))""")
 	cur.execute("""CREATE TABLE IF NOT EXISTS tkb_scheduled(Id INT PRIMARY KEY AUTO_INCREMENT,Id1 Char(80),Date1 Char(80), Employee CHAR(80), Clock CHAR(80), Asset CHAR(80), Job CHAR(80), Part CHAR(80), Shift Char(80), Hrs Char(80),Status Char(80),Shift_Mod Char(80))""")
 	# This will have to be tweaked for continental of who is working.
 	# maybe some type of calander calculator 
+
+
+	# Old Pending gets changed back to No Entry
+	cql = ('update tkb_scheduled SET Status = "%s" WHERE (Status="%s" and Shift = "%s")' % (status4,status3,shift))
+	cur.execute(cql)
+	db.commit()
+
+
+
+
 	sql = "SELECT * FROM tkb_manpower where Shift = '%s'" %(shift)
 	cur.execute(sql)
 	tmp_all = cur.fetchall()  # List of all current employees on the shift
@@ -2876,9 +2889,17 @@ def production_entry_fix(request):
 	# eeee=5/0
 	status1 = 'Good'
 	status2 = 'Pending'
+	status3 = 'No Entry'
 
 	db, cur = db_set(request)
-	sql = "SELECT * FROM tkb_scheduled WHERE Date1 = '%s' and Shift = '%s' and Status != '%s' and Status != '%s' ORDER BY %s %s, %s %s" %(date1,shift,status1,status2,'Status','DESC','Employee','ASC')
+
+	# sql =( 'update scheduled SET Status="%s" WHERE (Shift="%s" and Status="%s"' % (t,tfull,index))
+	# cur.execute(sql)
+	# db.commit()
+	# db.close()
+
+
+	sql = "SELECT * FROM tkb_scheduled WHERE Shift = '%s' and Status != '%s' and Status != '%s' ORDER BY %s %s, %s %s" %(shift,status1,status2,'Status','DESC','Employee','ASC')
 	cur.execute(sql)
 	tmp=cur.fetchall()
 	area = shift_area(shift)
@@ -2927,6 +2948,15 @@ def production_entry_fix(request):
 			cql = ('update tkb_scheduled SET Job = "%s" WHERE (Id="%s")' % (new_job,fix_job))
 			cur.execute(cql)
 			db.commit()
+
+			fql = "SELECT Employee,Clock FROM tkb_scheduled WHERE Id = '%s'" % (fix_job)
+			cur.execute(fql)
+			fql2 = cur.fetchall()
+			clock_num = fql2[0][1]  # Assign clock number of the person
+			nm = fql2[0][0]
+			request.session['clock_num'] = clock_num
+			request.session['nm'] = nm
+
 			production_entry_check2(request)
 
 		return render(request,"redirect_production_entry_fix.html")
@@ -2942,9 +2972,10 @@ def production_entry_fix(request):
 def production_entry_check2(request):
 	date1 = request.session['date_prod'] 
 	shift = request.session['shift_prod'] 
+	clock_num = request.session['clock_num']
+	status1 = 'Good'
+	nm = request.session['nm']
 	db, cur = db_set(request)
-# Get the Employee name
-
 	job1 = []
 	hrs1 = []
 	asset1 = []
@@ -2953,54 +2984,53 @@ def production_entry_check2(request):
 	shift_mod1 =[]
 	hrs_total = 0
 
-	# Put the entire shift in tmp 
-	sql = "SELECT * FROM tkb_scheduled WHERE Date1 = '%s' and Shift = '%s' ORDER BY Employee DESC, Job DESC, Hrs DESC" %(date1,shift)
+	# Put the clock num from schedu into temp
+	sql = "SELECT * FROM tkb_scheduled WHERE Date1 = '%s' and Shift = '%s' and Clock = '%s' ORDER BY Employee DESC, Job DESC, Hrs DESC" %(date1,shift,clock_num)
 	cur.execute(sql)
 	tmp=cur.fetchall()
 	job_current = ''
-	clock_current = 0
 	hrs_current = 0
 	no_entry = 0
 
-	# Remove the section temporarily from Scheduled
-	dql = ('DELETE FROM tkb_scheduled WHERE Date1 = "%s" and Shift = "%s"' %(date1,shift))
+	# Remove the clock num temporarily from Scheduled
+	dql = ('DELETE FROM tkb_scheduled WHERE Date1 = "%s" and Shift = "%s" and Clock = "%s"' %(date1,shift,clock_num))
 	cur.execute(dql)
 	db.commit()
 
 	# work with the shifts entries to check
 	for x in tmp:
-		clock_num = x[3]
-		if clock_num == clock_current:
-			if job_current != x[5]:  # This determines if another job of same name for that person so ignores
-				job1.append(x[5])
-				hrs1.append(int(x[7]))
-				asset1.append(x[4])
-				part1.append(x[6])
-				ida.append(x[1])
-				shift_mod1.append(x[9])
-				hrs_total = hrs_total + int(x[7])
-				job_current = x[5]
-		if hrs_total >= 8 and hrs_total <=12:
-			if job == 'not a job':
-				no_entry = 1
-			else:
-				complete1 = 'Good'
-		else:
-			if asset == 'no entry':
-				complete1 = 'No Entry'
-			else:
-				complete1 = 'Hrs Wrong'
-			if job == 'not a job':
-				no_entry = 1
+		if job_current != x[6]:  # This determines if another job of same name for that person so ignores
+			job1.append(x[6])
+			hrs1.append(int(x[9]))
+			asset1.append(x[5])
+			part1.append(x[7])
+			ida.append(x[1])
+			shift_mod1.append(x[11])
+			hrs_total = hrs_total + int(x[9])
+			job_current = x[6]
+	if hrs_total >= 8 and hrs_total <=12:
+		complete1 = 'Good'
+	else:
+		complete1 = 'Hrs Wrong'
 	data3 = zip(job1,hrs1,asset1,part1,ida,shift_mod1)
-	njob1 = 0
-	for x in data3:
-		if x[0] == 'not a job':
-			njob1 = 1
-	if njob1 ==1:
-		complete1 = 'Bad Entry'
+
 	for x in data3:
 		cur.execute('''INSERT INTO tkb_scheduled(Id1,Date1,Employee,Clock,Job,Hrs,Shift,Asset,Part,Status,Shift_Mod) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)''', (x[4],date1,nm,clock_num,x[0],x[1],shift,x[2],x[3],complete1,x[5]))
 		db.commit()
+
+	sql_count= "SELECT COUNT(*) FROM tkb_scheduled where Clock = '%s' and Date1 ='%s'" % (clock_num,date1)
+	cur.execute(sql_count)
+	tmp_count = cur.fetchall()
+	count_fix = int(tmp_count[0][0])  # Number of entries by this person
+
+	new_hrs = int(8 / float(count_fix))
+	cql = ('update tkb_scheduled SET Hrs = "%s" WHERE (Clock="%s" and Date1 = "%s")' % (new_hrs,clock_num,date1))
+	cur.execute(cql)
+	db.commit()
+	cql = ('update tkb_scheduled SET Status = "%s" WHERE (Clock="%s" and Date1 = "%s")' % (status1,clock_num,date1))
+	cur.execute(cql)
+	db.commit()
+
+	db.close()
 
 	return
