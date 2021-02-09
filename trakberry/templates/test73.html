@@ -60,9 +60,32 @@
 			<td style="font-size: 24px; color:rgb(196, 196, 196);border:1px solid rgb(255, 238, 0);">
 				&nbsp;&nbsp;&nbsp;{{i.5}}&nbsp;&nbsp;&nbsp;
 			</td>
+			{% if i.6 == 'not a job' %}
+	
+
+			<td style="font-size: 25px; border:1px solid rgb(255, 238, 0);">
+
+
+
+
+<select style="font-size: 15px; border:1px solid rgb(255, 238, 0);color:rgb(71, 64, 64);" id="job7" name="job7">
+<option value="Not a Job" selected disabled>Not a Job</option>
+{% for i in request.session.Jobs7 %}
+<option value="{{ i.0 }}">{{ i.0 }}</option>
+{% endfor %}
+</select>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+				<button style="column-fill: auto;background-color: rgb(241, 157, 241);border:none;outline:none;"
+					type="submit" name="fix_job1" value="{{i.0}}" /><b><font style="font-size: 15px;color:rgb(71, 64, 64);";>&nbsp;Fixed&nbsp;</font>
+					</b></button>
+
+
+			{% else %}
 			<td style="font-size: 24px; color:rgb(196, 196, 196);border:1px solid rgb(255, 238, 0);">
 				&nbsp;&nbsp;&nbsp;{{i.6}}&nbsp;&nbsp;&nbsp;
 			</td>
+			{% endif %}
 			<td style="font-size: 24px; color:rgb(196, 196, 196);border:1px solid rgb(255, 238, 0);">
 				&nbsp;&nbsp;&nbsp;{{i.7}}&nbsp;&nbsp;&nbsp;
 			</td>

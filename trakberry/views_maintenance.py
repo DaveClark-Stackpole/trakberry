@@ -57,7 +57,7 @@ def maint_mgmt(request):
 	time4 = []
 	
 	
-	# hh = tmp[2][2]
+	wfp='WFP'
 	
 	# start_stamp = int(time.mktime(hh.timetuple()))
 	# time_dif = int((t - start_stamp) / float(60))
@@ -196,7 +196,7 @@ def maint_mgmt(request):
 	args.update(csrf(request))
 	args['form'] = form
 
-	return render(request, "maint_mgmt.html",{'index':new_tmp,'args':args})
+	return render(request, "maint_mgmt.html",{'index':new_tmp,'wfp':wfp,'args':args})
 
 # Login for Maintenance Manager App
 def maint_mgmt_login_form(request):
@@ -747,8 +747,8 @@ def maint(request):
 
 	M = 'Need Millwright'
 	E = 'Maintenance'
-
-	return render(request,"maint.html",{'L':LList,'N':n,'M':M,'E':E})
+	wfp = 'WFP'
+	return render(request,"maint.html",{'L':LList,'N':n,'M':M,'E':E,'wfp':wfp})
 
 def maint_close_item(request):
 	index=request.session["index"]

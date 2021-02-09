@@ -280,14 +280,20 @@ def track_area(request):
 		m1.append(x2)
 		day1.append(x3)
 		shift1.append(x4)
-		
-		aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (unew,utemp,prt,asset1,asset2,asset3,asset4)
+		aql = "SELECT SUM(Count) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (unew,utemp,prt,asset1,asset2,asset3,asset4)
+
+		# aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (unew,utemp,prt,asset1,asset2,asset3,asset4)
 		cur.execute(aql)
 		tmp2 = cur.fetchall()
 		tmp3 = tmp2[0]
+		
 		prev_cnt1.append(str(tmp3[0]))
-		total_test = total_test + int(tmp3[0])
+		try:
+			total_test = total_test + int(tmp3[0])
+		except:
+			total_test = total_test + 0
 		utemp = unew
+
 	db.close()
 	request.session['total_test'] = total_test
 

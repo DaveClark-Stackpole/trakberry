@@ -24,10 +24,16 @@
 
         {% if i.0.4 = 'Electrician' %}
             <div class="body1">
+							{% if i.0.1|slice:"-3:" != wfp %}
             <button style="text-align: left;width:100%;font-size: 60%;border:0px solid rgb(0, 0, 0);
-            background-color: rgb(235,240,203);border:none;outline:none;"
+            background-color:  rgb(235,240,203);border:none;outline:none;"
             type="submit" name="one" value="{{i.0.11}}" /><b><font color="#000000">[{{i.0.4}}] {{i.0.0}}:{{i.0.1}}&nbsp;&nbsp;&nbsp;&nbsp;({{i.1}}&nbsp;&nbsp;&nbsp;Min Down)</font></b></button>
-						</div>
+						{% else %} 
+						<button style="text-align: left;width:100%;font-size: 60%;border:0px solid rgb(0, 0, 0);
+            background-color: rgb(176,176,176);border:none;outline:none;"
+            type="submit" name="one" value="{{i.0.11}}" /><b><font color="#000000">[{{i.0.4}}] {{i.0.0}}:{{i.0.1}}&nbsp;&nbsp;&nbsp;&nbsp;({{i.1}}&nbsp;&nbsp;&nbsp;Min Down)</font></b></button>
+						{% endif %}
+					</div>
 						{% elif i.0.4 = 'Millwright' %}
             <div class="body1">
             <button style="text-align: left;width:100%;font-size: 60%;border:0px solid rgb(0, 0, 0);
