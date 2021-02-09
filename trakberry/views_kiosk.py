@@ -2597,9 +2597,9 @@ def shift_select(shift):
 
 def production_entry_check(request):
 	date1, shift2 = vacation_set_current5()
-	# date1='2021-01-06'
-	# shift = 'Plant 4 Day'
-	shift = request.session["variable1"]
+	date1='2021-01-11'
+	shift = 'Plant 1 Days'
+	# shift = request.session["variable1"]
 	
 	request.session['date_prod'] = date1
 	request.session['shift_prod'] = shift
@@ -2862,6 +2862,7 @@ def production_entry_check(request):
 	data2 = zip(name1,clock1,job1,part1)   # Data containing all those on the shift that didn't enter anything on the day
 	request.session["shift_manpower"] = data2
 	db.close()
+	return render(request,"redirect_master.html")
 	return render(request,"redirect_production_entry_fix.html")
 	return render(request,"test71.html",{'data1':data1,'data2':data2})
 
@@ -2886,7 +2887,12 @@ def production_entry_fix(request):
 
 	date1 = request.session['date_prod'] 
 	shift = request.session['shift_prod']
-	# eeee=5/0
+
+	date1='2021-01-06'
+	shift = 'Plant 1 Days'
+
+
+
 	status1 = 'Good'
 	status2 = 'Pending'
 	status3 = 'No Entry'
@@ -2930,7 +2936,14 @@ def production_entry_fix(request):
 			fql2 = cur.fetchall()
 			clock_fix = fql2[0][0]  # Assign clock number of the person
 
-			sql_count= "SELECT COUNT(*) FROM tkb_scheduled where Clock = '%s' and Date1 ='%s'" % (clock_fix,date1)
+			fql = "SELECT Date1 FROM tkb_scheduled WHERE Id = '%s'" % (fix_answer)
+			cur.execute(fql)
+			fql2 = cur.fetchall()
+			date2 = fql2[0][0]  # Assign date  of the person
+
+
+
+			sql_count= "SELECT COUNT(*) FROM tkb_scheduled where Clock = '%s' and Date1 ='%s'" % (clock_fix,date2)
 			cur.execute(sql_count)
 			tmp_count = cur.fetchall()
 			count_fix = int(tmp_count[0][0])  # Number of entries by this person
