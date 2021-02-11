@@ -51,6 +51,7 @@ from views_test import create_scrap_table, test_scrap_production, test_update_bl
 from test_test import table_mod1
 from view_test1 import kiosk_name,update_column
 from mod_test import wildcard_test
+from views_test2 import machine1, prediction1
 # ***********************************************************************************************************************************************************
 
 
@@ -421,6 +422,8 @@ urlpatterns = [
 	url(r'^test_update_blue/', test_update_blue),
 	url(r'^test_update_red/', test_update_red),
 	url(r'^test_update_yellow/', test_update_yellow),
+	url(r'^machine1/', machine1),
+	url(r'^prediction1/', prediction1),
 	
 	# ************************************************************************
 	

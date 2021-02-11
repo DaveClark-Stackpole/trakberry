@@ -21,6 +21,7 @@ from views_routes import direction
 from time import mktime
 from datetime import datetime, date
 from views_db import db_open, db_set,net1
+from views_test2 import prediction1
 from mod_tracking import Graph_Data
 # from datetime import datetime 
 from time import strftime
@@ -94,6 +95,8 @@ def track_data(request,t,u,part,rate):
 	cursor.execute(sql)
 	tmp = cursor.fetchall()	
 	db.close()
+
+
 	gr_list, brk1, brk2, multiplier  = Graph_Data(t,u,m,tmp,mrr)
 	return gr_list
 
@@ -208,6 +211,7 @@ def track_area(request):
 
 	shift_time = t-u
 	shift_left = 28800 - shift_time
+	e = t + shift_left
 	request.session["shift_time"] = shift_time
 
 	# Calculate start of week unix (Monday 00:00am)
@@ -220,9 +224,9 @@ def track_area(request):
 	weekend_start = week_start1 + 43200
 	weekend_current_seconds = t - weekend_start
 
-
 	week_start2 = week_start1 - 604800
 	week_start3 = week_start2 - 604800
+	ew = week_start1 + 604800
 
 	# var1 = 'target' + data_area
 	target = target_area / float(3600) 
@@ -253,21 +257,21 @@ def track_area(request):
 		tmp9 = tmp8[0]
 		weekend_cnt = tmp9[0]
 
-	bql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (week_start1,t,prt,asset1,asset2,asset3,asset4)
+	bql = "SELECT SUM(Count) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (week_start1,t,prt,asset1,asset2,asset3,asset4)
 	cur.execute(bql)
 	tmp8 = cur.fetchall()
 	tmp9 = tmp8[0]
-	week_cnt = tmp9[0]
-	bql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (week_start2,week_start1,prt,asset1,asset2,asset3,asset4)
+	week_cnt = int(tmp9[0])
+	bql = "SELECT SUM(Count) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (week_start2,week_start1,prt,asset1,asset2,asset3,asset4)
 	cur.execute(bql)
 	tmp8 = cur.fetchall()
 	tmp9 = tmp8[0]
-	week_cnt2 = tmp9[0]
-	bql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (week_start3,week_start2,prt,asset1,asset2,asset3,asset4)
+	week_cnt2 = int(tmp9[0])
+	bql = "SELECT SUM(Count) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (week_start3,week_start2,prt,asset1,asset2,asset3,asset4)
 	cur.execute(bql)
 	tmp8 = cur.fetchall()
 	tmp9 = tmp8[0]
-	week_cnt3 = tmp9[0]
+	week_cnt3 = int(tmp9[0])
 
 	u1, wd1, m1, day1, shift1, prev_cnt1 = [],[],[],[],[],[]
 	utemp = u
@@ -331,7 +335,21 @@ def track_area(request):
 	check_area = request.session['data_area']
 	if check_area == 1:
 		request.session["oa1"] = oa
-		request.session["projection1"] = projection
+		
+		# if asset1 == '1533':
+		# 	interval1 = 900
+		# 	m, b, start_count = prediction1(request,u,t,interval1,u)
+		# 	projection = m*e + b
+		# 	projection = projection - start_count
+
+		# 	intervalst = 1610325078
+		# 	interval1 = 2880
+		# 	m, b, start_count = prediction1(request,intervalst,t,interval1,intervalst)
+		# 	week_projection = m*ew + b
+		# 	week_projection = week_projection - start_count
+			
+
+		request.session["projection1"] = int(projection)
 		request.session["count1"] = cnt
 		request.session["week_count1"] = week_cnt
 		request.session["week_projection1"] = week_projection
@@ -340,7 +358,12 @@ def track_area(request):
 		request.session['target1'] = int(target)
 	else:
 		request.session["oa2"] = oa
-		request.session["projection2"] = projection
+		if asset1 == '1533':
+			interval1 = 3600
+			m, b, start_count = prediction1(request,u,t,interval1,u)
+			projection = m*e + b
+			projection = projection - start_count
+		request.session["projection2"] = int(projection)
 		request.session["count2"] = cnt
 		request.session["week_count2"] = week_cnt
 		request.session["week_projection2"] = week_projection

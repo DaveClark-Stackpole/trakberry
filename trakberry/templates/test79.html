@@ -1,0 +1,18 @@
+{% extends "master.html" %}
+
+{% block content %}
+<!-- <meta http-equiv="refresh" content="5; url={{request.session.local_toggle}}/production_entry_check" /> -->
+<br><br><br>
+
+
+<table> 
+
+
+
+		<tr><td bgcolor="#CCDDE3" style="font-size:12px;">Prediction : {{prediction}}  </td></tr>
+		<tr><td bgcolor="#CCDDE3" style="font-size:12px;">Slope : {{m}}  </td></tr>
+		<tr><td bgcolor="#CCDDE3" style="font-size:12px;">Intercept : {{b}}  </td></tr>
+
+	
+	</table>
+{% endblock %}
