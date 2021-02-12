@@ -2597,8 +2597,11 @@ def shift_select(shift):
 
 def production_entry_check(request):
 	date1, shift2 = vacation_set_current5()
-	date1='2021-01-11'
-	shift = 'Plant 1 Days'
+	request.session['tkb_update_date'] = '2021-02-11'
+	date1 = request.session['tkb_update_date']  # Date is date from update program
+	shift = request.session['variable1']  # The shift is retrieved from updater table
+
+	# shift = 'Plant 1 Days'
 	# shift = request.session["variable1"]
 	
 	request.session['date_prod'] = date1
@@ -2885,10 +2888,15 @@ def production_entry_fix(request):
 	# rerun production_entry_check
 	date1, shift2 = vacation_set_current5()
 
+	date1 = request.session['tkb_update_date']  # Date is date from update program
+	shift = request.session['variable1']  # The shift is retrieved from updater table
+
+
+
 	date1 = request.session['date_prod'] 
 	shift = request.session['shift_prod']
 
-	date1='2021-01-06'
+	# date1='2021-01-06'
 	shift = 'Plant 1 Days'
 
 
@@ -2949,10 +2957,10 @@ def production_entry_fix(request):
 			count_fix = int(tmp_count[0][0])  # Number of entries by this person
 
 			new_hrs = int(8 / float(count_fix))
-			cql = ('update tkb_scheduled SET Hrs = "%s" WHERE (Clock="%s" and Date1 = "%s")' % (new_hrs,clock_fix,date1))
+			cql = ('update tkb_scheduled SET Hrs = "%s" WHERE (Clock="%s" and Date1 = "%s")' % (new_hrs,clock_fix,date2))
 			cur.execute(cql)
 			db.commit()
-			cql = ('update tkb_scheduled SET Status = "%s" WHERE (Clock="%s" and Date1 = "%s")' % (status1,clock_fix,date1))
+			cql = ('update tkb_scheduled SET Status = "%s" WHERE (Clock="%s" and Date1 = "%s")' % (status1,clock_fix,date2))
 			cur.execute(cql)
 			db.commit()
 

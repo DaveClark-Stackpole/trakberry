@@ -1221,9 +1221,18 @@ def auto_updater(request):  # This will run every 30 min on the refresh page to 
 	tm = time.localtime(t)
 	hr1 = str(tm[3])
 	min1 = str(tm[4])
-	cur_date  = str(tm[1])+"/"+str(tm[2])+"/"+str(tm[0]) # Sets the current date
+	dy1 = str(tm[2])
+	mn1 = str(tm[1])
+	if len(dy1) == 1:
+		dy1 = '0'+dy1
+	if len(mn1) == 1:
+		mn1 = '0' + mn1
+	if len(hr1)==1:
+		hr1 = '0'+hr1
 	if len(min1) == 1: # Add a 0 if it's less than 10 min so it's the correct length
 		min1 = '0'+min1
+	cur_date  = str(tm[0])+"-"+mn1+"-"+dy1 # Sets the current date
+	
 	cur_time = hr1 + min1
 	update_time = cur_date + " " + hr1 + ":" + min1
 	db, cur = db_set(request)  
@@ -1249,5 +1258,6 @@ def auto_updater(request):  # This will run every 30 min on the refresh page to 
 				request.session['tkb_program'] = program1
 				request.session['variable1'] = variable1
 				request.session['tkb_update_time'] = update_time
+				request.session['tkb_update_date'] = cur_date
 				return render(request,'redirect_program.html')
 	return render(request,'tkb_updater.html')

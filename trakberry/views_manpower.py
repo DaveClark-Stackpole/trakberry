@@ -264,10 +264,15 @@ def matrix_update_v2(request):
 				asset4 = ii[6][:-2]
 				asset5 = ii[7][:-2]
 				asset6 = ii[8][:-2]
-				sig = ii[9]
+				ssig = ii[9][:-2]
+				sig = int(ssig)
+				part1 = ii[10]
+				part2 = ii[11]
+				part3 = ii[12]
+				part4 = ii[13]
 				
 				if sig == 1:
-					sql2= '''SELECT COUNT(*) FROM sc_production1 where comments = "%s" and (asset_num = "%s" or asset_num = "%s" or asset_num = "%s" or asset_num = "%s" or asset_num = "%s" or asset_num = "%s") and partno = "%s"''' % (clock,asset1,asset2,asset3,asset4,asset5,asset6,part1)
+					sql2= '''SELECT COUNT(*) FROM sc_production1 where comments = "%s" and (asset_num = "%s" or asset_num = "%s" or asset_num = "%s" or asset_num = "%s" or asset_num = "%s" or asset_num = "%s") and (partno = "%s" or partno = "%s" or partno = "%s" or partno = "%s")''' % (clock,asset1,asset2,asset3,asset4,asset5,asset6,part1,part2,part3,part4)
 					cur.execute(sql2)
 					tmp3 = cur.fetchall()
 					count1 = tmp3[0][0]
@@ -375,7 +380,7 @@ def trained_email(request):
 		date1, shift2 = vacation_set_current5()
 		cur.execute("""CREATE TABLE IF NOT EXISTS tkb_trained(Id INT PRIMARY KEY AUTO_INCREMENT,Date CHAR(80), Employee CHAR(80), Job CHAR(80))""")
 		db.commit()
-		for x in trained:
+		for x in trained1:
 			cur.execute('''INSERT INTO tkb_trained(Date,Employee,Job) VALUES(%s,%s,%s)''', (date1,x[0],x[1]))
 			db.commit()
 		db.close()
