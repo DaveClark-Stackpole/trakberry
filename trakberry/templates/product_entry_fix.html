@@ -1,0 +1,117 @@
+{% extends "master.html" %}
+
+{% block content %}
+<!-- <meta http-equiv="refresh" content="5; url={{request.session.local_toggle}}/production_entry_check" /> -->
+<form action="" method="post">{% csrf_token %}
+
+<table>
+	<tr>
+		<td style="font-size: 24px; color:rgb(53, 47, 47);border:1px solid rgb(255, 238, 0);background-color:rgb(158, 158, 158);">
+			&nbsp;&nbsp;&nbsp;Date&nbsp;&nbsp;&nbsp;
+		</td>
+		<td style="font-size: 24px; color:rgb(53, 47, 47);border:1px solid rgb(255, 238, 0);background-color:rgb(158, 158, 158);">
+			&nbsp;&nbsp;&nbsp;Note&nbsp;&nbsp;&nbsp;
+		</td>
+		<td style="font-size: 24px; color:rgb(53, 47, 47);border:1px solid rgb(255, 238, 0);background-color:rgb(158, 158, 158);">
+			&nbsp;&nbsp;&nbsp;Employee&nbsp;&nbsp;&nbsp;
+		</td>
+		<td style="font-size: 24px; color:rgb(53, 47, 47);border:1px solid rgb(255, 238, 0);background-color:rgb(158, 158, 158);">
+			&nbsp;&nbsp;&nbsp;Clock&nbsp;&nbsp;&nbsp;
+		</td>
+		<td style="font-size: 24px; color:rgb(53, 47, 47);border:1px solid rgb(255, 238, 0);background-color:rgb(158, 158, 158);">
+			&nbsp;&nbsp;&nbsp;Machine&nbsp;&nbsp;&nbsp;
+		</td>
+		<td style="font-size: 24px; color:rgb(53, 47, 47);border:1px solid rgb(255, 238, 0);background-color:rgb(158, 158, 158);">
+			&nbsp;&nbsp;&nbsp;Job&nbsp;&nbsp;&nbsp;
+		</td>
+		<td style="font-size: 24px; color:rgb(53, 47, 47);border:1px solid rgb(255, 238, 0);background-color:rgb(158, 158, 158);">
+			&nbsp;&nbsp;&nbsp;Part&nbsp;&nbsp;&nbsp;
+		</td>
+		<td style="font-size: 24px; color:rgb(53, 47, 47);border:1px solid rgb(255, 238, 0);background-color:rgb(158, 158, 158);">
+			&nbsp;&nbsp;&nbsp;Hours&nbsp;&nbsp;&nbsp;
+		</td>
+		<td style="font-size: 24px; color:rgb(53, 47, 47);border:1px solid rgb(255, 238, 0);background-color:rgb(158, 158, 158);">
+			&nbsp;&nbsp;&nbsp;Status&nbsp;&nbsp;&nbsp;
+		</td>
+	</tr>
+	{% for i in data %}
+		<tr>
+			<td style="font-size: 24px; color:rgb(196, 196, 196);border:1px solid rgb(255, 238, 0);">
+				&nbsp;&nbsp;&nbsp;{{i.2}}&nbsp;&nbsp;&nbsp;
+			</td>
+			
+				{% if i.1 == '0' %}
+				
+				<td style="font-size: 24px; color:rgb(71, 64, 64);border:1px solid rgb(255, 238, 0);">
+					<button style="column-fill: auto;background-color: rgb(247, 247, 159);border:none;outline:none;"
+						type="submit" name="delete1" value="{{i.0}}" /><b><font style="font-size: 15px";>Not Scheduled</font>
+						</b></button>
+				{% else %}
+				<td style="font-size: 24px; color:rgb(196, 196, 196);border:1px solid rgb(255, 238, 0);">
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				{% endif %}
+			</td>
+			<td style="font-size: 24px; color:rgb(196, 196, 196);border:1px solid rgb(255, 238, 0);">
+				&nbsp;&nbsp;&nbsp;{{i.3}}&nbsp;&nbsp;&nbsp;
+			</td>
+			<td style="font-size: 24px; color:rgb(196, 196, 196);border:1px solid rgb(255, 238, 0);">
+				&nbsp;&nbsp;&nbsp;{{i.4}}&nbsp;&nbsp;&nbsp;
+			</td>
+			<td style="font-size: 24px; color:rgb(196, 196, 196);border:1px solid rgb(255, 238, 0);">
+				&nbsp;&nbsp;&nbsp;{{i.5}}&nbsp;&nbsp;&nbsp;
+			</td>
+			{% if i.6 == 'not a job' %}
+	
+
+			<td style="font-size: 25px; border:1px solid rgb(255, 238, 0);">
+
+
+
+
+<select style="font-size: 15px; border:1px solid rgb(255, 238, 0);color:rgb(71, 64, 64);" id="job7" name="job7">
+<option value="Not a Job" selected disabled>Not a Job</option>
+{% for i in request.session.Jobs7 %}
+<option value="{{ i.0 }}">{{ i.0 }}</option>
+{% endfor %}
+</select>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+				<button style="column-fill: auto;background-color: rgb(241, 157, 241);border:none;outline:none;"
+					type="submit" name="fix_job1" value="{{i.0}}" /><b><font style="font-size: 15px;color:rgb(71, 64, 64);";>&nbsp;Fixed&nbsp;</font>
+					</b></button>
+
+
+			{% else %}
+			<td style="font-size: 24px; color:rgb(196, 196, 196);border:1px solid rgb(255, 238, 0);">
+				&nbsp;&nbsp;&nbsp;{{i.6}}&nbsp;&nbsp;&nbsp;
+			</td>
+			{% endif %}
+			<td style="font-size: 24px; color:rgb(196, 196, 196);border:1px solid rgb(255, 238, 0);">
+				&nbsp;&nbsp;&nbsp;{{i.7}}&nbsp;&nbsp;&nbsp;
+			</td>
+				{% if i.1 == '0' %}
+				<td style="font-size: 24px; color:rgb(65, 66, 62);border:1px solid rgb(255, 238, 0);">
+					<button style="column-fill: auto;background-color: rgb(247, 199, 159);border:none;outline:none;"
+						type="submit" name="pending1" value="{{i.0}}" /><b><font style="font-size: 15px";>&nbsp;&nbsp;&nbsp;Talked To&nbsp;&nbsp;</font>
+						</b></button>
+				{% elif i.10 == 'Hrs Wrong' %}
+				<td style="font-size: 24px; color:rgb(196, 196, 196);border:1px solid rgb(255, 238, 0);">
+					&nbsp;&nbsp;{{i.9}}&nbsp;&nbsp;
+					<button style="column-fill: auto;background-color: rgb(176, 243, 255);border:none;outline:none;"
+						type="submit" name="fix1" value="{{i.0}}" /><b><font style="font-size: 15px;color:rgb(71, 64, 64);";>&nbsp;Fix&nbsp;</font>
+						</b></button>
+				{% else %}
+				<td style="font-size: 24px; color:rgb(196, 196, 196);border:1px solid rgb(255, 238, 0);">
+						&nbsp;&nbsp;&nbsp;{{i.9}}&nbsp;&nbsp;&nbsp;
+				{% endif %}
+			</td>
+			<td style="font-size: 24px; color:rgb(196, 196, 196);border:1px solid rgb(255, 238, 0);">
+				&nbsp;&nbsp;&nbsp;{{i.10}}&nbsp;&nbsp;&nbsp;
+			</td>
+		</tr>
+	{% endfor %}
+</table>
+
+</form>
+
+{% endblock %}
