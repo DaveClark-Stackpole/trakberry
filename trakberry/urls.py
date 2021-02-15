@@ -99,7 +99,7 @@ from views_kiosk import kiosk_production, kiosk_production_entry,flex_test,manua
 from views_kiosk import entry_recent, manual_cycletime_table, tenr_fix2, tenr_fix3,kiosk_hourly_entry,kiosk_initial_9HP,kiosk_initial_6L_Output
 from views_kiosk import kiosk_initial_GF9,kiosk_initial_6L_IN,kiosk_initial_AB1V, kiosk_sub_menu, kiosk_manual, kiosk_kiosk
 from views_kiosk import kiosk_help_form, kiosk_forklift_form, kiosk_scrap, kiosk_scrap_entry, kiosk_scrap_reset #, kiosk_mult_entries
-from views_kiosk import production_entry_check,kiosk_job_furnace,production_entry_fix
+from views_kiosk import production_entry_check,kiosk_job_furnace,production_entry_fix,production_entry_fix_shift
 
 
 # ***********************************************************************************************************************************************************
@@ -120,7 +120,7 @@ from views_production import mgmt,mgmt_login_form,mgmt_logout,mgmt_production_ho
 from views_production import mgmt_users_logins, mgmt_users_logins_edit, mgmt_users_logins_update, mgmt_users_logins_add, mgmt_users_logins_add_new
 from views_production import mgmt_test1,track_10r_data,tracking,track_graph_10r_prev,track_graph_tri_prev, track_graph_prev1,track_graph_prev2
 from views_production import chart1_1467,chart2_1467,chart1_3050,chart2_3050,chart1_0455,chart2_0455,chart1_9341,chart2_9341
-from views_production import chart1_9341_OP30, chart2_9341_OP30
+from views_production import chart1_9341_OP30, chart2_9341_OP30, tracking_10R80
 
 from views4 import ios_test, IsDone, NotDone, target_fix1, medium_production, multidrop, scantest, target_fix1
 from views4 import target_fix_5401, target_fix_5404, target_fix_5399, target_fix_5214, target_fix_3214
@@ -174,22 +174,16 @@ urlpatterns = [
 	url(r'^test668/', test668),
 	url(r'^create/', test),
 	url(r'^new/', new),
-	
 	url(r'^display_time/', display_time),
-	
 	url(r'^tmr/', test_machine_rate),
 	url(r'^fix_shift/', fix_shift),
 	url(r'^sup_message_close/', sup_message_close),
-	
 	url(r'^fade/', fade_in),
 	url(r'^fade2/', fade2),
 	url(r'^ttip/', ttip),
-	
 	url(r'^graph_gf6op/get/(?P<index>\d+)/$', graph_gf6),
-	
 	url(r'^graph_gf6_report/get/(?P<index>\w{0,50})/$', graph_gf6_report),
 	#url(r'^graph_gf6_report/get/(?P<index>\d+)/$', graph_gf6_report),
-	
 	url(r'^graph/', graph),
 	url(r'^graph2/', graph2),
 	url(r'^graph3/', graph3),
@@ -251,13 +245,9 @@ urlpatterns = [
 	url(r'^edit/', edit_part),
 	url(r'^create_table_1/', create_table_1),
 	url(r'^test44/', test44),
-	
 	url(r'^graph_gf6/get/(?P<index>\w{0,50})/$', graph_gf6),
-	
 	url(r'^check_email_problem/', check_email_problem),
-
 	#url(r'^graph_gf6/get/(?P<index>\d+)/$', graph_gf6),
-	
 	url(r'^graph749/', graph749),
 	url(r'^graph748/', graph748),
 	url(r'^graph750/', graph750),
@@ -290,7 +280,6 @@ urlpatterns = [
 	url(r'^jpass/get/(?P<index>\d+)/$', job_pass),
 	url(r'^tech_history/', tech_history),
 	url(r'^tech_history2/', tech_history2),
-	
 	url(r'^tech_recent/', tech_recent),
 	url(r'^tech_recent2/', tech_recent2),
 	url(r'^t1_call/', t1_call),
@@ -346,6 +335,7 @@ urlpatterns = [
 	url(r'^set_rotation/', set_rotation),
 	url(r'^rotation_info_display/', rotation_info_display),
 	url(r'^rotation_matrix/get/(?P<index>\d+)/$', rotation_update),
+
 	                # *******  Scheduling Section   **********
 	url(r'^schedule_set/', schedule_set),
 	url(r'^schedule_rotation_start/', schedule_rotation_start),
@@ -353,15 +343,11 @@ urlpatterns = [
 	url(r'^schedule_set2b/', schedule_set2b),
 	url(r'^schedule_redisplay1/', schedule_redisplay1),
 	#url(r'^schedule_add_job/get/(?P<index>\w{0,50})/$', schedule_add_job),
-	
 	#url(r'^tech/get/complete/(?P<index>\d+)/$', complete),
 	url(r'^training_matrix2/', training_matrix3),
 	url(r'^training_matrix_find/get/(?P<index>\w{0,50})/$', training_matrix_find),
-
-	
 	url(r'^training_matrix_update_all/', training_matrix_update_all),
 	url(r'^full_update/', full_update),
-	
 	# ************************************************************************
 	
 	# **************  Testing Section ***************************************
@@ -378,12 +364,10 @@ urlpatterns = [
 	url(r'^target_fix_3214/', target_fix_3214),
 	url(r'^multidrop/', multidrop),
 	url(r'^scantest/', scantest),
-
 	url(r'^ios_test/', ios_test),
 	url(r'^medium_production/', medium_production),
 	url(r'^IsDone/', IsDone),
 	url(r'^NotDone/', NotDone),
-	
 	url(r'^form_robot_machine_enter/', form_robot_machine_enter),
 	url(r'^display_robot_machine/', display_robot_machine),
 	url(r'^machine_list_display/', machine_list_display),
@@ -403,7 +387,6 @@ urlpatterns = [
 	url(r'^layer_test/', layer_test),
 	url(r'^layer_entry/', layer_entry),
 	url(r'^layer_transfer_temp/', layer_transfer_temp),
-	
 	url(r'^layer_choice/', layer_choice),
 	url(r'^layer_select/', layer_select),
 	url(r'^layer_audit_check_reset/', layer_audit_check_reset),
@@ -424,7 +407,6 @@ urlpatterns = [
 	url(r'^test_update_yellow/', test_update_yellow),
 	url(r'^machine1/', machine1),
 	url(r'^prediction1/', prediction1),
-	
 	# ************************************************************************
 	
 	# **************  Kiosk Section ***************************************
@@ -460,7 +442,7 @@ urlpatterns = [
 	url(r'^kiosk_job_furnace/', kiosk_job_furnace),
 	url(r'^production_entry_check/', production_entry_check),
 	url(r'^production_entry_fix/', production_entry_fix),
-
+	url(r'^production_entry_fix_shift/get/(?P<index>[\w|\W]+)', production_entry_fix_shift),
 
 	url(r'^tenr2/', tenr2),
 	url(r'^trilobe/', trilobe),
@@ -479,6 +461,9 @@ urlpatterns = [
 	url(r'^tenr_fix3/', tenr_fix3),
 	url(r'^manual_cycletime_table/', manual_cycletime_table),
 	url(r'^ab1v_manpower/', ab1v_manpower),
+
+
+
 
 	# ************************************************************************
 		# **************  Manpower Section ***************************************
@@ -514,6 +499,7 @@ urlpatterns = [
 	url(r'^track_10r/', track_10r),
 	url(r'^track_10r_data/', track_10r_data),
 	url(r'^tracking/', tracking),
+	url(r'^tracking_10R80/', tracking_10R80),
 	url(r'^track_graph_10r_prev/get/(?P<index>\d+)/$', track_graph_10r_prev),
 	url(r'^track_graph_tri_prev/get/(?P<index>\d+)/$', track_graph_tri_prev),
 	url(r'^track_graph_prev1/get/(?P<index>\d+)/$', track_graph_prev1),

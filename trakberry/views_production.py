@@ -370,12 +370,68 @@ def track_area(request):
 		request.session["week_count2a"] = week_cnt2
 		request.session["week_count2b"] = week_cnt3
 		request.session['target2'] = int(target)
-
 	gr_list = track_data(request,t,u,prt,rate1) # Get the Graph Data
 	data1 = zip(u1,wd1,m1,day1,shift1,prev_cnt1)
-
-	
 	return data1, gr_list
+
+def track_area80(request):
+	data_area = request.session['data_area'] # Data for 1 or 2 chart
+	target_area = int(request.session['rate_area'])
+	prt = request.session['part_area']
+	rate1 = request.session['rate_area']
+	asset1 = request.session['asset1_area']
+	asset2 = request.session['asset2_area']
+	asset3 = request.session['asset3_area']
+	asset4 = request.session['asset4_area']
+	target = rate1
+
+	t=int(time.time())
+	# t=int(1610761821)  # Temporary time.   just force it for this time
+	x = int(t - 489600)
+	tm = time.localtime(t)
+	request.session["time"] = t
+	shift_start = -2
+	current_shift = 3
+	if tm[3]<22 and tm[3]>=14:
+		shift_start = 14
+	elif tm[3]<14 and tm[3]>=6:
+		shift_start = 6
+	cur_hour = tm[3]
+	if cur_hour == 22:
+		cur_hour = -1
+	u = t - (((cur_hour-shift_start)*60*60)+(tm[4]*60)+tm[5])    # Starting unix of shift
+
+	shift_time = t-u
+	shift_left = 28800 - shift_time
+	e = t + shift_left
+	request.session["shift_time"] = shift_time
+
+	target = target_area / float(3600) 
+	target = shift_time * target
+
+	wd, m, day, shift = day_breakdown(u)
+	request.session['wd'] = wd
+	request.session['m'] = m
+	request.session['shift'] = shift
+	request.session['day'] = day
+
+	db, cur = db_set(request)
+	aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (u,t,prt,asset1,asset2,asset3,asset4)
+	cur.execute(aql)
+	tmp2 = cur.fetchall()
+	tmp3 = tmp2[0]
+	cnt = tmp3[0]
+
+	db.close()
+
+	current_rate = cnt / float(shift_time)
+
+	oa = cnt / float(target)
+	oa = (int(oa * 10000)) / float(100)
+	check_area = request.session['data_area']
+
+	gr_list = track_data(request,t,u,prt,rate1) # Get the Graph Data
+	return gr_list
 
 
 def track_10r(request):
@@ -755,6 +811,74 @@ def tracking(request):
 		data2, gr_list2 = track_area(request)
 
 	return render(request, "track.html",{'GList':gr_list1,"datax":data1,'GList2':gr_list2, "datax2":data2})
+
+def tracking_10R80(request):
+	# net1(request)   # Sets the app to server or local
+	request.session['area4'] = '50-9341 Finishing'
+	request.session['data_area'] =4 # Data for 1 or 2 chart
+	request.session['target_area'] = 4
+	request.session['part_area'] = '50-9341'
+	request.session['part_area1'] = '50-9341'
+	request.session['rate_area'] = 400
+	request.session['rate_area1'] = 400
+	request.session['asset1_area'] = '1533'
+	request.session['asset2_area'] = '1533'
+	request.session['asset3_area'] = '1533'
+	request.session['asset4_area'] = '1533'
+	request.session['asset1_area1'] = '1533'
+	request.session['asset2_area1'] = '1533'
+	request.session['asset3_area1'] = '1533'
+	request.session['asset4_area1'] = '1533'
+	gr_list1 = track_area80(request)
+	request.session['area1'] = '50-9341 OP 30 Oil Hole'
+	request.session['data_area'] =1 # Data for 1 or 2 chart
+	request.session['target_area'] = 1
+	request.session['part_area'] = '50-9341'
+	request.session['part_area2'] = '50-9341'
+	request.session['rate_area'] = 400
+	request.session['rate_area2'] = 400
+	request.session['asset1_area'] = '1502'
+	request.session['asset2_area'] = '1507'
+	request.session['asset3_area'] = '1539'
+	request.session['asset4_area'] = '1540'
+	request.session['asset1_area2'] = '1502'
+	request.session['asset2_area2'] = '1507'
+	request.session['asset3_area2'] = '1539'
+	request.session['asset4_area2'] = '1540'
+	gr_list2 = track_area80(request)
+	request.session['area2'] = '50-9341 OP 80 Grinding'
+	request.session['data_area'] =2 # Data for 1 or 2 chart
+	request.session['target_area'] = 2
+	request.session['part_area'] = '50-9341'
+	request.session['part_area1'] = '50-9341'
+	request.session['rate_area'] = 400
+	request.session['rate_area1'] = 400
+	request.session['asset1_area'] = '1510'
+	request.session['asset2_area'] = '1510'
+	request.session['asset3_area'] = '1527'
+	request.session['asset4_area'] = '1527'
+	request.session['asset1_area1'] = '1510'
+	request.session['asset2_area1'] = '1510'
+	request.session['asset3_area1'] = '1527'
+	request.session['asset4_area1'] = '1527'
+	gr_list3 = track_area80(request)
+	request.session['area3'] = '50-9341 OP 110 Polishing'
+	request.session['data_area'] =3 # Data for 1 or 2 chart
+	request.session['target_area'] = 3
+	request.session['part_area'] = '50-9341'
+	request.session['part_area2'] = '50-9341'
+	request.session['rate_area'] = 400
+	request.session['rate_area2'] = 400
+	request.session['asset1_area'] = '1511'
+	request.session['asset2_area'] = '1511'
+	request.session['asset3_area'] = '1528'
+	request.session['asset4_area'] = '1528'
+	request.session['asset1_area2'] = '1511'
+	request.session['asset2_area2'] = '1511'
+	request.session['asset3_area2'] = '1528'
+	request.session['asset4_area2'] = '1528'
+	gr_list4 = track_area80(request)
+	return render(request, "track_10R80.html",{'GList':gr_list1,'GList2':gr_list2,'GList3':gr_list3,'GList4':gr_list4})
 
 def chart1_1467(request):
 		request.session['area1'] = '50-1467 Inspection'

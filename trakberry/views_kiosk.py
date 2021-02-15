@@ -2597,9 +2597,20 @@ def shift_select(shift):
 
 def production_entry_check(request):
 	date1, shift2 = vacation_set_current5()
-	request.session['tkb_update_date'] = '2021-02-11'
+
+	# Comment below line when running from server update program
+	request.session['tkb_update_date'] = '2021-01-15' # Put this in temporarily to force check
+
 	date1 = request.session['tkb_update_date']  # Date is date from update program
 	shift = request.session['variable1']  # The shift is retrieved from updater table
+
+	# dw between 0 and 4 for weekday if not reroute back to auto_updater
+	dt = datetime.datetime.strptime(date1, '%Y-%m-%d')
+	dt2 = time.mktime(dt.timetuple())
+	dt3 = time.localtime(dt2)
+	dw = dt3[6]
+	if dw > 4:
+		return render(request,"redirect_auto_updater.html")  # This will actually go back to updater on final product
 
 	# shift = 'Plant 1 Days'
 	# shift = request.session["variable1"]
@@ -2608,6 +2619,7 @@ def production_entry_check(request):
 	request.session['shift_prod'] = shift
 	status3 = 'Pending'
 	status4 = 'No Entry'
+	status5 = 'Good'
 
 	# shift = request.session["production_shift"]
 	shift4 = shift_select(shift)
@@ -2630,13 +2642,30 @@ def production_entry_check(request):
 	# maybe some type of calander calculator 
 
 
-	# Old Pending gets changed back to No Entry
+	# The below section should recheck the pending people to see if they've updated
+	sql="SELECT * FROM tkb_scheduled where (Status='%s' and Shift= '%s')" % (status3,shift)
+	cur.execute(sql)
+	tmp_all = cur.fetchall()
+	for i in tmp_all:
+		clock7 = i[4]
+		date7 = i[2]
+		sql_count= "SELECT COUNT(*) FROM sc_production1 where comments = '%s' and pdate ='%s'" % (clock7,date7)
+		cur.execute(sql_count)
+		tmp7= cur.fetchall()
+		count7 = int(tmp7[0][0])
+		if count7 > 0 :
+			cql = ('update tkb_scheduled SET Status = "%s" WHERE (Clock="%s" and Date1 = "%s")' % (status5,clock7,date7))
+			cur.execute(cql)
+			db.commit()
+		else:
+			cql = ('update tkb_scheduled SET Status = "%s" WHERE (Clock="%s" and Date1 = "%s")' % (status4,clock7,date7))
+			cur.execute(cql)
+			db.commit()
+
+	# Right now it just makes them No Entry again
 	cql = ('update tkb_scheduled SET Status = "%s" WHERE (Status="%s" and Shift = "%s")' % (status4,status3,shift))
 	cur.execute(cql)
 	db.commit()
-
-
-
 
 	sql = "SELECT * FROM tkb_manpower where Shift = '%s'" %(shift)
 	cur.execute(sql)
@@ -2859,15 +2888,65 @@ def production_entry_check(request):
 			cur.execute('''INSERT INTO tkb_scheduled(Id1,Date1,Employee,Clock,Job,Hrs,Shift,Asset,Part,Status,Shift_Mod) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)''', (x[4],date1,nm,clock_num,x[0],x[1],shift,x[2],x[3],complete1,x[5]))
 			db.commit()
 
-		
-
 	data1 = zip(name_good,clock_good,job_good,part_good,hrs_good,asset_good,part_qty)
 	data2 = zip(name1,clock1,job1,part1)   # Data containing all those on the shift that didn't enter anything on the day
 	request.session["shift_manpower"] = data2
 	db.close()
-	return render(request,"redirect_master.html")
+
+
+	# Email the link to Supervisor in question.
+	production_fix_email(request)
+
+	return render(request,"redirect_auto_updater.html")
+	return render(request,"redirect_master.html")  # This will actually go back to updater on final product
 	return render(request,"redirect_production_entry_fix.html")
 	return render(request,"test71.html",{'data1':data1,'data2':data2})
+
+def production_fix_email(request):
+	try:
+		shift = request.session['variable1']
+	except:
+		shift = ''
+	if len(shift) > 0 :
+		b = "\r\n"
+		# Determin who to send email to 
+		# if shift == 'Plant 1 Days':
+		# 	toaddrs = ["sbrownlee@stackpole.com","dclark@stackpole.com"]
+		# elif shift == 'Plant 1 Mid':
+		# 	toaddrs = ["jreid@stackpole.com","dclark@stackpole.com"]
+		# elif shift == 'Plant 1 Aft':
+		# 	toaddrs = ["kfrey@stackpole.com","dhawthorn@stackpole.com","dclark@stackpole.com"]
+		# elif shift == 'Plant 3 Days':
+		# 	toaddrs = ["kedwards@stackpole.com","gpackham@stackpole.com"]
+		# elif shift == 'Plant 3 Aft':
+		# 	toaddrs = ["ashoemaker@stackpole.com","gpackham@stackpole.com"]
+		# elif shift == 'Plant 3 Mid':
+		# 	toaddrs = ["gharvey@stackpole.com","gpackham@stackpole.com"]
+
+		toaddrs = ["dave7995@gmail.com"]
+		fromaddr = 'stackpole@stackpole.com'
+		frname = 'Dave'
+		server = SMTP('smtp.gmail.com', 587)
+		server.ehlo()
+		server.starttls()
+		server.ehlo()
+		server.login('StackpolePMDS@gmail.com', 'stacktest6060')
+		message_subject = 'Production Entry Verification Needed'
+		message3 = "Click the link below to resolve the improper production entries." 
+		message = "From: %s\r\n" % frname + "To: %s\r\n" % ', '.join(toaddrs) + "Subject: %s\r\n" % message_subject + "\r\n" 
+		var2 = request.session['variable1']
+		var3 = (var2.replace(' ','*'))
+		message2 = "http://localhost:8080/production_entry_fix_shift/get/" + var3
+		message = message + "\r\n\r\n" + message3 + "\r\n\r\n" + "\r\n\r\n" + message2
+
+		server.sendmail(fromaddr, toaddrs, message)
+		server.quit()
+	return
+
+def production_entry_fix_shift(request,index):
+	shift2 = (index.replace('*',' '))
+	request.session['variable1'] = shift2
+	return render(request,"redirect_production_entry_fix.html")
 
 def production_duplicate_fix(request,date1):
 	db, cur = db_set(request)
@@ -2879,27 +2958,20 @@ def production_duplicate_fix(request,date1):
 		dql = ('DELETE FROM sc_production1 WHERE id < "%d" and asset_num = "%s" and partno = "%s" and actual_produced ="%s" and comments = "%s" and shift_hours_length = "%s"' %(x[0],x[1],x[3],x[4],x[9],x[12]))
 		cur.execute(dql)
 		db.commit()
-
 	return
 
+
 def production_entry_fix(request):
-	# do the fix
-	# delete all entries in tkb_scheduled with date and shift
-	# rerun production_entry_check
 	date1, shift2 = vacation_set_current5()
 
 	date1 = request.session['tkb_update_date']  # Date is date from update program
 	shift = request.session['variable1']  # The shift is retrieved from updater table
 
-
-
 	date1 = request.session['date_prod'] 
-	shift = request.session['shift_prod']
+	# shift = request.session['shift_prod']
 
 	# date1='2021-01-06'
-	shift = 'Plant 1 Days'
-
-
+	# shift = 'Plant 1 Days'
 
 	status1 = 'Good'
 	status2 = 'Pending'
@@ -2912,8 +2984,7 @@ def production_entry_fix(request):
 	# db.commit()
 	# db.close()
 
-
-	sql = "SELECT * FROM tkb_scheduled WHERE Shift = '%s' and Status != '%s' and Status != '%s' ORDER BY %s %s, %s %s" %(shift,status1,status2,'Status','DESC','Employee','ASC')
+	sql = "SELECT * FROM tkb_scheduled WHERE Shift = '%s' and Status != '%s' and Status != '%s' ORDER BY %s %s, %s %s, %s %s" %(shift,status1,status2,'Date1','DESC','Status','DESC','Employee','ASC')
 	cur.execute(sql)
 	tmp=cur.fetchall()
 	area = shift_area(shift)
@@ -2949,8 +3020,6 @@ def production_entry_fix(request):
 			fql2 = cur.fetchall()
 			date2 = fql2[0][0]  # Assign date  of the person
 
-
-
 			sql_count= "SELECT COUNT(*) FROM tkb_scheduled where Clock = '%s' and Date1 ='%s'" % (clock_fix,date2)
 			cur.execute(sql_count)
 			tmp_count = cur.fetchall()
@@ -2964,21 +3033,22 @@ def production_entry_fix(request):
 			cur.execute(cql)
 			db.commit()
 
-		elif fix_job > 0:
+		elif fix_job > 0 and new_job != None:
 			# update the Job to correct one
 			cql = ('update tkb_scheduled SET Job = "%s" WHERE (Id="%s")' % (new_job,fix_job))
 			cur.execute(cql)
 			db.commit()
 
-			fql = "SELECT Employee,Clock FROM tkb_scheduled WHERE Id = '%s'" % (fix_job)
+			fql = "SELECT Employee,Clock,Date1 FROM tkb_scheduled WHERE Id = '%s'" % (fix_job)
 			cur.execute(fql)
 			fql2 = cur.fetchall()
 			clock_num = fql2[0][1]  # Assign clock number of the person
 			nm = fql2[0][0]
+			date2 = fql2[0][2]
 			request.session['clock_num'] = clock_num
 			request.session['nm'] = nm
 
-			production_entry_check2(request)
+			production_entry_check2(request,date2)
 
 		return render(request,"redirect_production_entry_fix.html")
 	else:
@@ -2988,10 +3058,10 @@ def production_entry_fix(request):
 	args['form'] = form
 
 
-	return render(request,"test73.html",{'data':tmp,'args':args})
+	return render(request,"product_entry.html",{'data':tmp,'args':args})
 
-def production_entry_check2(request):
-	date1 = request.session['date_prod'] 
+def production_entry_check2(request,date1):
+	# date1 = request.session['date_prod'] 
 	shift = request.session['shift_prod'] 
 	clock_num = request.session['clock_num']
 	status1 = 'Good'
@@ -3051,7 +3121,6 @@ def production_entry_check2(request):
 	cql = ('update tkb_scheduled SET Status = "%s" WHERE (Clock="%s" and Date1 = "%s")' % (status1,clock_num,date1))
 	cur.execute(cql)
 	db.commit()
-
 	db.close()
-
 	return
+
