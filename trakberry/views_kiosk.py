@@ -2599,7 +2599,7 @@ def production_entry_check(request):
 	date1, shift2 = vacation_set_current5()
 
 	# Comment below line when running from server update program
-	request.session['tkb_update_date'] = '2021-01-15' # Put this in temporarily to force check
+	# request.session['tkb_update_date'] = '2021-01-15' # Put this in temporarily to force check
 
 	date1 = request.session['tkb_update_date']  # Date is date from update program
 	shift = request.session['variable1']  # The shift is retrieved from updater table
@@ -3009,6 +3009,17 @@ def production_entry_fix(request):
 		fix_job = request.POST.get('fix_job1')
 
 		if status_answer > 0:
+			cur.execute("""CREATE TABLE IF NOT EXISTS tkb_scheduled_missed(Id INT PRIMARY KEY AUTO_INCREMENT,Date CHAR(80), Employee CHAR(80),Clock CHAR(80), Shift Char(80))""")
+			db.commit()
+			fql = "SELECT * FROM tkb_scheduled WHERE Id = '%s'" % (status_answer)
+			cur.execute(fql)
+			fql2 = cur.fetchall()
+			date9 = fql2[0][2]
+			employee9 = fql2[0][3]
+			clock9 = fql2[0][4]
+			shift9 = fql2[0][8]
+			cur.execute('''INSERT INTO tkb_scheduled_missed(Date,Employee,Clock,Shift) VALUES(%s,%s,%s,%s)''', (date9,employee9,clock9,shift9))
+			db.commit()
 			status2 = 'Pending'
 			cql = ('update tkb_scheduled SET Status = "%s" WHERE Id ="%s"' % (status2,status_answer))
 			cur.execute(cql)
@@ -3016,9 +3027,15 @@ def production_entry_fix(request):
 		elif delete_answer > 0:
 			cur.execute("""CREATE TABLE IF NOT EXISTS tkb_scheduled_off(Id INT PRIMARY KEY AUTO_INCREMENT,Date CHAR(80), Employee CHAR(80),Clock CHAR(80), Shift Char(80))""")
 			db.commit()
-
-			# cur.execute('''INSERT INTO tkb_scheduled_off(Date,Employee,Shift) VALUES(%s,%s,%s)''', (date1,employee,shift)
-			# db.commit()
+			fql = "SELECT * FROM tkb_scheduled WHERE Id = '%s'" % (delete_answer)
+			cur.execute(fql)
+			fql2 = cur.fetchall()
+			date9 = fql2[0][2]
+			employee9 = fql2[0][3]
+			clock9 = fql2[0][4]
+			shift9 = fql2[0][8]
+			cur.execute('''INSERT INTO tkb_scheduled_off(Date,Employee,Clock,Shift) VALUES(%s,%s,%s,%s)''', (date9,employee9,clock9,shift9))
+			db.commit()
 			dql = ('DELETE FROM tkb_scheduled WHERE Id = "%s"' %(delete_answer))
 			cur.execute(dql)
 			db.commit()
