@@ -3014,6 +3014,11 @@ def production_entry_fix(request):
 			cur.execute(cql)
 			db.commit()
 		elif delete_answer > 0:
+			cur.execute("""CREATE TABLE IF NOT EXISTS tkb_scheduled_off(Id INT PRIMARY KEY AUTO_INCREMENT,Date CHAR(80), Employee CHAR(80),Clock CHAR(80), Shift Char(80))""")
+			db.commit()
+
+			# cur.execute('''INSERT INTO tkb_scheduled_off(Date,Employee,Shift) VALUES(%s,%s,%s)''', (date1,employee,shift)
+			# db.commit()
 			dql = ('DELETE FROM tkb_scheduled WHERE Id = "%s"' %(delete_answer))
 			cur.execute(dql)
 			db.commit()
