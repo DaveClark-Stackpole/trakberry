@@ -2910,26 +2910,26 @@ def production_fix_email(request):
 	if len(shift) > 0 :
 		b = "\r\n"
 		# Determine who to send email to 
-		# if shift == 'Plant 1 Days':
-		# 	toaddrs = ["sbrownlee@stackpole.com","dclark@stackpole.com"]
-		# elif shift == 'Plant 1 Mid':
-		# 	toaddrs = ["jreid@stackpole.com","dclark@stackpole.com"]
-		# elif shift == 'Plant 1 Aft':
-		# 	toaddrs = ["kfrey@stackpole.com","dhawthorn@stackpole.com","dclark@stackpole.com"]
-		# elif shift == 'Plant 3 Days':
-		# 	toaddrs = ["kedwards@stackpole.com","gpackham@stackpole.com"]
-		# elif shift == 'Plant 3 Aft':
-		# 	toaddrs = ["ashoemaker@stackpole.com","gpackham@stackpole.com"]
-		# elif shift == 'Plant 3 Mid':
-		# 	toaddrs = ["gharvey@stackpole.com","gpackham@stackpole.com"]
-		# elif shift == 'Plant4 Day':
-		# 	toaddrs = ["asmith@stackpole.com","pmurphy@stackpole.com","dmilne@stackpole.com"]
-		# elif shift == 'Plant 4 Mid':
-		# 	toaddrs = ["rbraim@stackpole.com","pstreet@stackpole.com","dmilne@stackpole.com"]
-		# elif shift == 'Plant 4 Aft':
-		# 	toaddrs = ["rbraim@stackpole.com","pstreet@stackpole.com","asmith@stackpole.com","pmurphy@stackpole.com","dmilne@stackpole.com"]
+		if shift == 'Plant 1 Days':
+			toaddrs = ["sbrownlee@stackpole.com","dclark@stackpole.com"]
+		elif shift == 'Plant 1 Mid':
+			toaddrs = ["jreid@stackpole.com","dclark@stackpole.com"]
+		elif shift == 'Plant 1 Aft':
+			toaddrs = ["kfrey@stackpole.com","dhawthorn@stackpole.com","dclark@stackpole.com"]
+		elif shift == 'Plant 3 Days':
+			toaddrs = ["kedwards@stackpole.com","gpackham@stackpole.com"]
+		elif shift == 'Plant 3 Aft':
+			toaddrs = ["ashoemaker@stackpole.com","gpackham@stackpole.com"]
+		elif shift == 'Plant 3 Mid':
+			toaddrs = ["gharvey@stackpole.com","gpackham@stackpole.com"]
+		elif shift == 'Plant4 Day':
+			toaddrs = ["asmith@stackpole.com","pmurphy@stackpole.com","dmilne@stackpole.com"]
+		elif shift == 'Plant 4 Mid':
+			toaddrs = ["rbraim@stackpole.com","pstreet@stackpole.com","dmilne@stackpole.com"]
+		elif shift == 'Plant 4 Aft':
+			toaddrs = ["rbraim@stackpole.com","pstreet@stackpole.com","asmith@stackpole.com","pmurphy@stackpole.com","dmilne@stackpole.com"]
 
-		toaddrs = ["dclark@stackpole.com"]
+		# toaddrs = ["dclark@stackpole.com"]
 		fromaddr = 'stackpole@stackpole.com'
 		frname = 'Dave'
 		server = SMTP('smtp.gmail.com', 587)
@@ -2942,8 +2942,8 @@ def production_fix_email(request):
 		message = "From: %s\r\n" % frname + "To: %s\r\n" % ', '.join(toaddrs) + "Subject: %s\r\n" % message_subject + "\r\n" 
 		var2 = request.session['variable1']
 		var3 = (var2.replace(' ','*'))
-		message2 = "http://localhost:8080/production_entry_fix_shift/get/" + var3
-		# message2 = "http://pmdsdata.stackpole.ca:8986/trakberry/production_entry_fix_shift/get/" + var3
+		# message2 = "http://localhost:8080/production_entry_fix_shift/get/" + var3
+		message2 = "http://pmdsdata.stackpole.ca:8986/trakberry/production_entry_fix_shift/get/" + var3
 
 		message = message + "\r\n\r\n" + message3 + "\r\n\r\n" + "\r\n\r\n" + message2
 
