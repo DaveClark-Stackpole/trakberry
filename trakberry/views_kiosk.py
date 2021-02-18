@@ -2974,7 +2974,7 @@ def production_entry_fix(request):
 
 	# date1 = request.session['tkb_update_date']  # Date is date from update program
 	shift = request.session['variable1']  # The shift is retrieved from updater table
-
+	request.session['shift_prod'] = shift
 	# date1 = request.session['date_prod'] 
 	# shift = request.session['shift_prod']
 
