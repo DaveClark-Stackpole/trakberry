@@ -6,6 +6,7 @@ from views_db import db_open, db_set, net1
 from views_mod1 import find_current_date
 from views_mod2 import seperate_string, create_new_table,generate_string,generate_full_string
 from views_email import e_test
+from views_production import wfp,prioritize
 from views_vacation import vacation_temp, vacation_set_current, vacation_set_current2
 from views_supervisor import supervisor_tech_call
 from trakberry.views_testing import machine_list_display
@@ -58,6 +59,7 @@ def maint_mgmt(request):
 	
 	
 	wfp='WFP'
+	project = 'Project'
 	
 	# start_stamp = int(time.mktime(hh.timetuple()))
 	# time_dif = int((t - start_stamp) / float(60))
@@ -196,7 +198,7 @@ def maint_mgmt(request):
 	args.update(csrf(request))
 	args['form'] = form
 
-	return render(request, "maint_mgmt.html",{'index':new_tmp,'wfp':wfp,'args':args})
+	return render(request, "maint_mgmt.html",{'index':new_tmp,'wfp':wfp,'project':project,'args':args})
 
 # Login for Maintenance Manager App
 def maint_mgmt_login_form(request):
@@ -351,6 +353,7 @@ def maintenance_edit(request):
 			cur.execute(tql)
 			db.commit()
 			db.close()
+			prioritize(request)
 			return render(request,'redirect_maint_mgmt.html')  # Need to bounce out to an html and redirect back into a module otherwise infinite loop
 
 
@@ -358,6 +361,7 @@ def maintenance_edit(request):
 			request.session["bounce"] = 1
 			return render(request,'redirect_maint_edit.html')  # Need to bounce out to an html and redirect back into a module otherwise infinite loop
 
+		
 		return render(request,'redirect_maint_mgmt.html')  # Need to bounce out to an html and redirect back into a module otherwise infinite loop
 
 	else:

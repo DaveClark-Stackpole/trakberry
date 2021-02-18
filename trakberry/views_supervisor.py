@@ -6,6 +6,7 @@ from trakberry.views import done
 from views2 import main_login_form
 from views_mod1 import find_current_date
 from mod1 import hyphon_fix
+from views_production import prioritize, wfp
 from trakberry.views2 import login_initial
 from trakberry.views_testing import machine_list_display
 from trakberry.views_vacation import vacation_temp, vacation_set_current, vacation_set_current2
@@ -140,10 +141,8 @@ def supervisor_display(request):
 	d1 = '2015-05-01'
 	d2 = '2015-07-01'
 	SQ_Sup = "SELECT * FROM pr_downtime1 where closed IS NULL" 
-
 	cursor.execute(SQ_Sup)
 	tmp = cursor.fetchall()
-	
 	ctr = 0
 	for x in tmp:
 	
@@ -427,12 +426,12 @@ def supervisor_maint_call(request):
 	
 def supervisor_down(request):	
 	
-
 	if request.POST:
 
 		machinenum = request.POST.get("machine")
 		problem = request.POST.get("reason")
 		priority = request.POST.get("priority")
+		priority = 1
 		whoisonit = request.session["whoisonit"]
 		
 		# take comment into tx and ensure no "" exist.  If they do change them to ''
@@ -520,7 +519,7 @@ def supervisor_down(request):
 			db.commit()
 			db.close()
 
-		
+		prioritize(request)
 		return done(request)
 		
 	else:
@@ -624,6 +623,28 @@ def supervisor_edit(request):
 		nm.append(tx)
 
 
+	# Determing linking Part
+	asset1 = tmp2[0][:4]
+	try:
+		test1 = int(asset1)
+	except:
+		asset1 = asset1[:3]
+	try:
+		tmp_asset2 = 1
+		n = 'None'
+		sql1 = "SELECT Max(id) FROM sc_production1 where left(asset_num,4) = '%s' and partno != '%s'" %(asset1,n)
+		cursor.execute(sql1)
+		tmp_asset = cursor.fetchall()
+		tmp_asset2 = tmp_asset[0][0]
+
+		sql1 = "SELECT partno FROM sc_production1 where id = '%s'" % (tmp_asset2)
+		cursor.execute(sql1)
+		tmp_part = cursor.fetchall()
+		part2 = tmp_part[0][0]
+		part2 = part2[:7]
+	except:
+		part2 = 'None'
+	request.session["priority_part"] = part2
 	db.close()	
 	
 	if request.POST:
@@ -631,11 +652,55 @@ def supervisor_edit(request):
 		machinenum = request.POST.get("machine")
 		problem = request.POST.get("reason")
 		priority = request.POST.get("priority")
+		part = request.POST.get("part")
 		whoisonit = 'tech'
-		
+		asset1 = machinenum
+		try:
+			test1 = int(asset1)
+		except:
+			asset1 = asset1[:3]
+		part = str(part)
+		asset1 = str(asset1)
+		if part != part2:
+			db, cur = db_set(request)
+			if part2 != 'None':
+				sql1 = "SELECT Max(id) FROM sc_production1 where left(asset_num,4) = '%s'" %(asset1)
+				cur.execute(sql1)
+				tmp_asset = cur.fetchall()
+				tmp_asset2 = tmp_asset[0][0]
+				sql = ('update sc_production1 SET partno="%s" WHERE id ="%s"' % (part,tmp_asset2))
+				cur.execute(sql)
+				db.commit()
+			else:
+				sql2 = "SELECT asset_num,partno,actual_produced,shift_hours_length,down_time,comments,shift,pdate,machine,scrap,More_than_2_percent,total,target,planned_downtime_min_forshift,sheet_id,Updated,low_production,manual_sent,kiosk_id FROM sc_production1 ORDER BY id DESC LIMIT 1"
+				cur.execute(sql2)
+				tmp4 = cur.fetchall()
+				tmp2 = tmp4[0]
+				a0 = tmp2[0]
+				a1 = tmp2[1]
+				a2 = tmp2[2]
+				a3 = tmp2[3]
+				a4 = tmp2[4]
+				a5 = tmp2[5]
+				a6 = tmp2[6]
+				a7 = tmp2[7]
+				a8 = tmp2[8]
+				a9 = tmp2[9]
+				a10 = tmp2[10]
+				a11 = tmp2[11]
+				a12 = tmp2[12]
+				a13 = tmp2[13]
+				a14 = tmp2[14]
+				a15 = tmp2[15]
+				a16 = tmp2[16]
+				a17 = tmp2[17]
+				a18 = tmp2[18]
+				cur.execute('''INSERT INTO sc_production1(asset_num,partno,actual_produced,shift_hours_length,down_time,comments,shift,pdate,machine,scrap,More_than_2_percent,total,target,planned_downtime_min_forshift,sheet_id,Updated,low_production,manual_sent,kiosk_id) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)''', (asset1,part,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18))
+				db.commit()
+			db.close()
+
 		a = request.POST
 		b=int(a.get("one"))
-		
 		var1 = no_duplicate(priority)
 		priority = str(var1)
 
@@ -682,6 +747,7 @@ def supervisor_edit(request):
 			db.commit()
 			db.close()
 		
+		prioritize(request)
 		if b==-1:
 			return done_sup_close(request)
 		
@@ -2223,3 +2289,4 @@ def tech_report_email():
 	
 	db.close()
 	return
+

@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Priorities</title>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+  <script src="//code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+</head>
+<body>
+<form action="" method="post">{% csrf_token %}
+	<input type="hidden" name="key" value="{{ election.key }}">
+	<input type="hidden" name="uuid" value="{{ uuid }}">
+	<input type='hidden' name='thedata' id='thedata'>
+	<font style="color:rgb(255, 255, 255)">
+	<div id="ballot" class="center">
+		<ol id="sortable" class="rankings">
+			<li id='ranking_1' class="ranking" style="background-color: #000000;border-radius: 10px;
+			border-style:inset;border-color: rgb(243, 255, 80);width:150px;height:25px;font-weight: 600;"><center>50-6686</center></li>
+			<li id='ranking_2' class="ranking" style="background-color: #000000;border-radius: 10px;
+			border-style:inset;border-color: rgb(243, 255, 80);width:150px;height:25px;font-weight: 600;"><center>50-6729</center></li>
+			<li id='ranking_3' class="ranking" style="background-color: #000000;border-radius: 10px;
+			border-style:inset;border-color: rgb(243, 255, 80);width:150px;height:25px;font-weight: 600;"><center>50-4900</center></li>
+			<li id='ranking_4' class="ranking" style="background-color: #000000;border-radius: 10px;
+			border-style:inset;border-color: rgb(243, 255, 80);width:150px;height:25px;font-weight: 600;"><center>50-4916</center></li>
+			<li id='ranking_5' class="ranking" style="background-color: #000000;border-radius: 10px;
+			border-style:inset;border-color: rgb(243, 255, 80);width:150px;height:25px;font-weight: 600;"><center>50-2421</center></li>
+			<li id='ranking_6' class="ranking" style="background-color: #000000;border-radius: 10px;
+			border-style:inset;border-color: rgb(243, 255, 80);width:150px;height:25px;font-weight: 600;"><center>50-2407</center></li>
+			<li id='ranking_7' class="ranking" style="background-color: #000000;border-radius: 10px;
+			border-style:inset;border-color: rgb(243, 255, 80);width:150px;height:25px;font-weight: 600;"><center>50-4748</center></li>
+			<li id='ranking_8' class="ranking" style="background-color: #000000;border-radius: 10px;
+			border-style:inset;border-color: rgb(243, 255, 80);width:150px;height:25px;font-weight: 600;"><center>50-9341</center></li>
+			<li id='ranking_9' class="ranking" style="background-color: #000000;border-radius: 10px;
+			border-style:inset;border-color: rgb(243, 255, 80);width:150px;height:25px;font-weight: 600;"><center>50-1467</center></li>
+			<li id='ranking_10' class="ranking" style="background-color: #000000;border-radius: 10px;
+			border-style:inset;border-color: rgb(243, 255, 80);width:150px;height:25px;font-weight: 600;"><center>50-0455</center></li>
+			<li id='ranking_11' class="ranking" style="background-color: #000000;border-radius: 10px;
+			border-style:inset;border-color: rgb(243, 255, 80);width:150px;height:25px;font-weight: 600;"><center>50-8670</center></li>
+			<li id='ranking_12' class="ranking" style="background-color: #000000;border-radius: 10px;
+			border-style:inset;border-color: rgb(243, 255, 80);width:150px;height:25px;font-weight: 600;"><center>50-3050</center></li>
+		</ol>
+	</div>
+</font>
+	<button type='submit'>Submit</button>
+</form>
+
+
+<script>
+$( "#sortable" ).sortable({ axis: "y", containment: "#ballot", scroll: false });
+$( "#sortable" ).disableSelection();
+$('form').submit(function(){
+$('#thedata').val($( "#sortable" ).sortable("serialize"));
+}); 
+</script>
+ 
+</body>
+</html>
+

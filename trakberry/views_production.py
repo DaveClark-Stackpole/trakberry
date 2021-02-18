@@ -1444,3 +1444,114 @@ def mgmt_users_logins_add_new(request):
 
 	request.session["bounce"] = 0
 	return render(request,'production/redirect_mgmt_users_logins.html')
+
+def mgmt_priorities(request):
+	db, cursor = db_set(request)
+	cursor.execute("""CREATE TABLE IF NOT EXISTS tkb_priorities(Id INT PRIMARY KEY AUTO_INCREMENT,priority Int(50), part CHAR(50))""")
+	db.commit()
+	sql = "SELECT * FROM tkb_priorities order by priority ASC" 
+	cursor.execute(sql)
+	tmp = cursor.fetchall()
+	db.close()
+	r = []
+	p = []
+	n = []
+	for i in tmp:
+		r.append('ranking_' + str(i[1]))
+		p.append(i[2])
+		n.append(str(i[1]))
+	rp = zip(r,p,n)
+	if request.POST:
+		x = request.POST.get("thedata")
+		old1 = ''
+		old2 = ''
+		cur = ''
+		v1 = ''
+		v2 = []
+		v3 = []
+		sw = 0
+		for i in x:
+			if i == '&':
+				sw = 0
+				v2.append(v1)
+				v1 = ''
+			if sw == 1:
+				v1 = v1 + str(i)
+			if i == '=':
+				sw = 1
+		v2.append(v1)
+		for i in v2:
+			for ii in rp:
+				if i == ii[2]:
+					v3.append(ii[1])
+		db, cursor = db_set(request)
+		cursor.execute("""DROP TABLE IF EXISTS tkb_priorities""") 
+		db.commit()
+		cursor.execute("""CREATE TABLE IF NOT EXISTS tkb_priorities(Id INT PRIMARY KEY AUTO_INCREMENT,priority Int(50), part CHAR(50))""")
+		db.commit()
+		pr = 1
+		for i in v3:
+			cursor.execute('''INSERT INTO tkb_priorities(priority,part) VALUES(%s,%s)''', (pr,i))
+			db.commit()
+			pr = pr + 1
+		db.close()
+		prioritize(request)
+		return render(request,"redirect_priorities.html")
+	else:
+		form = sup_downForm()
+	args = {}
+	args.update(csrf(request))
+	args['form'] = form
+
+	return render(request,'priorities.html',{'rp':rp,'args':args})
+
+def prioritize(request):
+	db, cursor = db_set(request)
+	sql = "SELECT * FROM pr_downtime1 where closed IS NULL" 
+	cursor.execute(sql)
+	tmp = cursor.fetchall()
+	for i in tmp:
+		asset = i[0][:4]
+		try:
+			test1 = int(asset)
+		except:
+			asset = asset[:3]
+		id2 = i[11]
+		try:
+			tmp_asset2 = 1
+			n = 'None'
+			sql1 = "SELECT Max(id) FROM sc_production1 where left(asset_num,4) = '%s' and partno != '%s'" %(asset,n)
+			cursor.execute(sql1)
+			tmp_asset = cursor.fetchall()
+			tmp_asset2 = tmp_asset[0][0]
+			sql1 = "SELECT partno FROM sc_production1 where id = '%s'" % (tmp_asset2)
+			cursor.execute(sql1)
+			tmp_part = cursor.fetchall()
+			part2 = tmp_part[0][0]
+			part2 = part2[:7]
+			sql1 = "SELECT priority FROM tkb_priorities where part = '%s'" % (part2)
+			cursor.execute(sql1)
+			tmp_pr = cursor.fetchall()
+			priority2 = int(tmp_pr[0][0])
+		except:
+			priority2 = 999
+		mql =( 'update pr_downtime1 SET priority="%s" WHERE idnumber="%s"' % (priority2,id2))
+		cursor.execute(mql)
+		db.commit()
+	wfp(request)
+	return
+
+def wfp(request):
+	db, cur = db_set(request)
+	w = 'WFP'
+	p = 10000
+	x = 'Project'
+	y = 5000
+	mql =( 'update pr_downtime1 SET priority="%s" WHERE right(problem,3)="%s"' % (p,w))
+	cur.execute(mql)
+	db.commit()
+	mql =( 'update pr_downtime1 SET priority="%s" WHERE right(problem,7)="%s"' % (y,x))
+	cur.execute(mql)
+	db.commit()
+	db.close()
+	return
