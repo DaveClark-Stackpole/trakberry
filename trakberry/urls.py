@@ -122,7 +122,7 @@ from views_production import mgmt_test1,track_10r_data,tracking,track_graph_10r_
 from views_production import chart1_1467,chart2_1467,chart1_3050,chart2_3050,chart1_0455,chart2_0455,chart1_9341,chart2_9341
 from views_production import chart1_9341_OP30, chart2_9341_OP30, tracking_10R80
 from views_production import chart1_9341_OP80, chart2_9341_OP80, chart1_9341_OP110, chart2_9341_OP110
-from views_production import mgmt_priorities
+from views_production import mgmt_priorities,auto_updater
 
 from views4 import ios_test, IsDone, NotDone, target_fix1, medium_production, multidrop, scantest, target_fix1
 from views4 import target_fix_5401, target_fix_5404, target_fix_5399, target_fix_5214, target_fix_3214
@@ -139,7 +139,7 @@ from views_barcode import barcode_check_10R,barcode_input_10R,barcode_initial_10
 # *******************************************  Admin Section ********************************************************************************************
 from views_admin import master
 from views3 import excel_dump, excel_scrap_dump,training_matrix2,training_matrix_find,training_matrix_update_all
-from views3 import bounce_matrix,update_matrix_cancel,matrix_cache_matrix, full_update, auto_updater
+from views3 import bounce_matrix,update_matrix_cancel,matrix_cache_matrix, full_update
 # ***********************************************************************************************************************************************************
 
 # *******************************************  Scrap Section ********************************************************************************************

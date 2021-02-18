@@ -519,7 +519,6 @@ def supervisor_down(request):
 			db.commit()
 			db.close()
 
-		prioritize(request)
 		return done(request)
 		
 	else:
@@ -747,7 +746,7 @@ def supervisor_edit(request):
 			db.commit()
 			db.close()
 		
-		prioritize(request)
+		# prioritize(request)
 		if b==-1:
 			return done_sup_close(request)
 		
