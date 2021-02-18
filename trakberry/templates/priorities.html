@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+	<title>Priorities</title>
+
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+  <script src="//code.jquery.com/jquery-1.12.4.js"></script>
+	<script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+</head>
+
+<body style="background-color:rgb(197, 197, 197);">
+<form action="" method="post">{% csrf_token %}
+	<input type="hidden" name="key" value="{{ election.key }}">
+	<input type="hidden" name="uuid" value="{{ uuid }}">
+	<input type='hidden' name='thedata' id='thedata'>
+	<font style="font-size: 45px; color:rgb(204, 188, 45); text-shadow: 1px 1px 2px black, 0 0 25px rgb(0, 0, 0), 0 0 5px rgb(185, 183, 183);">
+		&nbsp;&nbsp;&nbsp;&nbsp;<u>Priorities</u>
+		&nbsp;&nbsp;&nbsp;&nbsp;
+		<button type='submit' style="color:rgb(250,233,2);background-color: #574b4b;border-radius: 20px;font-size: 15px;width:130px;height:35px;font-weight: 200;">Submit</button>
+	</font>
+
+	<font style="color:rgb(197, 197, 197);">
+	<div id="ballot" class="center">
+		<ol id="sortable" class="rankings">
+			{% for i in rp %}
+				<li id={{i.0}} class="ranking" style="background-color: #000000;border-radius: 10px;font-size: 25px;
+					border-style:inset;border-color: rgb(243, 255, 80);width:170px;height:35px;font-weight: 600;"><center>{{i.1}}</center></li>
+			{% endfor %}
+		</ol>
+	</div>
+</font>
+
+<br><br>
+
+</form>
+
+<script>
+$( "#sortable" ).sortable({ axis: "y", containment: "#ballot", scroll: false });
+$( "#sortable" ).disableSelection();
+$('form').submit(function(){
+$('#thedata').val($( "#sortable" ).sortable("serialize"));
+}); 
+</script>
+ 
+</body>
+</html>
+

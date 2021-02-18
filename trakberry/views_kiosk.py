@@ -2909,7 +2909,7 @@ def production_fix_email(request):
 		shift = ''
 	if len(shift) > 0 :
 		b = "\r\n"
-		# Determin who to send email to 
+		# Determine who to send email to 
 		# if shift == 'Plant 1 Days':
 		# 	toaddrs = ["sbrownlee@stackpole.com","dclark@stackpole.com"]
 		# elif shift == 'Plant 1 Mid':
@@ -2922,8 +2922,14 @@ def production_fix_email(request):
 		# 	toaddrs = ["ashoemaker@stackpole.com","gpackham@stackpole.com"]
 		# elif shift == 'Plant 3 Mid':
 		# 	toaddrs = ["gharvey@stackpole.com","gpackham@stackpole.com"]
+		# elif shift == 'Plant4 Day':
+		# 	toaddrs = ["asmith@stackpole.com","pmurphy@stackpole.com","dmilne@stackpole.com"]
+		# elif shift == 'Plant 4 Mid':
+		# 	toaddrs = ["rbraim@stackpole.com","pstreet@stackpole.com","dmilne@stackpole.com"]
+		# elif shift == 'Plant 4 Aft':
+		# 	toaddrs = ["rbraim@stackpole.com","pstreet@stackpole.com","asmith@stackpole.com","pmurphy@stackpole.com","dmilne@stackpole.com"]
 
-		toaddrs = ["dave7995@gmail.com"]
+		toaddrs = ["dclark@stackpole.com"]
 		fromaddr = 'stackpole@stackpole.com'
 		frname = 'Dave'
 		server = SMTP('smtp.gmail.com', 587)
@@ -2937,6 +2943,8 @@ def production_fix_email(request):
 		var2 = request.session['variable1']
 		var3 = (var2.replace(' ','*'))
 		message2 = "http://localhost:8080/production_entry_fix_shift/get/" + var3
+		# message2 = "http://pmdsdata.stackpole.ca:8986/trakberry/production_entry_fix_shift/get/" + var3
+
 		message = message + "\r\n\r\n" + message3 + "\r\n\r\n" + "\r\n\r\n" + message2
 
 		server.sendmail(fromaddr, toaddrs, message)
@@ -2962,12 +2970,12 @@ def production_duplicate_fix(request,date1):
 
 
 def production_entry_fix(request):
-	date1, shift2 = vacation_set_current5()
+	# date1, shift2 = vacation_set_current5()
 
-	date1 = request.session['tkb_update_date']  # Date is date from update program
+	# date1 = request.session['tkb_update_date']  # Date is date from update program
 	shift = request.session['variable1']  # The shift is retrieved from updater table
 
-	date1 = request.session['date_prod'] 
+	# date1 = request.session['date_prod'] 
 	# shift = request.session['shift_prod']
 
 	# date1='2021-01-06'
