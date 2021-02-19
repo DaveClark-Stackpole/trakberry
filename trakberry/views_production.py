@@ -1536,7 +1536,9 @@ def prioritize(request):
 			priority2 = int(tmp_pr[0][0])
 		except:
 			priority2 = 999
-		mql =( 'update pr_downtime1 SET priority="%s" WHERE idnumber="%s"' % (priority2,id2))
+		w = 'WFP'
+		ww = 'Project'
+		mql =( 'update pr_downtime1 SET priority="%s" WHERE (idnumber="%s" and right(problem,3) !="%s" and right(problem,7) !="%s")' % (priority2,id2,w,ww))
 		cursor.execute(mql)
 		db.commit()
 	wfp(request)

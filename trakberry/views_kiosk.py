@@ -2910,6 +2910,7 @@ def production_fix_email(request):
 	if len(shift) > 0 :
 		b = "\r\n"
 		# Determine who to send email to 
+		toaddrs = ["dclark@stackpole.com"]
 		if shift == 'Plant 1 Days':
 			toaddrs = ["sbrownlee@stackpole.com","dclark@stackpole.com"]
 		elif shift == 'Plant 1 Mid':
@@ -2922,14 +2923,13 @@ def production_fix_email(request):
 			toaddrs = ["ashoemaker@stackpole.com","gpackham@stackpole.com"]
 		elif shift == 'Plant 3 Mid':
 			toaddrs = ["gharvey@stackpole.com","gpackham@stackpole.com"]
-		elif shift == 'Plant4 Day':
+		elif shift == 'Plant 4 Day':
 			toaddrs = ["asmith@stackpole.com","pmurphy@stackpole.com","dmilne@stackpole.com"]
 		elif shift == 'Plant 4 Mid':
 			toaddrs = ["rbraim@stackpole.com","pstreet@stackpole.com","dmilne@stackpole.com"]
 		elif shift == 'Plant 4 Aft':
 			toaddrs = ["rbraim@stackpole.com","pstreet@stackpole.com","asmith@stackpole.com","pmurphy@stackpole.com","dmilne@stackpole.com"]
 
-		# toaddrs = ["dclark@stackpole.com"]
 		fromaddr = 'stackpole@stackpole.com'
 		frname = 'Dave'
 		server = SMTP('smtp.gmail.com', 587)
