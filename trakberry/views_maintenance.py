@@ -32,6 +32,7 @@ def maint_initialize_rv(request):
 
 def maint_mgmt(request):
 	net1(request)   # Sets the app to server or local
+	prioritize(request)
 	request.session["TCUR"] = int(time.time())  # Assign current Timestamp to TCUR for proper image and include refresh 
 	maint_initialize_rv(request)  #initialize request variables
 

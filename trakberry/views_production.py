@@ -1536,7 +1536,9 @@ def prioritize(request):
 			priority2 = int(tmp_pr[0][0])
 		except:
 			priority2 = 999
-		mql =( 'update pr_downtime1 SET priority="%s" WHERE idnumber="%s"' % (priority2,id2))
+		w = 'WFP'
+		ww = 'Project'
+		mql =( 'update pr_downtime1 SET priority="%s" WHERE (idnumber="%s" and right(problem,3) !="%s" and right(problem,7) !="%s")' % (priority2,id2,w,ww))
 		cursor.execute(mql)
 		db.commit()
 	wfp(request)
@@ -1560,7 +1562,7 @@ def wfp(request):
 # One system will be running this and it will do all the daily updates.
 # Check production entries, update manpower, update matrix
 def auto_updater(request):  # This will run every 30 min on the refresh page to see if update occurs
-	prioritize(request)
+	prioritize(request)   # This will run the asset priority section
 	t=int(time.time())
 	tm = time.localtime(t)
 	hr1 = str(tm[3])
@@ -1579,29 +1581,35 @@ def auto_updater(request):  # This will run every 30 min on the refresh page to 
 	
 	cur_time = hr1 + min1
 	update_time = cur_date + " " + hr1 + ":" + min1
-	db, cur = db_set(request)  
-	# cur.execute("""DROP TABLE IF EXISTS tkb_updater""")
-	cur.execute("""CREATE TABLE IF NOT EXISTS tkb_updater(Id INT PRIMARY KEY AUTO_INCREMENT,cur_date CHAR(80),set_time CHAR(80), program Char(80), var1 Char(80))""")
-	sql= '''SELECT * FROM tkb_updater'''
-	cur.execute(sql)
-	tmp = cur.fetchall()
-	for i in tmp:
-		date2 = i[1]
-		id2 = i[0]
-		set_time = i[2]
-		if date2 != cur_date:
-			if int(cur_time) > int(set_time):
-				mql =( 'update tkb_updater SET cur_date = "%s" WHERE Id ="%s"' % (cur_date,id2))
-				cur.execute(mql)
-				db.commit()
-				sql = "SELECT program,var1 FROM tkb_updater where Id = '%s'"%(id2)
-				cur.execute(sql)
-				tmp2 = cur.fetchall()
-				program1 = tmp2[0][0]
-				variable1 = tmp2[0][1]
-				request.session['tkb_program'] = program1
-				request.session['variable1'] = variable1
-				request.session['tkb_update_time'] = update_time
-				request.session['tkb_update_date'] = cur_date
-				return render(request,'redirect_program.html')
+	try:
+		db, cur = db_set(request)  
+		# cur.execute("""DROP TABLE IF EXISTS tkb_updater""")
+		cur.execute("""CREATE TABLE IF NOT EXISTS tkb_updater(Id INT PRIMARY KEY AUTO_INCREMENT,cur_date CHAR(80),set_time CHAR(80), program Char(80), var1 Char(80))""")
+		sql= '''SELECT * FROM tkb_updater'''
+		cur.execute(sql)
+		tmp = cur.fetchall()
+		db.close()
+		for i in tmp:
+			date2 = i[1]
+			id2 = i[0]
+			set_time = i[2]
+			if date2 != cur_date:
+				if int(cur_time) > int(set_time):
+					db, cur = db_set(request)
+					mql =( 'update tkb_updater SET cur_date = "%s" WHERE Id ="%s"' % (cur_date,id2))
+					cur.execute(mql)
+					db.commit()
+					sql = "SELECT program,var1 FROM tkb_updater where Id = '%s'"%(id2)
+					cur.execute(sql)
+					tmp2 = cur.fetchall()
+					program1 = tmp2[0][0]
+					variable1 = tmp2[0][1]
+					request.session['tkb_program'] = program1
+					request.session['variable1'] = variable1
+					request.session['tkb_update_time'] = update_time
+					request.session['tkb_update_date'] = cur_date
+					db.close()
+					return render(request,'redirect_program.html')
+	except:
+		dummy = 1
 	return render(request,'tkb_updater.html')
