@@ -2918,17 +2918,17 @@ def production_fix_email(request):
 		elif shift == 'Plant 1 Aft':
 			toaddrs = ["kfrey@stackpole.com","dhawthorn@stackpole.com","dclark@stackpole.com"]
 		elif shift == 'Plant 3 Days':
-			toaddrs = ["kedwards@stackpole.com","gpackham@stackpole.com"]
+			toaddrs = ["kedwards@stackpole.com","gpackham@stackpole.com","dclark@stackpole.com"]
 		elif shift == 'Plant 3 Aft':
-			toaddrs = ["ashoemaker@stackpole.com","gpackham@stackpole.com"]
+			toaddrs = ["ashoemaker@stackpole.com","gpackham@stackpole.com","dclark@stackpole.com"]
 		elif shift == 'Plant 3 Mid':
-			toaddrs = ["gharvey@stackpole.com","gpackham@stackpole.com"]
+			toaddrs = ["gharvey@stackpole.com","gpackham@stackpole.com","dclark@stackpole.com"]
 		elif shift == 'Plant 4 Day':
-			toaddrs = ["asmith@stackpole.com","pmurphy@stackpole.com","dmilne@stackpole.com"]
+			toaddrs = ["asmith@stackpole.com","pmurphy@stackpole.com","dmilne@stackpole.com","dclark@stackpole.com"]
 		elif shift == 'Plant 4 Mid':
-			toaddrs = ["rbraim@stackpole.com","pstreet@stackpole.com","dmilne@stackpole.com"]
+			toaddrs = ["rbraim@stackpole.com","pstreet@stackpole.com","dmilne@stackpole.com","dclark@stackpole.com"]
 		elif shift == 'Plant 4 Aft':
-			toaddrs = ["rbraim@stackpole.com","pstreet@stackpole.com","asmith@stackpole.com","pmurphy@stackpole.com","dmilne@stackpole.com"]
+			toaddrs = ["rbiram@stackpole.com","pstreet@stackpole.com","asmith@stackpole.com","pmurphy@stackpole.com","dmilne@stackpole.com","dclark@stackpole.com"]
 
 		fromaddr = 'stackpole@stackpole.com'
 		frname = 'Dave'
