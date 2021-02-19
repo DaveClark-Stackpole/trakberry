@@ -1507,7 +1507,8 @@ def mgmt_priorities(request):
 
 def prioritize(request):
 	db, cursor = db_set(request)
-	sql = "SELECT * FROM pr_downtime1 where closed IS NULL" 
+	pr1 = 30000
+	sql = "SELECT * FROM pr_downtime1 where closed IS NULL and priority = '%s'" % (pr1) 
 	cursor.execute(sql)
 	tmp = cursor.fetchall()
 	for i in tmp:
@@ -1521,11 +1522,6 @@ def prioritize(request):
 			tmp_asset2 = 1
 			n = 'None'
 			sql1 = "SELECT partno FROM sc_production1 where left(asset_num,4) = '%s' and partno != '%s' ORDER BY id DESC LIMIT 1" %(asset,n)
-			# sql1 = "SELECT Max(id) FROM sc_production1 where left(asset_num,4) = '%s' and partno != '%s'" %(asset,n)
-			# cursor.execute(sql1)
-			# tmp_asset = cursor.fetchall()
-			# tmp_asset2 = tmp_asset[0][0]
-			# sql1 = "SELECT partno FROM sc_production1 where id = '%s'" % (tmp_asset2)
 			cursor.execute(sql1)
 			tmp_part = cursor.fetchall()
 			part2 = tmp_part[0][0]

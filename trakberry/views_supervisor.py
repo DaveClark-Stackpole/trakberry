@@ -431,7 +431,7 @@ def supervisor_down(request):
 		machinenum = request.POST.get("machine")
 		problem = request.POST.get("reason")
 		priority = request.POST.get("priority")
-		priority = 1
+		priority = 30000
 		whoisonit = request.session["whoisonit"]
 		
 		# take comment into tx and ensure no "" exist.  If they do change them to ''
