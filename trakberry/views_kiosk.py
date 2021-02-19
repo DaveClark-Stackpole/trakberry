@@ -21,7 +21,7 @@ from django.core.context_processors import csrf
 from views_routes import direction
 from time import mktime
 from datetime import datetime, date
-from views_db import db_open, db_set
+from views_db import db_open, db_set, net1
 from views_mod1 import kiosk_lastpart_find, kiosk_email_initial
 from datetime import datetime
 import datetime
@@ -2952,8 +2952,10 @@ def production_fix_email(request):
 	return
 
 def production_entry_fix_shift(request,index):
+	net1(request)
 	shift2 = (index.replace('*',' '))
-	request.session['variable1'] = shift2
+	# request.session['variable1'] = shift2
+	request.session['shift_prod'] = shift2
 	return render(request,"redirect_production_entry_fix.html")
 
 def production_duplicate_fix(request,date1):
@@ -2973,8 +2975,8 @@ def production_entry_fix(request):
 	# date1, shift2 = vacation_set_current5()
 
 	# date1 = request.session['tkb_update_date']  # Date is date from update program
-	shift = request.session['variable1']  # The shift is retrieved from updater table
-	request.session['shift_prod'] = shift
+	shift = request.session['shift_prod']  # The shift is retrieved from updater table
+	# request.session['shift_prod'] = shift
 	# date1 = request.session['date_prod'] 
 	# shift = request.session['shift_prod']
 
