@@ -100,7 +100,7 @@ from views_kiosk import entry_recent, manual_cycletime_table, tenr_fix2, tenr_fi
 from views_kiosk import kiosk_initial_GF9,kiosk_initial_6L_IN,kiosk_initial_AB1V, kiosk_sub_menu, kiosk_manual, kiosk_kiosk
 from views_kiosk import kiosk_help_form, kiosk_forklift_form, kiosk_scrap, kiosk_scrap_entry, kiosk_scrap_reset #, kiosk_mult_entries
 from views_kiosk import production_entry_check,kiosk_job_furnace,production_entry_fix,production_entry_fix_shift, production_entry_check_manual
-
+from views_kiosk import test_1_10R
 
 # ***********************************************************************************************************************************************************
 # *******************************************  Manpower Section ********************************************************************************************
@@ -465,6 +465,7 @@ urlpatterns = [
 	url(r'^manual_cycletime_table/', manual_cycletime_table),
 	url(r'^ab1v_manpower/', ab1v_manpower),
 
+	url(r'^test_1_10R/', test_1_10R),
 
 
 

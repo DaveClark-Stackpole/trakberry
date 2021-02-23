@@ -3202,3 +3202,5 @@ def production_entry_check_manual(request):
 
 	return render(request, "production_check_form.html",{'args':args})
 
+def test_1_10R(request):
+	return render(request, "test_1_10R.html")
