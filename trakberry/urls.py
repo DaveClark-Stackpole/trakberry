@@ -99,7 +99,7 @@ from views_kiosk import kiosk_production, kiosk_production_entry,flex_test,manua
 from views_kiosk import entry_recent, manual_cycletime_table, tenr_fix2, tenr_fix3,kiosk_hourly_entry,kiosk_initial_9HP,kiosk_initial_6L_Output
 from views_kiosk import kiosk_initial_GF9,kiosk_initial_6L_IN,kiosk_initial_AB1V, kiosk_sub_menu, kiosk_manual, kiosk_kiosk
 from views_kiosk import kiosk_help_form, kiosk_forklift_form, kiosk_scrap, kiosk_scrap_entry, kiosk_scrap_reset #, kiosk_mult_entries
-from views_kiosk import production_entry_check,kiosk_job_furnace,production_entry_fix,production_entry_fix_shift
+from views_kiosk import production_entry_check,kiosk_job_furnace,production_entry_fix,production_entry_fix_shift, production_entry_check_manual
 
 
 # ***********************************************************************************************************************************************************
@@ -444,6 +444,7 @@ urlpatterns = [
 	url(r'^kiosk_job_furnace/', kiosk_job_furnace),
 	url(r'^production_entry_check/', production_entry_check),
 	url(r'^production_entry_fix/', production_entry_fix),
+	url(r'^production_entry_check_manual/', production_entry_check_manual),
 	url(r'^production_entry_fix_shift/get/(?P<index>[\w|\W]+)', production_entry_fix_shift),
 
 	url(r'^tenr2/', tenr2),

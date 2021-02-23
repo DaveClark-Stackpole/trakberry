@@ -1,0 +1,38 @@
+{% extends "master.html" %}
+
+{% block content %}
+
+<form action="" method="post">{% csrf_token %}
+<br><br>
+<font style="font-size: 24px; color:rgb(255, 233, 184);">
+***** Manually Run Production Check*****  <br>
+</font>
+	<br><br><br>	
+
+	<font style="font-size: 24px; color:rgb(0, 0, 0);">
+<input style="font-size:23px;width:200px;height:60px;text-align:center;" type="date" name="date_en" value={{Curr}}>
+<br>
+<br>
+<select style="font-size:20px;width:320px;height:30px;" name="shift" >
+<optgroup label=" ">
+<option value="Plant 1 days">Plant 1 days</option>
+<option value="Plant 1 aft">Plant 1 aft</option>
+<option value="Plant 1 mid">Plant 1 mid</option>
+</optgroup><optgroup label=" ">
+<option value="Plant 3 days">Plant 3 days</option>
+<option value="Plant 3 aft">Plant 3 aft</option>
+<option value="Plant 3 mid">Plant 3 mid</option>
+</optgroup><optgroup label=" ">
+<option value="Plant 4 day">Plant 4 day</option>
+<option value="Plant 4 aft">Plant 4 aft</option>
+<option value="Plant 4 mid">Plant 4 mid</option>
+</optgroup>
+</select>
+
+</font>
+
+<br><br><br>
+<input style="background-color: #999999;border-radius: 10px;height:30px;" type="submit" name="button1" value="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENTER&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;">
+
+</form>
+{% endblock %}
