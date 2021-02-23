@@ -2893,7 +2893,8 @@ def production_entry_check(request):
 	request.session["shift_manpower"] = data2
 	db.close()
 
-
+	if request.session['pecm'] == 1:
+		return render(request,"redirect_master.html")
 	# Email the link to Supervisor in question.
 	production_fix_email(request)
 
@@ -2926,7 +2927,7 @@ def production_fix_email(request):
 		elif shift == 'Plant 4 Day':
 			toaddrs = ["asmith@stackpole.com","pmurphy@stackpole.com","dmilne@stackpole.com","dclark@stackpole.com"]
 		elif shift == 'Plant 4 Mid':
-			toaddrs = ["rbraim@stackpole.com","pstreet@stackpole.com","dmilne@stackpole.com","dclark@stackpole.com"]
+			toaddrs = ["rbiram@stackpole.com","pstreet@stackpole.com","dmilne@stackpole.com","dclark@stackpole.com"]
 		elif shift == 'Plant 4 Aft':
 			toaddrs = ["rbiram@stackpole.com","pstreet@stackpole.com","asmith@stackpole.com","pmurphy@stackpole.com","dmilne@stackpole.com","dclark@stackpole.com"]
 
@@ -3155,4 +3156,49 @@ def production_entry_check2(request,date1):
 	db.commit()
 	db.close()
 	return
+
+def production_entry_check_manual(request):
+
+	if request.POST:
+		kiosk_date = request.POST.get("date_en")
+		kiosk_shift = request.POST.get("shift")
+		request.session['tkb_update_date'] = kiosk_date
+		request.session['variable1'] = kiosk_shift
+
+		sh = kiosk_shift[-3:]
+		if sh=='aft':
+			shift1 = '3pm-11pm'
+		elif sh=='day':
+			shift1 = '7am-3pm'
+		elif sh=='mid':
+			shift1 = '11pm-7am'
+		else:
+			shift1 = '7am-3pm'
+
+
+		db, cur = db_set(request)
+		sql_count= "SELECT COUNT(*) FROM tkb_scheduled where Shift = '%s' and Date1 ='%s'" % (kiosk_shift,kiosk_date)
+		cur.execute(sql_count)
+		tmp_count = cur.fetchall()
+		count_entries = int(tmp_count[0][0])  # Number of entries in scheduled
+
+		sql_count= "SELECT COUNT(*) FROM sc_production1 where shift = '%s' and pdate ='%s'" % (shift1,kiosk_date)
+		cur.execute(sql_count)
+		tmp_count = cur.fetchall()
+		count_kiosk = int(tmp_count[0][0])  # Number of entries in kiosk
+
+		db.close()
+		
+		if count_kiosk > 0 and count_entries == 0:
+			request.session['pecm'] = 1
+			return render(request, "redirect_production_entry_check.html")
+		else:
+			return render(request, "redirect_master.html")
+	else:
+		form = kiosk_dispForm3()
+	args = {}
+	args.update(csrf(request))
+	args['form'] = form  
+
+	return render(request, "production_check_form.html",{'args':args})
 

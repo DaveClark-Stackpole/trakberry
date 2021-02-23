@@ -832,7 +832,7 @@ def tracking_10R80(request):
 	request.session['asset2_area1'] = '1533'
 	request.session['asset3_area1'] = '1533'
 	request.session['asset4_area1'] = '1533'
-	gr_list1 = track_area80(request)
+	gr_list4 = track_area80(request)
 	request.session['area1'] = '50-9341 OP 30 Oil Hole'
 	request.session['data_area'] =1 # Data for 1 or 2 chart
 	request.session['target_area'] = 1
@@ -848,7 +848,7 @@ def tracking_10R80(request):
 	request.session['asset2_area2'] = '1507'
 	request.session['asset3_area2'] = '1539'
 	request.session['asset4_area2'] = '1540'
-	gr_list2 = track_area80(request)
+	gr_list1 = track_area80(request)
 	request.session['area2'] = '50-9341 OP 80 Grinding'
 	request.session['data_area'] =2 # Data for 1 or 2 chart
 	request.session['target_area'] = 2
@@ -864,7 +864,7 @@ def tracking_10R80(request):
 	request.session['asset2_area1'] = '1510'
 	request.session['asset3_area1'] = '1527'
 	request.session['asset4_area1'] = '1527'
-	gr_list3 = track_area80(request)
+	gr_list2 = track_area80(request)
 	request.session['area3'] = '50-9341 OP 110 Polishing'
 	request.session['data_area'] =3 # Data for 1 or 2 chart
 	request.session['target_area'] = 3
@@ -880,7 +880,7 @@ def tracking_10R80(request):
 	request.session['asset2_area2'] = '1511'
 	request.session['asset3_area2'] = '1528'
 	request.session['asset4_area2'] = '1528'
-	gr_list4 = track_area80(request)
+	gr_list3 = track_area80(request)
 	return render(request, "track_10R80.html",{'GList':gr_list1,'GList2':gr_list2,'GList3':gr_list3,'GList4':gr_list4})
 
 def chart1_1467(request):
@@ -1605,7 +1605,9 @@ def auto_updater(request):  # This will run every 30 min on the refresh page to 
 					request.session['tkb_update_time'] = update_time
 					request.session['tkb_update_date'] = cur_date
 					db.close()
+					request.session['pecm'] = 0
 					return render(request,'redirect_program.html')
 	except:
 		dummy = 1
 	return render(request,'tkb_updater.html')
+
