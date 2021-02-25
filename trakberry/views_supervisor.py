@@ -518,7 +518,7 @@ def supervisor_down(request):
 			cur.execute('''INSERT INTO pr_downtime1(machinenum,problem,priority,whoisonit,called4helptime,side) VALUES(%s,%s,%s,%s,%s,%s)''', (asset5,problem,priority,whoisonit,t,side1))
 			db.commit()
 			db.close()
-
+		# prioritize(request)
 		return done(request)
 		
 	else:
