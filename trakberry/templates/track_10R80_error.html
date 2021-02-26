@@ -1,0 +1,85 @@
+
+<html>
+	<body>
+	<head>
+	
+
+	
+	<style type="text/css">
+		.mainset{color:black;text-align:center;float:left;width:100%}
+		.wrapper_main {background:rgb(255, 255, 255);width:90%;margin-left: 10px;}
+		.frame1 {color:black;text-align:left;float:left;width:49%;margin-bottom: 5px;}
+		.frame1_u {color:black;text-align:center;background:rgb(214, 214, 214);float:left;width:60%;margin: 20px;}
+		.frame2{color:black;text-align:left;float:left;width:48%;position:relative;left:5px;margin-bottom: 5px;}
+		.frame6{color:black;text-align:left;background:rgb(255, 255, 255);float:left;width:14%;position:relative;left:5px;margin-bottom: 5px;}
+		.frame3 {color:black;text-align:center;background:rgb(61, 138, 64);float:left;width:51%;position:relative;}
+		.frame4 {color:black;text-align:center;background:rgb(235, 142, 89);float:left;width:49%;position:relative;left:5px;}
+		.frame5{color:black;text-align:center;background:rgb(168, 168, 168);float:right;width:40%}
+		.head1{color:black;text-align:center;border: .4px solid rgb(0, 0, 0);background:rgb(114, 159, 243);width:85%}
+		.head1_u{color:black;text-align:center;border: .4px solid rgb(0, 0, 0);background:rgb(164, 238, 248);width:100%}
+		.head2_u{color:black;text-align:center;float:left;font-size: 60%;border: .4px solid rgb(0, 0, 0);background: rgb(184, 167, 142);width:25%}
+		.body1_u{color:black;text-align:left;float: left;border: 1px solid rgb(0, 0, 0);width:25%}
+		.head2{color:black;text-align:center;float:left;font-size: 60%;border: .4px solid rgb(222, 231, 95);background: rgb(184, 167, 142);width:65%}
+		.body1{color:black;text-align:left;float: left;border: 1px solid rgb(0, 0, 0);width:85%}
+		.body2{color:black;text-align:left;float: left;border: 1px solid rgb(0, 0, 0);width:65%}
+		.body3{color:black;text-align:center;background:rgb(199, 187, 166);float:left;width:33%;border: .4px solid rgb(0, 0, 0)}
+		.body3h{color:black;text-align:center;background:rgb(187, 186, 184);float:left;width:33%;border: .4px solid rgb(0, 0, 0)}
+		.body3t{color:black;text-align:center;background:rgb(187, 186, 184);float:left;font-size:medium;width:99%;border: .4px solid rgb(0, 0, 0)}
+	
+		
+	</style>
+
+	<meta http-equiv="refresh" content="10; url={{request.session.local_toggle}}/tracking_10R80" />
+	
+	<div class="wrapper_main">
+	<div class="head1_u">
+		<font size="6"><b><u>10R80 Live Tracking</u></b></font>
+
+	</div>
+	
+	<div class="frame1">  
+	<br> <center>
+		<font style="font-size: 35px; color:rgb(141, 179, 236); text-shadow: 1px 1px 2px black, 0 0 25px rgb(0, 0, 0), 0 0 5px rgb(255, 255, 255);">
+			{{request.session.8area1}}
+	</font>
+	</center>
+	<div id="chart_div" style="width: 100%; height: 400px; "></div>
+	</div>
+	
+	
+	<div class="frame2">  
+		<br> <center>
+		<font style="font-size: 35px; color:rgb(141, 179, 236); text-shadow: 1px 1px 2px black, 0 0 25px rgb(0, 0, 0), 0 0 5px rgb(255, 255, 255);">
+			{{request.session.8area2}}
+		</font>
+	</center>
+		<div id="chart2_div" style="width: 100%; height: 400px; "></div>
+		<br>
+	</div>
+	
+	<div class="frame1">  
+		<br> <center>
+			<font style="font-size: 35px; color:rgb(141, 179, 236); text-shadow: 1px 1px 2px black, 0 0 25px rgb(0, 0, 0), 0 0 5px rgb(255, 255, 255);">
+				{{request.session.8area3}}
+		</font>
+		</center>
+		<div id="chart3_div" style="width: 100%; height: 400px; "></div>
+		<br>
+		</div>
+
+
+		<div class="frame2">  
+			<br> <center>
+			<font style="font-size: 35px; color:rgb(141, 179, 236); text-shadow: 1px 1px 2px black, 0 0 25px rgb(0, 0, 0), 0 0 5px rgb(255, 255, 255);">
+				{{request.session.8area4}}
+			</font>
+		</center>
+			<div id="chart4_div" style="width: 100%; height: 400px; "></div>
+			<br>
+		</div>
+	<br><br>
+	
+	
+	</body>
+	
+	</html>
