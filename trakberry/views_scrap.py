@@ -101,7 +101,7 @@ def scrap_display(request):
 	else:
 		date1 = request.session["scrap_display_date1"]
 		date2 = request.session["scrap_display_date2"]
-		sql_scrap = "SELECT FORMAT(sum(scrap_amount),0),scrap_part,FORMAT(sum(total_cost),2) FROM tkb_scrap WHERE date BETWEEN '%s' AND '%s' group by scrap_part ORDER BY sum(total_cost) DESC" % (date1,date2)
+		sql_scrap = "SELECT FORMAT(sum(scrap_amount),0),scrap_part,FORMAT(sum(total_cost),2) FROM tkb_scrap WHERE (date_current >= '%s' AND date_current <='%s') group by scrap_part ORDER BY sum(total_cost) DESC" % (date1,date2)
 	# sql_scrap = "SELECT * FROM tkb_scrap WHERE date BETWEEN date_sub(now(), interval 1 day) AND date_add(now(), interval 1 day);"
 	cur.execute(sql_scrap)
 	request.session["tmp_scrap"] = cur.fetchall()
@@ -272,7 +272,7 @@ def scrap_display_operation(request,index):
 	else:
 		date1 = request.session["scrap_display_date1"]
 		date2 = request.session["scrap_display_date2"]
-		sql_scrap1 = "SELECT FORMAT(sum(scrap_amount),0),scrap_operation, scrap_part,FORMAT(sum(total_cost),2) FROM tkb_scrap  WHERE date BETWEEN '%s' AND '%s' AND scrap_part = '%s' group by scrap_operation ORDER BY sum(total_cost) DESC" % (date1,date2,index)
+		sql_scrap1 = "SELECT FORMAT(sum(scrap_amount),0),scrap_operation, scrap_part,FORMAT(sum(total_cost),2) FROM tkb_scrap  WHERE date_current BETWEEN '%s' AND '%s' AND scrap_part = '%s' group by scrap_operation ORDER BY sum(total_cost) DESC" % (date1,date2,index)
 	cur.execute(sql_scrap1)
 	request.session["tmp_scrap"] = cur.fetchall()
 	tt = request.session["tmp_scrap"]
@@ -293,7 +293,7 @@ def scrap_display_category(request,index):
 	else:
 		date1 = request.session["scrap_display_date1"]
 		date2 = request.session["scrap_display_date2"]
-		sql_scrap2 = "SELECT FORMAT(sum(scrap_amount),0),scrap_category, scrap_operation,FORMAT(sum(total_cost),2) FROM tkb_scrap WHERE date BETWEEN '%s' AND '%s'  AND scrap_operation = '%s' AND scrap_part = '%s' group by scrap_category ORDER BY sum(total_cost) DESC" % (date1,date2,index,index_part)
+		sql_scrap2 = "SELECT FORMAT(sum(scrap_amount),0),scrap_category, scrap_operation,FORMAT(sum(total_cost),2) FROM tkb_scrap WHERE date_current BETWEEN '%s' AND '%s'  AND scrap_operation = '%s' AND scrap_part = '%s' group by scrap_category ORDER BY sum(total_cost) DESC" % (date1,date2,index,index_part)
 	cur.execute(sql_scrap2)
 	request.session["tmp_scrap2"] = cur.fetchall()
 	return render(request, "scrap_mgmt_category.html")	
@@ -311,7 +311,7 @@ def scrap_display_category_shift(request,index):
 	else:
 		date1 = request.session["scrap_display_date1"]
 		date2 = request.session["scrap_display_date2"]
-		sql_scrap2 = "SELECT scrap_amount,scrap_category, scrap_operation,FORMAT(total_cost,2),date FROM tkb_scrap WHERE date BETWEEN '%s' AND '%s' AND scrap_operation = '%s' AND scrap_category = '%s' AND scrap_part = '%s' ORDER BY scrap_amount DESC" % (date1, date2, index_operation,index_category,index_part)		
+		sql_scrap2 = "SELECT scrap_amount,scrap_category, scrap_operation,FORMAT(total_cost,2),date FROM tkb_scrap WHERE date_current BETWEEN '%s' AND '%s' AND scrap_operation = '%s' AND scrap_category = '%s' AND scrap_part = '%s' ORDER BY scrap_amount DESC" % (date1, date2, index_operation,index_category,index_part)		
 	cur.execute(sql_scrap2)
 	request.session["tmp_scrap2"] = cur.fetchall()
 	tmp_scrap2 = request.session["tmp_scrap2"]

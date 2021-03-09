@@ -2953,7 +2953,7 @@ def production_fix_email(request):
 	return
 
 def production_entry_fix_shift(request,index):
-	net1(request)
+
 	shift2 = (index.replace('*',' '))
 	# request.session['variable1'] = shift2
 	request.session['shift_prod'] = shift2
@@ -3010,6 +3010,7 @@ def production_entry_fix(request):
 		status_answer = request.POST.get('pending1')
 		fix_answer = request.POST.get('fix1')
 		fix_job = request.POST.get('fix_job1')
+		fix_hrs_ok = request.POST.get('fix_hrs1')
 
 		if status_answer > 0:
 			cur.execute("""CREATE TABLE IF NOT EXISTS tkb_scheduled_missed(Id INT PRIMARY KEY AUTO_INCREMENT,Date CHAR(80), Employee CHAR(80),Clock CHAR(80), Shift Char(80))""")
@@ -3043,6 +3044,19 @@ def production_entry_fix(request):
 			cur.execute(dql)
 			db.commit()
 		elif fix_answer > 0:
+			fql = "SELECT * FROM tkb_scheduled WHERE Id = '%s'" % (fix_answer)
+			cur.execute(fql)
+			fql2 = cur.fetchall()
+			shift1 = fql2[0][8]
+			shift2 = fql2[0][11]
+			shift1 = shift1.strip()
+			shift2 = shift2.strip()
+
+			#Determine if it's Continental or not
+			hr7 = 8
+			if shift1 != shift2:
+				hr7 = 12
+
 			fql = "SELECT Clock FROM tkb_scheduled WHERE Id = '%s'" % (fix_answer)
 			cur.execute(fql)
 			fql2 = cur.fetchall()
@@ -3058,10 +3072,26 @@ def production_entry_fix(request):
 			tmp_count = cur.fetchall()
 			count_fix = int(tmp_count[0][0])  # Number of entries by this person
 
-			new_hrs = int(8 / float(count_fix))
+			new_hrs = int(hr7 / float(count_fix))
 			cql = ('update tkb_scheduled SET Hrs = "%s" WHERE (Clock="%s" and Date1 = "%s")' % (new_hrs,clock_fix,date2))
 			cur.execute(cql)
 			db.commit()
+			cql = ('update tkb_scheduled SET Status = "%s" WHERE (Clock="%s" and Date1 = "%s")' % (status1,clock_fix,date2))
+			cur.execute(cql)
+			db.commit()
+
+		elif fix_hrs_ok >0:
+			request.session['hrs_skip'] = 'yes'
+			fql = "SELECT Clock FROM tkb_scheduled WHERE Id = '%s'" % (fix_hrs_ok)
+			cur.execute(fql)
+			fql2 = cur.fetchall()
+			clock_fix = fql2[0][0]  # Assign clock number of the person
+			fql = "SELECT Date1 FROM tkb_scheduled WHERE Id = '%s'" % (fix_hrs_ok)
+			cur.execute(fql)
+			fql2 = cur.fetchall()
+			date2 = fql2[0][0]  # Assign date  of the person
+
+
 			cql = ('update tkb_scheduled SET Status = "%s" WHERE (Clock="%s" and Date1 = "%s")' % (status1,clock_fix,date2))
 			cur.execute(cql)
 			db.commit()
@@ -3107,6 +3137,10 @@ def production_entry_check2(request,date1):
 	ida = []
 	shift_mod1 =[]
 	hrs_total = 0
+	try:
+		hrs_skip = request.session['hrs_skip']
+	except:
+		hrs_skip = 'no'
 
 	# Put the clock num from schedu into temp
 	sql = "SELECT * FROM tkb_scheduled WHERE Date1 = '%s' and Shift = '%s' and Clock = '%s' ORDER BY Employee DESC, Job DESC, Hrs DESC" %(date1,shift,clock_num)
@@ -3132,10 +3166,15 @@ def production_entry_check2(request,date1):
 			shift_mod1.append(x[11])
 			hrs_total = hrs_total + int(x[9])
 			job_current = x[6]
-	if hrs_total >= 8 and hrs_total <=12:
-		complete1 = 'Good'
+
+	if hrs_skip == 'no':
+		if hrs_total >= 8 and hrs_total <=12:
+			complete1 = 'Good'
+		else:
+			complete1 = 'Hrs Wrong'
 	else:
-		complete1 = 'Hrs Wrong'
+		complete1 = 'Good'
+
 	data3 = zip(job1,hrs1,asset1,part1,ida,shift_mod1)
 
 	for x in data3:
