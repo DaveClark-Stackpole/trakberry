@@ -122,6 +122,8 @@ from views_production import mgmt_test1,track_10r_data,tracking,track_graph_10r_
 from views_production import chart1_1467,chart2_1467,chart1_3050,chart2_3050,chart1_0455,chart2_0455,chart1_9341,chart2_9341
 from views_production import chart1_9341_OP30, chart2_9341_OP30, tracking_10R80
 from views_production import chart1_9341_OP80, chart2_9341_OP80, chart1_9341_OP110, chart2_9341_OP110
+from views_production import chart1_5214_OP30, chart2_5214_OP30, chart1_8670_OP80, chart2_8670_OP80, chart1_5404_OP80, chart2_5404_OP80
+from views_production import chart1_5401_OP80, chart2_5401_OP80, chart1_3214_OP30, chart2_3214_OP30
 from views_production import mgmt_priorities,auto_updater
 
 from views4 import ios_test, IsDone, NotDone, target_fix1, medium_production, multidrop, scantest, target_fix1
@@ -524,7 +526,16 @@ urlpatterns = [
 	url(r'^chart2_9341_OP80/', chart2_9341_OP80),
 	url(r'^chart1_9341_OP110/', chart1_9341_OP110),
 	url(r'^chart2_9341_OP110/', chart2_9341_OP110),
-
+	url(r'^chart1_5214_OP30/', chart1_5214_OP30),
+	url(r'^chart2_5214_OP30/', chart2_5214_OP30),
+	url(r'^chart1_8670_OP80/', chart1_8670_OP80),
+	url(r'^chart2_8670_OP80/', chart2_8670_OP80),
+	url(r'^chart1_5404_OP80/', chart1_5404_OP80),
+	url(r'^chart2_5404_OP80/', chart2_5404_OP80),
+	url(r'^chart1_5401_OP80/', chart1_5401_OP80),
+	url(r'^chart2_5401_OP80/', chart2_5401_OP80),
+	url(r'^chart1_3214_OP30/', chart1_3214_OP30),
+	url(r'^chart2_3214_OP30/', chart2_3214_OP30),
 	url(r'^mgmt_priorities/', mgmt_priorities),
 
 	# ************************************************************************
