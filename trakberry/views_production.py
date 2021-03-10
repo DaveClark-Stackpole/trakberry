@@ -284,12 +284,18 @@ def track_area(request):
 	cur.execute(bql)
 	tmp8 = cur.fetchall()
 	tmp9 = tmp8[0]
-	week_cnt = int(tmp9[0])
+	try:
+		week_cnt = int(tmp9[0])
+	except:
+		week_cnt = 0
 	bql = "SELECT SUM(Count) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (week_start2,week_start1,prt,asset1,asset2,asset3,asset4)
 	cur.execute(bql)
 	tmp8 = cur.fetchall()
 	tmp9 = tmp8[0]
-	week_cnt2 = int(tmp9[0])
+	try:
+		week_cnt2 = int(tmp9[0])
+	except:
+		week_cnt2 = 0
 	bql = "SELECT SUM(Count) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (week_start3,week_start2,prt,asset1,asset2,asset3,asset4)
 	cur.execute(bql)
 	tmp8 = cur.fetchall()
@@ -1036,7 +1042,96 @@ def chart2_9341_OP110(request):
 		request.session['asset3_area2'] = '1511'
 		request.session['asset4_area2'] = '1528'
 		return render(request, "redirect_tracking.html")
-
+def chart1_5214_OP30(request):
+		request.session['area1'] = '50-5214 OP30'
+		request.session['part_area1'] = '50-5214'
+		request.session['rate_area1'] = 76
+		request.session['asset1_area1'] = '1710'
+		request.session['asset2_area1'] = '1710'
+		request.session['asset3_area1'] = '1710'
+		request.session['asset4_area1'] = '1710'
+		return render(request, "redirect_tracking.html")
+def chart2_5214_OP30(request):
+		request.session['area2'] = '50-5214 OP30'
+		request.session['part_area2'] = '50-5214'
+		request.session['rate_area2'] = 76
+		request.session['asset1_area2'] = '1710'
+		request.session['asset2_area2'] = '1710'
+		request.session['asset3_area2'] = '1710'
+		request.session['asset4_area2'] = '1710'
+		return render(request, "redirect_tracking.html")
+def chart1_3214_OP30(request):
+		request.session['area1'] = '50-3214 OP30'
+		request.session['part_area1'] = '50-3214'
+		request.session['rate_area1'] = 76
+		request.session['asset1_area1'] = '1710'
+		request.session['asset2_area1'] = '1710'
+		request.session['asset3_area1'] = '1710'
+		request.session['asset4_area1'] = '1710'
+		return render(request, "redirect_tracking.html")
+def chart2_3214_OP30(request):
+		request.session['area2'] = '50-3214 OP30'
+		request.session['part_area2'] = '50-3214'
+		request.session['rate_area2'] = 76
+		request.session['asset1_area2'] = '1710'
+		request.session['asset2_area2'] = '1710'
+		request.session['asset3_area2'] = '1710'
+		request.session['asset4_area2'] = '1710'
+		return render(request, "redirect_tracking.html")
+def chart1_8670_OP80(request):
+		request.session['area1'] = '50-8670 OP80'
+		request.session['part_area1'] = '50-8670'
+		request.session['rate_area1'] = 38
+		request.session['asset1_area1'] = '1719'
+		request.session['asset2_area1'] = '1719'
+		request.session['asset3_area1'] = '1719'
+		request.session['asset4_area1'] = '1719'
+		return render(request, "redirect_tracking.html")
+def chart2_8670_OP80(request):
+		request.session['area2'] = '50-8670 OP80'
+		request.session['part_area2'] = '50-8670'
+		request.session['rate_area2'] = 38
+		request.session['asset1_area2'] = '1719'
+		request.session['asset2_area2'] = '1719'
+		request.session['asset3_area2'] = '1719'
+		request.session['asset4_area2'] = '1719'
+		return render(request, "redirect_tracking.html")
+def chart1_5404_OP80(request):
+		request.session['area1'] = '50-5404 OP80'
+		request.session['part_area1'] = '50-5404'
+		request.session['rate_area1'] = 39
+		request.session['asset1_area1'] = '1719'
+		request.session['asset2_area1'] = '1719'
+		request.session['asset3_area1'] = '1719'
+		request.session['asset4_area1'] = '1719'
+		return render(request, "redirect_tracking.html")
+def chart2_5404_OP80(request):
+		request.session['area2'] = '50-5404 OP80'
+		request.session['part_area2'] = '50-5404'
+		request.session['rate_area2'] = 39
+		request.session['asset1_area2'] = '1719'
+		request.session['asset2_area2'] = '1719'
+		request.session['asset3_area2'] = '1719'
+		request.session['asset4_area2'] = '1719'
+		return render(request, "redirect_tracking.html")
+def chart1_5401_OP80(request):
+		request.session['area1'] = '50-5401 OP80'
+		request.session['part_area1'] = '50-5401'
+		request.session['rate_area1'] = 39
+		request.session['asset1_area1'] = '1719'
+		request.session['asset2_area1'] = '1719'
+		request.session['asset3_area1'] = '1719'
+		request.session['asset4_area1'] = '1719'
+		return render(request, "redirect_tracking.html")
+def chart2_5401_OP80(request):
+		request.session['area2'] = '50-5401 OP80'
+		request.session['part_area2'] = '50-5401'
+		request.session['rate_area2'] = 39
+		request.session['asset1_area2'] = '1719'
+		request.session['asset2_area2'] = '1719'
+		request.session['asset3_area2'] = '1719'
+		request.session['asset4_area2'] = '1719'
+		return render(request, "redirect_tracking.html")
 
 def mgmt(request):
 	request.session["bounce"] = 0
