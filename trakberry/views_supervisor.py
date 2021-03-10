@@ -470,8 +470,8 @@ def supervisor_down(request):
 		
 		# Select prodrptdb db located in views_db
 
-		var1 = no_duplicate(priority)
-		priority = str(var1)
+		# var1 = no_duplicate(priority)
+		# priority = str(var1)
 
 		db, cur = db_set(request)
 

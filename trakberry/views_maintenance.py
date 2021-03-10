@@ -6,6 +6,7 @@ from views_db import db_open, db_set, net1
 from views_mod1 import find_current_date
 from views_mod2 import seperate_string, create_new_table,generate_string,generate_full_string
 from views_email import e_test
+from trakberry.views_testing import machine_list_display
 from views_production import wfp,prioritize
 from views_vacation import vacation_temp, vacation_set_current, vacation_set_current2
 from views_supervisor import supervisor_tech_call
@@ -21,6 +22,80 @@ import time
 
 #import datetime as dt
 from django.core.context_processors import csrf
+
+def maint_job_entry(request):
+
+	if request.POST:
+		machinenum = request.POST.get("machine")
+		problem = request.POST.get("reason")
+		priority = request.POST.get("priority")
+		priority = 30000
+		whoisonit = 'Millwright'
+		
+		# take comment into tx and ensure no "" exist.  If they do change them to ''
+		tx = problem
+		tx = ' ' + tx
+		tps = list(tx)
+
+		# Genius appostrophe fix
+		problem = hyphon_fix(tx)
+
+		t = vacation_temp()
+
+		db, cur = db_set(request)
+		asset_test = machinenum[:4]
+		side1 = '0'
+		location1='G'
+		side2 = '0'
+		try:
+			asset3 = machinenum[:4]
+			asset2 = machinenum[:3]
+			try:
+				int(asset3)
+				asset4 = asset3
+			except:
+				asset4 = asset2
+			aql = "SELECT * FROM vw_asset_eam_lp where left(Asset,4) = '%s'" %(asset4)
+			cur.execute(aql)
+			tmp2 = cur.fetchall()
+			tmp3 = tmp2[0]
+			asset5 = tmp3[1] + " - " + tmp3[3]
+			location1 = tmp3[3]
+		except:
+			asset5 = machinenum
+
+# This will determine side of asset and put in breakdown
+		location_check = location1[:1]
+		if location_check < 'G':
+			side1 = '2'
+		elif location_check > 'G':
+			side1 = '1'
+		else:
+			side1 = '0'
+
+		try:
+			cur.execute('''INSERT INTO pr_downtime1(machinenum,problem,priority,whoisonit,called4helptime,side) VALUES(%s,%s,%s,%s,%s,%s)''', (asset5,problem,priority,whoisonit,t,side1))
+			db.commit()
+			db.close()
+		except:
+			cur.execute("Alter Table pr_downtime1 ADD Column side VARCHAR(100) DEFAULT '0'") #% (side2)  # Add a Column
+			db.commit()
+			cur.execute('''INSERT INTO pr_downtime1(machinenum,problem,priority,whoisonit,called4helptime,side) VALUES(%s,%s,%s,%s,%s,%s)''', (asset5,problem,priority,whoisonit,t,side1))
+			db.commit()
+			db.close()
+		return render(request,'redirect_maint_mgmt.html')
+		
+	else:
+		request.session["machinenum"] = "692"
+		form = sup_downForm()
+	args = {}
+	args.update(csrf(request))
+	args['form'] = form
+	
+	rlist = machine_list_display()
+	return render(request,'maintenance_down.html', {'List':rlist,'args':args})
+
+
 
 def maint_initialize_rv(request):
 	try:
