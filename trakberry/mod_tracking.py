@@ -345,13 +345,11 @@ def Graph_Data(t,u,machine,tmp,multiplier):
 	brk2 = 0
 	multiplier = multiplier / float(60)
 	
-	tm_sh = int((t-u)/60)
+	tm_sh = int((t-u)/300)
 	px = [0 for x in range(tm_sh)]
 	by = [0 for x in range(tm_sh)]
 	ay = [0 for x in range(tm_sh)]
 	cy = [0 for x in range(tm_sh)]
-
-	
 
 	for ab in range(0,tm_sh):
 
