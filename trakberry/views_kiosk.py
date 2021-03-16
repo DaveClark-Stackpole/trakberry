@@ -2999,7 +2999,8 @@ def production_entry_fix(request):
 	cur.execute(sql)
 	tmp=cur.fetchall()
 	area = shift_area(shift)
-	sql = "SELECT Job FROM tkb_allocation WHERE Area = '%s'" %(area)
+	# sql = "SELECT Job FROM tkb_allocation WHERE Area = '%s'" %(area)
+	sql = "SELECT Job FROM tkb_allocation" 
 	cur.execute(sql)
 	tmp_job=cur.fetchall()
 	request.session['Jobs7'] = tmp_job

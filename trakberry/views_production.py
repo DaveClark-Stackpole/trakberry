@@ -354,10 +354,10 @@ def track_area(request):
 		weekend_rate = weekend_cnt / float(weekend_current_seconds)
 		week_projection = int(weekend_rate * (weekend_left)) + week_cnt
 
-	# if prt == '50-9341':
-	# 	week_rate2 = week_rate / float(2)
-	# 	week_rate2 = week_rate2 * 172800
-	# 	week_projection = week_projection - week_rate2 
+	if prt == '50-9341':
+		# week_rate2 = week_rate / float(2)
+		# week_rate2 = week_rate2 * 172800
+		week_projection = week_projection +7100 
 
 	current_rate = cnt / float(shift_time)
 	projection = int(current_rate * (shift_left)) + cnt
