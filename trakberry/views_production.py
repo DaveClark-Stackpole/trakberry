@@ -109,7 +109,7 @@ def track_10R80data(request,t,u,part,rate):
 	db, cursor = db_set(request)
 	sql = "SELECT * FROM GFxPRoduction where TimeStamp >= '%d' and TimeStamp< '%d' and part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" %(u,t,part,asset1,asset2,asset3,asset4)
 	cursor.execute(sql)
-	tmp = cursor.fetchall()	
+	tmp = cursor.fetchall()
 	db.close()
 	gr_list, brk1, brk2, multiplier  = Graph_Data(t,u,m,tmp,mrr)
 
