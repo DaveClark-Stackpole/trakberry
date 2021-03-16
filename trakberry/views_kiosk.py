@@ -2629,7 +2629,7 @@ def production_entry_check(request):
 	db, cur = db_set(request)
 
 	# Delete Assets we don't use or track from allocation
-	asset9 = ['1542','859','1514','1531','1541','1509','594','650','215']
+	asset9 = ['1542','859','1514','1531','1541','1509','594','650','215','274']
 	for b in asset9:
 		dql = ('DELETE FROM sc_production1 WHERE asset_num = "%s"' %(b))
 		cur.execute(dql)
