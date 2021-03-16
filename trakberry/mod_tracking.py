@@ -343,17 +343,14 @@ def Graph_Data(t,u,machine,tmp,multiplier):
 	temp_ctr = 0
 	brk1 = 0
 	brk2 = 0
-	multiplier = multiplier / float(60)
-	
-	tm_sh = int((t-u)/300)
+	multiplier = multiplier / float(6)
+	tm_sh = int((t-u)/600)
 	px = [0 for x in range(tm_sh)]
 	by = [0 for x in range(tm_sh)]
 	ay = [0 for x in range(tm_sh)]
 	cy = [0 for x in range(tm_sh)]
-
 	for ab in range(0,tm_sh):
-
-		px[ab] =u + (cc*60)
+		px[ab] =u + (cc*600)
 		yy = px[ab]
 		cc = cc + 1
 		cr = cr + multiplier
@@ -361,16 +358,9 @@ def Graph_Data(t,u,machine,tmp,multiplier):
 		tst = []
 		[tup(x) for x in tmp if nup(x) < yy]
 		# [tup(x) for x in tmp if fup(x) == machine and nup(x) < yy]
-
 		by[ab] = sum(int(i) for i in tst)
-
-
-
-		
 		ay[ab] = int(cr)
 		cy[ab] = int(cm)
-		
-	
 		# *** Calculate the longest break time in minutes
 		# *** and assign to brk_ctr
 		if by[ab] == last_by:
@@ -383,16 +373,11 @@ def Graph_Data(t,u,machine,tmp,multiplier):
 			temp_ctr = 0
 			last_by = by[ab]
 		# ************************************************
-
 	tm_sh = tm_sh - 1
 	lby = by[tm_sh]
 	lay = ay[tm_sh]
 	lpx = px[tm_sh]
 	gr_list = zip(px,by,ay,cy)	
-	
-	#return gr_list, brk1, brk2, tm_sh
-
-	
 	return gr_list, brk1, brk2, multiplier
 	
 	
