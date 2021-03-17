@@ -308,7 +308,7 @@ def track_area(request):
 	u1, wd1, m1, day1, shift1, prev_cnt1 = [],[],[],[],[],[]
 	utemp = u
 	total_test = 0
-	for i in range(1,11):
+	for i in range(1,5):
 		unew = utemp - 28800
 		x1, x2, x3, x4 = day_breakdown(unew)
 		u1.append(str(unew))
