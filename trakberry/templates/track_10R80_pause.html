@@ -1,0 +1,37 @@
+
+<html>
+	<body>
+		<head>
+	
+			<script language="javascript" type="text/javascript"> 
+			function windowClose() { 
+			window.open('','_parent',''); 
+			window.close();
+			} 
+			</script>
+			
+			<script>
+				function resume(){location.replace("{{request.session.local_toggle}}/tracking_10R80_resume")}
+			</script>
+	</head>
+
+
+	<div class="wrapper_main">
+	<div class="head1_u">
+		<font size="6"><b><u>10R80 Live Tracking</u></b></font>
+
+
+
+	</div>
+	
+</div>
+	<br><br><br><br><br>
+	<font style="font-size: 35px; color:rgb(236, 230, 141); text-shadow: 1px 1px 2px black, 0 0 25px rgb(0, 0, 0), 0 0 5px rgb(255, 255, 255);">
+		TRACKING PAUSED
+	</font>
+	<br><br><br><br>
+	<button style="background-color: #5CC4ED;border-radius: 10px;width:100px;height:45px;font-weight: 600;" onclick="resume()">Resume</button>
+
+	</body>
+	
+	</html>
