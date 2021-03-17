@@ -845,6 +845,77 @@ def tracking(request):
 	except:
 		return render(request, "track_error.html")
 
+def tracking_10R80_screen(request):
+	try:
+		# net1(request)   # Sets the app to server or local
+		request.session['8area4'] = '50-9341 Finishing'
+		request.session['8data_area'] =4 # Data for 1 or 2 chart
+		request.session['8target_area'] = 4
+		request.session['8part_area'] = '50-9341'
+		request.session['8part_area1'] = '50-9341'
+		request.session['8rate_area'] = 400
+		request.session['8rate_area1'] = 400
+		request.session['8asset1_area'] = '1533'
+		request.session['8asset2_area'] = '1533'
+		request.session['8asset3_area'] = '1533'
+		request.session['8asset4_area'] = '1533'
+		request.session['8asset1_area1'] = '1533'
+		request.session['8asset2_area1'] = '1533'
+		request.session['8asset3_area1'] = '1533'
+		request.session['8asset4_area1'] = '1533'
+		gr_list4 = track_area80(request)
+		request.session['8area1'] = '50-9341 OP 30 Oil Hole'
+		request.session['8data_area'] =1 # Data for 1 or 2 chart
+		request.session['8target_area'] = 1
+		request.session['8part_area'] = '50-9341'
+		request.session['8part_area2'] = '50-9341'
+		request.session['8rate_area'] = 400
+		request.session['8rate_area2'] = 400
+		request.session['8asset1_area'] = '1502'
+		request.session['8asset2_area'] = '1507'
+		request.session['8asset3_area'] = '1539'
+		request.session['8asset4_area'] = '1540'
+		request.session['8asset1_area2'] = '1502'
+		request.session['8asset2_area2'] = '1507'
+		request.session['8asset3_area2'] = '1539'
+		request.session['8asset4_area2'] = '1540'
+		gr_list1 = track_area80(request)
+		request.session['8area2'] = '50-9341 OP 80 Grinding'
+		request.session['8data_area'] =2 # Data for 1 or 2 chart
+		request.session['8target_area'] = 2
+		request.session['8part_area'] = '50-9341'
+		request.session['8part_area1'] = '50-9341'
+		request.session['8rate_area'] = 400
+		request.session['8rate_area1'] = 400
+		request.session['8asset1_area'] = '1510'
+		request.session['8asset2_area'] = '1510'
+		request.session['8asset3_area'] = '1527'
+		request.session['8asset4_area'] = '1527'
+		request.session['8asset1_area1'] = '1510'
+		request.session['8asset2_area1'] = '1510'
+		request.session['8asset3_area1'] = '1527'
+		request.session['8asset4_area1'] = '1527'
+		gr_list2 = track_area80(request)
+		request.session['8area3'] = '50-9341 OP 110 Polishing'
+		request.session['8data_area'] =3 # Data for 1 or 2 chart
+		request.session['8target_area'] = 3
+		request.session['8part_area'] = '50-9341'
+		request.session['8part_area2'] = '50-9341'
+		request.session['8rate_area'] = 400
+		request.session['8rate_area2'] = 400
+		request.session['8asset1_area'] = '1511'
+		request.session['8asset2_area'] = '1511'
+		request.session['8asset3_area'] = '1528'
+		request.session['8asset4_area'] = '1528'
+		request.session['8asset1_area2'] = '1511'
+		request.session['8asset2_area2'] = '1511'
+		request.session['8asset3_area2'] = '1528'
+		request.session['8asset4_area2'] = '1528'
+		gr_list3 = track_area80(request)
+		return render(request, "track_10R80_screen.html",{'GList':gr_list1,'GList2':gr_list2,'GList3':gr_list3,'GList4':gr_list4})
+	except:
+		return render(request, "track_10R80_screen_error.html")
+
 def tracking_10R80(request):
 	try:
 		# net1(request)   # Sets the app to server or local
