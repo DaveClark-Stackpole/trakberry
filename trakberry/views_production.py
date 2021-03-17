@@ -916,7 +916,25 @@ def tracking_10R80_screen(request):
 	except:
 		return render(request, "track_10R80_screen_error.html")
 
+def tracking_10R80_resume(request):
+	t=int(time.time())
+	request.session['track_10R80_up'] = t + 3600
+	return render(request, "redirect_tracking_10R80.html")
+
 def tracking_10R80(request):
+
+	# Determine pause time for tracking
+	t=int(time.time())
+	try:
+		up_time1 = request.session['track_10R80_up']
+	except:
+		request.session['track_10R80_up'] = t + 3600
+		up_time1 = request.session['track_10R80_up']
+	if t > up_time1:
+		return render(request, "track_10R80_pause.html")
+
+
+
 	try:
 		# net1(request)   # Sets the app to server or local
 		request.session['8area4'] = '50-9341 Finishing'
