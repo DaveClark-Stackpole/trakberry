@@ -105,6 +105,12 @@ def maint_initialize_rv(request):
 
 	return
 
+def maint_mgmt_auto(request):
+	request.session["maint_mgmt_login_password_check"] = 'True'
+	request.session['maint_mgmt_login_name'] = 'Chris Dufton'
+
+	return render(request,'redirect_maint_mgmt.html')
+
 def maint_mgmt(request):
 	net1(request)   # Sets the app to server or local
 	prioritize(request)
