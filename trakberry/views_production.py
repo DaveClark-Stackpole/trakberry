@@ -787,6 +787,7 @@ def track_tri(request):
 
 def tracking(request):
 	# net1(request)   # Sets the app to server or local
+	# force changes
 	try:
 		try:
 			request.session['data_area'] = 1
