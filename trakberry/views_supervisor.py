@@ -458,18 +458,11 @@ def supervisor_down(request):
 			
 		# Genius appostrophe fix
 		problem = hyphon_fix(tx)
-		# if (tx.find("'"))>0:
-		# 	tc = hyphon_fix(tx)
-		# else:
-		# 	tc = tx
-		# problem = tc
-		# ***********************
-		
+
 		# call external function to produce datetime.datetime.now()
 		t = vacation_temp()
 		
 		# Select prodrptdb db located in views_db
-
 		# var1 = no_duplicate(priority)
 		# priority = str(var1)
 
@@ -499,6 +492,15 @@ def supervisor_down(request):
 		except:
 			asset5 = machinenum
 
+		try:
+			bql = "SELECT priority FROM tkb_asset_priority where asset_num = '%s'" % (asset4)
+			cur.execute(bql)
+			tmp2 = cur.fetchall()
+			tmp3 = tmp2[0]
+		except:
+			tmp3 = 999
+		priority = tmp3
+		
 # This will determine side of asset and put in breakdown
 		location_check = location1[:1]
 		if location_check < 'G':
