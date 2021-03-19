@@ -7,7 +7,7 @@ from views_mod1 import find_current_date
 from views_mod2 import seperate_string, create_new_table,generate_string,generate_full_string
 from views_email import e_test
 from trakberry.views_testing import machine_list_display
-from views_production import wfp,prioritize
+# from views_production import wfp,prioritize
 from views_vacation import vacation_temp, vacation_set_current, vacation_set_current2
 from views_supervisor import supervisor_tech_call
 from trakberry.views_testing import machine_list_display
@@ -63,7 +63,21 @@ def maint_job_entry(request):
 			location1 = tmp3[3]
 		except:
 			asset5 = machinenum
+		
+		try:
+			bql = "SELECT priority FROM tkb_asset_priority where asset_num = '%s'" % (asset4)
+			cur.execute(bql)
+			tmp2 = cur.fetchall()
+			tmp3 = tmp2[0]
+		except:
+			tmp3 = 999
+		priority = tmp3
 
+		if problem[-3:] == 'WFP':
+			priority = 10000
+		elif problem[-7:] == 'Project':
+			priority = 5000
+			
 # This will determine side of asset and put in breakdown
 		location_check = location1[:1]
 		if location_check < 'G':
@@ -113,7 +127,6 @@ def maint_mgmt_auto(request):
 
 def maint_mgmt(request):
 	net1(request)   # Sets the app to server or local
-	prioritize(request)
 	request.session["TCUR"] = int(time.time())  # Assign current Timestamp to TCUR for proper image and include refresh 
 	maint_initialize_rv(request)  #initialize request variables
 
@@ -410,6 +423,28 @@ def maintenance_edit(request):
 		db, cursor = db_set(request)
 		cur = db.cursor()
 
+		asset3 = machinenum[:4]
+		asset2 = machinenum[:3]
+		try:
+			int(asset3)
+			asset4 = asset3
+		except:
+			asset4 = asset2
+		
+		try:
+			bql = "SELECT priority FROM tkb_asset_priority where asset_num = '%s'" % (asset4)
+			cur.execute(bql)
+			tmp2 = cur.fetchall()
+			tmp3 = tmp2[0][0]
+		except:
+			tmp3 = 999
+		priority = int(tmp3)
+
+		if problem[-3:] == 'WFP':
+			priority = 10000
+		elif problem[-7:] == 'Project':
+			priority = 5000
+
 		if b==-5:  # Route to update maintenance manpower but keep editing
 			mql =( 'update pr_downtime1 SET machinenum="%s" WHERE idnumber="%s"' % (machinenum,index))
 			cur.execute(mql)
@@ -418,6 +453,8 @@ def maintenance_edit(request):
 			cur.execute(tql)
 			db.commit()
 			uql =( 'update pr_downtime1 SET whoisonit="%s" WHERE idnumber="%s"' % (manpower,index))
+			cur.execute(uql)
+			uql =( 'update pr_downtime1 SET priority="%s" WHERE idnumber="%s"' % (priority,index))
 			cur.execute(uql)
 			db.commit()
 			db.close()
@@ -434,8 +471,10 @@ def maintenance_edit(request):
 			tql =( 'update pr_downtime1 SET problem="%s" WHERE idnumber="%s"' % (problem,index))
 			cur.execute(tql)
 			db.commit()
+			uql =( 'update pr_downtime1 SET priority="%s" WHERE idnumber="%s"' % (priority,index))
+			cur.execute(uql)
+			db.commit()
 			db.close()
-			prioritize(request)
 			return render(request,'redirect_maint_mgmt.html')  # Need to bounce out to an html and redirect back into a module otherwise infinite loop
 
 
