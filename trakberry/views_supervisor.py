@@ -499,7 +499,10 @@ def supervisor_down(request):
 			tmp3 = tmp2[0]
 		except:
 			tmp3 = 999
-		priority = tmp3[0]
+		try:
+			priority = tmp3[0]
+		except:
+			priority = 999
 		
 # This will determine side of asset and put in breakdown
 		location_check = location1[:1]
