@@ -1829,3 +1829,114 @@ def auto_updater(request):  # This will run every 30 min on the refresh page to 
 		dummy = 1
 	return render(request,'tkb_updater.html')
 
+def two_hour(request):
+
+	prt = '50-1467'
+	asset1 = '650L'
+	asset2 = '650R'
+	asset3 = '769'
+	asset4 = '769'
+	request.session['Rate_Trilobe'] = 417
+
+	t=int(time.time())  # Current Unix 
+	tm = time.localtime(t)
+	shift_start = -2
+	current_shift = 3
+	if tm[3]<22 and tm[3]>=14:
+		shift_start = 14
+	elif tm[3]<14 and tm[3]>=6:
+		shift_start = 6
+	cur_hour = tm[3]
+	if cur_hour == 22:
+		cur_hour = -1
+	u = t - (((cur_hour-shift_start)*60*60)+(tm[4]*60)+tm[5])    # Starting unix of shift
+
+	two_hour_data(request,u,t)
+
+	shift_time = t-u
+	if shift_time <= 7200:
+		request.session['Trilobe_Interval'] = 1
+		request.session['Trilobe_Color_1'] = '#ffffff'
+		request.session['Trilobe_Color_2'] = '#c4c4c4'
+		request.session['Trilobe_Color_3'] = '#c4c4c4'
+		request.session['Trilobe_Color_4'] = '#c4c4c4'
+	elif shift_time > 7200 and shift_time <= 14400:
+		request.session['Trilobe_Interval'] = 2
+		if request.session['Trilobe_Count_1'] < request.session['Rate_Trilobe']:
+			request.session['Trilobe_Color_1'] = '#FF5834'
+		else:
+			request.session['Trilobe_Color_1'] = '#97F577'
+		request.session['Trilobe_Color_2'] = '#ffffff'
+		request.session['Trilobe_Color_3'] = '#c4c4c4'
+		request.session['Trilobe_Color_4'] = '#c4c4c4'
+	elif shift_time > 14400 and shift_time <= 21600:
+		request.session['Trilobe_Interval'] = 3
+		if request.session['Trilobe_Count_1'] < request.session['Rate_Trilobe']:
+			request.session['Trilobe_Color_1'] = '#FF5834'
+		else:
+			request.session['Trilobe_Color_1'] = '#97F577'
+		if request.session['Trilobe_Count_2'] < request.session['Rate_Trilobe']:
+			request.session['Trilobe_Color_2'] = '#FF5834'
+		else:
+			request.session['Trilobe_Color_2'] = '#97F577'
+		request.session['Trilobe_Color_3'] = '#ffffff'
+		request.session['Trilobe_Color_4'] = '#c4c4c4'
+	else:
+		request.session['Trilobe_Interval'] = 4
+		if request.session['Trilobe_Count_1'] < request.session['Rate_Trilobe']:
+			request.session['Trilobe_Color_1'] = '#FF5834'
+		else:
+			request.session['Trilobe_Color_1'] = '#97F577'
+		if request.session['Trilobe_Count_2'] < request.session['Rate_Trilobe']:
+			request.session['Trilobe_Color_2'] = '#FF5834'
+		else:
+			request.session['Trilobe_Color_2'] = '#97F577'
+		if request.session['Trilobe_Count_3'] < request.session['Rate_Trilobe']:
+			request.session['Trilobe_Color_3'] = '#FF5834'
+		else:
+			request.session['Trilobe_Color_3'] = '#97F577'
+
+		request.session['Trilobe_Color_4'] = '#ffffff'
+	
+	return render(request,'two_hour_display.html')
+
+
+
+def two_hour_data(request,u,t):
+	db, cur = db_set(request)
+	prt = '50-1467'
+	asset1 = '650L'
+	asset2 = '650R'
+	asset3 = '769'
+	asset4 = '769'
+	t1 = u + 7200
+	aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (u,t1,prt,asset1,asset2,asset3,asset4)
+	cur.execute(aql)
+	tmp2 = cur.fetchall()
+	tmp3 = tmp2[0]
+	cnt1 = tmp3[0]
+	request.session['Trilobe_Count_1'] = cnt1
+	t2 = t1 + 7200
+	aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (t1,t2,prt,asset1,asset2,asset3,asset4)
+	cur.execute(aql)
+	tmp2 = cur.fetchall()
+	tmp3 = tmp2[0]
+	cnt2 = tmp3[0]
+	request.session['Trilobe_Count_2'] = cnt2
+	t1 = t1 + 7200
+	t2 = t2 + 7200
+	aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (t1,t2,prt,asset1,asset2,asset3,asset4)
+	cur.execute(aql)
+	tmp2 = cur.fetchall()
+	tmp3 = tmp2[0]
+	cnt3 = tmp3[0]
+	request.session['Trilobe_Count_3'] = cnt3
+	t1 = t1 + 7200
+	t2 = u + 28800
+	aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (t1,t2,prt,asset1,asset2,asset3,asset4)
+	cur.execute(aql)
+	tmp2 = cur.fetchall()
+	tmp3 = tmp2[0]
+	cnt4 = tmp3[0]
+	request.session['Trilobe_Count_4'] = cnt4
+	return

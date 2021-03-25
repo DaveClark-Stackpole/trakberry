@@ -125,6 +125,7 @@ from views_production import chart1_9341_OP80, chart2_9341_OP80, chart1_9341_OP1
 from views_production import chart1_5214_OP30, chart2_5214_OP30, chart1_8670_OP80, chart2_8670_OP80, chart1_5404_OP80, chart2_5404_OP80
 from views_production import chart1_5401_OP80, chart2_5401_OP80, chart1_3214_OP30, chart2_3214_OP30
 from views_production import mgmt_priorities,auto_updater
+from views_production import two_hour
 
 from views4 import ios_test, IsDone, NotDone, target_fix1, medium_production, multidrop, scantest, target_fix1
 from views4 import target_fix_5401, target_fix_5404, target_fix_5399, target_fix_5214, target_fix_3214
@@ -514,6 +515,7 @@ urlpatterns = [
 	url(r'^track_graph_tri_prev/get/(?P<index>\d+)/$', track_graph_tri_prev),
 	url(r'^track_graph_prev1/get/(?P<index>\d+)/$', track_graph_prev1),
 	url(r'^track_graph_prev2/get/(?P<index>\d+)/$', track_graph_prev2),
+	url(r'^two_hour/', two_hour),
 
 	url(r'^chart1_1467/', chart1_1467),
 	url(r'^chart2_1467/', chart2_1467),
