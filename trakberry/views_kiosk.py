@@ -213,21 +213,20 @@ def kiosk_production(request):
 					request.session["cycletime2"] = str(tmpp[4])
 				except:
 					request.session["cycletime2"] = 0
-	
 			except:
 				request.session["part2"] = "None"
 				request.session["machine2"] = "XX"
-				# request.session["variable2"] = int(tmp1[5])
 				if len(tmp1[5]) < 2:
 					request.session["variable2"] = 99
+
 			try:
-				sql = "SELECT * FROM tkb_cycletime WHERE asset = '%s'" %(int(tmp1[6]))
+				request.session["variable3"] = int(tmp1[6])
+				sql = "SELECT * FROM tkb_cycletime WHERE asset = '%s' and part = '%s'" %(tmp1[6],prt3)
 				cur.execute(sql)
 				tmp = cur.fetchall()
 				tmpp = tmp[0]
 				request.session["part3"] = prt3
 				request.session["machine3"] = tmpp[5]
-				request.session["variable3"] = int(tmp1[6])
 				try:
 					request.session["cycletime3"] = str(tmpp[4])
 				except:
@@ -237,15 +236,15 @@ def kiosk_production(request):
 				request.session["machine3"] = "XX"
 				if len(tmp1[6]) < 2:
 					request.session["variable3"] = 99
-					
+
 			try:
-				sql = "SELECT * FROM tkb_cycletime WHERE asset = '%s'" %(int(tmp1[7]))
+				request.session["variable4"] = int(tmp1[7])
+				sql = "SELECT * FROM tkb_cycletime WHERE asset = '%s' and part = '%s'" %(tmp1[7],prt4)
 				cur.execute(sql)
 				tmp = cur.fetchall()
 				tmpp = tmp[0]
 				request.session["part4"] = prt4
 				request.session["machine4"] = tmpp[5]
-				request.session["variable4"] = int(tmp1[7])
 				try:
 					request.session["cycletime4"] = str(tmpp[4])
 				except:
@@ -255,14 +254,15 @@ def kiosk_production(request):
 				request.session["machine4"] = "XX"
 				if len(tmp1[7]) < 2:
 					request.session["variable4"] = 99
+
 			try:
-				sql = "SELECT * FROM tkb_cycletime WHERE asset = '%s'" %(int(tmp1[8]))
+				request.session["variable5"] = int(tmp1[8])
+				sql = "SELECT * FROM tkb_cycletime WHERE asset = '%s' and part = '%s'" %(tmp1[8],prt5)
 				cur.execute(sql)
 				tmp = cur.fetchall()
 				tmpp = tmp[0]
 				request.session["part5"] = prt5
 				request.session["machine5"] = tmpp[5]
-				request.session["variable5"] = int(tmp1[8])
 				try:
 					request.session["cycletime5"] = str(tmpp[4])
 				except:
@@ -272,14 +272,15 @@ def kiosk_production(request):
 				request.session["machine5"] = "XX"
 				if len(tmp1[8]) < 2:
 					request.session["variable5"] = 99
+
 			try:
-				sql = "SELECT * FROM tkb_cycletime WHERE asset = '%s'" %(int(tmp1[9]))
+				request.session["variable6"] = int(tmp1[9])
+				sql = "SELECT * FROM tkb_cycletime WHERE asset = '%s' and part = '%s'" %(tmp1[9],prt6)
 				cur.execute(sql)
-				tmp = cur.fetchall()     
+				tmp = cur.fetchall()
 				tmpp = tmp[0]
 				request.session["part6"] = prt6
 				request.session["machine6"] = tmpp[5]
-				request.session["variable6"] = int(tmp1[9])
 				try:
 					request.session["cycletime6"] = str(tmpp[4])
 				except:
@@ -290,11 +291,8 @@ def kiosk_production(request):
 				if len(tmp1[9]) < 2:
 					request.session["variable6"] = 99
 
-			
 			db.close()
-			
-			# return render(request, "kiosk/kiosk_test2.html")
-			
+
 			request.session["clock"] = kiosk_clock
 			request.session["route_1"] = 'kiosk_production_entry'
 
@@ -625,7 +623,10 @@ def kiosk_production_entry(request):
 	kiosk_ppm = ['' for x in range(0)]
 	kiosk_target = ['' for x in range(0)]
 	kiosk_low_production = [0 for x in range(0)]
-	
+	kiosk_tpm = ['' for x in range(0)]
+
+	tpm_complete = 0
+
 	if request.POST:
 		kiosk_clock = request.POST.get("clock")
 		try:
@@ -657,8 +658,10 @@ def kiosk_production_entry(request):
 		x_hrs = "hrs"
 		x_dwn = "dwn"
 		x_ppm = "ppm"
+		x_tpm = "tpm"
 
-		
+		test1 = []
+
 		kiosk_date = request.POST.get("date_en")
 		kiosk_shift = request.POST.get("shift")
 		
@@ -670,9 +673,26 @@ def kiosk_production_entry(request):
 			x_hrs = x_hrs + str(i)
 			x_dwn = x_dwn + str(i)
 			x_ppm =x_ppm + str(i)
+			x_tpm = x_tpm + str(i)
+			session1 = 'tpm' + str(i)
+			tpm4 = request.session[session1]
 
 			kiosk_job.append(request.POST.get(x_job))
 			kiosk_part.append(request.POST.get(x_part))
+			k_tpm = request.POST.get(x_tpm)
+			kiosk_tpm.append(k_tpm)
+
+
+
+			if k_tpm != True and tpm4 == 1:
+				tpm_complete = 0
+			elif k_tpm == 'Yes':
+				tpm_complete = 1
+			elif tpm4 == 0:
+				tpm_complete = -1
+			
+			r=3/0
+
 			temp_prod = request.POST.get(x_prod)
 			if temp_prod == None or temp_prod == "":
 				temp_prod = 0
@@ -681,15 +701,13 @@ def kiosk_production_entry(request):
 			kiosk_dwn.append(request.POST.get(x_dwn))
 			kiosk_ppm.append(request.POST.get(x_ppm))
 			
-			
-			
-			
 			x_job = "job"
 			x_part = "part"
 			x_prod = "prod"
 			x_hrs = "hrs"
 			x_dwn = "dwn"
 			x_ppm = "ppm"
+			x_tpm = "tpm"
 
 
 		shift_time = "None"
@@ -729,6 +747,7 @@ def kiosk_production_entry(request):
 			hrs = kiosk_hrs[i]
 			dwn = kiosk_dwn[i]
 			ppm = kiosk_ppm[i]
+			tpm = kiosk_tpm[i]
 			low_production_variable = 0
 			target1 = 0
 			machine = ""
@@ -817,8 +836,8 @@ def kiosk_production_entry(request):
 					# request.session["oa_problem"] = oa_problem
 						# test = str.replace(test, '\n', '\r\n')
 
-				if len(part) < 2:
-					part_check = 1	
+				if len(part) < 2 or part == 'None':
+					part_check = 1
 					part_check_job = job
 			
 								
@@ -847,6 +866,12 @@ def kiosk_production_entry(request):
 			request.session["error_message"] = "Must Have a Part for every Job !"
 			request.session["oa_problem2"] = "Machine " + part_check_job + " has no part listed for it."
 			request.session["oa_problem"] = ""
+		rrr=5/0
+		if tpm_complete == 1:
+			bounce = 3
+			request.session["error_title"] = "Error !"
+			request.session["error_message"] = "All required TPMs must be completed"
+			
 
 		if request.session["check1"] == 1:  # bypass the presses
 			bounce = 0
@@ -882,7 +907,6 @@ def kiosk_production_entry(request):
 				request.session[b3] = kiosk_hrs[(a-1)]
 				request.session[b4] = kiosk_part[(a-1)]
 			# yyy = request.session["srgg"]	
-
 			request.session["route_1"] = 'kiosk_production_entry'
 			return direction(request)
 
@@ -912,6 +936,7 @@ def kiosk_production_entry(request):
 		if write_answer == 1:
 			for i in range(0,6):
 				job = kiosk_job[i]
+				tpm = kiosk_tpm[i]
 				low_production = kiosk_low_production[i]
 				try:
 					dummy = len(job)
@@ -937,7 +962,17 @@ def kiosk_production_entry(request):
 					# y = y / 0
 					if job[:1] == '3':
 						job = job + request.session['furnace']
-					cur.execute('''INSERT INTO sc_production1(asset_num,partno,actual_produced,shift_hours_length,down_time,comments,shift,pdate,machine,scrap,More_than_2_percent,total,target,planned_downtime_min_forshift,sheet_id,Updated,low_production,manual_sent,kiosk_id) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)''', (job,part,prod,hrs,dwn,clock_number,shift_time,kiosk_date,m,zy,zy,zy,target1,zy,sheet_id,zy,low_production,manual_sent,kiosk_id))
+
+					# Determine if tpm is 1-complete 0-not complete or N/A - not needed
+					tpm2 = 'No'
+					if tpm: tpm2 = 'Yes'
+					sql = "SELECT COUNT(Asset) FROM quality_tpm_assets WHERE Asset = '%s'" %(job+".0")
+					cur.execute(sql)
+					tmp2 = cur.fetchall()
+					if int(tmp2[0][0]) == 0:
+						tpm2 = 'N/A'
+
+					cur.execute('''INSERT INTO sc_production1(asset_num,partno,actual_produced,shift_hours_length,down_time,comments,shift,pdate,machine,scrap,More_than_2_percent,total,target,planned_downtime_min_forshift,sheet_id,Updated,low_production,manual_sent,kiosk_id,tpm) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)''', (job,part,prod,hrs,dwn,clock_number,shift_time,kiosk_date,m,zy,zy,zy,target1,zy,sheet_id,zy,low_production,manual_sent,kiosk_id,tpm2))
 					db.commit()
 
 
@@ -1047,6 +1082,22 @@ def kiosk_job_assign(request):
 	request.session["press5"] = 0
 	request.session["press6"] = 0
 	db, cur = db_set(request)
+
+	# ********************************************************************
+	# This will be added and run seperately sometime.
+	# Add the column in sc_production1 if it doesn't exist
+	try:
+		na1 = 'N/A'
+		cur.execute('Alter Table sc_production1 ADD tpm CHAR(80) Default NULL ')
+		# cur.execute('Alter Table sc_production1 DROP tpm')
+		db.commit()
+		cql = ('update sc_production1 SET tpm = "%s" WHERE tpm IS NULL' % (na1))
+		cur.execute(cql)
+		db.commit()
+	except:
+		dummy = 1
+	# *********************************************************************
+
 	if request.POST:
 		kiosk_clock = request.POST.get("clock")
 		kiosk_job1 = request.POST.get("job1")
@@ -1312,14 +1363,52 @@ def kiosk_job_assign_enter(request):
 	kiosk_job5 = request.session["kiosk_job5"]
 	kiosk_job6 = request.session["kiosk_job6"]
 	TimeOut = -1
-	
-	  
-	
+
+	# Set whether TPM Check needs to be done in seesion variable tpm'n'
+	furnace_check = 0
+	try:
+		if request.session['furnace'] in ('u','s'):
+			furnace_check = 1
+	except:
+		furnace_check = 0
+
+	sql = "SELECT COUNT(Asset) FROM quality_tpm_assets WHERE Asset = '%s'" %(kiosk_job1+".0")
+	cur.execute(sql)
+	tmp2 = cur.fetchall()
+	request.session['tpm1'] = int(tmp2[0][0])
+	sql = "SELECT COUNT(Asset) FROM quality_tpm_assets WHERE Asset = '%s'" %(kiosk_job2+".0")
+	cur.execute(sql)
+	tmp2 = cur.fetchall()
+	request.session['tpm2'] = int(tmp2[0][0])
+	sql = "SELECT COUNT(Asset) FROM quality_tpm_assets WHERE Asset = '%s'" %(kiosk_job3+".0")
+	cur.execute(sql)
+	tmp2 = cur.fetchall()
+	request.session['tpm3'] = int(tmp2[0][0])
+	sql = "SELECT COUNT(Asset) FROM quality_tpm_assets WHERE Asset = '%s'" %(kiosk_job4+".0")
+	cur.execute(sql)
+	tmp2 = cur.fetchall()
+	request.session['tpm4'] = int(tmp2[0][0])
+	sql = "SELECT COUNT(Asset) FROM quality_tpm_assets WHERE Asset = '%s'" %(kiosk_job5+".0")
+	cur.execute(sql)
+	tmp2 = cur.fetchall()
+	request.session['tpm5'] = int(tmp2[0][0])
+	sql = "SELECT COUNT(Asset) FROM quality_tpm_assets WHERE Asset = '%s'" %(kiosk_job6+".0")
+	cur.execute(sql)
+	tmp2 = cur.fetchall()
+	request.session['tpm6'] = int(tmp2[0][0])
+	# Adjust if it was furnace unload or supply
+	if (kiosk_job1[:1] == '3' and furnace_check == 1) : request.session['tpm1'] = 0 
+	if (kiosk_job2[:1] == '3' and furnace_check == 1) : request.session['tpm2'] = 0 
+	if (kiosk_job3[:1] == '3' and furnace_check == 1) : request.session['tpm3'] = 0 
+	if (kiosk_job4[:1] == '3' and furnace_check == 1) : request.session['tpm4'] = 0 
+	if (kiosk_job5[:1] == '3' and furnace_check == 1) : request.session['tpm5'] = 0 
+	if (kiosk_job6[:1] == '3' and furnace_check == 1) : request.session['tpm6'] = 0 
+
+
 	TimeStamp = int(time.time())
 	cur.execute('''INSERT INTO tkb_kiosk(Clock,Job1,Job2,Job3,Job4,Job5,Job6,TimeStamp_In,TimeStamp_Out) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s)''', (kiosk_clock,kiosk_job1,kiosk_job2,kiosk_job3,kiosk_job4,kiosk_job5,kiosk_job6,TimeStamp,TimeOut))
 	db.commit()
 	db.close()
-	
 	
 	request.session["current_clock"] = kiosk_clock
 	request.session["bounce"] = 0

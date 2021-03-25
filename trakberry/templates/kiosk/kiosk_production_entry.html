@@ -14,40 +14,36 @@
 	
 
 	<!-- Forget about the error messages for now until we are more efficient
-		  Definately add at a later date   -->
+			Definately add at a later date   -->
 
-	<!-- {% if request.session.bounce > 0 %} 
+	{% if request.session.bounce > 0 %} 
 	<script type="text/javascript">
-	  $(document).ready(function(){
-		  $("#myModal").modal('show');
-	  });
+		$(document).ready(function(){
+			$("#myModal").modal('show');
+		});
 	</script>
-	{% endif %} -->
+	{% endif %}
 
 
 <style>
+
 	{% if request.session.bounce = 1 %} 
-		.modal-body
-			{background-color: rgb(252, 236, 149);}
-		.modal-header
-		{background-color: rgb(252, 236, 149);}
-		.modal-footer
-		{background-color: rgb(252, 236, 149);}
-
-}
+		.modal-body{background-color: rgb(252, 236, 149);}
+		.modal-header{background-color: rgb(252, 236, 149);}
+		.modal-footer{background-color: rgb(252, 236, 149);}
+		.modal {border-radius: 25px; }
 	{% elif request.session.bounce = 2 %}
-		.modal-body
-			{background-color: rgb(255, 172, 172);}
-		.modal-header
-			{background-color: rgb(255, 172, 172);}
-		.modal-footer
-			{background-color: rgb(255, 172, 172);}
-			.modal {
- 
-    border-radius: 25px; 
-}
-
+		.modal-body{background-color: rgb(255, 172, 172);}
+		.modal-header{background-color: rgb(255, 172, 172);}
+		.modal-footer{background-color: rgb(255, 172, 172);}
+		.modal {border-radius: 25px; }
+	{% elif request.session.bounce = 3 %}
+		.modal-body{background-color: rgb(255, 172, 172);}
+		.modal-header{background-color: rgb(255, 172, 172);}
+		.modal-footer{background-color: rgb(255, 172, 172);}
+		.modal {border-radius: 25px; }
 	{% endif %}
+
 </style>
 
 
@@ -75,7 +71,7 @@
 	</div>
 	
 	
-	<div class="item2"><font color="#000000" size ="5"><u><b>Clock</b></u></font></div>
+	<div class="item2"><font color="#000000" size ="5"><u><b>Clock {{request.session.variable3}}</b></u></font></div>
 	<div class="item2"><font color="#000000" size ="5"><u><b>Date</b></u></font></div>
 	<div class="item2"></div>
 	<div class="item2"><font color="#000000" size ="5"><u><b>Shift</b></u></font></div>
@@ -107,7 +103,12 @@
 	<div class="item2"><font color="#000000" size ="5"><u><b>Dtime (Min) </b></u></font> </div>
 
 {% if request.session.variable1 != 99 %}
-	<div class="item2"><input style="font-size:23px;width:100px;height:60px;text-align:center;" value={{request.session.variable1}}  name="job1" type="text"></div>
+	<div class="item2"><input style="font-size:23px;width:100px;height:60px;text-align:center;" value={{request.session.variable1}}  name="job1" type="text">
+		{% if request.session.tpm1 != 0 %}
+			&nbsp;&nbsp;&nbsp;&nbsp;
+			<input style="font-size:23px;width:20px;height:20px;" name="tpm1" type="checkbox">TPM Complete 
+		{% endif %}
+	</div>
 
 	{% if request.session.part1 = -1 %}
 		<div class="item2">
@@ -159,11 +160,20 @@
 		</select>
 	</div>
 	
-	<div class="item2"><input style="font-size:23px;width:100px;height:60px;"  value={{request.session.oa_dwn1}} name="dwn1" type="number"></div>
+	<div class="item2"><input style="font-size:23px;width:100px;height:60px;"  value={{request.session.oa_dwn1}} name="dwn1" type="number">
+	
+	
+	
+	</div>
 {% endif %}
 
 {% if request.session.variable2 != 99 %}
-	<div class="item2"><input style="font-size:23px;width:100px;height:60px;text-align:center;" value={{request.session.variable2}}  name="job2" type="text"></div>
+	<div class="item2"><input style="font-size:23px;width:100px;height:60px;text-align:center;" value={{request.session.variable2}}  name="job2" type="text">
+		{% if request.session.tpm2 != 0 %}
+		&nbsp;&nbsp;&nbsp;&nbsp;
+		<input style="font-size:23px;width:20px;height:20px;" name="tpm2" type="checkbox">TPM Complete 
+	{% endif %}
+	</div>
 
 	<!-- Safeguard test is set to -1 if no value is found -->
 	{% if request.session.part2 = -1 %}
@@ -212,7 +222,12 @@
 {% endif %}
 
 {% if request.session.variable3 != 99 %}
-<div class="item2"><input style="font-size:23px;width:100px;height:60px;text-align:center;" value={{request.session.variable3}}  name="job3" type="text"></div>
+<div class="item2"><input style="font-size:23px;width:100px;height:60px;text-align:center;" value={{request.session.variable3}}  name="job3" type="text">
+	{% if request.session.tpm3 != 0 %}
+	&nbsp;&nbsp;&nbsp;&nbsp;
+	<input style="font-size:23px;width:20px;height:20px;" name="tpm3" type="checkbox">TPM Complete 
+	{% endif %}
+	</div>
 	<!-- Safeguard test is set to -1 if no value is found -->
 	{% if request.session.part3 = -1 %}
 		<div class="item2">
@@ -259,7 +274,12 @@
 {% endif %}
 
 {% if request.session.variable4 != 99 %}
-	<div class="item2"><input style="font-size:23px;width:100px;height:60px;text-align:center;" value={{request.session.variable4}}  name="job4" type="text"></div>
+	<div class="item2"><input style="font-size:23px;width:100px;height:60px;text-align:center;" value={{request.session.variable4}}  name="job4" type="text">
+		{% if request.session.tpm4 != 0 %}
+		&nbsp;&nbsp;&nbsp;&nbsp;
+		<input style="font-size:23px;width:20px;height:20px;" name="tpm4" type="checkbox">TPM Complete 
+	{% endif %}
+	</div>
 
 	{% if request.session.part4 = -1 %}
 		<div class="item2">
@@ -312,7 +332,12 @@
 {% endif %}
 
 {% if request.session.variable5 != 99 %}
-	<div class="item2"><input style="font-size:23px;width:100px;height:60px;text-align:center;" value={{request.session.variable5}}  name="job5" type="text"></div>
+	<div class="item2"><input style="font-size:23px;width:100px;height:60px;text-align:center;" value={{request.session.variable5}}  name="job5" type="text">
+		{% if request.session.tpm5 != 0 %}
+		&nbsp;&nbsp;&nbsp;&nbsp;
+		<input style="font-size:23px;width:20px;height:20px;" name="tpm5" type="checkbox">TPM Complete 
+	{% endif %}
+	</div>
 
 	{% if request.session.part5 = -1 %}
 		<div class="item2">
@@ -365,7 +390,12 @@
 {% endif %}
 
 {% if request.session.variable6 != 99 %}
-	<div class="item2"><input style="font-size:23px;width:100px;height:60px;text-align:center;" value={{request.session.variable6}}  name="job6" type="text"></div>
+	<div class="item2"><input style="font-size:23px;width:100px;height:60px;text-align:center;" value={{request.session.variable6}}  name="job6" type="text">
+		{% if request.session.tpm6 != 0 %}
+		&nbsp;&nbsp;&nbsp;&nbsp;
+		<input style="font-size:23px;width:20px;height:20px;" name="tpm6" type="checkbox">TPM Complete 
+	{% endif %}
+	</div>
 
 	{% if request.session.part6 = -1 %}
 		<div class="item2">
@@ -421,38 +451,37 @@
 </form>
 
 
-          <!-- Modal -->
-		  <div class="modal fade" id="myModal" role="dialog">
+					<!-- Modal -->
+			<div class="modal fade" id="myModal" role="dialog">
 			<div class="modal-dialog modal-lg">
-			  <div class="modal-content" >
+				<div class="modal-content" >
 				<div class="modal-header">
-				  <button type="button" class="close" data-dismiss="modal">&times;</button>
-				  <h4 class="modal-title"><mark><font color="#000000" size ="6">&nbsp;&nbsp;{{request.session.error_title}}&nbsp;&nbsp;</font></mark></h4>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title"><mark><font color="#000000" size ="6">&nbsp;&nbsp;{{request.session.error_title}}&nbsp;&nbsp;</font></mark></h4>
 				</div>
 				<div class="modal-body" >
-				  <font color="#000000" size ="5">
-					  <p align="left">
-						  <b><u>{{request.session.error_message}}</u></b><br><br>
+					<font color="#000000" size ="5">
+						<p align="left">
+							<b><u>{{request.session.error_message}}</u></b><br><br>
 				{% for a in oa_problem %}
 				{{a}}<br>
 				{% endfor %}
 				<!-- {{oa_problem}} -->
 				</p>
-				  </font>
+					</font>
 				</div>
 				<div class="modal-footer">
-				  <img src="/static/media/JELogo.gif?{{TCUR}}"  style="border-radius: 25px;" height="40" width="150">
-					  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					  <!-- <button type="button" class="btn btn-primary" onclick="window.location.href = 'http://www.tsn.ca';">Save changes</button> -->
+					<img src="/static/media/JELogo.gif?{{TCUR}}"  style="border-radius: 25px;" height="40" width="150">
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<!-- <button type="button" class="btn btn-primary" onclick="window.location.href = 'http://www.tsn.ca';">Save changes</button> -->
 
-
-					  <button style="background-color: #AAAAAA;border-radius: 10px;width:60px;height:30px;font-weight: 500;font-size:16px;align=left;" type="button" onclick="window.location.href = '{{request.session.local_toggle}}/kiosk_menu';">Yes</button>
-					  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					  <button style="background-color: #AAAAAA;border-radius: 10px;width:60px;height:30px;font-weight: 500;font-size:16px;align=left;" type="button" data-dismiss="modal">Cancel</button>
+						<!-- <button style="background-color: #AAAAAA;border-radius: 10px;width:60px;height:30px;font-weight: 500;font-size:16px;align=left;" type="button" onclick="window.location.href = '{{request.session.local_toggle}}/kiosk_menu';">Yes</button> -->
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<button style="background-color: #AAAAAA;border-radius: 10px;width:60px;height:30px;font-weight: 500;font-size:16px;align=left;" type="button" data-dismiss="modal">OK</button>
 						<!-- <button type ="button" class="close" data-dismiss="modal">OK</button> -->
 				</div>
-			  </div>
+				</div>
 			</div>
-		  </div>
+			</div>
 
 {% endblock %}

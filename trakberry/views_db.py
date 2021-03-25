@@ -11,8 +11,8 @@ def net1(request):
 	request.session["local_switch"] = 0
 	request.session["local_toggle"] = "/trakberry"
 	# #
-	# request.session["local_switch"] = 1
-	# request.session["local_toggle"] = ""
+	request.session["local_switch"] = 1
+	request.session["local_toggle"] = ""
 	return
 
 # Methods for opening database for all and returning db and cur

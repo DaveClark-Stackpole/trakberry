@@ -71,7 +71,10 @@ def maint_job_entry(request):
 			tmp3 = tmp2[0]
 		except:
 			tmp3 = 999
-		priority = tmp3[0]
+		try:
+			priority = tmp3[0]
+		except:
+			priority = 999
 
 		if problem[-3:] == 'WFP':
 			priority = 10000

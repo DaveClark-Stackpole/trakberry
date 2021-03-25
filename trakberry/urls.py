@@ -588,7 +588,7 @@ urlpatterns = [
 	url(r'^barcode_wrong_part_reset/', barcode_wrong_part_reset),
 	url(r'^barcode_count/', barcode_count),
 
-	# *************  Scrap Section *********************************************
+	# *************  Quality Section *********************************************
 	url(r'^scrap_mgmt/', scrap_mgmt),
 	url(r'^scrap_mgmt_login_form/', scrap_mgmt_login_form),
 	url(r'^scrap_display/', scrap_display),
