@@ -9,7 +9,7 @@ from views_mod1 import find_current_date, mgmt_display, mgmt_display_edit
 from trakberry.views2 import login_initial
 from trakberry.views_testing import machine_list_display
 from trakberry.views_vacation import vacation_temp, vacation_set_current, vacation_set_current2_1, vacation_set_current5,vacation_set_current6,vacation_set_current77
-from views_vacation import vacation_1
+from views_vacation import vacation_1,vacation_set_current5
 from django.http import QueryDict
 import MySQLdb
 import json
@@ -1840,6 +1840,8 @@ def two_hour(request):
 
 	t=int(time.time())  # Current Unix 
 	t = 1613385142
+	current_first, shift  = vacation_set_current5()
+
 	tm = time.localtime(t)
 	shift_start = -2
 	current_shift = 3
@@ -1898,11 +1900,13 @@ def two_hour(request):
 			request.session['Trilobe_Color_3'] = '#97F577'
 		request.session['Trilobe_Color_4'] = '#ffffff'
 
+
 	db, cur = db_set(request)  
 		# cur.execute("""DROP TABLE IF EXISTS tkb_2hr""")
 	cur.execute("""CREATE TABLE IF NOT EXISTS tkb_2hr(Id INT PRIMARY KEY AUTO_INCREMENT,Date1 CHAR(80),Shift1 CHAR(80), Line Char(80), Count1 Char(80), Comment1 Char(255), Count2 Char(80), Comment2 Char(255), Count3 Char(80), Comment3 Char(255), Count4 Char(80), Comment4 Char(255))""")
 	cur.execute('''INSERT INTO tkb_2hr(asset_num,part) VALUES(%s,%s)''', (i,part2))
 	db.commit()
+
 	return render(request,'two_hour_display.html')
 
 
