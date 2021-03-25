@@ -1839,6 +1839,7 @@ def two_hour(request):
 	request.session['Rate_Trilobe'] = 417
 
 	t=int(time.time())  # Current Unix 
+	t = 1613385142
 	tm = time.localtime(t)
 	shift_start = -2
 	current_shift = 3
@@ -1895,9 +1896,11 @@ def two_hour(request):
 			request.session['Trilobe_Color_3'] = '#FF5834'
 		else:
 			request.session['Trilobe_Color_3'] = '#97F577'
-
 		request.session['Trilobe_Color_4'] = '#ffffff'
-	
+
+	db, cur = db_set(request)  
+		# cur.execute("""DROP TABLE IF EXISTS tkb_2hr""")
+	cur.execute("""CREATE TABLE IF NOT EXISTS tkb_2hr(Id INT PRIMARY KEY AUTO_INCREMENT,Date1 CHAR(80),Shift1 CHAR(80), Line Char(80), Count1 Char(80), Comment1 Char(255), Count2 Char(80), Comment2 Char(255), Count3 Char(80), Comment3 Char(255), Count4 Char(80), Comment4 Char(255))""")
 	return render(request,'two_hour_display.html')
 
 
@@ -1939,4 +1942,5 @@ def two_hour_data(request,u,t):
 	tmp3 = tmp2[0]
 	cnt4 = tmp3[0]
 	request.session['Trilobe_Count_4'] = cnt4
+	db.close()
 	return
