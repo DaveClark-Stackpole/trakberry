@@ -1855,7 +1855,9 @@ def two_hour(request):
 	u = t - (((cur_hour-shift_start)*60*60)+(tm[4]*60)+tm[5])    # Starting unix of shift
 
 	two_hour_data(request,u,t)
-
+	dummy=1
+	dummy = dummy *2
+	
 	shift_time = t-u
 	if shift_time <= 7200:
 		request.session['Trilobe_Interval'] = 1
