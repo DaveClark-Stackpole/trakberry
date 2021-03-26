@@ -1841,23 +1841,26 @@ def two_hour(request):
 	t=int(time.time())  # Current Unix 
 	t = 1613385142
 	current_first, shift  = vacation_set_current5()
+	
 
+	r=4/0
 	tm = time.localtime(t)
 	shift_start = -2
 	current_shift = 3
+	shift = 'Area#1 Mid'
 	if tm[3]<22 and tm[3]>=14:
 		shift_start = 14
+		shift = 'Area#1 Aft'
 	elif tm[3]<14 and tm[3]>=6:
 		shift_start = 6
+		shift = 'Area#1 Day'
 	cur_hour = tm[3]
 	if cur_hour == 22:
 		cur_hour = -1
 	u = t - (((cur_hour-shift_start)*60*60)+(tm[4]*60)+tm[5])    # Starting unix of shift
 
 	two_hour_data(request,u,t)
-	dummy =1
-	dummy2 = dummy +66
-	
+
 	shift_time = t-u
 	if shift_time <= 7200:
 		request.session['Trilobe_Interval'] = 1
@@ -1906,8 +1909,21 @@ def two_hour(request):
 	db, cur = db_set(request)  
 		# cur.execute("""DROP TABLE IF EXISTS tkb_2hr""")
 	cur.execute("""CREATE TABLE IF NOT EXISTS tkb_2hr(Id INT PRIMARY KEY AUTO_INCREMENT,Date1 CHAR(80),Shift1 CHAR(80), Line Char(80), Count1 Char(80), Comment1 Char(255), Count2 Char(80), Comment2 Char(255), Count3 Char(80), Comment3 Char(255), Count4 Char(80), Comment4 Char(255))""")
-	cur.execute('''INSERT INTO tkb_2hr(asset_num,part) VALUES(%s,%s)''', (i,part2))
-	db.commit()
+	date1 = current_first
+	shift1 = shift
+
+	aql = "SELECT COUNT(*) FROM tkb_2hr WHERE Date1 = '%s' and Shift1 = '%s' and Line = '%s'" % (date1,shift1,line)
+	cur.execute(aql)
+	tmp2 = cur.fetchall()
+	tmp3 = tmp2[0]
+	cnt4 = tmp3[0]
+	if cnt4 = 0:
+		cur.execute('''INSERT INTO tkb_2hr(asset_num,part) VALUES(%s,%s)''', (i,part2))
+		db.commit()
+	else:
+		mql =( 'update tkb_2hr SET priority="%s" WHERE right(problem,3)="%s"' % (p,w))
+		cur.execute(mql)
+		db.commit()
 
 	return render(request,'two_hour_display.html')
 
