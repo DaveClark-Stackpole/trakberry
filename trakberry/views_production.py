@@ -1847,7 +1847,7 @@ def two_hour(request):
 
 	line = '50-1467'
 	t=int(time.time())  # Current Unix 
-	t = 1613156143
+	# t = 1613156143
 	current_first, shift  = vacation_set_current5()
 
 	tm = time.localtime(t)
@@ -1904,6 +1904,10 @@ def two_hour(request):
 		button_pressed = request.POST.get("button7")
 		if button_pressed == 'refresh':
 			return render(request,'redirect_two_hour.html')
+		elif button_pressed == 'prev':
+			return render(request,'redirect_two_hour_prev.html')
+		elif button_pressed == 'next':
+			return render(request,'redirect_two_hour_next.html')
 		else:
 			request.session['Comment_Edit'] = button_pressed
 			return render(request,'redirect_two_hour_comment.html')
@@ -1961,6 +1965,8 @@ def two_hour_past(request):
 	shift_time = t-u
 	date1 = current_first
 	shift1 = shift
+	request.session['two_hour_date'] = date1
+	request.session['two_hour_shift'] = shift1
 	interval = int(shift_time / float(7200)) + 1  # Swet interval for the 2hr grouping
 
 	two_hour_data(request,u,t,date1,shift1,interval,rate) # Get the data
@@ -1973,37 +1979,22 @@ def two_hour_past(request):
 	comment2 = request.session['Trilobe_Comment_2']
 	comment3 = request.session['Trilobe_Comment_3']
 	comment4 = request.session['Trilobe_Comment_4']
-	
 
-	db, cur = db_set(request)  
-	aql = "SELECT COUNT(*) FROM tkb_2hr WHERE Date1 = '%s' and Shift1 = '%s' and Line = '%s'" % (date1,shift1,line)
-	cur.execute(aql)
-	tmp2 = cur.fetchall()
-	tmp3 = tmp2[0]
-	cnt4 = tmp3[0]
-	if cnt4 == 0:
-		cur.execute('''INSERT INTO tkb_2hr(Date1,Shift1,Line,Count1,Comment1,Count2,Comment2,Count3,Comment3,Count4,Comment4) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)''', (date1,shift1,line,count1,comment1,count2,comment2,count3,comment3,count4,comment4))
-		db.commit()
-	else:
-		mql =( 'update tkb_2hr SET Count1="%s", Comment1="%s",Count2="%s",Comment2="%s",Count3="%s",Comment3="%s",Count4="%s",Comment4="%s"  WHERE (Date1="%s" and Shift1="%s")' % (count1,comment1,count2,comment2,count3,comment3,count4,comment4,date1,shift1))
-		cur.execute(mql)
-		db.commit()
-	db.close()
 
 	if request.POST:
+		request.session['Two_Hour_Change'] = 0
 		button_pressed = request.POST.get("button7")
-		if button_pressed == 'refresh':
-			return render(request,'redirect_two_hour.html')
-		else:
-			request.session['Comment_Edit'] = button_pressed
-			return render(request,'redirect_two_hour_comment.html')
+		if button_pressed == 'prev':
+			return render(request,'redirect_two_hour_prev.html')
+		request.session['Comment_Edit'] = button_pressed
+		return render(request,'redirect_two_hour_comment.html')
 
 	else:
 		form = sup_downForm()
 	args = {}
 	args.update(csrf(request))
 	args['form'] = form
-	return render(request,'two_hour_display.html',{'args':args})
+	return render(request,'two_hour_past.html',{'args':args})
 
 def two_hour_comment(request):
 	db, cur = db_set(request)  
@@ -2019,12 +2010,11 @@ def two_hour_comment(request):
 	Comment7 = ['Trilobe_Comment_1','Trilobe_Comment_2','Trilobe_Comment_3','Trilobe_Comment_4']
 	Color7 = ['Trilobe_Color_1','Trilobe_Color_2','Trilobe_Color_3','Trilobe_Color_4']
 
-	request.session['Rate_Trilobe'] = 360
 	rate = request.session['Rate_Trilobe']
 
 	line = '50-1467'
 	t=int(time.time())  # Current Unix 
-	t = 1613156143
+	# t = 1613156143
 	current_first, shift  = vacation_set_current5()
 
 	tm = time.localtime(t)
