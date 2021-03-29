@@ -1830,20 +1830,26 @@ def auto_updater(request):  # This will run every 30 min on the refresh page to 
 	return render(request,'tkb_updater.html')
 
 def two_hour(request):
-
+	db, cur = db_set(request)  
+	cur.execute("""CREATE TABLE IF NOT EXISTS tkb_2hr(Id INT PRIMARY KEY AUTO_INCREMENT,Date1 CHAR(80),Shift1 CHAR(80), Line Char(80), Count1 Char(80), Comment1 Char(255), Count2 Char(80), Comment2 Char(255), Count3 Char(80), Comment3 Char(255), Count4 Char(80), Comment4 Char(255))""")
+	db.close()
 	prt = '50-1467'
 	asset1 = '650L'
 	asset2 = '650R'
 	asset3 = '769'
 	asset4 = '769'
-	request.session['Rate_Trilobe'] = 417
+	Count7 = ['Trilobe_Count_1','Trilobe_Count_2','Trilobe_Count_3','Trilobe_Count_4']
+	Comment7 = ['Trilobe_Comment_1','Trilobe_Comment_2','Trilobe_Comment_3','Trilobe_Comment_4']
+	Color7 = ['Trilobe_Color_1','Trilobe_Color_2','Trilobe_Color_3','Trilobe_Color_4']
 
+	request.session['Rate_Trilobe'] = 394
+	rate = request.session['Rate_Trilobe']
+
+	line = '50-1467'
 	t=int(time.time())  # Current Unix 
-	t = 1613385142
+	t = 1613156143
 	current_first, shift  = vacation_set_current5()
-	
 
-	r=4/0
 	tm = time.localtime(t)
 	shift_start = -2
 	current_shift = 3
@@ -1859,77 +1865,239 @@ def two_hour(request):
 		cur_hour = -1
 	u = t - (((cur_hour-shift_start)*60*60)+(tm[4]*60)+tm[5])    # Starting unix of shift
 
-	two_hour_data(request,u,t)
+	request.session['Two_Hour_Finish_Time'] = u + 28800 - 1  # Represents the end of the shift
+	request.session['Two_Hour_Current_Time'] = t
 
 	shift_time = t-u
-	if shift_time <= 7200:
-		request.session['Trilobe_Interval'] = 1
-		request.session['Trilobe_Color_1'] = '#ffffff'
-		request.session['Trilobe_Color_2'] = '#c4c4c4'
-		request.session['Trilobe_Color_3'] = '#c4c4c4'
-		request.session['Trilobe_Color_4'] = '#c4c4c4'
-	elif shift_time > 7200 and shift_time <= 14400:
-		request.session['Trilobe_Interval'] = 2
-		if request.session['Trilobe_Count_1'] < request.session['Rate_Trilobe']:
-			request.session['Trilobe_Color_1'] = '#FF5834'
-		else:
-			request.session['Trilobe_Color_1'] = '#97F577'
-		request.session['Trilobe_Color_2'] = '#ffffff'
-		request.session['Trilobe_Color_3'] = '#c4c4c4'
-		request.session['Trilobe_Color_4'] = '#c4c4c4'
-	elif shift_time > 14400 and shift_time <= 21600:
-		request.session['Trilobe_Interval'] = 3
-		if request.session['Trilobe_Count_1'] < request.session['Rate_Trilobe']:
-			request.session['Trilobe_Color_1'] = '#FF5834'
-		else:
-			request.session['Trilobe_Color_1'] = '#97F577'
-		if request.session['Trilobe_Count_2'] < request.session['Rate_Trilobe']:
-			request.session['Trilobe_Color_2'] = '#FF5834'
-		else:
-			request.session['Trilobe_Color_2'] = '#97F577'
-		request.session['Trilobe_Color_3'] = '#ffffff'
-		request.session['Trilobe_Color_4'] = '#c4c4c4'
-	else:
-		request.session['Trilobe_Interval'] = 4
-		if request.session['Trilobe_Count_1'] < request.session['Rate_Trilobe']:
-			request.session['Trilobe_Color_1'] = '#FF5834'
-		else:
-			request.session['Trilobe_Color_1'] = '#97F577'
-		if request.session['Trilobe_Count_2'] < request.session['Rate_Trilobe']:
-			request.session['Trilobe_Color_2'] = '#FF5834'
-		else:
-			request.session['Trilobe_Color_2'] = '#97F577'
-		if request.session['Trilobe_Count_3'] < request.session['Rate_Trilobe']:
-			request.session['Trilobe_Color_3'] = '#FF5834'
-		else:
-			request.session['Trilobe_Color_3'] = '#97F577'
-		request.session['Trilobe_Color_4'] = '#ffffff'
-
-
-	db, cur = db_set(request)  
-		# cur.execute("""DROP TABLE IF EXISTS tkb_2hr""")
-	cur.execute("""CREATE TABLE IF NOT EXISTS tkb_2hr(Id INT PRIMARY KEY AUTO_INCREMENT,Date1 CHAR(80),Shift1 CHAR(80), Line Char(80), Count1 Char(80), Comment1 Char(255), Count2 Char(80), Comment2 Char(255), Count3 Char(80), Comment3 Char(255), Count4 Char(80), Comment4 Char(255))""")
 	date1 = current_first
 	shift1 = shift
+	interval = int(shift_time / float(7200)) + 1  # Swet interval for the 2hr grouping
 
+	two_hour_data(request,u,t,date1,shift1,interval,rate) # Get the data
+
+	count1 = request.session['Trilobe_Count_1']
+	count2 = request.session['Trilobe_Count_2']
+	count3 = request.session['Trilobe_Count_3']
+	count4 = request.session['Trilobe_Count_4']
+	comment1 = request.session['Trilobe_Comment_1']
+	comment2 = request.session['Trilobe_Comment_2']
+	comment3 = request.session['Trilobe_Comment_3']
+	comment4 = request.session['Trilobe_Comment_4']
+	
+
+	db, cur = db_set(request)  
 	aql = "SELECT COUNT(*) FROM tkb_2hr WHERE Date1 = '%s' and Shift1 = '%s' and Line = '%s'" % (date1,shift1,line)
 	cur.execute(aql)
 	tmp2 = cur.fetchall()
 	tmp3 = tmp2[0]
 	cnt4 = tmp3[0]
-	if cnt4 = 0:
-		cur.execute('''INSERT INTO tkb_2hr(asset_num,part) VALUES(%s,%s)''', (i,part2))
+	if cnt4 == 0:
+		cur.execute('''INSERT INTO tkb_2hr(Date1,Shift1,Line,Count1,Comment1,Count2,Comment2,Count3,Comment3,Count4,Comment4) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)''', (date1,shift1,line,count1,comment1,count2,comment2,count3,comment3,count4,comment4))
 		db.commit()
 	else:
-		mql =( 'update tkb_2hr SET priority="%s" WHERE right(problem,3)="%s"' % (p,w))
+		mql =( 'update tkb_2hr SET Count1="%s", Comment1="%s",Count2="%s",Comment2="%s",Count3="%s",Comment3="%s",Count4="%s",Comment4="%s"  WHERE (Date1="%s" and Shift1="%s")' % (count1,comment1,count2,comment2,count3,comment3,count4,comment4,date1,shift1))
 		cur.execute(mql)
 		db.commit()
+	db.close()
 
-	return render(request,'two_hour_display.html')
+	if request.POST:
+		button_pressed = request.POST.get("button7")
+		if button_pressed == 'refresh':
+			return render(request,'redirect_two_hour.html')
+		else:
+			request.session['Comment_Edit'] = button_pressed
+			return render(request,'redirect_two_hour_comment.html')
+
+	else:
+		form = sup_downForm()
+	args = {}
+	args.update(csrf(request))
+	args['form'] = form
+	return render(request,'two_hour_display.html',{'args':args})
+
+def two_hour_prev(request):
+	request.session['Two_Hour_Change'] = 28800
+	return render(request,'redirect_two_hour_past.html')
+
+def two_hour_next(request):
+	request.session['Two_Hour_Change'] = -28800
+	return render(request,'redirect_two_hour_past.html')
+
+def two_hour_past(request):
+	prt = '50-1467'
+	asset1 = '650L'
+	asset2 = '650R'
+	asset3 = '769'
+	asset4 = '769'
+	Count7 = ['Trilobe_Count_1','Trilobe_Count_2','Trilobe_Count_3','Trilobe_Count_4']
+	Comment7 = ['Trilobe_Comment_1','Trilobe_Comment_2','Trilobe_Comment_3','Trilobe_Comment_4']
+	Color7 = ['Trilobe_Color_1','Trilobe_Color_2','Trilobe_Color_3','Trilobe_Color_4']
+	rate = request.session['Rate_Trilobe']
+	line = '50-1467'
+
+	tt = int(time.time())  # Current Unix 
+	t = request.session['Two_Hour_Finish_Time'] - request.session['Two_Hour_Change']
+	if t > tt:
+		t = tt
+
+	current_first, shift  = vacation_set_current5()
+	tm = time.localtime(t)
+	shift_start = -2
+	current_shift = 3
+	shift = 'Area#1 Mid'
+	if tm[3]<22 and tm[3]>=14:
+		shift_start = 14
+		shift = 'Area#1 Aft'
+	elif tm[3]<14 and tm[3]>=6:
+		shift_start = 6
+		shift = 'Area#1 Day'
+	cur_hour = tm[3]
+	if cur_hour == 22:
+		cur_hour = -1
+	u = t - (((cur_hour-shift_start)*60*60)+(tm[4]*60)+tm[5])    # Starting unix of shift
+
+	request.session['Two_Hour_Finish_Time'] = u + 28800 - 1  # Represents the end of the shift
+
+	shift_time = t-u
+	date1 = current_first
+	shift1 = shift
+	interval = int(shift_time / float(7200)) + 1  # Swet interval for the 2hr grouping
+
+	two_hour_data(request,u,t,date1,shift1,interval,rate) # Get the data
+
+	count1 = request.session['Trilobe_Count_1']
+	count2 = request.session['Trilobe_Count_2']
+	count3 = request.session['Trilobe_Count_3']
+	count4 = request.session['Trilobe_Count_4']
+	comment1 = request.session['Trilobe_Comment_1']
+	comment2 = request.session['Trilobe_Comment_2']
+	comment3 = request.session['Trilobe_Comment_3']
+	comment4 = request.session['Trilobe_Comment_4']
+	
+
+	db, cur = db_set(request)  
+	aql = "SELECT COUNT(*) FROM tkb_2hr WHERE Date1 = '%s' and Shift1 = '%s' and Line = '%s'" % (date1,shift1,line)
+	cur.execute(aql)
+	tmp2 = cur.fetchall()
+	tmp3 = tmp2[0]
+	cnt4 = tmp3[0]
+	if cnt4 == 0:
+		cur.execute('''INSERT INTO tkb_2hr(Date1,Shift1,Line,Count1,Comment1,Count2,Comment2,Count3,Comment3,Count4,Comment4) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)''', (date1,shift1,line,count1,comment1,count2,comment2,count3,comment3,count4,comment4))
+		db.commit()
+	else:
+		mql =( 'update tkb_2hr SET Count1="%s", Comment1="%s",Count2="%s",Comment2="%s",Count3="%s",Comment3="%s",Count4="%s",Comment4="%s"  WHERE (Date1="%s" and Shift1="%s")' % (count1,comment1,count2,comment2,count3,comment3,count4,comment4,date1,shift1))
+		cur.execute(mql)
+		db.commit()
+	db.close()
+
+	if request.POST:
+		button_pressed = request.POST.get("button7")
+		if button_pressed == 'refresh':
+			return render(request,'redirect_two_hour.html')
+		else:
+			request.session['Comment_Edit'] = button_pressed
+			return render(request,'redirect_two_hour_comment.html')
+
+	else:
+		form = sup_downForm()
+	args = {}
+	args.update(csrf(request))
+	args['form'] = form
+	return render(request,'two_hour_display.html',{'args':args})
+
+def two_hour_comment(request):
+	db, cur = db_set(request)  
+	cur.execute("""CREATE TABLE IF NOT EXISTS tkb_2hr(Id INT PRIMARY KEY AUTO_INCREMENT,Date1 CHAR(80),Shift1 CHAR(80), Line Char(80), Count1 Char(80), Comment1 Char(255), Count2 Char(80), Comment2 Char(255), Count3 Char(80), Comment3 Char(255), Count4 Char(80), Comment4 Char(255))""")
+	db.close()
+
+	prt = '50-1467'
+	asset1 = '650L'
+	asset2 = '650R'
+	asset3 = '769'
+	asset4 = '769'
+	Count7 = ['Trilobe_Count_1','Trilobe_Count_2','Trilobe_Count_3','Trilobe_Count_4']
+	Comment7 = ['Trilobe_Comment_1','Trilobe_Comment_2','Trilobe_Comment_3','Trilobe_Comment_4']
+	Color7 = ['Trilobe_Color_1','Trilobe_Color_2','Trilobe_Color_3','Trilobe_Color_4']
+
+	request.session['Rate_Trilobe'] = 360
+	rate = request.session['Rate_Trilobe']
+
+	line = '50-1467'
+	t=int(time.time())  # Current Unix 
+	t = 1613156143
+	current_first, shift  = vacation_set_current5()
+
+	tm = time.localtime(t)
+	shift_start = -2
+	current_shift = 3
+	shift = 'Area#1 Mid'
+	if tm[3]<22 and tm[3]>=14:
+		shift_start = 14
+		shift = 'Area#1 Aft'
+	elif tm[3]<14 and tm[3]>=6:
+		shift_start = 6
+		shift = 'Area#1 Day'
+	cur_hour = tm[3]
+	if cur_hour == 22:
+		cur_hour = -1
+	u = t - (((cur_hour-shift_start)*60*60)+(tm[4]*60)+tm[5])    # Starting unix of shift
+	
+	shift_time = t-u
+	date1 = current_first
+	shift1 = shift
+	interval = int(shift_time / float(7200)) + 1  # Swet interval for the 2hr grouping
+
+	two_hour_data(request,u,t,date1,shift1,interval,rate) # Get the data
+
+	count1 = request.session['Trilobe_Count_1']
+	count2 = request.session['Trilobe_Count_2']
+	count3 = request.session['Trilobe_Count_3']
+	count4 = request.session['Trilobe_Count_4']
+	comment1 = request.session['Trilobe_Comment_1']
+	comment2 = request.session['Trilobe_Comment_2']
+	comment3 = request.session['Trilobe_Comment_3']
+	comment4 = request.session['Trilobe_Comment_4']
+	
+
+	db, cur = db_set(request)  
+	aql = "SELECT COUNT(*) FROM tkb_2hr WHERE Date1 = '%s' and Shift1 = '%s' and Line = '%s'" % (date1,shift1,line)
+	cur.execute(aql)
+	tmp2 = cur.fetchall()
+	tmp3 = tmp2[0]
+	cnt4 = tmp3[0]
+	if cnt4 == 0:
+		cur.execute('''INSERT INTO tkb_2hr(Date1,Shift1,Line,Count1,Comment1,Count2,Comment2,Count3,Comment3,Count4,Comment4) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)''', (date1,shift1,line,count1,comment1,count2,comment2,count3,comment3,count4,comment4))
+		db.commit()
+	else:
+		mql =( 'update tkb_2hr SET Count1="%s", Comment1="%s",Count2="%s",Comment2="%s",Count3="%s",Comment3="%s",Count4="%s",Comment4="%s"  WHERE (Date1="%s" and Shift1="%s")' % (count1,comment1,count2,comment2,count3,comment3,count4,comment4,date1,shift1))
+		cur.execute(mql)
+		db.commit()
+	db.close()
+
+	if request.POST:
+		# Write to comment section
+		
+		comment1 = request.POST.get("comment1")
+		comment2 = request.POST.get("comment2")
+		comment3 = request.POST.get("comment3")
+		comment4 = request.POST.get("comment4")
+		db, cur = db_set(request)  
+		mql =( 'update tkb_2hr SET Comment1="%s",Comment2="%s",Comment3="%s",Comment4="%s"  WHERE (Date1="%s" and Shift1="%s")' % (comment1,comment2,comment3,comment4,date1,shift1))
+		cur.execute(mql)
+		db.commit()
+		db.close()
+		
+		return render(request,'redirect_two_hour.html')
+
+	else:
+		form = sup_downForm()
+	args = {}
+	args.update(csrf(request))
+	args['form'] = form
+	return render(request,'two_hour_comment.html',{'args':args})
 
 
-
-def two_hour_data(request,u,t):
+def two_hour_data(request,u,t,date1,shift1,interval,rate):
 	db, cur = db_set(request)
 	prt = '50-1467'
 	asset1 = '650L'
@@ -1937,34 +2105,97 @@ def two_hour_data(request,u,t):
 	asset3 = '769'
 	asset4 = '769'
 	t1 = u + 7200
-	aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (u,t1,prt,asset1,asset2,asset3,asset4)
-	cur.execute(aql)
+	countX = 'Trilobe_Count_'
+	colorX = 'Trilobe_Color_'
+	commentX = 'Trilobe_Comment_'
+	indicatorX = 'Trilobe_Indicator_'
+	indy = []
+
+	ind = 0
+	for i in range(1,5):
+		aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (u,t1,prt,asset1,asset2,asset3,asset4)
+		cur.execute(aql)
+		tmp2 = cur.fetchall()
+		tmp3 = tmp2[0]
+		cnt1 = tmp3[0]
+		countY = countX + str(i)
+		colorY = colorX + str(i)
+		indicatorY = indicatorX + str(i)
+		u = u + 7200
+		t1 = t1 + 7200
+
+		ratey = rate - (rate*.1)
+		if cnt1 < ratey:
+			clr = '#FF5834'
+			ind = 1
+		elif cnt1 < rate:
+			clr = '#f0d99c'
+			ind = 2
+		else:
+			clr = '#97F577'
+			ind = 0
+		if i >= interval:
+			clr = '#ffffff'
+			ind = 0
+		request.session[indicatorY] = ind
+		indy.append(ind)
+		request.session[colorY] = clr
+		request.session[countY] = cnt1
+
+	sql="SELECT Comment1,Comment2,Comment3,Comment4 FROM tkb_2hr WHERE (Date1='%s' and Shift1='%s')" % (date1,shift1)
+	cur.execute(sql)
 	tmp2 = cur.fetchall()
-	tmp3 = tmp2[0]
-	cnt1 = tmp3[0]
-	request.session['Trilobe_Count_1'] = cnt1
-	t2 = t1 + 7200
-	aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (t1,t2,prt,asset1,asset2,asset3,asset4)
-	cur.execute(aql)
-	tmp2 = cur.fetchall()
-	tmp3 = tmp2[0]
-	cnt2 = tmp3[0]
-	request.session['Trilobe_Count_2'] = cnt2
-	t1 = t1 + 7200
-	t2 = t2 + 7200
-	aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (t1,t2,prt,asset1,asset2,asset3,asset4)
-	cur.execute(aql)
-	tmp2 = cur.fetchall()
-	tmp3 = tmp2[0]
-	cnt3 = tmp3[0]
-	request.session['Trilobe_Count_3'] = cnt3
-	t1 = t1 + 7200
-	t2 = u + 28800
-	aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (t1,t2,prt,asset1,asset2,asset3,asset4)
-	cur.execute(aql)
-	tmp2 = cur.fetchall()
-	tmp3 = tmp2[0]
-	cnt4 = tmp3[0]
-	request.session['Trilobe_Count_4'] = cnt4
+	try:
+		tmp3 = tmp2[0]
+		request.session['Trilobe_Comment_1'] = tmp3[0]
+		request.session['Trilobe_Comment_2'] = tmp3[1]
+		request.session['Trilobe_Comment_3'] = tmp3[2]
+		request.session['Trilobe_Comment_4'] = tmp3[3]
+	except:
+		request.session['Trilobe_Comment_1'] = ''
+		request.session['Trilobe_Comment_2'] = ''
+		request.session['Trilobe_Comment_3'] = ''
+		request.session['Trilobe_Comment_4'] = ''
 	db.close()
+
+
+	# a=[]
+	# b=[]
+	# c=[]
+	# indy2 = []
+	# for i in range(0,4):
+	# 	if indy[i] == 2:
+	# 		if indy[i-1] == 0:
+	# 			indy2.append(0)
+	# 		else:
+	# 			indy2.append(1)
+	# 	else:
+	# 		indy2.append(indy[i])
+	
+	# for i in range(1,5):
+	# 	commentY = commentX + str(i)
+	# 	commentZ = request.session[commentY]
+	# 	if len(commentZ) < 2 and indy2[i-1] == 1:
+	# 		request.session[commentY] = '*'
+
+
+
+	# 	b.append(request.session[indicatorY])
+	# 	if request.session[indicatorY] == 2:
+	# 		indicatorYY = indicatorX + str(i-1)
+	# 		if request.session[indicatorYY] == 0:
+	# 			a.append(0)
+	# 		else:
+	# 			a.append(1)
+	# 	else:
+	# 		a.append(request.session[indicatorY])
+	# z=zip(a,b)
+	# for i in range(1,5):
+	# 	indicatorY = indicatorX + str(i)
+	# 	request.session[indicatorY] = a[i-1]
+
 	return
+
+
+def redirect_two_hour(request):
+	return render(request,'redirect_two_hour.html')

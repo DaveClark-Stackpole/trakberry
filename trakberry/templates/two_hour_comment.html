@@ -48,9 +48,10 @@
 	</style>
 	</head>
 
+
 	<div class="wrapper_main">
 
-		<div class="frame1">  
+	<div class="frame1">  
 	<br> <center>
 	<form action="" method="post">{% csrf_token %}
 
@@ -60,7 +61,7 @@
 		<font size="6"><b><u>Trilobe Two Hour Counts Rate ({{request.session.Rate_Trilobe}})</u></b></font>
 	</center>
 
-	<button style="position:absolute; left:80%;background-color: #4d8fdb;border-radius: 10px;width:90px;height:35px;font-weight: 700;" type="submit" name="button7" value="refresh" >Refresh</button>
+	<button style="position:absolute; left:80%;background-color: #4d8fdb;border-radius: 10px;width:90px;height:35px;font-weight: 700;" type="submit" name="button7" value="update" >UPDATE</button>
 
 </td></tr>
 	<tr><td style="border:1px solid black;background-color: {{request.session.Trilobe_Color_1}};"><font size="6"><center>
@@ -74,48 +75,28 @@
 	</td></tr>
 
 
-	<tr><td style="border:1px solid black;background-color: {{request.session.Trilobe_Color_1}};"><font size="5"><center>
-
-		{% if request.session.Trilobe_Comment_1 = "*" %}
-		<button style="text-align: top;width:100%;height:140px;font-size: 75%;border:0px solid rgb(0, 0, 0);
-		background-color:  {{request.session.Trilobe_Color_1}};border:none;outline:none;"
-		type="submit" name="button7" value="comment1" /><b><font color="#000000">COMMENT NEEDED !</font></b>
-		</button>
-		{% else %}
-		<button style="text-align: top;width:100%;height:140px;font-size: 75%;border:0px solid rgb(0, 0, 0);
-		background-color:  {{request.session.Trilobe_Color_1}};border:none;outline:none;"
-		type="submit" name="button7" value="comment1" /><b><font color="#000000">{{request.session.Trilobe_Comment_1}}</font></b>
-		</button>
-		{% endif %}
-
+	<tr>
+		<td style="border:1px solid black;background-color: {{request.session.Trilobe_Color_1}};"><font size="5"><center>
+		<input style="text-align: left;width:100%;height:140px;font-size: 75%;border:0px solid rgb(0, 0, 0);
+		background-color:#ffffff;border:none;outline:none;" name="comment1" value="{{request.session.Trilobe_Comment_1}}" type="textarea">
 		</td><td style="border:1px solid black;background-color: {{request.session.Trilobe_Color_2}};"><font size="5"><center>
-
-
-			<button style="text-align: left;width:100%;height:140px;font-size: 75%;border:0px solid rgb(0, 0, 0);
-			background-color:  {{request.session.Trilobe_Color_2}};border:none;outline:none;"
-			type="submit" name="button7" value="comment2" /><b><font color="#000000">{{request.session.Trilobe_Comment_2}}</font></b></button>
-
-
+		<input style="text-align: left;width:100%;height:140px;font-size: 75%;border:0px solid rgb(0, 0, 0);
+		background-color: #ffffff;border:none;outline:none;" name="comment2" value="{{request.session.Trilobe_Comment_2}}"  type="textarea">
 		</td><td style="border:1px solid black;background-color: {{request.session.Trilobe_Color_3}};"><font size="5"><center>
+		<input style="text-align: left;width:100%;height:140px;font-size: 75%;border:0px solid rgb(0, 0, 0);
+		background-color:#ffffff;border:none;outline:none;" name="comment3" value="{{request.session.Trilobe_Comment_3}}"  type="textarea">
+		</td><td style="border:1px solid black;background-color: {{request.session.Trilobe_Color_4}};"><font size="5"><center>
+		<input style="text-align: left;width:100%;height:140px;font-size: 75%;border:0px solid rgb(0, 0, 0);
+		background-color:#ffffff;border:none;outline:none;" name="comment4"  value="{{request.session.Trilobe_Comment4}}" type="textarea">
 
-
-			<button style="text-align: left;width:100%;height:140px;font-size: 75%;border:0px solid rgb(0, 0, 0);
-			background-color:  {{request.session.Trilobe_Color_3}};border:none;outline:none;"
-			type="submit" name="button7" value="comment3" /><b><font color="#000000">{{request.session.Trilobe_Comment_3}}</font></b></button>
-
-			</td><td style="border:1px solid black;background-color: {{request.session.Trilobe_Color_4}};"><font size="5"><center>
-
-			<button style="text-align: left;width:100%;height:140px;font-size: 75%;border:0px solid rgb(0, 0, 0);
-			background-color:  {{request.session.Trilobe_Color_4}};border:none;outline:none;"
-			type="submit" name="button7" value="comment4" /><b><font color="#000000">{{request.session.Trilobe_Comment_4}}</font></b></button>
-
-		</td></tr>
+		</td>
+	</tr>
 
 	</table>
 	</form>
 	<br><br>
-</div>
-</div>
+	</div>
+	</div>
 
 	</body>
 	
