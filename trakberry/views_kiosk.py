@@ -661,10 +661,12 @@ def kiosk_production_entry(request):
 		x_tpm = "tpm"
 
 		test1 = []
+		test2 = []
 
 		kiosk_date = request.POST.get("date_en")
 		kiosk_shift = request.POST.get("shift")
 		
+		tpm_verify = 1
 		for i in range(1,7): # Read in all the data entered for production into appropriate variables
 		#try:
 			x_job = x_job + str(i)
@@ -680,18 +682,25 @@ def kiosk_production_entry(request):
 			kiosk_job.append(request.POST.get(x_job))
 			kiosk_part.append(request.POST.get(x_part))
 			k_tpm = request.POST.get(x_tpm)
-			kiosk_tpm.append(k_tpm)
+			kiosk_tpm.append(k_tpm) 
 
+			if tpm4 == 1: # Means there is a TPM required
+				if k_tpm:   # Means it was completed
+					tpm_complete = 1
+				else:       # It wasn't completed
+					tpm_complete = 0
+			else:
+				tpm_complete = -1  # There is no TPM required
 
+			tpm_verify = tpm_verify * tpm_complete  # If there's a 0 tpm_complete it means not done and will make tpm_verify always 0
+			# if k_tpm != True and tpm4 == 1:
+			# 	tpm_complete = 0
+			# elif k_tpm:
+			# 	tpm_complete = 1
+			# elif tpm4 == 0:
+			# 	tpm_complete = -1
+			# test2.append(tpm_complete)
 
-			if k_tpm != True and tpm4 == 1:
-				tpm_complete = 0
-			elif k_tpm == 'Yes':
-				tpm_complete = 1
-			elif tpm4 == 0:
-				tpm_complete = -1
-			
-			r=3/0
 
 			temp_prod = request.POST.get(x_prod)
 			if temp_prod == None or temp_prod == "":
@@ -708,6 +717,7 @@ def kiosk_production_entry(request):
 			x_dwn = "dwn"
 			x_ppm = "ppm"
 			x_tpm = "tpm"
+
 
 
 		shift_time = "None"
@@ -798,7 +808,7 @@ def kiosk_production_entry(request):
 					dummy = 1
 				h = float(hrs)
 
-				# Fix to make sure someone didn't put a null amount in for downtime.  If so then make it 0
+				#  to make sure someone didn't put a null amount in for downtime.  If so then make it 0
 				try:
 					test1 = int(dwn)
 				except:
@@ -837,8 +847,9 @@ def kiosk_production_entry(request):
 						# test = str.replace(test, '\n', '\r\n')
 
 				if len(part) < 2 or part == 'None':
-					part_check = 1
-					part_check_job = job
+					if job not in ['802','500','801']:
+						part_check = 1
+						part_check_job = job
 			
 								
 			else:
@@ -852,63 +863,75 @@ def kiosk_production_entry(request):
 		# Set bounce level
 		# yyy = request.session["srgg"]	
 		request.session["bounce"] = 0
+		bounce = 0
 
-		if oa_check == 1: 
-			# bounce = 1
-			bounce = 0 #  bypass error display for now
-			write_answer = 1
-			request.session["error_title"] = "Low Production"
-			request.session["error_message"] = "Make sure that count, hrs run and downtime are correct!"
-			request.session["oa_problem2"] = request.session["oa_problem"]
+		# if oa_check == 1: 
+		# 	# bounce = 1
+		# 	bounce = 0 #  bypass error display for now
+		# 	write_answer = 1
+		# 	request.session["error_title"] = "Low Production"
+		# 	request.session["error_message"] = "Make sure that count, hrs run and downtime are correct!"
+		# 	request.session["oa_problem2"] = request.session["oa_problem"]
+		
 		if part_check == 1:
 			bounce = 2
-			request.session["error_title"] = "Error !"
+			request.session["error_title"] = " Warning !"
 			request.session["error_message"] = "Must Have a Part for every Job !"
 			request.session["oa_problem2"] = "Machine " + part_check_job + " has no part listed for it."
 			request.session["oa_problem"] = ""
-		rrr=5/0
-		if tpm_complete == 1:
+
+		if tpm_verify == 0:
 			bounce = 3
-			request.session["error_title"] = "Error !"
+			request.session["error_title"] = " Warning !"
 			request.session["error_message"] = "All required TPMs must be completed"
-			
 
-		if request.session["check1"] == 1:  # bypass the presses
-			bounce = 0
-			write_answer = 1
+		# if request.session["check1"] == 1:  # bypass the presses
+		# 	bounce = 0
+		# 	write_answer = 1
 
-		if part_check!=1 and oa_check != 1:
-			bounce = 0
-			write_answer = 1
+		# if part_check!=1 and oa_check != 1:
+		# 	bounce = 0
+		# 	write_answer = 1
 		
-		if bounce == 1 and request.session["oa_check"] == "Fail":
-			request.session["oa_check"] = ""
-			write_answer = 1
-			bounce = 0
+		# if bounce == 1 and request.session["oa_check"] == "Fail":
+		# 	request.session["oa_check"] = ""
+		# 	write_answer = 1
+		# 	bounce = 0
 		if bounce > 0:
 			request.session["bounce"] = bounce
-			if bounce == 2:
-				request.session["oa_check"] = ""
-			else:
-				request.session["oa_check"] = "Fail"
-			request.session["OA_Curr"] = kiosk_date
-			request.session["OA_Shift"] = kiosk_shift
-			a1 = "oa_dwn"
-			a2 = "oa_prod"
-			a3 = "oa_hrs"
-			a4 = "part"
-			for a in range(1,7):
-				b1 = a1 + str(a)
-				b2 = a2 + str(a)
-				b3 = a3 + str(a)
-				b4 = a4 + str(a)
-				request.session[b1] = kiosk_dwn[(a-1)]
-				request.session[b2] = kiosk_prod[(a-1)]
-				request.session[b3] = kiosk_hrs[(a-1)]
-				request.session[b4] = kiosk_part[(a-1)]
-			# yyy = request.session["srgg"]	
+			prod_var = 'oa_prod'
+			part_var = 'part'
+			for j in range(0,6):
+				psess = prod_var + str(j+1)
+				prsess = part_var + str(j+1)
+				request.session[psess] = kiosk_prod[j]
+				request.session[prsess] = kiosk_part[j]
+
+			# if bounce == 2:
+			# 	request.session["oa_check"] = ""
+			# else:
+			# 	request.session["oa_check"] = "Fail"
+			# request.session["OA_Curr"] = kiosk_date
+			# request.session["OA_Shift"] = kiosk_shift
+			# a1 = "oa_dwn"
+			# a2 = "oa_prod"
+			# a3 = "oa_hrs"
+			# a4 = "part"
+			# for a in range(1,7):
+			# 	b1 = a1 + str(a)
+			# 	b2 = a2 + str(a)
+			# 	b3 = a3 + str(a)
+			# 	b4 = a4 + str(a)
+			# 	request.session[b1] = kiosk_dwn[(a-1)]
+			# 	request.session[b2] = kiosk_prod[(a-1)]
+			# 	request.session[b3] = kiosk_hrs[(a-1)]
+			# 	request.session[b4] = kiosk_part[(a-1)]
+			# yyy = request.session["srgg"]
 			request.session["route_1"] = 'kiosk_production_entry'
 			return direction(request)
+		else:
+			request.session["bounce"] = 0
+			write_answer = 1
 
 		# if oa_check != 1:
 		# 	write_answer = 1
@@ -933,6 +956,13 @@ def kiosk_production_entry(request):
 		# 		request.session["route_1"] = 'kiosk_production_entry'
 		# 		return direction(request)
 		
+
+		request.session['kiosk_all_jobs'] = kiosk_job
+		request.session['kiosk_all_parts'] = kiosk_part
+
+		varn = [[],[],[],[],[],[]]
+		# for x in range(0,20):
+		# 	varn[x] = []
 		if write_answer == 1:
 			for i in range(0,6):
 				job = kiosk_job[i]
@@ -972,9 +1002,11 @@ def kiosk_production_entry(request):
 					if int(tmp2[0][0]) == 0:
 						tpm2 = 'N/A'
 
-					cur.execute('''INSERT INTO sc_production1(asset_num,partno,actual_produced,shift_hours_length,down_time,comments,shift,pdate,machine,scrap,More_than_2_percent,total,target,planned_downtime_min_forshift,sheet_id,Updated,low_production,manual_sent,kiosk_id,tpm) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)''', (job,part,prod,hrs,dwn,clock_number,shift_time,kiosk_date,m,zy,zy,zy,target1,zy,sheet_id,zy,low_production,manual_sent,kiosk_id,tpm2))
-					db.commit()
+					varn[i].extend((job,part,prod,hrs,dwn,clock_number,shift_time,kiosk_date,m,zy,zy,zy,target1,zy,sheet_id,zy,low_production,manual_sent,kiosk_id,tpm2))
 
+
+					# cur.execute('''INSERT INTO sc_production1(asset_num,partno,actual_produced,shift_hours_length,down_time,comments,shift,pdate,machine,scrap,More_than_2_percent,total,target,planned_downtime_min_forshift,sheet_id,Updated,low_production,manual_sent,kiosk_id,tpm) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)''', (job,part,prod,hrs,dwn,clock_number,shift_time,kiosk_date,m,zy,zy,zy,target1,zy,sheet_id,zy,low_production,manual_sent,kiosk_id,tpm2))
+					# db.commit()
 
 			TimeStamp = int(time.time())
 			TimeOut = - 1
@@ -984,7 +1016,12 @@ def kiosk_production_entry(request):
 			db.close()
 
 		
-
+		# ******************************************
+		# Put the EPV Verification ReRoute in here *
+		# ******************************************
+		request.session['varn'] = varn
+		request.session["route_1"] = 'kiosk_epv_verification'
+		return direction(request)
 
 	#	Below will route to Kiosk Main if it's a joint ipad or kiosk if it's a lone one
 		if request.session["kiosk_menu_screen"] == 1:
@@ -1021,7 +1058,7 @@ def kiosk_production_entry(request):
 		kiosk_defaults(request)
 
 
-	# # #  Debug End Point   ************************************
+	# # #  End Point   ************************************
 	# debug_start = (request.session["debug_start"])
 	
 	# debug_end = (time.time())
@@ -1045,6 +1082,118 @@ def kiosk_production_entry(request):
 
 	return render(request, "kiosk/kiosk_production_entry.html",{'args':args,'TCUR':tcur,'Curr':current_first, 'Shift':shift,'Parts':tmp,'Msg1':msg1,'oa_problem':oa_prob})
 	
+# Check kiosk entries to see if EPV required.
+def kiosk_epv_verification(request):
+	kiosk_job = request.session['kiosk_all_jobs']
+	kiosk_part = request.session['kiosk_all_parts']
+	varn = request.session['varn']
+	shift1 = str(varn[0][6])
+	date1 = str(varn[0][7])
+	who1 = 'Operator'
+	db, cur = db_set(request)
+	a = []
+	jj=[]
+	ctr = 1
+	for i in range (0,6):
+		try:
+			job = kiosk_job[i] + '.0'
+			job = str(varn[i][0] + '.0')
+			part = kiosk_part[i]
+			sql = "SELECT * FROM quality_epv_assets where (Person = '%s' and (Asset = '%s' or (Actual = '%s' and Part1 = '%s' ) or (Actual = '%s' and Part2 = '%s' ) or (Actual = '%s' and Part3 = '%s' )  or (Actual = '%s' and Part4 = '%s' )))" %(who1,job,job,part,job,part,job,part,job,part)
+			cur.execute(sql)
+			tmp = cur.fetchall()
+			for ii in tmp:
+				chk = ii[1]
+				aql = "SELECT COUNT(*) FROM quality_epv_checks where (date1 = '%s' and shift1 = '%s' and check1 = '%s')" %(date1,shift1,chk)
+				cur.execute(aql)
+				amp = cur.fetchall()
+				bmp = amp[0]
+				chk_count = bmp[0]
+				if int(chk_count) == 0:
+					jj = list(ii)
+					h = 'id' + str(ctr)
+					hh = 'comment' + str(ctr)
+					jj.append(h)
+					jj.append(hh)
+					tmp2 = list(jj)
+					a.append(tmp2)
+					ctr = ctr + 1
+		except:
+			dummy = 0
+	request.session['epv_checks'] = a
+	n_epv_checks = len(a)
+	request.session['b'] = n_epv_checks
+	if n_epv_checks > 0:
+		# Redirect to EPV Verification page using session variable epv_checks
+		request.session["route_1"] = 'kiosk_epv_entry'
+		return direction(request)
+		# return render(request,'test21.html')
+	else:
+		request.session["route_1"] = 'kiosk_production_write'
+		return direction(request)
+
+def kiosk_epv_entry(request):
+	varn = request.session['varn']
+	shift = str(varn[0][6])
+	date1 = str(varn[0][7])
+	clock_num = str(varn[0][5])
+	if request.POST:
+		request.session['bounce6'] = 0
+		x = request.POST['kiosk_epv_button']
+		if x == 'Cancel':
+			request.session["route_1"] = 'kiosk_production_entry'
+			return direction(request)
+		complete1 = 1
+		c = []
+		for i in request.session['epv_checks']:
+			epv_ver = request.POST.get(i[14])
+			epv_comment = request.POST.get(i[15])
+			c.append(epv_comment)
+			if epv_ver:
+				complete1 = complete1 * 1
+			else:
+				complete1 = complete1 * 0
+		if complete1 == 0:
+			request.session['bounce6'] = 1
+			request.session['route_1'] = 'kiosk_epv_entry'
+			request.session["error_title"] = " Warning !"
+			request.session["error_message"] = "Not All EPVs were checked off !"
+		else:
+			# Write EPV / Date and Shift
+			ctr = 0
+			db, cur = db_set(request)
+			cur.execute("""CREATE TABLE IF NOT EXISTS quality_epv_checks(Id INT PRIMARY KEY AUTO_INCREMENT,date1 CHAR(80),shift1 CHAR(80), check1 Char(80), description1 Char(80), asset1 Char(80), master1 Char(80), comment Char(255), clock_num Char(80))""")
+			for i in request.session['epv_checks']:
+				cur.execute('''INSERT INTO quality_epv_checks(date1,shift1,check1,description1,asset1,master1,comment,clock_num) VALUES(%s,%s,%s,%s,%s,%s,%s,%s)''', (date1,shift,i[1],i[8],i[3],i[5],c[ctr],clock_num))
+				db.commit()
+				ctr = ctr + 1
+			db.close()
+			request.session['route_1'] = 'kiosk_production_write'
+		return direction(request)
+
+	else:
+		form = kiosk_dispForm3()
+	args = {}
+	args.update(csrf(request))
+	args['form'] = form  
+	return render(request, "kiosk/kiosk_epv_entry.html",{'args':args})
+
+# Write kiosk entries using varn
+def kiosk_production_write(request):
+	varn = request.session['varn']
+	db, cur = db_set(request)
+	for i in varn:
+		try:
+			dummy = i[1]
+			cur.execute('''INSERT INTO sc_production1(asset_num,partno,actual_produced,shift_hours_length,down_time,comments,shift,pdate,machine,scrap,More_than_2_percent,total,target,planned_downtime_min_forshift,sheet_id,Updated,low_production,manual_sent,kiosk_id,tpm) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)''', (i[0],i[1],i[2],i[3],i[4],i[5],i[6],i[7],i[8],i[9],i[10],i[11],i[12],i[13],i[14],i[15],i[16],i[17],i[18],i[19]))
+			db.commit()
+		except:
+			dummy = 1
+	db.close()
+	request.session["route_1"] = 'kiosk_menu'
+	return direction(request)
+
+
 def kiosk_defaults(request):
 	request.session["oa_check"] = ""
 	request.session["oa_problem"] = ""

@@ -105,7 +105,8 @@ from views_kiosk import test_1_10R
 # ***********************************************************************************************************************************************************
 # *******************************************  Manpower Section ********************************************************************************************
 from views_kiosk import manpower_layout, tenr_fix,kiosk_menu,ab1v_manpower,tenr1,trilobe,tenr2, error_hourly_duplicate
-from views_kiosk import set_test1, kiosk_fix55, kiosk_fix44, kiosk_help_close
+from views_kiosk import kiosk_production_write
+from views_kiosk import set_test1, kiosk_fix55, kiosk_fix44, kiosk_help_close, kiosk_epv_verification, kiosk_epv_entry
 
 # ***********************************************************************************************************************************************************
 
@@ -439,6 +440,9 @@ urlpatterns = [
 	url(r'^kiosk_scrap/', kiosk_scrap), # The Kiosk Scrap Module
 	url(r'^kiosk_scrap_entry/', kiosk_scrap_entry),
 	url(r'^kiosk_scrap_reset/', kiosk_scrap_reset), 
+	url(r'^kiosk_epv_verification/', kiosk_epv_verification), 
+	url(r'^kiosk_epv_entry/', kiosk_epv_entry), 
+	url(r'^kiosk_production_write/', kiosk_production_write), 
 	url(r'^scrap_backup/', scrap_backup),
 	url(r'^scrap_restore/', scrap_restore),
 	# url(r'^kiosk_mult_entries/', kiosk_mult_entries), 

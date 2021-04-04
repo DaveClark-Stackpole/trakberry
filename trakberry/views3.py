@@ -138,7 +138,7 @@ def excel_table_create(sheet,request):
 	db.commit()
 
 	for i in ss:
-		yy = yy + ',xx2 CHAR(50)'
+		yy = yy + ',xx2 CHAR(100)'
 		index = yy.find('xx2')
 		yy = yy[:index] + i + yy[index+3:]
 

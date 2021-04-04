@@ -23,10 +23,7 @@
 		});
 	</script>
 	{% endif %}
-
-
 <style>
-
 	{% if request.session.bounce = 1 %} 
 		.modal-body{background-color: rgb(252, 236, 149);}
 		.modal-header{background-color: rgb(252, 236, 149);}
@@ -38,12 +35,15 @@
 		.modal-footer{background-color: rgb(255, 172, 172);}
 		.modal {border-radius: 25px; }
 	{% elif request.session.bounce = 3 %}
-		.modal-body{background-color: rgb(255, 172, 172);}
-		.modal-header{background-color: rgb(255, 172, 172);}
-		.modal-footer{background-color: rgb(255, 172, 172);}
+		.modal-body{background-color: rgb(255, 243, 71);}
+		.modal-header{background-color:rgb(255, 243, 71);}
+		.modal-footer{background-color: rgb(255, 243, 71);}
 		.modal {border-radius: 25px; }
 	{% endif %}
-
+mark {
+  background-color: rgb(255, 239, 121);
+  color: rgb(255, 255, 255);
+}
 </style>
 
 
@@ -105,8 +105,7 @@
 {% if request.session.variable1 != 99 %}
 	<div class="item2"><input style="font-size:23px;width:100px;height:60px;text-align:center;" value={{request.session.variable1}}  name="job1" type="text">
 		{% if request.session.tpm1 != 0 %}
-			&nbsp;&nbsp;&nbsp;&nbsp;
-			<input style="font-size:23px;width:20px;height:20px;" name="tpm1" type="checkbox">TPM Complete 
+			&nbsp;&nbsp;&nbsp;&nbsp;<input style="font-size:23px;width:20px;height:20px;" name="tpm1" type="checkbox">TPM Complete 
 		{% endif %}
 	</div>
 
@@ -457,16 +456,14 @@
 				<div class="modal-content" >
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
-					<h4 class="modal-title"><mark><font color="#000000" size ="6">&nbsp;&nbsp;{{request.session.error_title}}&nbsp;&nbsp;</font></mark></h4>
+					<h4 class="modal-title"><mark>
+						<font color="#000000" size ="5">&nbsp;&nbsp;{{request.session.error_title}}&nbsp;&nbsp;</font></mark></h4>
 				</div>
 				<div class="modal-body" >
 					<font color="#000000" size ="5">
-						<p align="left">
+						<p align="center">
 							<b><u>{{request.session.error_message}}</u></b><br><br>
-				{% for a in oa_problem %}
-				{{a}}<br>
-				{% endfor %}
-				<!-- {{oa_problem}} -->
+
 				</p>
 					</font>
 				</div>
