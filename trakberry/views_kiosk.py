@@ -1045,17 +1045,18 @@ def kiosk_production_entry(request):
 	tmp2 = tmp[0]
 	db.close()
 	# Error Check to see if this is the 2nd time through with a warning on OA 
-	try:
-		checkA = request.session["oa_check"] 
-	except:
-		request.session["oa_check"] = ""
-		kiosk_defaults(request)
+	# try:
+	# 	checkA = request.session["oa_check"] 
+	# except:
+	# 	request.session["oa_check"] = ""
+	# 	kiosk_defaults(request)
 
-	if request.session["bounce"] > 0:
-		current_first = request.session["OA_Curr"]
-		shift = request.session["OA_Shift"]
-	else:
-		kiosk_defaults(request)
+	# if request.session["bounce"] > 0:
+	# 	current_first = request.session["OA_Curr"]
+	# 	shift = request.session["OA_Shift"]
+
+	# else:
+	kiosk_defaults(request)
 
 
 	# # #  End Point   ************************************
