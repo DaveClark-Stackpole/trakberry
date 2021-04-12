@@ -131,16 +131,16 @@ def tech_email_test(request):
 	return render(request, "email_downtime_cycle.html")
 
 def time_write():
-	t = int(time.time())
-	db,cur = db_open()
-	i = 101
-	mach = 555
-	part = 'time_update'
-	x = 1
-	a = '1'
-	cur.execute('''insert into tkb_prodtrak(pi_id,part_number,machine,part_timestamp,autotime,last_time_diff) VALUES(%s,%s,%s,%s,%s,%s)''',(i,part,part,t,mach,mach))
-	db.commit()
-	db.close()
+	# t = int(time.time())
+	# db,cur = db_open()
+	# i = 101
+	# mach = 555
+	# part = 'time_update'
+	# x = 1
+	# a = '1'
+	# cur.execute('''insert into tkb_prodtrak(pi_id,part_number,machine,part_timestamp,autotime,last_time_diff) VALUES(%s,%s,%s,%s,%s,%s)''',(i,part,part,t,mach,mach))
+	# db.commit()
+	# db.close()
 	return
 	
 	
