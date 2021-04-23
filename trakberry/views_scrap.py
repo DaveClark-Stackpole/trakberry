@@ -668,6 +668,13 @@ def kiosk_add_category(request):
 
 	return render(request,'edit_category.html',{'args':args})
 
+
+def tpm_display(request):
+	db, cursor = db_set(request)
+	
+	return render(request,'edit_category.html',{'args':args})
+
+
 # def kiosk_add_operation(request):
 
 # 	db, cursor = db_set(request)

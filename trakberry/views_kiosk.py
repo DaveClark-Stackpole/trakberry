@@ -684,7 +684,7 @@ def kiosk_production_entry(request):
 			k_tpm = request.POST.get(x_tpm)
 			kiosk_tpm.append(k_tpm) 
 
-			if tpm4 == 1: # Means there is a TPM required
+			if tpm4 > 0: # Means there is a TPM required
 				if k_tpm:   # Means it was completed
 					tpm_complete = 1
 				else:       # It wasn't completed
