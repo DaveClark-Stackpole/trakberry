@@ -13,11 +13,45 @@ import datetime
 import smtplib
 from smtplib import SMTP
 from django.template.loader import render_to_string  #To render html content to string
-from trakberry.views_vacation import vacation_temp, vacation_set_current, vacation_set_current2
+from trakberry.views_vacation import vacation_temp, vacation_set_current, vacation_set_current2,vacation_set_current55
 
 
 #import datetime as dt 
 from django.core.context_processors import csrf
+
+
+# Returns date for week start in format  YYYY-MM-DD
+def week_start_finder(request):
+	t=int(time.time())
+	tm = time.localtime(t)
+	a1 = tm[6] * 86400
+	a2 = tm[3] * 60 * 60
+	a3 = tm[4] * 60
+	a4 = tm[5]
+	week_start1 = t - a1 - a2 - a3 - a4 + 1
+	tm = time.localtime(week_start1)
+	ma = ''
+	da = ''
+	if tm[1] < 10: ma = '0'
+	if tm[2] < 10: da = '0'
+	y1 = str(tm[0])
+	m1 = str(tm[1])
+	d1 = str(tm[2])
+	date1 = y1 + '-' + (ma + m1) + '-' + (da + d1)
+	return date1
+
+def date_finder(request):
+	week_start1 =int(time.time())
+	tm = time.localtime(week_start1)
+	ma = ''
+	da = ''
+	if tm[1] < 10: ma = '0'
+	if tm[2] < 10: da = '0'
+	y1 = str(tm[0])
+	m1 = str(tm[1])
+	d1 = str(tm[2])
+	date1 = y1 + '-' + (ma + m1) + '-' + (da + d1)
+	return date1
 
 def tech_manpower(request):
 
@@ -97,16 +131,16 @@ def tech_email_test(request):
 	return render(request, "email_downtime_cycle.html")
 
 def time_write():
-	t = int(time.time())
-	db,cur = db_open()
-	i = 101
-	mach = 555
-	part = 'time_update'
-	x = 1
-	a = '1'
-	cur.execute('''insert into tkb_prodtrak(pi_id,part_number,machine,part_timestamp,autotime,last_time_diff) VALUES(%s,%s,%s,%s,%s,%s)''',(i,part,part,t,mach,mach))
-	db.commit()
-	db.close()
+	# t = int(time.time())
+	# db,cur = db_open()
+	# i = 101
+	# mach = 555
+	# part = 'time_update'
+	# x = 1
+	# a = '1'
+	# cur.execute('''insert into tkb_prodtrak(pi_id,part_number,machine,part_timestamp,autotime,last_time_diff) VALUES(%s,%s,%s,%s,%s,%s)''',(i,part,part,t,mach,mach))
+	# db.commit()
+	# db.close()
 	return
 	
 	
@@ -178,12 +212,32 @@ def tech(request):
 	mach_cnt = []
 	tch = []
 
-	# Select prodrptdb db located in views_db
-	db, cursor = db_set(request)   
 
-	#sqlA = "SELECT SUM(qty) FROM tkb_prodtrak where machine = '%s' AND time >= '%d'" %(machine_list[i], u)
-	  # Select the Qty of entries for selected machine table from the current shift only 
-	  # and assign it to 'count'
+	# Will update Weekly Tech EPV List once if it doesn't exist 
+	clock2 = 'CNC Tech'
+	clock_len = 5
+	db, cursor = db_set(request)   
+	cursor.execute("""CREATE TABLE IF NOT EXISTS quality_epv_checks(Id INT PRIMARY KEY AUTO_INCREMENT,date1 CHAR(80),shift1 CHAR(80), check1 Char(80), description1 Char(80), asset1 Char(80), master1 Char(80), comment Char(255), clock_num Char(80))""")
+	cursor.execute("""CREATE TABLE IF NOT EXISTS quality_epv_week(Id INT PRIMARY KEY AUTO_INCREMENT,date1 CHAR(80),QC1 Char(80), OP1 Char(80), Check1 Char(80), Desc1 Char(80), Method1 Char(255), Asset Char(80))""")
+	date_start = week_start_finder(request)
+	aql = "SELECT COUNT(*) FROM quality_epv_checks where (date1 = '%s' and length(clock_num) > '%s')" %(date_start,clock_len)
+	cursor.execute(aql)
+	amp = cursor.fetchall()
+	bmp = amp[0]
+	count2 = bmp[0]
+	aql = "SELECT COUNT(*) FROM quality_epv_week where (date1 = '%s')" %(date_start)
+	cursor.execute(aql)
+	amp = cursor.fetchall()
+	bmp = amp[0]
+	count3 = bmp[0]
+	if count2 == 0 and count3 == 0 :
+		week_dump = 1
+		sql = "SELECT QC1,OP1,Check1,Desc1,Method1,Asset FROM quality_epv_assets where Person = '%s'" % (clock2)
+		cursor.execute(sql)
+		tmp = cursor.fetchall()
+		for i in tmp:
+			cursor.execute('''INSERT INTO quality_epv_week(date1,QC1,OP1,Check1,Desc1,Method1,Asset) VALUES(%s,%s,%s,%s,%s,%s,%s)''', (date_start,i[0],i[1],i[2],i[3],i[4],i[5]))
+			db.commit()
 	
 	# Retrieve information from Database and put 2 columns in array {list}
 	# then send array to Template machinery.html
@@ -357,16 +411,69 @@ def tech(request):
 		tmp4 = ''
 		request.session["sender_name"] = ''
 		request.session["message_id"] = 0
-	db.close()
+
 	Z = 1
 	if cnt > 0 :
 		cnt = 1
 		request.session["refresh_tech"] = 3
 	# ********************************************************************************************************
-	
+	try:
+		request.session['tech_epv_second']
+	except:
+		request.session['tech_epv_second'] = 0
+
 	tcur=int(time.time())
-	
+	sql = "SELECT DISTINCT QC1,OP1,Check1 FROM quality_epv_week ORDER BY %s %s" % ('QC1','ASC')
+	cur.execute(sql)
+	tmp2 = cur.fetchall()
+	request.session['tech_epv_list'] = tmp2
+
+
 	return render(request,"tech.html",{'L':list,'cnt':cnt,'M':tmp4,'N':n,'Z':Z,'TCUR':tcur})
+
+def tech_epv_complete(request, index):
+	date1 = date_finder(request)
+	db, cur = db_set(request) 
+	sql = "SELECT * FROM quality_epv_week WHERE Id = '%s'" % (index)
+	cur.execute(sql)
+	tmp = cur.fetchall()
+	tmp2=tmp[0]
+	qc1 = tmp2[2]
+	op1 = tmp2[3]
+	check1 = tmp2[4]
+	desc1 = tmp2[5]
+	meth1 = tmp2[6]
+	asset1 = tmp2[7]
+	tech = request.session['login_tech']
+	cur.execute('''INSERT INTO quality_epv_checks(date1,check1,description1,asset1,master1,clock_num) VALUES(%s,%s,%s,%s,%s,%s)''', (date1,qc1,desc1,asset1,meth1,tech))
+	db.commit()
+	dql = ('DELETE FROM quality_epv_week WHERE Id="%s"' % (index))
+	cur.execute(dql)
+	db.commit()
+	index = request.session['tech_epv_qc'] 
+	sql = "SELECT * FROM quality_epv_week WHERE QC1 = '%s'" % (index)
+	cur.execute(sql)
+	tmp = cur.fetchall()
+	db.close()
+	request.session['tech_epv_list2'] = tmp
+	return render(request,"redirect_tech.html")
+
+def tech_epv(request, index):	
+	request.session['tech_epv_second'] = 1
+	index = str(index)
+	db, cur = db_set(request) 
+	sql = "SELECT * FROM quality_epv_week WHERE QC1 = '%s'" % (index)
+	cur.execute(sql)
+	tmp = cur.fetchall()
+	db.close()
+	request.session['tech_epv_qc'] = index
+	request.session['tech_epv_second'] = 1
+	request.session['tech_epv_list2'] = tmp
+	return render(request,"redirect_tech.html")
+
+def tech_epv_back(request):
+	request.session['tech_epv_second'] = 0
+	return render(request,"redirect_tech.html")
 
 def tech_message_close(request):
 	request.session["refresh_tech"] = 0

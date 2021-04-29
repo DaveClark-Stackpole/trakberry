@@ -104,11 +104,11 @@ def excel_table_create(sheet,request):
 	sheet_name = 'Sheet1'
 
 
-	label_link = '/home/file/import1/Inventory/importedxls'
+	# label_link = '/home/file/import1/Inventory/importedxls'
 
 
 	# use this if excel sheet is in a different folder
-	os.chdir(label_link)
+	# os.chdir(label_link)
 	
 	book = xlrd.open_workbook(sheet)
 	working = book.sheet_by_name(sheet_name)
@@ -138,7 +138,7 @@ def excel_table_create(sheet,request):
 	db.commit()
 
 	for i in ss:
-		yy = yy + ',xx2 CHAR(50)'
+		yy = yy + ',xx2 CHAR(100)'
 		index = yy.find('xx2')
 		yy = yy[:index] + i + yy[index+3:]
 

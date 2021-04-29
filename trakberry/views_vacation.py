@@ -227,13 +227,40 @@ def vacation_set_current6(t):
 		
 	return current_first
 
+def vacation_set_current55(t):
+
+	tm = time.localtime(t)
+	request.session["time"] = t
+	shift_start = -2
+	current_shift = 3
+	if tm[3]<22 and tm[3]>=14:
+		shift_start = 14
+	elif tm[3]<14 and tm[3]>=6:
+		shift_start = 6
+	cur_hour = tm[3]
+	if cur_hour == 22:
+		cur_hour = -1
+	u = t - (((cur_hour-shift_start)*60*60)+(tm[4]*60)+tm[5])    # Starting unix of shift
+
+	shift_time = t-u
+	shift_left = 28800 - shift_time
+	e = t + shift_left
+	request.session["shift_time"] = shift_time
+
+	# Calculate start of week unix (Monday 00:00am)
+	a1 = tm[6] * 86400
+	a2 = tm[3] * 60 * 60
+	a3 = tm[4] * 60
+	a4 = tm[5]
+	week_start1 = t - a1 - a2 - a3 - a4
+	return week_start1
+
+
 
 
 def vacation_set_current5():  # Use this one to set Kiosk Date properly
 
 	t = vacation_temp()
-
-
 	month_st = t.month
 	year_st = t.year
 	day_st = t.day

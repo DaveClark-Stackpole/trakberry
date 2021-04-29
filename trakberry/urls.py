@@ -25,6 +25,7 @@ from views_machinery import machinery
 from views_testing import test_display, form_robot_machine_enter, display_robot_machine, machine_list_display, toggletest, test668,create_table_1,test_datalist
 from views_tech import tech, job_call, job_close, tech_logout, job_pass, tech_history, tech_history2, tech_recent, tech_recent2, tech_map, t1_call, reset_call_route,tech_email_test,tech_message, modal_test
 from views_tech import tech_message_close,tech_message_reply1, tech_report_email, email_hour_check,tech_name_update
+from views_tech import tech_epv,tech_epv_back,tech_epv_complete
 #from views_tech import hour_check
 from views_transfer import transfer
 
@@ -105,14 +106,14 @@ from views_kiosk import test_1_10R
 # ***********************************************************************************************************************************************************
 # *******************************************  Manpower Section ********************************************************************************************
 from views_kiosk import manpower_layout, tenr_fix,kiosk_menu,ab1v_manpower,tenr1,trilobe,tenr2, error_hourly_duplicate
-from views_kiosk import set_test1, kiosk_fix55, kiosk_fix44, kiosk_help_close
+from views_kiosk import kiosk_production_write
+from views_kiosk import set_test1, kiosk_fix55, kiosk_fix44, kiosk_help_close, kiosk_epv_verification, kiosk_epv_entry
 
 # ***********************************************************************************************************************************************************
 
 # ***********************************************************************************************************************************************************
 # *******************************************  Shipping Section ********************************************************************************************
 from views_shipping import forklift, forklift_login_form, forklift_logout, forklift_close, forklift_close_item
-
 # ***********************************************************************************************************************************************************
 
 # *******************************************  Management Section ********************************************************************************************
@@ -147,6 +148,7 @@ from views3 import bounce_matrix,update_matrix_cancel,matrix_cache_matrix, full_
 # *******************************************  Scrap Section ********************************************************************************************
 from views_scrap import scrap_mgmt, scrap_mgmt_login_form,scrap_display,scrap_display_operation,scrap_display_category,scrap_entries,scrap_display_category_shift
 from views_scrap import scrap_entries_next, scrap_entries_prev,scrap_entries_update,scrap_display_date_pick,scrap_display_24hr,operation_department,oper_dept_edit_selection,operation_entries_next, operation_entries_prev,operation_entries_update,kiosk_add_category,kiosk_initiate
+from views_scrap import tpm_display
 # ***********************************************************************************************************************************************************
 
 # *******************************************  Manpower Section ********************************************************************************************
@@ -282,6 +284,9 @@ urlpatterns = [
 	url(r'^jcall/get/(?P<index>\d+)/$', job_call),
 	url(r'^jclose/get/(?P<index>\d+)/$', job_close),
 	url(r'^jpass/get/(?P<index>\d+)/$', job_pass),
+	url(r'^tech_epv/get/(?P<index>\w{0,50})/$', tech_epv),
+	url(r'^tech_epv_complete/get/(?P<index>\w{0,50})/$', tech_epv_complete),
+	url(r'^tech_epv_back/', tech_epv_back),
 	url(r'^tech_history/', tech_history),
 	url(r'^tech_history2/', tech_history2),
 	url(r'^tech_recent/', tech_recent),
@@ -439,6 +444,9 @@ urlpatterns = [
 	url(r'^kiosk_scrap/', kiosk_scrap), # The Kiosk Scrap Module
 	url(r'^kiosk_scrap_entry/', kiosk_scrap_entry),
 	url(r'^kiosk_scrap_reset/', kiosk_scrap_reset), 
+	url(r'^kiosk_epv_verification/', kiosk_epv_verification), 
+	url(r'^kiosk_epv_entry/', kiosk_epv_entry), 
+	url(r'^kiosk_production_write/', kiosk_production_write), 
 	url(r'^scrap_backup/', scrap_backup),
 	url(r'^scrap_restore/', scrap_restore),
 	# url(r'^kiosk_mult_entries/', kiosk_mult_entries), 
@@ -588,7 +596,7 @@ urlpatterns = [
 	url(r'^barcode_wrong_part_reset/', barcode_wrong_part_reset),
 	url(r'^barcode_count/', barcode_count),
 
-	# *************  Scrap Section *********************************************
+	# *************  Quality Section *********************************************
 	url(r'^scrap_mgmt/', scrap_mgmt),
 	url(r'^scrap_mgmt_login_form/', scrap_mgmt_login_form),
 	url(r'^scrap_display/', scrap_display),
@@ -597,6 +605,7 @@ urlpatterns = [
 	url(r'^scrap_entries_next/', scrap_entries_next),
 	url(r'^scrap_entries_prev/', scrap_entries_prev),
 	url(r'^scrapdate_fix1/', scrapdate_fix1),
+	url(r'^tpm_display/', tpm_display),
 	# **************************************************************************
 
 	# *************  Manpower Section *********************************************

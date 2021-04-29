@@ -1,0 +1,28 @@
+{% extends "scrap_mgmt.html" %}
+
+{% block content %}
+
+<form action="" method="post">{% csrf_token %}
+	
+	<button style="text-align: left;font-size: 50%;border:0px solid rgb(0, 0, 0);
+	background-color:rgb(158, 158, 158);border-radius: 10px;border:none;outline:none;"
+	type="submit" name="one" value="choose1" /><b><font color="#000000">+/-</font></</button>
+
+<table style="margin-left: 35%; margin-right: 15%; width: 20%;">
+	<tr><th colspan="3"><font size="4" style="color:rgb(255, 255, 255)"><b><u>Asset List</b></u></font></th></tr>
+	<font size ="2" style="color:rgb(100, 100, 100)">
+	</font>
+	<tr>
+		<th>Asset Requiring TPM</th>
+	</tr>
+	{% for i in request.session.tpm_list %}
+	<tr>
+		<td> 
+			<a href="{{request.session.local_toggle}}/tpm_edit/get/{{i.0}}">{{ i.1|slice:":-2" }}</a>
+		</td>
+	</tr>
+{% endfor %}
+</table>
+
+</form>
+{% endblock %}

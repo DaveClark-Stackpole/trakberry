@@ -233,7 +233,7 @@ def job_close(request, index):
 	return render(request,'tech_close.html', args)	
 		
 def tech_logout(request):	
-
+	request.session["login_back"] = "/media/back_rick.jpg"
 	if request.POST:
         			
 		tec = request.POST.get("user")

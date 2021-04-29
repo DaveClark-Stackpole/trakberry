@@ -73,25 +73,30 @@
     -moz-border-radius: 6px 0 6px 6px;
     border-radius: 6px 0 6px 6px;
 }
+
+
+.frame1 {color:rgb(0, 0, 0);text-align:center;float:left;width:65%}
+.frame3 {color:rgb(0, 0, 0);text-align:center;float:left;width:35%}
+.frame2{color:black;text-align:center;background:rgb(253, 186, 186);float:left;width:20%;position:relative;left:5px;}
+.body1{color:black;text-align:left;background:rgb(197, 253, 186);border: .4px solid rgb(0, 0, 0);width:100%}
+
+
+.comment4 {float:left;width:100%;padding-top:5px;padding-bottom:5px;}
+.comment5 {float:left;width:100%;height:20px;}
+.comment55 {float:left;width:100%;height:4px;}
+.comment3 {float:left;width:50%;padding-top:5px;padding-bottom:5px;}
+.comment6 {float:left;width:10%;padding-top:5px;padding-bottom:5px;}
+.comment7 {float:left;text-align:left;width:80%;padding-top:5px;padding-bottom:5px;}
+
+
+}
 </style>
-<!-- **************************** -->
+
 
   <title>Tech Jobs</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-	
-	
-<!--
-  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
--->
-<!-- 
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  -->
-  
+
   <script src="/static/bootstrap/js/1.11.3/jquery.min.js"></script>
 	<script src="/static/bootstrap/js/bootstrap.min.js"></script>
 	<link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
@@ -112,33 +117,16 @@
 
 <body>
 
-<img alt="full screen background image" src="{{request.session.login_back}}?{{TCUR}}" id="full-screen-background-image"/>
+<img alt="full screen background image" src="/static/media/back_tech_training.jpg" id="full-screen-background-image"/>
 
-<!--
-
-{% if request.session.login_tech == N %}
-<meta http-equiv="refresh" content="0; url=/trakberry/tech_logout" />
-
-
-{% else %}
-
--->
 {% block refresh %}
-
-
-
-
-
-{% if request.session.refresh_tech != 3 %}
-<meta http-equiv="refresh" content="60; url={{request.session.local_toggle}}/tech" />
-
-{% endif %}
-
-
+	{% if request.session.refresh_tech != 3 %}
+		<meta http-equiv="refresh" content="60; url={{request.session.local_toggle}}/tech" />
+	{% endif %}
 {% endblock %}
-{% if request.session.refresh_tech == 1 %}
 
-<meta http-equiv="refresh" content="0; url={{request.session.local_toggle}}/tech" />
+{% if request.session.refresh_tech == 1 %}
+	<meta http-equiv="refresh" content="0; url={{request.session.local_toggle}}/tech" />
 {% endif %}
 
 <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -151,7 +139,7 @@
                 <span class="icon-bar"></span>
             </button>
 			<font color="#ffffff" size ="3"><b>Tech App</b></b></font>
-			<img src="{{request.session.login_image}}?{{TCUR}}"  style="border-radius: 25px;" height="60" width="70">
+			<img src="/static/media/tech_training.jpg"  style="border-radius: 25px;" height="60" width="70">
             <a class="navbar-brand" href="#" style="position:absolute;left:0px;top:-10px;"></a>
         </div>
         <div class="collapse navbar-collapse">
@@ -188,7 +176,7 @@
 
 {% block close %}
 
-<div class="container"><br>
+
 
 <br><br>
 
@@ -231,48 +219,70 @@
 
 
 
-
-
-
-<!-- *********************** -->
-
-
-
+<div class ="mainset">
+<div class="frame1" >
 {% for i in L %}
-    <div class="row">
-		<div class="col-sm-8" style="background-color: #EBEBEB;border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;height:30px;"><font color="#000000" size ="4" border="1">{{i.0}}</div>
-		
-
-	</div>	
-    <div class="row">
-		
-		<div class="col-sm-8" style="background-color: #EBEBEB;border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;height:30px;"><font color="#000000" size ="4" border="1">{{ i.1}}</div>
-		
-	</div>	
-    <div class="row">
-		
-		<div class="col-sm-8" style="background-color: #EBEBEB;border-radius:0px;border-style: solid;border-width: 1px;border-color: #000000;height:30px;"><font color="#000000" size ="3" border="1"><b>
-		
-		<center><a href="{{request.session.local_toggle}}/jcall/get/{{ i.2 }}" style="color: black">{{i.3}}</b></center></a>
-		</div>
-
-	</div>	
-    <div class="row">
-		
-
-		<div class="col-sm-4" style="background-color: #A1D490;border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;height:30px;"><font color="#000000" size ="3" border="1"><b>
-		<center><a href="{{request.session.local_toggle}}/jclose/get/{{ i.2 }}" style="color: black">Complete</b></a></center>
-		</div>
-		<div class="col-sm-4" style="background-color: #7Fd4F0;border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;height:30px;"><font color="#000000" size ="3" border="1"><b>
-		<center><a href="{{request.session.local_toggle}}/jpass/get/{{ i.2 }}" style="color: black">Pass Off</b></a></center>
-		</div>
-	</div>		
-<br>
-{% endfor %}
+<div class="comment4" style="font-size:25px;font-weight: bold;background-color: #97f58e;border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;">{{i.0}}</div>
+<div class="comment4" style="font-size:25px;font-weight: bold;background-color: #97f58e;border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;">{{i.1}}</div>
+<div class="comment4" style="font-size:25px;font-weight: bold;background-color: #53d147;border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;">
+	<a href="{{request.session.local_toggle}}/jcall/get/{{ i.2 }}" style="color: black">{{i.3}}</b></a>
 </div>
-{% endblock %}
-</form>
+<div class="comment3" style="font-size:25px;font-weight: bold;background-color: #a5a5a5;border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;">
+	<a href="{{request.session.local_toggle}}/jclose/get/{{ i.2 }}" style="color:rgb(0, 0, 0);">Complete</a>
+</div>
+<div class="comment3" style="font-size:25px;font-weight: bold;background-color: #c2c2c2;border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;">
+	<a href="{{request.session.local_toggle}}/jpass/get/{{ i.2 }}" style="color:rgb(0, 0, 0);">Pass Off</a>
+</div>
+<div class="comment5"></div>
+{% endfor %}
+</div>  <!-- Frame1 end -->
+
+{% if request.session.tech_epv_second = 0 %}
+<!-- Frame3  for EPV List-->
+<div class="frame3" >
+	<div class="comment6"></div>
+	<div class="comment7" style="font-size:25px;box-shadow: 10px 10px;font-weight: bold;background-color: #f5e68e;border-radius: 15px;border-style: solid;border-width: 1px;border-color: #000000;"><center>EPV List</center></div>
+	<div class="comment6"></div>
+	<div class="comment5"></div>
+	{% for i in request.session.tech_epv_list %}
+	<div class="comment6"></div>
+	<div class="comment7" style="font-size:15px;font-weight: bold;background-color:#c7bb75;border-style: solid;border-width: 1px;border-color: #000000;border-radius: 5px;padding-left: 5px;">
+		<a href="{{request.session.local_toggle}}/tech_epv/get/{{ i.0 }}" style="color:rgb(0, 0, 0);">
+		{{i.0}} - {{i.1}} -- {{i.2}}</a></div>
+	<div class="comment6"></div>
+	<div class="comment55"></div>
+	{% endfor %}
+</div><!-- Frame3 end -->
+
+{% else %}
+<!-- Frame3  for EPV List-->
+<div class="frame3" >
+	<div class="comment6"></div>
+	<div class="comment7" style="font-size:25px;box-shadow: 10px 10px;font-weight: bold;background-color: #b3fcff;border-radius: 15px;border-style: solid;border-width: 1px;border-color: #000000;">
+		<a href="{{request.session.local_toggle}}/tech_epv_back/" style="font-size:15px;background-color: #6fa1a3;border-radius: 10px;padding-left:6px;padding-right:6px;width:90%;height:80%;font-weight: 600;color:rgb(255, 251, 0);">
+			<<< Back</a>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EPV checks for {{request.session.tech_epv_qc}}</div>
+	<div class="comment6"></div>
+	<div class="comment5"></div>
+	{% for i in request.session.tech_epv_list2 %}
+	<div class="comment6"></div>
+	<div class="comment7" style="font-size:15px;font-weight: bold;background-color:#8ac8ca;border-style: solid;border-width: 1px;border-color: #000000;border-radius: 5px;padding-left: 5px;">
+		
+		Asset:({{i.7}}) &nbsp;&nbsp;&nbsp; Job:({{i.3}}) &nbsp;&nbsp;&nbsp; Desc:{{i.4}} &nbsp;&nbsp;&nbsp; Check{{i.5}} &nbsp;&nbsp;&nbsp;Master:{{i.6}} <br>
+		<a href="{{request.session.local_toggle}}/tech_epv_complete/get/{{i.0}}/" style="background-color: #dadada;border-radius: 10px;padding-left:3px;padding-right:3px;width:90%;height:80%;font-weight: 600;color:rgb(0, 0, 0);">Complete</a>
+		</div>
+	<div class="comment6"></div>
+	<div class="comment55"></div>
+	{% endfor %}
+</div><!-- Frame3 end -->
+
 {% endif %}
+
+</div>
+
+{% endblock %}
+
+
 
 
 </body></html>
