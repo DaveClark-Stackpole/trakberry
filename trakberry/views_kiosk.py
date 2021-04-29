@@ -2602,7 +2602,7 @@ def kiosk_scrap_entry(request):
 	# This will assign all the values of machines into session variable machine_temp
 	if request.session["scrap_entry"] == 0:
 		active = '1.0'
-		sql = "SELECT Part FROM scrap_part_line WHERE Active = '%s'" %(active)
+		sql = "SELECT Part FROM scrap_part_line WHERE Active = '%s' ORDER BY Part ASC" %(active)
 		cursor.execute(sql)
 		tmp = cursor.fetchall()
 		request.session["scrap_part_selection"] = tmp
@@ -2688,6 +2688,12 @@ def kiosk_scrap_entry(request):
 					db.close()
 				return render(request, "redirect_kiosk_scrap.html")
 
+			if request.session["scrap_entry"] == 0 and scrap_part[:6] == 'Powder':
+				request.session["scrap_entry"] = 2
+				request.session["scrap_part"] = scrap_part
+				request.session["scrap_operation"] = 'Powder'
+				scrap_category = 'Powder'
+				
 			if request.session["scrap_entry"] == 0:
 				request.session["scrap_part"] = scrap_part
 				request.session["scrap_entry"] = 1

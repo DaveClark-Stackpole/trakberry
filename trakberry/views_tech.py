@@ -215,10 +215,12 @@ def tech(request):
 
 	# Will update Weekly Tech EPV List once if it doesn't exist 
 	clock2 = 'CNC Tech'
+	clock_len = 5
 	db, cursor = db_set(request)   
+	cursor.execute("""CREATE TABLE IF NOT EXISTS quality_epv_checks(Id INT PRIMARY KEY AUTO_INCREMENT,date1 CHAR(80),shift1 CHAR(80), check1 Char(80), description1 Char(80), asset1 Char(80), master1 Char(80), comment Char(255), clock_num Char(80))""")
 	cursor.execute("""CREATE TABLE IF NOT EXISTS quality_epv_week(Id INT PRIMARY KEY AUTO_INCREMENT,date1 CHAR(80),QC1 Char(80), OP1 Char(80), Check1 Char(80), Desc1 Char(80), Method1 Char(255), Asset Char(80))""")
 	date_start = week_start_finder(request)
-	aql = "SELECT COUNT(*) FROM quality_epv_checks where (date1 = '%s' and clock_num = '%s')" %(date_start,clock2)
+	aql = "SELECT COUNT(*) FROM quality_epv_checks where (date1 = '%s' and length(clock_num) > '%s')" %(date_start,clock_len)
 	cursor.execute(aql)
 	amp = cursor.fetchall()
 	bmp = amp[0]

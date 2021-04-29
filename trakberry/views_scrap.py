@@ -670,9 +670,34 @@ def kiosk_add_category(request):
 
 
 def tpm_display(request):
-	db, cursor = db_set(request)
-	
-	return render(request,'edit_category.html',{'args':args})
+	db, cur = db_set(request)
+	sql = "SELECT * FROM quality_tpm_assets order by ABS(Asset) ASC"
+	cur.execute(sql)
+	tmp = cur.fetchall()
+	request.session['tpm_list'] = tmp
+
+	if request.POST:
+		selected1 = request.POST
+		try:
+			selected2 = int(selected1.get("one"))
+		except:
+			selected2 = selected1.get("one")
+			if selected2 == 'choose1':
+				request.session["tpm_main_switch"] = 1
+			else:
+				temp_list = request.session["assigned"]
+			return render(request, "redirect_maint_mgmt.html")  # This will be it once we've determined switch
+
+		request.session["index"] = selected2
+		return render(request, "maint_edit.html")
+		# return done_edit(request)
+	else:
+		form = sup_downForm()
+	args = {}
+	args.update(csrf(request))
+	args['form'] = form
+
+	return render(request, "tpm_list.html",{'args':args})
 
 
 # def kiosk_add_operation(request):

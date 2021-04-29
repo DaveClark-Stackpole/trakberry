@@ -148,6 +148,7 @@ from views3 import bounce_matrix,update_matrix_cancel,matrix_cache_matrix, full_
 # *******************************************  Scrap Section ********************************************************************************************
 from views_scrap import scrap_mgmt, scrap_mgmt_login_form,scrap_display,scrap_display_operation,scrap_display_category,scrap_entries,scrap_display_category_shift
 from views_scrap import scrap_entries_next, scrap_entries_prev,scrap_entries_update,scrap_display_date_pick,scrap_display_24hr,operation_department,oper_dept_edit_selection,operation_entries_next, operation_entries_prev,operation_entries_update,kiosk_add_category,kiosk_initiate
+from views_scrap import tpm_display
 # ***********************************************************************************************************************************************************
 
 # *******************************************  Manpower Section ********************************************************************************************
@@ -604,6 +605,7 @@ urlpatterns = [
 	url(r'^scrap_entries_next/', scrap_entries_next),
 	url(r'^scrap_entries_prev/', scrap_entries_prev),
 	url(r'^scrapdate_fix1/', scrapdate_fix1),
+	url(r'^tpm_display/', tpm_display),
 	# **************************************************************************
 
 	# *************  Manpower Section *********************************************
