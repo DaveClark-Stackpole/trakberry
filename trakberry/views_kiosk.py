@@ -1146,15 +1146,20 @@ def kiosk_epv_entry(request):
 			return direction(request)
 		complete1 = 1
 		c = []
+		tt=[]
 		for i in request.session['epv_checks']:
-			epv_ver = request.POST.get(i[14])
+			# epv_ver = request.POST.get(i[14])
+			epv_ver = request.POST.get("acs")
+			tt.append(epv_ver)
 			epv_comment = request.POST.get(i[15])
 			c.append(epv_comment)
 			if epv_ver:
 				complete1 = complete1 * 1
 			else:
 				complete1 = complete1 * 0
-		if complete1 == 0:
+
+		# if complete1 == 0:
+		if not epv_ver:
 			request.session['bounce6'] = 1
 			request.session['route_1'] = 'kiosk_epv_entry'
 			request.session["error_title"] = " Warning !"
