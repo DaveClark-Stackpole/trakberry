@@ -53,6 +53,24 @@ mark {
 
 </style>
 
+
+<script type="text/javascript">
+	function selectAll() {
+			var items = document.getElementsByName('acs');
+			for (var i = 0; i < items.length; i++) {
+					if (items[i].type == 'checkbox')
+							items[i].checked = true;
+			}
+	}
+
+	function UnSelectAll() {
+			var items = document.getElementsByName('acs');
+			for (var i = 0; i < items.length; i++) {
+					if (items[i].type == 'checkbox')
+							items[i].checked = false;
+			}
+	}			
+</script>
 {% endblock %}
 
 
@@ -70,7 +88,10 @@ mark {
 	<div class="item2"> </div>
 
 	<div class="item2"><input style="background-color: #AAA00A;border-radius: 10px;width:90px;height:40px;font-weight: 700;font-size:23px;align=left;" type="submit" name="kiosk_epv_button" value="Enter"></div>
-	<div class="item2"> </div>
+	<div class="item2"><p>
+		<input type="button" onclick='selectAll()' value="Select All"/>
+		<input type="button" onclick='UnSelectAll()' value="Unselect All"/>
+	</p> </div>
 	<div class="item2"></div>
 	<div class="item2"> </div>
 	<div class="item2"><button style="background-color: #AAAAAA;border-radius: 10px;width:90px;height:40px;font-weight: 700;font-size:23px;align=left;" type="submit" name="kiosk_epv_button" value="Cancel">Cancel</button></div>
@@ -83,7 +104,7 @@ mark {
 	<div class="item2"><font color="#000000" size ="4"><u><b>Comment</b></u></font> </div>
 
 	{% for i in request.session.epv_checks %}
-		<div class="item2">&nbsp;&nbsp;&nbsp;<input style="font-size:23px;width:20px;height:20px;" name= {{i.14}} type="checkbox"></div>
+		<div class="item2">&nbsp;&nbsp;&nbsp;<input style="font-size:23px;width:20px;height:20px;" name = "acs" type="checkbox"></div>
 		<div class="item2"><font color="#000000" size ="3">{{i.1}}</font> 
 		                   <font color="#000000" size ="3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{i.8}}</b></u></font> </div>
 		<div class="item2"><font color="#000000" size ="3">{{i.3}}</b></u></font> </div>
