@@ -2693,7 +2693,7 @@ def kiosk_scrap_entry(request):
 				request.session["scrap_part"] = scrap_part
 				request.session["scrap_operation"] = 'Powder'
 				scrap_category = 'Powder'
-				
+
 			if request.session["scrap_entry"] == 0:
 				request.session["scrap_part"] = scrap_part
 				request.session["scrap_entry"] = 1
@@ -3488,4 +3488,12 @@ def production_entry_check_manual(request):
 	return render(request, "production_check_form.html",{'args':args})
 
 def test_1_10R(request):
+
+	db, cur = db_set(request)
+	cur.execute("Alter Table quality_tpm_assets ADD Part Char(30)")
+
+
+
+	db.commit()
+	db.close()
 	return render(request, "test_1_10R.html")

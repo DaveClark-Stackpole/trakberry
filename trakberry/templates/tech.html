@@ -222,15 +222,15 @@
 <div class ="mainset">
 <div class="frame1" >
 {% for i in L %}
-<div class="comment4" style="font-size:25px;font-weight: bold;background-color: #97f58e;border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;">{{i.0}}</div>
-<div class="comment4" style="font-size:25px;font-weight: bold;background-color: #97f58e;border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;">{{i.1}}</div>
-<div class="comment4" style="font-size:25px;font-weight: bold;background-color: #53d147;border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;">
+<div class="comment4" style="font-size:15px;font-weight: bold;background-color: #97f58e;border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;">{{i.0}}</div>
+<div class="comment4" style="font-size:15px;font-weight: bold;background-color: #97f58e;border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;">{{i.1}}</div>
+<div class="comment4" style="font-size:15px;font-weight: bold;background-color: #53d147;border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;">
 	<a href="{{request.session.local_toggle}}/jcall/get/{{ i.2 }}" style="color: black">{{i.3}}</b></a>
 </div>
-<div class="comment3" style="font-size:25px;font-weight: bold;background-color: #a5a5a5;border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;">
+<div class="comment3" style="font-size:15px;font-weight: bold;background-color: #a5a5a5;border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;">
 	<a href="{{request.session.local_toggle}}/jclose/get/{{ i.2 }}" style="color:rgb(0, 0, 0);">Complete</a>
 </div>
-<div class="comment3" style="font-size:25px;font-weight: bold;background-color: #c2c2c2;border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;">
+<div class="comment3" style="font-size:15px;font-weight: bold;background-color: #c2c2c2;border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;">
 	<a href="{{request.session.local_toggle}}/jpass/get/{{ i.2 }}" style="color:rgb(0, 0, 0);">Pass Off</a>
 </div>
 <div class="comment5"></div>
