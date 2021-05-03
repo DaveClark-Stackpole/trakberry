@@ -215,12 +215,17 @@ def tech(request):
 
 	# Will update Weekly Tech EPV List once if it doesn't exist 
 	clock2 = 'CNC Tech'
-	clock_len = 5
+	clock_len = '9999'
 	db, cursor = db_set(request)   
 	cursor.execute("""CREATE TABLE IF NOT EXISTS quality_epv_checks(Id INT PRIMARY KEY AUTO_INCREMENT,date1 CHAR(80),shift1 CHAR(80), check1 Char(80), description1 Char(80), asset1 Char(80), master1 Char(80), comment Char(255), clock_num Char(80))""")
 	cursor.execute("""CREATE TABLE IF NOT EXISTS quality_epv_week(Id INT PRIMARY KEY AUTO_INCREMENT,date1 CHAR(80),QC1 Char(80), OP1 Char(80), Check1 Char(80), Desc1 Char(80), Method1 Char(255), Asset Char(80))""")
 	date_start = week_start_finder(request)
-	aql = "SELECT COUNT(*) FROM quality_epv_checks where (date1 = '%s' and length(clock_num) > '%s')" %(date_start,clock_len)
+
+	xql = "SELECT * FROM quality_epv_checks where (clock_num > '%s')" %(clock_len)
+	cursor.execute(xql)
+	xmp = cursor.fetchall()
+
+	aql = "SELECT COUNT(*) FROM quality_epv_checks where (date1 = '%s' and clock_num > '%s')" %(date_start,clock_len)
 	cursor.execute(aql)
 	amp = cursor.fetchall()
 	bmp = amp[0]
@@ -428,6 +433,26 @@ def tech(request):
 	tmp2 = cur.fetchall()
 	request.session['tech_epv_list'] = tmp2
 
+	# # Below will link Asset numers to Q numbers
+	# sql2 = "SELECT QC1, OP1, Check1, Asset FROM quality_epv_week"
+	# cur.execute(sql2)
+	# tmp3 = cur.fetchall()
+
+	# a = []
+	# for i in tmp2:
+	# 	b=[]
+	# 	for ii in tmp3:
+	# 		if i[0] == ii[0]:
+	# 			b.append(ii[0])
+	# 			b.append(ii[1])
+	# 			b.append(ii[2])
+	# 			b.append(ii[3])
+	# 	rrrr=4/0
+	# 	a.append(b)
+
+
+	# request.session['tech_epv_list'] = a
+	# return render(request,"test_2.html")
 
 	return render(request,"tech.html",{'L':list,'cnt':cnt,'M':tmp4,'N':n,'Z':Z,'TCUR':tcur})
 

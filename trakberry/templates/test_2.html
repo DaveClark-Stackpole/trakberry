@@ -5,8 +5,8 @@
 
 <font size="3" color="black">
 
-{% for i in List %}
-Machine: {{ i.0}}  Part: {{i.2}}  Production: {{ i.1}}  Time:{{i.3}} <br>
+{% for i in request.session.tech_epv_list %}
+Machine: {{ i.0}} : Part: {{i.1}}  Production: {{ i.2}}  Time:{{i.3}} <br>
 {% endfor %}
 <br><br>
 

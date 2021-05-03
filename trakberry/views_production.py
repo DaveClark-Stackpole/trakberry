@@ -308,7 +308,7 @@ def track_area(request):
 	u1, wd1, m1, day1, shift1, prev_cnt1 = [],[],[],[],[],[]
 	utemp = u
 	total_test = 0
-	for i in range(1,5):
+	for i in range(1,15):
 		unew = utemp - 28800
 		x1, x2, x3, x4 = day_breakdown(unew)
 		u1.append(str(unew))
@@ -1024,6 +1024,24 @@ def chart2_1467(request):
 		request.session['asset3_area2'] = '769'
 		request.session['asset4_area2'] = '769'
 		return render(request, "redirect_tracking.html")
+def chart1_1467b(request):
+		request.session['area1'] = '50-1467 Broach/Induction'
+		request.session['part_area1'] = '50-1467'
+		request.session['rate_area1'] = 189
+		request.session['asset1_area1'] = '770'
+		request.session['asset2_area1'] = '770'
+		request.session['asset3_area1'] = '770'
+		request.session['asset4_area1'] = '770'
+		return render(request, "redirect_tracking.html")
+def chart2_1467b(request):
+		request.session['area2'] = '50-1467 Broach/Induction'
+		request.session['part_area2'] = '50-1467'
+		request.session['rate_area2'] = 189
+		request.session['asset1_area2'] = '770'
+		request.session['asset2_area2'] = '770'
+		request.session['asset3_area2'] = '770'
+		request.session['asset4_area2'] = '770'
+		return render(request, "redirect_tracking.html")
 def chart1_3050(request):
 		request.session['area1'] = '50-3050 Inspection'
 		request.session['part_area1'] = '50-3050'
@@ -1041,6 +1059,60 @@ def chart2_3050(request):
 		request.session['asset2_area2'] = '769'
 		request.session['asset3_area2'] = '769'
 		request.session['asset4_area2'] = '769'
+		return render(request, "redirect_tracking.html")
+def chart1_3050b(request):
+		request.session['area1'] = '50-3050 Broach/Induction'
+		request.session['part_area1'] = '50-3050'
+		request.session['rate_area1'] = 189
+		request.session['asset1_area1'] = '770'
+		request.session['asset2_area1'] = '770'
+		request.session['asset3_area1'] = '770'
+		request.session['asset4_area1'] = '770'
+		return render(request, "redirect_tracking.html")
+def chart2_3050b(request):
+		request.session['area2'] = '50-3050 Broach/Induction'
+		request.session['part_area2'] = '50-3050'
+		request.session['rate_area2'] = 189
+		request.session['asset1_area2'] = '770'
+		request.session['asset2_area2'] = '770'
+		request.session['asset3_area2'] = '770'
+		request.session['asset4_area2'] = '770'
+		return render(request, "redirect_tracking.html")
+def chart1_5710(request):
+		request.session['area1'] = '50-5710 Inspection'
+		request.session['part_area1'] = '50-5710'
+		request.session['rate_area1'] = 58
+		request.session['asset1_area1'] = '769'
+		request.session['asset2_area1'] = '769'
+		request.session['asset3_area1'] = '769'
+		request.session['asset4_area1'] = '769'
+		return render(request, "redirect_tracking.html")
+def chart2_5710(request):
+		request.session['area2'] = '50-5710 Inspection'
+		request.session['part_area2'] = '50-5710'
+		request.session['rate_area2'] = 58
+		request.session['asset1_area2'] = '769'
+		request.session['asset2_area2'] = '769'
+		request.session['asset3_area2'] = '769'
+		request.session['asset4_area2'] = '769'
+		return render(request, "redirect_tracking.html")
+def chart1_5710b(request):
+		request.session['area1'] = '50-5710 Broach/Induction'
+		request.session['part_area1'] = '50-5710'
+		request.session['rate_area1'] = 189
+		request.session['asset1_area1'] = '770'
+		request.session['asset2_area1'] = '770'
+		request.session['asset3_area1'] = '770'
+		request.session['asset4_area1'] = '770'
+		return render(request, "redirect_tracking.html")
+def chart2_5710b(request):
+		request.session['area2'] = '50-5710 Broach/Induction'
+		request.session['part_area2'] = '50-5710'
+		request.session['rate_area2'] = 189
+		request.session['asset1_area2'] = '770'
+		request.session['asset2_area2'] = '770'
+		request.session['asset3_area2'] = '770'
+		request.session['asset4_area2'] = '770'
 		return render(request, "redirect_tracking.html")
 def chart1_0455(request):
 		request.session['area1'] = '50-0455 Inspection'
