@@ -10,7 +10,7 @@ import MySQLdb
 def net1(request):
 	request.session["local_switch"] = 0
 	request.session["local_toggle"] = "/trakberry"
-	# #
+	# ###this
 	# request.session["local_switch"] = 1
 	# request.session["local_toggle"] = ""
 	return
@@ -58,7 +58,7 @@ def db_set(request):  # Module to set DB settings to the one that works.  Whethe
 	# sql = "SELECT * from testtest" 
 	# cursor.execute(sql)
 	# tmp2 = cursor.fetchall()
-	# return db, cursor
+	return db, cursor
 
  # update
 
