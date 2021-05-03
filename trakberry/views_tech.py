@@ -433,26 +433,29 @@ def tech(request):
 	tmp2 = cur.fetchall()
 	request.session['tech_epv_list'] = tmp2
 
-	# # Below will link Asset numers to Q numbers
-	# sql2 = "SELECT QC1, OP1, Check1, Asset FROM quality_epv_week"
-	# cur.execute(sql2)
-	# tmp3 = cur.fetchall()
+	# Below will link Asset numers to Q numbers
+	sql2 = "SELECT QC1, OP1, Check1, Asset FROM quality_epv_week"
+	cur.execute(sql2)
+	tmp3 = cur.fetchall()
 
-	# a = []
-	# for i in tmp2:
-	# 	b=[]
-	# 	for ii in tmp3:
-	# 		if i[0] == ii[0]:
-	# 			b.append(ii[0])
-	# 			b.append(ii[1])
-	# 			b.append(ii[2])
-	# 			b.append(ii[3])
-	# 	rrrr=4/0
-	# 	a.append(b)
+	a = []
+	b=[]
+	for i in tmp2:
+		c=''
+		for ii in tmp3:
+			if i[0] == ii[0]:
+				c = c + ii[3][:-2] + '/'
 
 
-	# request.session['tech_epv_list'] = a
-	# return render(request,"test_2.html")
+		a.append(i[0])
+		a.append(i[1])
+		a.append(i[2])
+		a.append(c)
+		b.append(a)
+		a=[]
+	
+
+	request.session['tech_epv_list'] = b
 
 	return render(request,"tech.html",{'L':list,'cnt':cnt,'M':tmp4,'N':n,'Z':Z,'TCUR':tcur})
 

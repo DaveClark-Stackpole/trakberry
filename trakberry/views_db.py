@@ -58,7 +58,7 @@ def db_set(request):  # Module to set DB settings to the one that works.  Whethe
 	# sql = "SELECT * from testtest" 
 	# cursor.execute(sql)
 	# tmp2 = cursor.fetchall()
-	# return db, cursor
+	return db, cursor
 
  # update
 
