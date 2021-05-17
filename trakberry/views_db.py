@@ -47,7 +47,7 @@ def db_open():
   			tmp2 = cursor.fetchall()
 			return db, cursor
 
-# This will set the correct database based on a error acknowledgement.
+# This will set the correct database based on a error acknowledgement.	# return db, cursor
 # It will aslo initialize local_toggle which is used for the workaround on templates
 
 
