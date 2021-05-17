@@ -1095,6 +1095,7 @@ def kiosk_epv_verification(request):
 	a = []
 	jj=[]
 	ctr = 1
+
 	for i in range (0,6):
 		try:
 			job = kiosk_job[i] + '.0'
@@ -2734,7 +2735,8 @@ def kiosk_scrap_entry(request):
 				request.session["scrap4"] ='''disabled="true"'''
 				line = request.session["scrap_part_line"]
 				db, cursor = db_set(request)
-				sql = "SELECT Category FROM scrap_line_operation_category WHERE Line = '%s' and Operation ='%s'" %(line,scrap_operation)
+				ttt='5'
+				sql = "SELECT Category FROM scrap_line_operation_category WHERE Line = '%s' and Operation ='%s' and LENGTH(Category) > '%s' ORDER BY Category ASC" %(line,scrap_operation,ttt)
 				cursor.execute(sql)
 				tmp = cursor.fetchall()
 				request.session["scrap_category_selection"] = tmp
