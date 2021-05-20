@@ -18,3 +18,24 @@ import datetime
 from django.core.context_processors import csrf
 
 
+def pie_chart(request):
+	p = 'CNC Tech'
+	db, cur = db_set(request) 
+	sql = "SELECT COUNT(*) FROM quality_epv_week"
+	cur.execute(sql)
+	tmp = cur.fetchall()
+	tmp2=tmp[0][0]
+	sql = "SELECT date1 FROM quality_epv_week"
+	cur.execute(sql)
+	tmp = cur.fetchall()
+	tmp_date=tmp[0][0]
+	sql = "SELECT Count(Person) FROM quality_epv_assets where Person='%s'" % (p)
+	cur.execute(sql)
+	tmp = cur.fetchall()
+	tmp_reqd=tmp[0][0]
+
+	request.session['epv_reqd'] = int(tmp_reqd)
+	request.session['epv_comp'] = int(tmp2)
+
+
+	return render(request, "pie.html")

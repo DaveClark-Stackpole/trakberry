@@ -9,6 +9,26 @@
 	<script src="/static/bootstrap/css/bootstrap-toggle/bootstrap-toggle.min.js"></script>
 	<link rel="stylesheet" href="/static/style_1/maint_mgmt.css?{{request.session.TCUR}}">  <!-- include the proper styling -->
 
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Task', 'Hours per Day'],
+          ['EPV Complete',     {{request.session.epv_comp}}],
+          ['EPV Incomplete',      {{request.session.epv_reqd}}],
+        ]);
+        var options = {
+					title: 'CNC Tech EPV Completion for the week',
+					backgroundColor: '#849185',
+        };
+        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+        chart.draw(data, options);
+      }
+	</script>
+		
 <style>
 	*{margin: 0; padding: 0; outline: 0;}
 	table{position: absolute; z-index: 2;  top: 20%; text-align: center; border-collapse: collapse;
