@@ -21,10 +21,11 @@
           ['EPV Incomplete',      {{request.session.epv_reqd}}],
         ]);
         var options = {
-					title: 'CNC Tech EPV Completion for the week',
+					title: '',
 					backgroundColor: '#849185',
+					is3D: true,
         };
-        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+        var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
         chart.draw(data, options);
       }
 	</script>
@@ -38,6 +39,11 @@
 	th{background-color: #a8b4a9; color: #fafafa; font-weight: 200; text-transform: uppercase; text-align: center;}
 	tr{width: 100%; background-color: #fafafa;}
 	tr:nth-child(even){background-color: #dae0c8;}
+
+	.frame8 {color:black;text-align:center;float:left;width:60%}
+	.frame9{color:black;text-align:center;float:left;width:35%;position:relative;left:5px;}
+
+
 	.frame1 {color:black;text-align:center;background:rgb(214, 214, 214);float:left;width:40%}
 	.frame2{color:black;text-align:center;background:rgb(253, 186, 186);float:left;width:30%;position:relative;left:5px;}
 	.frame3{color:black;text-align:center;background:rgb(42, 165, 83);float:left;width:25%;position:relative;left:10px;}
