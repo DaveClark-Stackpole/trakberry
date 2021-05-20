@@ -1432,10 +1432,10 @@ def vacation_display_increment(request):
 	tmp = cur.fetchall()
 	db.close()
 	
-	if year_st == 2020:
+	if year_st == 2021:
 		dday, ctr, mnth = vacation_calander_init(month_st)
 	else:
-		dday, ctr, mnth = vacation_calander_init_2018(month_st)
+		dday, ctr, mnth = vacation_calander_init(month_st)
 
 	
 	# Below re route is for testing break
@@ -1674,7 +1674,7 @@ def vacation_display_decrement(request):
 	tmp = cur.fetchall()
 	db.close()
 	
-	if year_st == 2020:
+	if year_st == 2021:
 		dday, ctr, mnth = vacation_calander_init(month_st)
 	else:
 		dday, ctr, mnth = vacation_calander_init(month_st)

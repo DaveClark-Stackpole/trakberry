@@ -152,6 +152,10 @@ from views_scrap import scrap_entries_next, scrap_entries_prev,scrap_entries_upd
 from views_scrap import tpm_display
 # ***********************************************************************************************************************************************************
 
+# *******************************************  Quality Section ********************************************************************************************
+from views_quality import pie_chart
+# 
+
 # *******************************************  Manpower Section ********************************************************************************************
 from views_manpower import manpower_update_v2, training_matrix3, matrix_update_v2, training_performance
 from views_manpower import trained_email
@@ -615,6 +619,8 @@ urlpatterns = [
 	url(r'^scrap_entries_prev/', scrap_entries_prev),
 	url(r'^scrapdate_fix1/', scrapdate_fix1),
 	url(r'^tpm_display/', tpm_display),
+
+	url(r'^pie_chart/', pie_chart),
 	# **************************************************************************
 
 	# *************  Manpower Section *********************************************
