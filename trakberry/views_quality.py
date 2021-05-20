@@ -34,8 +34,15 @@ def pie_chart(request):
 	tmp = cur.fetchall()
 	tmp_reqd=tmp[0][0]
 
-	request.session['epv_reqd'] = int(tmp_reqd)
-	request.session['epv_comp'] = int(tmp2)
+	completed = int(tmp_reqd) - int(tmp2)
+	incomplete = int(tmp2)
+
+	sql = "SELECT * FROM quality_epv_week"
+	cur.execute(sql)
+	tmp = cur.fetchall()
+	request.session['epv_left'] = tmp
+	request.session['epv_reqd'] = incomplete
+	request.session['epv_comp'] = completed
 
 
 	return render(request, "pie.html")
