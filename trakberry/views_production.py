@@ -1365,8 +1365,14 @@ def mgmt_24hr_production(request):
 			tmp2 = cur.fetchall()
 			tmp3 = tmp2[0]
 			countz = tmp3[0]
-
-		cnt.append(countz)
+		countz = str(countz)
+		county = ''
+		if len(countz) > 3:
+			cl = len(countz)
+			county = countz[:(cl-3)]+","+countz[-3:]
+		else:
+			county = str(countz)
+		cnt.append(county)
 		part2.append(prt)
 		order2.append(i[5])
 		title2.append(i[6])
