@@ -116,8 +116,43 @@ html, body {height: 100%;width: 100%;padding: 0;margin: 0;}
 {% block styleA %}
 {% endblock %}	
 
+
+
 </style>
 
+<style>
+	/* *{margin: 0; padding: 0; outline: 0;}
+	table{position: absolute; z-index: 2;  top: 20%; text-align: center; border-collapse: collapse;
+	border-spacing: 0; box-shadow: 0 2px 15px rgba( 64,64,64,.7); border-radius: 12px 12px 0 0; overflow: hidden;}
+	table.center{margin-left: 15%; margin-right: 15%; width: 70%;}
+	td , th {padding: 1px 5px;}
+	th{background-color: #a8b4a9; color: #fafafa; font-weight: 200; text-transform: uppercase; text-align: center;}
+	tr{width: 100%; background-color: #fafafa;}
+	tr:nth-child(even){background-color: #dae0c8;} */
+
+	.frame8 {color:black;text-align:center;float:left;width:60%}
+	.frame9{color:black;text-align:center;float:left;width:35%;position:relative;left:5px;}
+</style>
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+	google.charts.load('current', {'packages':['corechart']});
+	google.charts.setOnLoadCallback(drawChart);
+	function drawChart() {
+		var data = google.visualization.arrayToDataTable([
+			['Task', 'Hours per Day'],
+			['EPV Complete',     {{request.session.epv_comp}}],
+			['EPV Incomplete',      {{request.session.epv_reqd}}],
+		]);
+		var options = {
+			title: '',
+			backgroundColor: '#009CC4',
+			is3D: true,
+		};
+		var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
+		chart.draw(data, options);
+	}
+</script>
 
   <title>Stackpole Production</title>
   <meta charset="utf-8">
@@ -307,6 +342,7 @@ function goBack() {
 						<li><a href="{{request.session.local_toggle}}/tech_history2">Downtime Search</a></li>
 						
 						<li><a href="{{request.session.local_toggle}}/vacation_display_initial">Vacations</a></li>
+						<li><a href="{{request.session.local_toggle}}/sup_pie_chart">EPV Completion <b><mark>(** New ! **)</mark></b></a></li>
 						<li><a href="{{request.session.local_toggle}}/manual_production_entry">Production Entries</a></li>
 						
 							

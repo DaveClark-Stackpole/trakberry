@@ -1344,14 +1344,13 @@ def mgmt_24hr_production(request):
 	u1 = t - tm[3]*60*60-tm[4]*60-tm[5]-61200    # Starting 7am previous day
 	u2 = u1 + 86400
 
+	db, cur = db_set(request)
 	for i in data1:
 		prt = i[0]
 		asset1 = i[1]
 		asset2 = i[2]
 		asset3 = i[3]
 		asset4 = i[4]
-
-		db, cur = db_set(request)
 		if asset1 == 'B':
 			pp = prt[-4:]
 			aql = "SELECT COUNT(*) FROM barcode WHERE scrap >= '%d' and scrap <= '%d' and right(asset_num,4) = '%s'" % (u1,u2,pp)
@@ -1365,99 +1364,33 @@ def mgmt_24hr_production(request):
 			tmp2 = cur.fetchall()
 			tmp3 = tmp2[0]
 			countz = tmp3[0]
-		countz = str(countz)
-		county = ''
-		if len(countz) > 3:
-			cl = len(countz)
-			county = countz[:(cl-3)]+","+countz[-3:]
-		else:
-			county = str(countz)
+		county = number_comma(countz)
 		cnt.append(county)
 		part2.append(prt)
 		order2.append(i[5])
 		title2.append(i[6])
-
-
 	data3 = zip(part2,cnt,order2,title2)
-	
-	request.session['data3'] = data3
-
-	# vt = vacation_temp()
-	# vt1, vt2 = vacation_set_current2_1()
-	# sh1 = '11pm-7am'
-	# sh2 = '7am-3pm'
-	# sh3 = '3pm-11pm'
-	# len_partno = []
-	# cat_part = []
-	# request.session["current_time"] = str(vt1)
-	# request.session["previous_time"] = str(vt2)
-	# db, cur = db_set(request) 
-	# a1 = '900'
-	# b1=7
-	# # sql = "SELECT asset_num, actual_produced, machine, partno, down_time, comments, shift_hours_length, target  FROM sc_production1 where pdate = '%s' and shift = '%s'  and asset_num = '%s'" %(vt1,sh1,a1)
-	# # sql = "SELECT FORMAT(sum(actual_produced),0),partno FROM sc_production1 where pdate = '%s' and shift = '%s' and asset_num = '%s' GROUP by partno" %(vt1,sh1,a1)
-	# # cur.execute(sql)
-	# # tmp_mid = cur.fetchall()
-	# # tmp_mid2=tmp_mid[0]
-	# # yy=int(tmp_mid2[0])
-	# # for i in tmp_mid:
-	# # 	m.append(int(i[0]))
-	# # 	m.append(i[1])
-	# # h = list(m)
-
-	# sql1 = "SELECT asset_num, actual_produced, machine, partno, down_time, comments, shift_hours_length, target, shift  FROM sc_production1 where pdate = '%s' and shift = '%s'" %(vt2,sh2)
-	# cur.execute(sql1)
-	# tmp_day = cur.fetchall()
-
-	# sql2 = "SELECT asset_num, actual_produced, machine, partno, down_time, comments, shift_hours_length, target, shift  FROM sc_production1 where pdate = '%s' and shift = '%s'" %(vt2,sh3)
-	# cur.execute(sql2)
-	# tmp_aft = cur.fetchall()
-	# sql3 = sql1 + ' union all ' +  sql2
-
-	# # Select all data last 24hrs in list
-	# sql4 = "SELECT asset_num, actual_produced, machine, partno, down_time, comments, shift_hours_length, target, shift  FROM sc_production1 where (pdate = '%s' and shift = '%s') or (pdate = '%s' and shift = '%s') or (pdate = '%s' and shift = '%s')" %(vt2,sh3,vt2,sh2,vt1,sh1) 
-	# cur.execute(sql4)
-	# tmp_all2 = cur.fetchall()
-
-	# sql5 = "SELECT asset_num, actual_produced, machine, partno, down_time, comments, shift_hours_length, target, shift  FROM sc_production1 where (pdate = '%s' and shift = '%s' and asset_num = '%s') or (pdate = '%s' and shift = '%s' and asset_num = '%s') or (pdate = '%s' and shift = '%s' and asset_num = '%s') ORDER BY %s %s" %(vt2,sh3,a1,vt2,sh2,a1,vt1,sh1,a1,'partno','DESC') 
-	# cur.execute(sql5)
-	# tmp_all = cur.fetchall()
-
-	# sql6 = "SELECT FORMAT(sum(actual_produced),0),partno FROM sc_production1 where length(partno) > '%d' and (pdate = '%s' and shift = '%s' and asset_num = '%s') or (pdate = '%s' and shift = '%s' and asset_num = '%s') or (pdate = '%s' and shift = '%s' and asset_num = '%s') GROUP by partno order by %s %s" %(b1,vt2,sh3,a1,vt2,sh2,a1,vt1,sh1,a1,'partno','DESC') 
-	# cur.execute(sql6)
-	# tmp_sum = cur.fetchall()
-
-	# sql_cat = "Select * from tkb_part_cat"
-	# cur.execute(sql_cat)
-	# tmp_cat = cur.fetchall()
-
-	# # This will create a new list using first number as length of partno and rest as a tuple of partno and sum of 24hr parts 
-	# # produced.   Make sure to refer to [1] in list as partno and [0][1] or [0][0] as other two variables
-	# for x in tmp_sum:
-	# 	len_partno.append(len(x[1]))
-	# 	cat1 = 'unknown'
-
-	# 	for y in tmp_cat:
-	# 		if x[1] == y[1]:
-	# 			cat1 = y[2]
-	# 	cat_part.append(cat1)
-	# part_totals_24hr = zip(tmp_sum,len_partno,cat_part)
-	# sort1 = sorted(part_totals_24hr, key=lambda vr: vr[2])
-
-
-	# request.session["24hr_production_mid"] = sort1
-	# request.session["24hr_production_day"] = sort1
-	# request.session["24hr_production_aft"] = tmp_aft
-
 	db.close()
+
+	request.session['data3'] = data3
+	
+
 	return
 
 def mgmt_test1(request):
 	request.session["bounce"] = 0
 	return render(request, "mgmt_test1.html")
 
-
-
+def number_comma(x):
+	x = str(x)
+	y = ''
+	if len(x) > 3:
+		a = len(x)
+		y = x[:(a-3)]+","+x[-3:]
+	else:
+		y = str(x)
+	return y
+	
 # Reset the password so it logs out
 def mgmt_logout(request):
 	request.session["mgmt_login_password"] = ""

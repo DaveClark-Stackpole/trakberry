@@ -59,3 +59,45 @@ def pie_chart(request):
 
 
 	return render(request, "pie.html")
+
+def sup_pie_chart(request):
+	p = 'CNC Tech'
+	db, cur = db_set(request) 
+	sql = "SELECT COUNT(*) FROM quality_epv_week"
+	cur.execute(sql)
+	tmp = cur.fetchall()
+	tmp2=tmp[0][0]
+	sql = "SELECT date1 FROM quality_epv_week"
+	cur.execute(sql)
+	tmp = cur.fetchall()
+	tmp_date=tmp[0][0]
+
+	sql = "SELECT Count(*) FROM quality_epv_assets where Person='%s'" % (p)
+	cur.execute(sql)
+	tmp = cur.fetchall()
+	tmp_reqd=tmp[0][0]
+
+	# pp = 99999
+	# sql = "SELECT Count(*) FROM quality_epv_checks where date1 >= '%s' and clock_num>'%s'" % (tmp_date,pp)
+	# cur.execute(sql)
+	# tmp = cur.fetchall()
+
+	# tmp_done=tmp[0][0]
+
+	# completed = int(tmp_done)
+	# incomplete = int(tmp_reqd) - int(tmp_done)
+
+	completed = int(tmp_reqd) - int(tmp2)
+	incomplete = int(tmp2)
+
+	# tt=5/0
+
+	sql = "SELECT * FROM quality_epv_week"
+	cur.execute(sql)
+	tmp = cur.fetchall()
+	request.session['epv_left'] = tmp
+	request.session['epv_reqd'] = incomplete
+	request.session['epv_comp'] = completed
+
+
+	return render(request, "sup_pie.html")

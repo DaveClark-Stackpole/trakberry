@@ -153,7 +153,7 @@ from views_scrap import tpm_display
 # ***********************************************************************************************************************************************************
 
 # *******************************************  Quality Section ********************************************************************************************
-from views_quality import pie_chart
+from views_quality import pie_chart,sup_pie_chart
 # 
 
 # *******************************************  Manpower Section ********************************************************************************************
@@ -320,6 +320,7 @@ urlpatterns = [
 	url(r'^maint_call_call/', maint_call_call),
 	url(r'^maint_close_item/', maint_close_item),
 	url(r'^maint_job_entry/', maint_job_entry),
+	url(r'^sup_pie_chart/', sup_pie_chart),
 	
 	
 	# **************  Employee Section ***************************************
