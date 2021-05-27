@@ -35,17 +35,18 @@ def pie_chart(request):
 	tmp = cur.fetchall()
 	tmp_reqd=tmp[0][0]
 
-	pp = 99999
-	sql = "SELECT Count(*) FROM quality_epv_checks where date1 >= '%s' and clock_num>'%s'" % (tmp_date,pp)
-	cur.execute(sql)
-	tmp = cur.fetchall()
-	tmp_done=tmp[0][0]
+	# pp = 99999
+	# sql = "SELECT Count(*) FROM quality_epv_checks where date1 >= '%s' and clock_num>'%s'" % (tmp_date,pp)
+	# cur.execute(sql)
+	# tmp = cur.fetchall()
 
-	completed = int(tmp_done)
-	incomplete = int(tmp_reqd) - int(tmp_done)
+	# tmp_done=tmp[0][0]
 
-	# completed = int(tmp_reqd) - int(tmp2)
-	# incomplete = int(tmp2)
+	# completed = int(tmp_done)
+	# incomplete = int(tmp_reqd) - int(tmp_done)
+
+	completed = int(tmp_reqd) - int(tmp2)
+	incomplete = int(tmp2)
 
 	# tt=5/0
 

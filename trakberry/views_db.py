@@ -49,7 +49,7 @@ def db_open():
 
 # This will set the correct database based on a error acknowledgement.	# return db, cursor
 # It will aslo initialize local_toggle which is used for the workaround on templates
-
+1	
 
 
 def db_set(request):  # Module to set DB settings to the one that works.  Whether local or Server
