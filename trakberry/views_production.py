@@ -1359,7 +1359,7 @@ def mgmt_24hr_production(request):
 	st_time = [u1,week_start1,week_start2]
 	fi_time = [u2,t,week_start1]
 	data_name = ["data3","data2","data1"]
-	data_title = ['24Hr Production  (7am - 7am)','Production this week','Production Last Week']
+	data_title = ['24Hr Production 7am-7am','Production this week','Production Last Week']
 	time1 = zip(st_time,fi_time,data_name,data_title)
 
 	db, cur = db_set(request)
@@ -1399,8 +1399,7 @@ def mgmt_24hr_production(request):
 		request.session[dataz] = data3
 
 		title1 = dataz + 'title'
-		request.session[title1] = ii[3]
-	
+
 
 
 	db.close()
