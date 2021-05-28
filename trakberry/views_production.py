@@ -237,6 +237,7 @@ def track_area(request):
 	e = t + shift_left
 	request.session["shift_time"] = shift_time
 
+	
 	# Calculate start of week unix (Monday 00:00am)
 	a1 = tm[6] * 86400
 	a2 = tm[3] * 60 * 60
@@ -1335,45 +1336,80 @@ def mgmt_24hr_production(request):
 	part2 = []
 	title2 = []
 	order2 = []
+	ddata = []
 
 	data1 = zip(p,a1,a2,a3,a4,order1,title1)
 
 	t=int(time.time())
 	tm = time.localtime(t)
 	request.session["time"] = t
+
+	a1 = tm[6] * 86400
+	a2 = tm[3] * 60 * 60
+	a3 = tm[4] * 60
+	a4 = tm[5]
+	week_start1 = t - a1 - a2 - a3 - a4
+
 	u1 = t - tm[3]*60*60-tm[4]*60-tm[5]-61200    # Starting 7am previous day
 	u2 = u1 + 86400
+	week_start2 = week_start1 - 604800
+
+
+
+	st_time = [u1,week_start1,week_start2]
+	fi_time = [u2,t,week_start1]
+	data_name = ["data3","data2","data1"]
+	data_title = ['24Hr Production  (7am - 7am)','Production this week','Production Last Week']
+	time1 = zip(st_time,fi_time,data_name,data_title)
 
 	db, cur = db_set(request)
-	for i in data1:
-		prt = i[0]
-		asset1 = i[1]
-		asset2 = i[2]
-		asset3 = i[3]
-		asset4 = i[4]
-		if asset1 == 'B':
-			pp = prt[-4:]
-			aql = "SELECT COUNT(*) FROM barcode WHERE scrap >= '%d' and scrap <= '%d' and right(asset_num,4) = '%s'" % (u1,u2,pp)
-			cur.execute(aql)
-			tmp2 = cur.fetchall()
-			tmp3 = tmp2[0]
-			countz = tmp3[0]
-		else:
-			aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (u1,u2,prt,asset1,asset2,asset3,asset4)
-			cur.execute(aql)
-			tmp2 = cur.fetchall()
-			tmp3 = tmp2[0]
-			countz = tmp3[0]
-		county = number_comma(countz)
-		cnt.append(county)
-		part2.append(prt)
-		order2.append(i[5])
-		title2.append(i[6])
-	data3 = zip(part2,cnt,order2,title2)
+	for ii in time1:
+		a1 = ii[0]
+		a2 = ii[1]
+		dataz = ii[2]
+		cnt=[]
+		part2=[]
+		order2=[]
+		title2=[]
+		for i in data1:
+			prt = i[0]
+			asset1 = i[1]
+			asset2 = i[2]
+			asset3 = i[3]
+			asset4 = i[4]
+			if asset1 == 'B':
+				pp = prt[-4:]
+				aql = "SELECT COUNT(*) FROM barcode WHERE scrap >= '%d' and scrap <= '%d' and right(asset_num,4) = '%s'" % (a1,a2,pp)
+				cur.execute(aql)
+				tmp2 = cur.fetchall()
+				tmp3 = tmp2[0]
+				countz = tmp3[0]
+			else:
+				aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (a1,a2,prt,asset1,asset2,asset3,asset4)
+				cur.execute(aql)
+				tmp2 = cur.fetchall()
+				tmp3 = tmp2[0]
+				countz = tmp3[0]
+			county = number_comma(countz)
+			cnt.append(county)
+			part2.append(prt)
+			order2.append(i[5])
+			title2.append(i[6])
+		data3 = zip(part2,cnt,order2,title2)
+		request.session[dataz] = data3
+
+		title1 = dataz + 'title'
+		request.session[title1] = ii[3]
+	
+
+
 	db.close()
 
-	request.session['data3'] = data3
-	
+
+	# increment the 3 making it data1 data2 data3 in the for loop above
+	# also use an array to figure start finish times example
+	# [u1,week_start1,week_start2]
+	# [u2,t,week_start1]
 
 	return
 
