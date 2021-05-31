@@ -103,10 +103,9 @@
 		
 		.frame1 {color:black;text-align:center;float:left;width:32%;margin-bottom: 5px;}
 		.frame2{color:black;text-align:center;background:rgb(83, 134, 202);float:left;width:32%;position:relative;left:5px;margin-bottom: 5px;}
-
 		.frame3 {color:black;text-align:center;background:rgb(61, 138, 64);float:left;width:32%;position:relative;left:10px;margin-bottom: 5px;}
+		.frame4 {color:black;text-align:center;background:rgb(61, 138, 64);float:left;width:90%;position:relative;left:10px;margin-bottom: 5px;}
 
-		.frame4 {color:black;text-align:center;background:rgb(235, 142, 89);float:left;width:49%;position:relative;left:5px;}
 		.frame5{color:black;text-align:center;background:rgb(168, 168, 168);float:right;width:40%}
 		.head1{color:black;text-align:center;border: .4px solid rgb(0, 0, 0);background:rgb(114, 159, 243);width:85%}
 		.head1_u{color:black;text-align:center;border: .4px solid rgb(0, 0, 0);background:rgb(226, 226, 226);width:100%}
@@ -187,6 +186,29 @@
 		color: white;
 	}
 	</style>
+
+<style>
+	#prodsum {
+		font-family: Arial, Helvetica, sans-serif;
+		border-collapse: collapse;
+		width: 100%;
+	}
+	#prodsum td, #prodsum th {
+		border: 1px solid rgb(136, 134, 134);
+		padding: 8px;
+	}
+	#prodsum tr:nth-child(even){background-color: #96d9f8;}
+	#prodsum tr:nth-child(odd){background-color: #4eb3e2;}
+	#prodsum tr:hover {background-color: #ddd;}
+	#prodsum th {
+		padding-top: 12px;
+		padding-bottom: 12px;
+		text-align: left;
+		background-color: rgb(139, 107, 107);
+		color: white;
+	}
+	</style>
+
 </head>
 {% block grid %}
 {% endblock %}
@@ -274,9 +296,10 @@
 
 
 {% block content %}
-    {% if request.session.mgmt_login_password_check = 0 %}  <!-- If login failed or required -->
+	{% if request.session.mgmt_login_password_check = 0 %}  <!-- If login failed or required -->
 		<meta http-equiv="refresh" content="0; url={{request.session.local_toggle}}/mgmt_login_form" />
 	{% else %}  <!-- if Login passed and main start up screen -->
+	<form action="" method="post">{% csrf_token %}
 		<div class="wrapper_main">
 			<div class="frame1">  <!-- Default is L24 hr Production-->
 				{% block frame1 %}
@@ -364,10 +387,13 @@
 					{% endfor %}
 					</tr>
 				</table>
-
 			</div>
 
 
+
+
+		</div>  <!-- main wrapper-->
+		</form>
 
 
     {% endif %}
