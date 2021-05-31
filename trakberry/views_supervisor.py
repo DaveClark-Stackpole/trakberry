@@ -513,6 +513,10 @@ def supervisor_down(request):
 		else:
 			side1 = '0'
 
+		tpriority = ['859','263','262','333','332','992']
+		if asset4 in tpriority:
+			priority = 1
+			
 		try:
 			cur.execute('''INSERT INTO pr_downtime1(machinenum,problem,priority,whoisonit,called4helptime,side) VALUES(%s,%s,%s,%s,%s,%s)''', (asset5,problem,priority,whoisonit,t,side1))
 			db.commit()
