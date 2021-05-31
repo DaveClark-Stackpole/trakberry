@@ -265,6 +265,7 @@ def track_area(request):
 	request.session['day'] = day
 
 
+	db, cur = db_set(request)
 
 	aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (u,t,prt,asset1,asset2,asset3,asset4)
 	cur.execute(aql)
@@ -309,6 +310,7 @@ def track_area(request):
 	u1, wd1, m1, day1, shift1, prev_cnt1 = [],[],[],[],[],[]
 	utemp = u
 	total_test = 0
+	
 	for i in range(1,15):
 		unew = utemp - 28800
 		x1, x2, x3, x4 = day_breakdown(unew)
