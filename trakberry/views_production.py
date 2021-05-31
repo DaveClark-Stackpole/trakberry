@@ -20,7 +20,7 @@ from django.core.context_processors import csrf
 from views_routes import direction
 from time import mktime
 from datetime import datetime, date
-from views_db import db_open, db_set,net1
+from views_db import db_open, db_set,net1, db_set2
 from views_test2 import prediction1
 from mod_tracking import Graph_Data
 # from datetime import datetime 
@@ -264,7 +264,7 @@ def track_area(request):
 	request.session['shift'] = shift
 	request.session['day'] = day
 
-	db, cur = db_set(request)
+
 
 	aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (u,t,prt,asset1,asset2,asset3,asset4)
 	cur.execute(aql)
@@ -1297,10 +1297,40 @@ def chart2_5401_OP80(request):
 		return render(request, "redirect_tracking.html")
 
 def mgmt(request):
-	request.session["bounce"] = 0
-	tcur=int(time.time())
 
-	mgmt_24hr_production(request)
+	tcur=int(time.time())
+	try:
+		last_time = request.session["mgmt_last_time"]
+		if (tcur-last_time) > 3600:
+			mgmt_24hr_production(request)
+			request.session["mgmt_last_time"] = tcur
+	except:
+		mgmt_24hr_production(request)
+		request.session["mgmt_last_time"] = tcur
+
+
+	if request.POST:
+
+		# try:
+		# 	request.session["asset_summary"]
+		# except:
+		# 	request
+		# asset = request.POST.get("asset")
+		# button_1 = request.POST
+		# if button_pressed == "add_machine":
+
+
+
+
+		return render(request, "redirect_mgmt.html")
+
+	else:
+		form = sup_downForm()
+	args = {}
+	args.update(csrf(request))
+	args['form'] = form
+
+	return render(request,'mgmt.html',{'args':args})
 	return render(request, "mgmt.html",{'TCUR':tcur})
 	return render(request, "mgmt_start.html",{'TCUR':tcur})
 
@@ -1399,6 +1429,7 @@ def mgmt_24hr_production(request):
 		request.session[dataz] = data3
 
 		title1 = dataz + 'title'
+		request.session[title1] = ii[3]
 
 
 
