@@ -101,3 +101,26 @@ def sup_pie_chart(request):
 
 
 	return render(request, "sup_pie.html")
+
+def quality_epv_asset_entry(request):
+
+	if request.POST:
+		asset = request.POST.get("asset")
+		request.session["epv_asset2"] = asset
+		asset = asset + ".0"
+		
+		db, cur = db_set(request)
+		sql = "SELECT Id,date1,shift1,check1,description1,asset1,master1,comment,clock_num FROM quality_epv_checks where description1 = '%s' ORDER BY date1 DESC" % (asset)
+		cur.execute(sql)
+		tmp2 = cur.fetchall()
+		request.session["asset_epv"] = tmp2
+
+
+		return render(request,'quality_epv_asset_list.html')
+		
+	else:
+		form = sup_downForm()
+	args = {}
+	args.update(csrf(request))
+	args['form'] = form
+	return render(request,'quality_epv_asset_entry.html', {'args':args})
