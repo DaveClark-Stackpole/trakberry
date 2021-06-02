@@ -1,0 +1,57 @@
+{% extends "scrap_mgmt.html" %}
+<!-- mgmt_display template form.html -->
+{% block content %}
+<div class ="mainset">
+<center>
+	<div class="frame5">
+		
+		<table>
+			<tr>
+			<td style="font-size: 24px; color:rgb(53, 47, 47);border:1px solid rgb(255, 238, 0);background-color:rgb(158, 158, 158);" colspan="3">
+			<b>EPV Checks for {{request.session.epv_asset2}}</b>
+			</td>
+			</tr>
+			<tr>
+				<td style="font-size: 19px; color:rgb(53, 47, 47);border:1px solid rgb(255, 238, 0);background-color:rgb(158, 158, 158);">
+				<b>Date</b></td>
+				<td style="font-size: 19px; color:rgb(53, 47, 47);border:1px solid rgb(255, 238, 0);background-color:rgb(158, 158, 158);">
+					<b>Shift</b></td>
+				<td style="font-size: 19px; color:rgb(53, 47, 47);border:1px solid rgb(255, 238, 0);background-color:rgb(158, 158, 158);">
+					<b>Check</b></td>
+					<td style="font-size: 19px; color:rgb(53, 47, 47);border:1px solid rgb(255, 238, 0);background-color:rgb(158, 158, 158);">
+						<b>Description</b></td>
+						<td style="font-size: 19px; color:rgb(53, 47, 47);border:1px solid rgb(255, 238, 0);background-color:rgb(158, 158, 158);">
+							<b>Master</b></td>
+							<td style="font-size: 19px; color:rgb(53, 47, 47);border:1px solid rgb(255, 238, 0);background-color:rgb(158, 158, 158);">
+								<b>Comment</b></td>
+								<td style="font-size: 19px; color:rgb(53, 47, 47);border:1px solid rgb(255, 238, 0);background-color:rgb(158, 158, 158);">
+									<b>Operator</b></td>
+			</tr>
+			{% for i in request.session.asset_epv %}
+			<tr>
+			<td style="font-size: 19px; color:rgb(53, 47, 47);border:1px solid rgb(255, 238, 0);background-color:rgb(158, 158, 158);">
+			{{i.1}} </td>
+			<td style="font-size: 19px; color:rgb(53, 47, 47);border:1px solid rgb(255, 238, 0);background-color:rgb(158, 158, 158);">
+			{{i.2}} </td>
+			<td style="font-size: 19px; color:rgb(53, 47, 47);border:1px solid rgb(255, 238, 0);background-color:rgb(158, 158, 158);">
+			{{i.3}}</td>
+		
+			<td style="font-size: 19px; color:rgb(53, 47, 47);border:1px solid rgb(255, 238, 0);background-color:rgb(158, 158, 158);">
+				{{i.5}}</td>
+			<td style="font-size: 19px; color:rgb(53, 47, 47);border:1px solid rgb(255, 238, 0);background-color:rgb(158, 158, 158);">
+					{{i.6}}</td>
+			<td style="font-size: 19px; color:rgb(53, 47, 47);border:1px solid rgb(255, 238, 0);background-color:rgb(158, 158, 158);">
+						{{i.7}}</td>
+						<td style="font-size: 19px; color:rgb(53, 47, 47);border:1px solid rgb(255, 238, 0);background-color:rgb(158, 158, 158);">
+							{{i.8}}</td>
+		</tr>
+
+			{% endfor %}
+		</table>
+	</div>
+</center>
+</div>
+
+
+
+	{% endblock %}

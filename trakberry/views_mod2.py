@@ -34,7 +34,7 @@ def hrly_display(request):   # This will return a tuple with hourly prod summary
     hhh = 3
     
 
-    email_hour_check2(request)
+    # email_hour_check2(request)  # This was the old low production email 
 
 
 
@@ -148,7 +148,7 @@ def hrly_display(request):   # This will return a tuple with hourly prod summary
 
 
 def butter(request):
-    email_hour_check2(request)
+    # email_hour_check2(request)
     return render(request,'done_test.html')
 
 def email_hour_check2(request):
@@ -200,7 +200,7 @@ def email_hour_check2(request):
         cursor.execute(zql)
         zmp = cursor.fetchall()
         tmp2 = zmp[0]
-        email_manual1(zmp,reason2)
+        # email_manual1(zmp,reason2)
         zql = ('update sc_production1 SET low_production = "%d" WHERE low_production = "%d"' % (production_set, production_check))
         cursor.execute(zql)
         db.commit()
@@ -211,7 +211,7 @@ def email_hour_check2(request):
         cursor.execute(sql)
         tmp = cursor.fetchall()
         tmp2 = tmp[0]
-        email_manual1(tmp,reason1)
+        # email_manual1(tmp,reason1)
         sql = ('update sc_production1 SET manual_sent = "%d" WHERE manual_sent = "%d"' % (manual_set, manual_check))
         cursor.execute(sql)
         db.commit()

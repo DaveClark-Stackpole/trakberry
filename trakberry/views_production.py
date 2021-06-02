@@ -1303,7 +1303,7 @@ def mgmt(request):
 	tcur=int(time.time())
 	try:
 		last_time = request.session["mgmt_last_time"]
-		if (tcur-last_time) > 3600:
+		if (tcur-last_time) > 3:
 			mgmt_24hr_production(request)
 			request.session["mgmt_last_time"] = tcur
 	except:
@@ -1357,9 +1357,9 @@ def mgmt_initialize_cat_table(request):
 def mgmt_24hr_production(request):
 
 	p =['50-1467','50-1467','50-1467','50-1467','50-3050','50-3050','50-3050','50-3050','50-5710','50-5710','50-5710','50-5710','50-9341','50-9341','50-9341','50-9341','50-0455','50-0455','50-0455','50-0455','50-5401','50-5401','50-5401','50-5401','50-5404','50-5404','50-5404','50-5404','50-8670','50-8670','50-8670','50-8670']
-	a1=['650L','770','','','769','770','','','769','770','','','1533','1511','1510','1502','1812','','','','B','1723','','','B','1719','','','B','1719','','']
+	a1=['650L','770','','','769','770','','','769','770','','','1533','1511','1510','1502','1816','','','','B','1706','','','B','1719','','','B','1719','','']
 	a2=['650R','','','','','','','','','','','','','1528','1527','1507','','','','','','','','','','','','','','','','']
-	a3=['','','','','','','','','','','','','','','','1539','','','','','','','','','','','','','','','','']
+	a3=['769','','','','','','','','','','','','','','','1539','','','','','','','','','','','','','','','','']
 	a4=['','','','','','','','','','','','','','','','1540','','','','','','','','','','','','','','','','']
 	order1 = [1,2,3,4,1,2,3,4,1,2,3,4,1,2,3,4,1,2,3,4,1,2,3,4,1,2,3,4,1,2,3,4]
 	title1 = ['1467 Finished','1467 Broached','','','3050 Finished','3050 Broached','','','5710 Finished','5710 Broached','','','9341 Finished','9341 OP110','9341 OP80','9341 OP30','0455 Finished','','','','5401 Finished','5401 HP Wash','','','5404 Finished','5404 HP Wash','','','8670 Finished','8670 HP Wash','','']
@@ -1417,7 +1417,12 @@ def mgmt_24hr_production(request):
 				tmp3 = tmp2[0]
 				countz = tmp3[0]
 			else:
-				aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (a1,a2,prt,asset1,asset2,asset3,asset4)
+				if prt == '50-5401':
+					pprt = 'AB1V Input'
+				else:
+					pprt = prt
+
+				aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (a1,a2,pprt,asset1,asset2,asset3,asset4)
 				cur.execute(aql)
 				tmp2 = cur.fetchall()
 				tmp3 = tmp2[0]
