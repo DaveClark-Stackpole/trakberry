@@ -1303,7 +1303,7 @@ def mgmt(request):
 	tcur=int(time.time())
 	try:
 		last_time = request.session["mgmt_last_time"]
-		if (tcur-last_time) > 3:
+		if (tcur-last_time) > 3600:
 			mgmt_24hr_production(request)
 			request.session["mgmt_last_time"] = tcur
 	except:
