@@ -1378,9 +1378,9 @@ def mgmt(request):
 			request.session['group_asset'] = temp_group
 			summary_data = zip(temp_summary,temp_group)
 
-
+		
 			mgmt_production_sort(summary_data,request)  # Run the sort algorithm
-			mgmt_production_summary(request)
+			# mgmt_production_summary(request)
 
 		return render(request, "redirect_mgmt.html")
 
