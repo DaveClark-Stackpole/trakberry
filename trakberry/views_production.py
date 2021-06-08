@@ -1358,12 +1358,10 @@ def mgmt(request):
 			return render(request, "redirect_mgmt.html")
 
 		elif button_1 == "clear":
-			# This will clear all assets to start fresh
-			request.session['summary_data'] = ''
-			summary_asset = []
-			group_asset = []
-			request.session['summary_asset'] = summary_asset
-			request.session['group_asset'] = summary_group
+			del request.session['summary_data']
+			del request.session['group_asset']
+			del request.session['summary_asset']
+
 			return render(request, "redirect_mgmt.html")
 
 		else:
