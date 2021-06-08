@@ -1312,17 +1312,75 @@ def mgmt(request):
 
 
 	if request.POST:
+		try:
+			summary_asset = request.session["summary_asset"]
+			group_asset = request.session["group_asset"]
+		except:
+			summary_asset = []
+			group_asset = []
+		asset1 = request.POST.get("asset")
+		group1 = request.POST.get("group")
+		button_1 = request.POST.get("button1")
 
-		# try:
-		# 	request.session["asset_summary"]
-		# except:
-		# 	request
-		# asset = request.POST.get("asset")
-		# button_1 = request.POST
-		# if button_pressed == "add_machine":
+		if button_1 == "add_machine":
+			summary_asset.append(asset1)
+			group_asset.append(group1)
+
+			request.session['summary_asset'] = summary_asset
+			request.session['group_asset'] = group_asset
+			summary_data = zip(summary_asset,group_asset)
+
+			mgmt_production_sort(summary_data,request)  # Run the sort algorithm
+
+			# # Sort list and assign -1 or 1 alternating for groups 
+			# summary_data.sort(key=getKey3)
+			# a1 = []
+			# a2 = []
+			# a3 = []
+			# ab = -1
+			# b = 0
+			# for i in summary_data:
+			# 	a = i[1]
+			# 	if b != a:
+			# 		ab = ab * -1
+			# 		b = a
+			# 	a1.append(i[0]) # Asset number
+			# 	a2.append(i[1]) # Group number
+			# 	a3.append(ab)   # marker   1 or -1 for formating
+			# aa = zip(a1,a2,a3) # aa is the sorted list with -1 or 1 for grouping
+			# request.session['summary_data'] = aa
+
+			# Add some stuff here to display or sort or etc then redirect
+			return render(request, "redirect_mgmt.html")
+
+		elif button_1 == "calculate":
+			mgmt_production_summary(request)
+			return render(request, "redirect_mgmt.html")
+
+		elif button_1 == "clear":
+			# This will clear all assets to start fresh
+			return render(request, "redirect_mgmt.html")
+
+		else:
+			x1=(button_1.split('|'))
+			y1 = (x1[0])
+			y2 = (x1[1])
+			summary_data = zip(summary_asset,group_asset)
+			temp_summary = []
+			temp_group = []
+			for i in summary_data:
+				if i[0] == y2 and i[1] == y1:
+					dummy = 0
+				else:
+					temp_summary.append(i[0])
+					temp_group.append(i[1])
+			request.session['summary_asset'] = temp_summary
+			request.session['group_asset'] = temp_group
+			summary_data = zip(temp_summary,temp_group)
 
 
-
+			mgmt_production_sort(summary_data,request)  # Run the sort algorithm
+			mgmt_production_summary(request)
 
 		return render(request, "redirect_mgmt.html")
 
@@ -1335,6 +1393,219 @@ def mgmt(request):
 	return render(request,'mgmt.html',{'args':args})
 	return render(request, "mgmt.html",{'TCUR':tcur})
 	return render(request, "mgmt_start.html",{'TCUR':tcur})
+
+def mgmt_production_sort(summary_data,request):
+	summary_data.sort(key=getKey3)
+	a1 = []
+	a2 = []
+	a3 = []
+	ab = -1
+	b = 0
+	for i in summary_data:
+		a = i[1]
+		if b != a:
+			ab = ab * -1
+			b = a
+		a1.append(i[0]) # Asset number
+		a2.append(i[1]) # Group number
+		a3.append(ab)   # marker   1 or -1 for formating
+	aa = zip(a1,a2,a3) # aa is the sorted list with -1 or 1 for grouping
+	request.session['summary_data'] = aa
+	return
+
+def mgmt_production_summary(request):
+	aa = request.session['summary_data']
+	tcur=int(time.time())
+	tcur_prev = tcur - 86400
+	
+	tm = time.localtime(tcur)
+	hh = tm[3]
+	mm = tm[4]
+	ss = tm[5]
+	wd = tm[6]
+	u = tcur - (hh*3600) - (mm*60) - (ss) - (wd*86400)  # Week Start
+	p = u + 604800  #End of Week
+	up = u - 604800   # Previous Week
+
+
+	now1 = int((tcur - u + (60*60))/float((8*60*60))) # number of shifts completed 
+	pred_multiplier = 15 / float(now1)
+
+
+
+	tm2 = time.localtime(tcur_prev)
+	tu = time.localtime(u)
+	tup = time.localtime(up)
+
+	mu = str(tu[1])
+	mup = str(tup[1])
+	mm = str(tm2[1])
+	m = str(tm[1])	
+	d = str(tm[2])
+	dd = str(tm2[2])
+	du = str(tu[2])
+	dup = str(tup[2])
+	hr = int(tm[3])
+
+	m = ('0' + m) if len(m) == 1 else m
+	d = ('0' + d) if len(d) == 1 else d
+	mm = ('0' + mm) if len(mm) == 1 else mm
+	dd = ('0' + dd) if len(dd) == 1 else dd
+	mu = ('0' + mu) if len(mu) == 1 else mu
+	du = ('0' + du) if len(du) == 1 else du
+	mup = ('0' + mup) if len(mup) == 1 else mup
+	dup= ('0' + dup) if len(dup) == 1 else dup
+
+	date1 = str(tm[0]) + '-' + m + '-' + d       # date for Midnight shift of the 24hr mark
+	date2 = str(tm2[0]) + '-' + mm + '-' + dd    # date for Afternoon and Day shift on the 24hr mark
+	date3 = str(tu[0]) + '-' + mu + '-' + du       # date for start of week
+	date4 = str(tup[0]) + '-' + mup + '-' + dup       # date for start of last week
+
+	if hr>= 23 :
+		sh1 = ['Aft','Day','Mid']
+		sh2 = ['3pm-11pm','7am-3pm','11pm-7am']
+		sh3 = [0,0,0]
+		sh4 = [1,2,3]
+	elif hr>= 15 and hr < 23:
+		sh1 = ['Day','Mid','Aft']
+		sh2 = ['7am-3pm','11pm-7am','3pm-11pm']
+		sh3 = [0,0,1]
+		sh4 = [1,2,3]
+	elif hr >= 7 and hr < 15:
+		sh1 = ['Mid','Aft','Day']
+		sh2 = ['11pm-7am','3pm-11pm','7am-3pm']
+		sh3 = [0,1,1]
+		sh4 = [1,2,3]
+	else:
+		sh1 = ['Aft','Day','Mid']
+		sh2 = ['3pm-11pm','7am-3pm','11pm-7am']
+		sh3 = [1,1,1]
+		sh4 = [1,2,3]
+
+
+	ssh = zip(sh1,sh2,sh3,sh4)
+
+	request.session['shift_title1'] = sh1[0]
+	request.session['shift_title2'] = sh1[1]
+	request.session['shift_title3'] = sh1[2]
+
+	# u_sh_start = tcur - (((cur_hour-shift_start)*60*60)+(tm[4]*60)+tm[5])    # Starting unix of shift
+
+
+	db, cur = db_set(request)
+	mid_shift = '11pm-7am'
+	aft_shift = '3pm-11pm'
+	day_shift = '7am-3pm'
+
+	e1 = []
+	e2 = []
+	e3 = []
+	e4 = []
+	f1 = []
+	f2 = []
+	try:
+		assets,groups,formats = zip(*aa)
+	except:
+		assets,groups,formats,y,y,y,y,y,y,y,y,y = zip(*aa)
+
+	for i in aa:
+		# Calculate Week to date total
+		try:
+			aql = "SELECT SUM(actual_produced) FROM sc_production1 WHERE pdate >= '%s' and asset_num = '%s'" % (date3,i[0])
+			cur.execute(aql)
+			tmp2 = cur.fetchall()
+			tmp3 = tmp2[0]
+			sum1 = int(tmp3[0])
+		except:
+			sum1 = 0
+		f1.append(sum1)
+		# Calculate Last Week total
+		try:
+			aql = "SELECT SUM(actual_produced) FROM sc_production1 WHERE pdate >= '%s' and pdate < '%s' and asset_num = '%s'" % (date4,date3,i[0])
+			cur.execute(aql)
+			tmp2 = cur.fetchall()
+			tmp3 = tmp2[0]
+			sum1 = int(tmp3[0])
+		except:
+			sum1 = 0
+		f2.append(sum1)
+
+		tot1 = 0
+		for ii in ssh:
+			ptcur = tcur - ii[2] * 86400
+			ptm = time.localtime(ptcur)
+			pm = str(ptm[1])	
+			pd = str(ptm[2])
+			pm = ('0' + pm) if len(pm) == 1 else pm
+			pd = ('0' + pd) if len(pd) == 1 else pd
+			date1 = str(ptm[0]) + '-' + pm + '-' + pd      # date to lookup
+
+			try:
+				aql = "SELECT SUM(actual_produced) FROM sc_production1 WHERE pdate = '%s' and asset_num = '%s' and shift = '%s'" % (date1,i[0],ii[1])
+				cur.execute(aql)
+				tmp2 = cur.fetchall()
+				tmp3 = tmp2[0]
+				sum1 = int(tmp3[0])
+			except:
+				sum1 = 0
+			if ii[3] == 1:
+				e1.append(sum1)
+				ee1 = ii[0]
+			elif ii[3] == 2:
+				e2.append(sum1)
+				ee2 = ii[0]
+			elif ii[3] == 3:
+				e3.append(sum1)
+				ee3 = ii[0]
+			tot1 = tot1 + sum1 
+
+		e4.append(tot1) # total for all 3 shifts on this asset
+
+
+	aa = zip(assets,groups,formats,e1,e2,e3,e4,f1,f2)
+
+	# This section will group totals with the group and assign row span number or 0
+	gg=0 
+	ctr2 = []
+	tot2 = []
+	tot4 = []
+	tot6 = []
+	tot8 = []
+	for i in aa:
+		g=i[1]
+		if g!=gg:
+			ctr = 0
+			tot = 0
+			tot3 = 0
+			tot7 = 0
+			for ii in aa:
+				if ii[1] == g:
+					tot = tot + ii[6]
+					tot3 = tot3 + ii[7]
+					tot7 = tot7 + ii[8]
+					ctr = ctr + 1
+		else:
+			ctr = 0
+			tot = 0
+			tot3 = 0
+			tot7 = 0
+		ctr2.append(ctr)
+		tot2.append(tot)
+		tot4.append(tot3)
+		tot5 = int(tot3 * pred_multiplier)
+		tot6.append(tot5)
+		tot8.append(tot7)
+		gg = g
+
+	aa = zip(assets,groups,formats,e1,e2,e3,e4,ctr2,tot2,tot4,tot6,tot8)
+	request.session['summary_data'] = aa
+	db.close()
+	# rr=4/0
+	return
+
+
+def getKey3(item):
+	return item[1]
 
 def mgmt_initialize_cat_table(request):
 	part1 = [('50-3627','GF6'),('50-3632','GF6'),('50-1713','GF6'),('50-1731','GF6'),('50-9341','10R80'),('50-0455','10R60')]

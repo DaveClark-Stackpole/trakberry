@@ -104,7 +104,7 @@
 		.frame1 {color:black;text-align:center;float:left;width:32%;margin-bottom: 5px;}
 		.frame2{color:black;text-align:center;background:rgb(83, 134, 202);float:left;width:32%;position:relative;left:5px;margin-bottom: 5px;}
 		.frame3 {color:black;text-align:center;background:rgb(61, 138, 64);float:left;width:32%;position:relative;left:10px;margin-bottom: 5px;}
-		.frame4 {color:black;text-align:center;background:rgb(61, 138, 64);float:left;width:90%;position:relative;left:10px;margin-bottom: 5px;}
+		.frame4 {color:black;text-align:center;float:left;width:90%;position:relative;left:10px;margin-bottom: 5px;margin-top: 15px;}
 
 		.frame5{color:black;text-align:center;background:rgb(168, 168, 168);float:right;width:40%}
 		.head1{color:black;text-align:center;border: .4px solid rgb(0, 0, 0);background:rgb(114, 159, 243);width:85%}
@@ -187,7 +187,8 @@
 	}
 	</style>
 
-<style>
+<!-- Style for Production Summaries -->
+<style>   
 	#prodsum {
 		font-family: Arial, Helvetica, sans-serif;
 		border-collapse: collapse;
@@ -197,17 +198,19 @@
 		border: 1px solid rgb(136, 134, 134);
 		padding: 8px;
 	}
-	#prodsum tr:nth-child(even){background-color: #96d9f8;}
-	#prodsum tr:nth-child(odd){background-color: #4eb3e2;}
+	/* #prodsum tr:nth-child(even){background-color: #96dbf8;}
+	#prodsum tr:nth-child(odd){background-color: #45b4c6;} */
 	#prodsum tr:hover {background-color: #ddd;}
 	#prodsum th {
 		padding-top: 12px;
 		padding-bottom: 12px;
 		text-align: left;
-		background-color: rgb(139, 107, 107);
+		background-color: rgb(68, 82, 91);
 		color: white;
 	}
-	</style>
+</style>
+
+
 
 </head>
 {% block grid %}
@@ -299,7 +302,7 @@
 	{% if request.session.mgmt_login_password_check = 0 %}  <!-- If login failed or required -->
 		<meta http-equiv="refresh" content="0; url={{request.session.local_toggle}}/mgmt_login_form" />
 	{% else %}  <!-- if Login passed and main start up screen -->
-	<form action="" method="post">{% csrf_token %}
+	
 		<div class="wrapper_main">
 			<div class="frame1">  <!-- Default is L24 hr Production-->
 				{% block frame1 %}
@@ -372,7 +375,6 @@
 						<th colspan="3"><center>Operations</center></th>
 
 					{% for i in request.session.data1 %}
-					
 						{% if i.2 = 1 %}
 							</tr><tr>
 							<td><b>{{i.0}}</b></td>
@@ -389,11 +391,92 @@
 				</table>
 			</div>
 
+			<form action="" method="post">{% csrf_token %}
+			<div class="frame4">  <!-- Production Summary-->
+				<table id="prodsum">
+					<tr>
+						<th colspan="9"><center><font style="font-weight:bolder;font-size:x-large;">Production Summary</font></center></th>
+					</tr>
+					<tr>
+						<th colspan="9"><center>
+							Asset : <input style="font-size:14px;color:rgb(0, 0, 0);width:120px;height:30px;" name="asset" type="textarea"  autofocus/>
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							Group #: <input style="font-size:14px;color:rgb(0, 0, 0);width:120px;height:30px;" name="group" value=1 type="number">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<button style="background-color: #5CC4ED;border-radius: 10px;width:110px;height:80%;font-weight: 600;" type="submit" name="button1" value="add_machine" /><center><font color="#000000">Add Asset</font></center></button>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<button style="background-color: #5CC4ED;border-radius: 10px;width:110px;height:80%;font-weight: 600;" type="submit" name="button1" value="calculate" /><center><font color="#000000">Calculate</font></center></button>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<button style="background-color: #5CC4ED;border-radius: 10px;width:110px;height:80%;font-weight: 600;" type="submit" name="button1" value="clear" /><center><font color="#000000">Clear All</font></center></button>
+						</center></th>
+					</tr>
+					<tr>
+						<th><center>Group</center></th>
+						<th><center>Asset</center></th>
+						<th><center>{{request.session.shift_title1}}</center></th>
+						<th><center>{{request.session.shift_title2}}</center></th>
+						<th><center>{{request.session.shift_title3}}</center></th>
+						<th><center>24hr Total</center></th>
+						
+						<th><center>Week to Date</center></th>
+						<th><center>Week Prediction</center></th>
+						<th><center>Last Week</center></th>
+						
+						
+					</tr>
+					{% for i in request.session.summary_data %}
+
+					{% if i.2 = -1 %}
+					<tr>
+						<td bgcolor="#96dbf8"><center>
+							<button style="background-color: #5CC4ED;border-radius: 10px;width:20%;height:70%;font-weight: 600;" type="submit" name="button1" value="{{i.1}}|{{i.0}}" /><center><font size = '1' color="#000000">X</font></center></button>
+							&nbsp;&nbsp;<b>{{i.1}}</b></center></td>
+						<td bgcolor="#96dbf8"><center><b>{{i.0}}</b></center></td>
+						<td bgcolor="#96dbf8"><center><b>{{i.3}}</b></center></td>
+						<td bgcolor="#96dbf8"><center><b>{{i.4}}</b></center></td>
+						<td bgcolor="#96dbf8"><center><b>{{i.5}}</b></center></td>
+						{% if i.7 > 0 %}
+							<td rowspan = {{i.7}} bgcolor="#96dbf8"><center><b>{{i.8}}</b></center></td>
+							<td rowspan = {{i.7}} bgcolor="#96dbf8"><center><b>{{i.9}}</b></center></td>
+							<td rowspan = {{i.7}} bgcolor="#96dbf8"><center><b>{{i.10}}</b></center></td>
+							<td rowspan = {{i.7}} bgcolor="#96dbf8"><center><b>{{i.11}}</b></center></td>
+						{% endif %}
+
+					</tr>
+
+					{% else %}
+					<tr>
+						<td bgcolor="#45b4c6"><center>
+							<button style="background-color: #5CC4ED;border-radius: 10px;width:20%;height:70%;font-weight: 600;" type="submit" name="button1" value="{{i.1}}|{{i.0}}" /><center><font size = '1' color="#000000">X</font></center></button>
+							&nbsp;&nbsp;<b>{{i.1}}</b></center></td>
+						<td bgcolor="#45b4c6"><center><b>{{i.0}}</b></center></td>
+						<td bgcolor="#45b4c6"><center><b>{{i.3}}</b></center></td>
+						<td bgcolor="#45b4c6"><center><b>{{i.4}}</b></center></td>
+						<td bgcolor="#45b4c6"><center><b>{{i.5}}</b></center></td>
+						{% if i.7 > 0 %}
+							<td rowspan = {{i.7}} bgcolor="#45b4c6"><center><b>{{i.8}}</b></center></td>
+							<td rowspan = {{i.7}} bgcolor="#45b4c6"><center><b>{{i.9}}</b></center></td>
+							<td rowspan = {{i.7}} bgcolor="#45b4c6"><center><b>{{i.10}}</b></center></td>
+							<td rowspan = {{i.7}} bgcolor="#45b4c6"><center><b>{{i.11}}</b></center></td>
+						{% endif %}
+
+					</tr>
+
+					{% endif %}
+
+					{% endfor %}
+
+					</table>
+					<br><br><br><br>
+			</div>
+		</form>
+
+
 
 
 
 		</div>  <!-- main wrapper-->
-		</form>
+		
 
 
     {% endif %}
