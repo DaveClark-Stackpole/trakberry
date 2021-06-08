@@ -2256,7 +2256,7 @@ def tech_report_email():
 		# Add name to email list
 		# toaddrs = ["dclark@stackpole.com"]
 
-		toaddrs = ["ttobey@stackpole.com","dmilne@stackpole.com","jbarker@stackpole.com","tkuepfer@stackpole.com","lvaters@stackpole.com","pwilson@stackpole.com","mle@stackpole.com","ssmith@stackpole.com","nkleingeltink@stackpole.com","kbaker@stackpole.com","jpankratz@stackpole.com","kfaubert@stackpole.com","kfrey@stackpole.com","dpeachy@stackpole.com"]
+		toaddrs = ["ttobey@stackpole.com","dmilne@stackpole.com","jbarker@stackpole.com","tkuepfer@stackpole.com","lvaters@stackpole.com","pwilson@stackpole.com","mle@stackpole.com","ssmith@stackpole.com","nkleingeltink@stackpole.com","kbaker@stackpole.com","jpankratz@stackpole.com","kfaubert@stackpole.com","kfrey@stackpole.com","dpeachy@stackpole.com","ekuepfer@stackpole.com","mgehlot@stackpole.com","dmclaren@stackpole.com"]
 		#toaddrs = ["dclark@stackpole.com"]
 		fromaddr = 'stackpole@stackpole.com'
 		frname = 'Dave'
