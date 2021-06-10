@@ -26,7 +26,8 @@ def db_open():
 	# Will try and connect to the PMDS Server first and test it but if it doesn't work will do local
 	try:
 		db = MySQLdb.connect(host="127.0.0.1",user="dg417",passwd="dg",db='prodrptdb')
-		cursor = db.cursor()
+		cursor = db.cursor()	# request.session["local_switch"] = 1
+	# request.session["local_toggle"] = ""
 		sql = "SELECT * from testtest" 
   		cursor.execute(sql)
   		tmp2 = cursor.fetchall()
