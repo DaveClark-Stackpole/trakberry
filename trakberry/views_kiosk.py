@@ -963,6 +963,8 @@ def kiosk_production_entry(request):
 		varn = [[],[],[],[],[],[]]
 		# for x in range(0,20):
 		# 	varn[x] = []
+
+
 		if write_answer == 1:
 			for i in range(0,6):
 				job = kiosk_job[i]
@@ -1088,6 +1090,7 @@ def kiosk_epv_verification(request):
 	kiosk_job = request.session['kiosk_all_jobs']
 	kiosk_part = request.session['kiosk_all_parts']
 	varn = request.session['varn']
+
 	shift1 = str(varn[0][6])
 	date1 = str(varn[0][7])
 	who1 = 'Operator'
@@ -1192,7 +1195,8 @@ def kiosk_production_write(request):
 	for i in varn:
 		try:
 			dummy = i[1]
-			c
+			cur.execute('''INSERT INTO sc_production1(asset_num,partno,actual_produced,shift_hours_length,down_time,comments,shift,pdate,machine,scrap,More_than_2_percent,total,target,planned_downtime_min_forshift,sheet_id,Updated,low_production,manual_sent,kiosk_id,tpm) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)''', (i[0],i[1],i[2],i[3],i[4],i[5],i[6],i[7],i[8],i[9],i[10],i[11],i[12],i[13],i[14],i[15],i[16],i[17],i[18],i[19]))
+			db.commit()
 		except:
 			dummy = 1
 	db.close()
