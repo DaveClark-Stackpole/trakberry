@@ -168,34 +168,134 @@ def scrap_edit_selection(request):
 	db.close()
 	return
 
-# def scrap_edit_prev_selection2(request):
-# 	ptr = request.session["scrap_ptr"]
-# 	db, cur = db_set(request)
 
-# 	if ptr == 0:
-# 		sql_max_ptr = "SELECT max(Id) FROM tkb_scrap"
-# 		cur.execute(sql_max_ptr)
-# 		ptr = cur.fetchall()
-# 		ptr = ptr[0][0] + 1
-	
-# 	sql_scrap_entries = "SELECT * FROM tkb_scrap where Id < '%s' order by Id DESC limit 10" % (ptr)
-# 	cur.execute(sql_scrap_entries)
-# 	request.session["tmp_scrap_entries"] = cur.fetchall()
+# Edit the Scrap Categories
+# ********************************************
+def scrap_edit_categories_reset(request):
+	request.session["qedit_entry"] = 0
+	request.session["qedit_part_selection"] = ''
+	request.session["qedit_operation"] = "Operation:"
+	request.session["qedit_category"] = "Category:"
+	request.session["qedit_part"] = "Part No:"
+	request.session["qedit_line"] = ""
+	request.session["qedit1"] =""
+	request.session["qedit2"] ='''disabled="true"'''
+	request.session["qedit3"] ='''disabled="true"'''
+	request.session["qedit4"] ='''disabled="true"'''
+	return scrap_edit_categories(request)
 
-# 	sql_scrap_entries_last = "SELECT min(Id) FROM (select ID from tkb_scrap where Id < '%s' order by Id DESC limit 10) as selectmin" % (ptr)
-# 	cur.execute(sql_scrap_entries_last)
-# 	last = cur.fetchall()
-# 	last = last[0][0]
-# 	request.session["scrap_ptr"] = last
+def scrap_edit_categories(request):
+	db, cursor = db_set(request)
+	if request.session["qedit_entry"] == 0:
+		active = '1.0'
+		sql = "SELECT Part FROM scrap_part_line WHERE Active = '%s' ORDER BY Part ASC" %(active)
+		cursor.execute(sql)
+		tmp = cursor.fetchall()
+		request.session["qedit_part_selection"] = tmp
+	db.close()
 
-# 	sql_scrap_entries_first = "SELECT max(Id) FROM (select ID from tkb_scrap where Id < '%s' order by Id DESC limit 10) as selectmin" % (ptr)
-# 	cur.execute(sql_scrap_entries_first)
-# 	first = cur.fetchall()
-# 	first = first[0][0]
-# 	request.session["scrap_ptr_first"] = first
-# 	db.close()
-# 	return
+	if request.POST:
+		qedit_part = request.POST.get("qedit_part")
+		qedit_operation = request.POST.get("qedit_operation")
+		qedit_category = request.POST.get("qedit_category")
+		qedit_amount = request.POST.get("qedit_amount")
+		finish_switch = 0
+		try:
+			finish_switch = request.POST.get("one")
+		except:
+			finish_switch = 0
 
+		if request.session["qedit_entry"] == 0:
+				request.session["qedit_part"] = qedit_part
+				request.session["qedit_entry"] = 1
+				request.session["qedit1"] ='''disabled="true"'''
+				request.session["qedit2"] =''
+				db, cursor = db_set(request)
+				sql = "SELECT Line FROM scrap_part_line WHERE Part = '%s'" %(qedit_part)
+				cursor.execute(sql)
+				tmp = cursor.fetchall()
+				qedit_part_line = tmp[0][0]
+				request.session["qedit_part_line"] = qedit_part_line
+				sql = "SELECT DISTINCT Operation FROM scrap_line_operation_category WHERE Line = '%s'" %(qedit_part_line)
+				cursor.execute(sql)
+				tmp = cursor.fetchall()
+				request.session["qedit_operation_selection"] = tmp
+				db.close()
+				return render(request, "redirect_scrap_edit_categories.html")
+
+		if request.session["qedit_entry"] == 1:
+			qedit_part_line = request.session["qedit_part_line"]
+			request.session["qedit_operation"] = qedit_operation
+
+			db, cursor = db_set(request)
+			sql = "SELECT Category FROM scrap_line_operation_category WHERE Line = '%s' and Operation = '%s' ORDER BY Category ASC" %(qedit_part_line,qedit_operation)
+			cursor.execute(sql)
+			tmp = cursor.fetchall()
+			a=[]
+			b=[]
+			ctr = 1
+			for i in tmp:
+				a.append(i[0])
+				b.append(ctr)
+				ctr += 1
+			c = zip(a,b)
+			request.session["qedit_category_selection"] = c
+			db.close()
+			return render(request,'scrap_edit_categories_entry.html')
+
+	else:
+		form = sup_downForm()
+	args = {}
+	args.update(csrf(request))
+	args['form'] = form
+	return render(request,'scrap_edit_categories.html',{'args':args})
+
+def scrap_edit_categories_entry(request):
+	return render(request,'scrap_edit_categories_entry.html')
+
+def scrap_edit_categories_delete(request,index):
+	list1 = request.session['qedit_category_selection']
+	list2=[]
+	for i in list1:
+		if i[1]!=int(index):
+			list2.append(i)
+	request.session['qedit_category_selection'] = list2
+	return render(request,'scrap_edit_categories_entry.html')
+
+
+def scrap_edit_categories_newentry(request):
+	if request.POST:
+		new_category = request.POST.get("new_category")
+		list1 = request.session['qedit_category_selection']
+		max1 = 0
+		for i in list1:
+			if i[1] > max1:
+				max1 = i[1]
+		new1 = [new_category,max1+1]
+		list1.append(new1)
+		request.session['qedit_category_selection'] = list1
+		return render(request,'scrap_edit_categories_entry.html')
+	else:
+		form = sup_downForm()
+	args = {}
+	args.update(csrf(request))
+	args['form'] = form
+	return render(request,'scrap_edit_categories_newentry.html',{'args':args})
+
+def scrap_edit_categories_save(request):
+	list1 = request.session['qedit_category_selection']
+	line1 = request.session['qedit_part_line']
+	operation1 = request.session['qedit_operation']
+	db, cur = db_set(request)
+	dql = ('DELETE FROM scrap_line_operation_category WHERE Line = "%s" and Operation = "%s"' %(line1,operation1))
+	cur.execute(dql)
+	db.commit()
+	for i in list1:
+		cur.execute('''INSERT INTO scrap_line_operation_category(Line,Operation,Category) VALUES(%s,%s,%s)''', (line1,operation1,i[0]))
+		db.commit()
+	db.close()
+	return render(request,'redirect_scrap_mgmt.html')
+# *******************************************
 
 
 def scrap_entries_next(request):
@@ -307,15 +407,81 @@ def scrap_display_category_shift(request,index):
 	index.replace(" ","")
 	#DATE_FORMAT(date, "%M %d %Y")
 	if request.session["scrap_display_type"] == "24hr":
-		sql_scrap2 = "SELECT scrap_amount,scrap_category, scrap_operation,FORMAT(total_cost,2),date FROM tkb_scrap WHERE date BETWEEN date_sub(now(), interval 1 day) AND date_add(now(), interval 1 day) AND scrap_operation = '%s' AND scrap_category = '%s' AND scrap_part = '%s' ORDER BY scrap_amount DESC" % (index_operation,index_category,index_part)
+		sql_scrap2 = "SELECT scrap_amount,scrap_category, scrap_operation,FORMAT(total_cost,2),date,Id FROM tkb_scrap WHERE date BETWEEN date_sub(now(), interval 1 day) AND date_add(now(), interval 1 day) AND scrap_operation = '%s' AND scrap_category = '%s' AND scrap_part = '%s' ORDER BY scrap_amount DESC" % (index_operation,index_category,index_part)
 	else:
 		date1 = request.session["scrap_display_date1"]
 		date2 = request.session["scrap_display_date2"]
-		sql_scrap2 = "SELECT scrap_amount,scrap_category, scrap_operation,FORMAT(total_cost,2),date FROM tkb_scrap WHERE date_current BETWEEN '%s' AND '%s' AND scrap_operation = '%s' AND scrap_category = '%s' AND scrap_part = '%s' ORDER BY scrap_amount DESC" % (date1, date2, index_operation,index_category,index_part)		
+		sql_scrap2 = "SELECT scrap_amount,scrap_category, scrap_operation,FORMAT(total_cost,2),date,Id FROM tkb_scrap WHERE date_current BETWEEN '%s' AND '%s' AND scrap_operation = '%s' AND scrap_category = '%s' AND scrap_part = '%s' ORDER BY scrap_amount DESC" % (date1, date2, index_operation,index_category,index_part)		
 	cur.execute(sql_scrap2)
 	request.session["tmp_scrap2"] = cur.fetchall()
 	tmp_scrap2 = request.session["tmp_scrap2"]
 	return render(request, "scrap_mgmt_category_shift.html")	
+
+
+
+
+# Edit the entry through this screen
+# then using session variables revert back to scrap_display_category shift
+def scrap_display_entry_edit(request,index):
+	index_category = index
+	db, cur = db_set(request)
+	index.replace(" ","")
+	sql_scrap2 = "SELECT * FROM tkb_scrap WHERE Id = '%s'" % (index)
+	cur.execute(sql_scrap2)
+	tmp = cur.fetchall()
+	tmp2 = tmp[0]
+
+	sql = "SELECT Line FROM scrap_part_line WHERE Part = '%s'" %(tmp2)
+	cursor.execute(sql)
+	tmp = cursor.fetchall()
+	
+	scrap_part_line = tmp[0][0]
+	request.session["scrap_part_line"] = scrap_part_line
+
+	sql = "SELECT DISTINCT Operation FROM scrap_line_operation_category WHERE Line = '%s'" %(scrap_part_line)
+	cursor.execute(sql)
+	tmp = cursor.fetchall()
+	request.session["scrap_operation_selection"] = tmp
+
+
+	# sql_scrap2 = "SELECT scrap_operation FROM tkb_scrap WHERE Id = '%s'" % (index)
+	# cur.execute(sql_scrap2)
+	# tmp = cur.fetchall()
+	# tmp4 = tmp[0]
+	# request.session['operation6'] = tmp4
+
+
+	active = '1.0'
+	sql = "SELECT Part FROM scrap_part_line WHERE Active = '%s' ORDER BY Part ASC" %(active)
+	cur.execute(sql)
+	tmp = cur.fetchall()
+	request.session["scrap_part_selection"] = tmp
+
+
+
+	# sql = "SELECT Line FROM scrap_part_line WHERE Part = '%s'" %(scrap_part)
+	# cursor.execute(sql)
+	# tmp = cursor.fetchall()
+				
+	# scrap_part_line = tmp[0][0]
+	# request.session["scrap_part_line"] = scrap_part_line
+
+	# sql = "SELECT DISTINCT Operation FROM scrap_line_operation_category WHERE Line = '%s'" %(scrap_part_line)
+	# cursor.execute(sql)
+
+
+	if request.POST:
+
+		return render(request, "redirect_scrap_display.html")
+
+	else:
+		form = sup_downForm()
+	args = {}
+	args.update(csrf(request))
+	args['form'] = form
+	return render(request,'scrap_mgmt_display_entry_edit.html',{'args':args,'tmp':tmp2})
+
+
 
 def scrap_entries_update(request,index):
 	db, cur = db_set(request)

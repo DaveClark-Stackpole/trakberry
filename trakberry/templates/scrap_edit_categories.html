@@ -1,0 +1,44 @@
+{% extends "scrap_mgmt.html" %}
+
+
+
+{% block content %}
+
+<form action="" method="post">{% csrf_token %}
+
+	<div class="wrapper_main">
+		<div class="frame1x"><br></div>
+		<div class="frame1">
+			<h1><u><b>Category Edit</b></u></h1><br>
+			<select id="qedit_part" style="font-size:15px;width:40%;height:40px;" onchange="myFunction();" list="browsers" name="qedit_part"  {{request.session.qedit1}}>	
+					<option value="1" selected disabled>{{request.session.qedit_part}}</option>
+						{% for item in request.session.qedit_part_selection %}
+							<option value="{{item.0}}">{{item.0}}</option>
+						{% endfor %}
+			</select>
+
+			<br><br><br>
+
+			<select id="qedit_operation" style="font-size:15px;width:40%;height:40px;" onchange="myFunction();" list="browsers" name="qedit_operation" type="number" {{request.session.qedit2}}>
+				<option selected = "selected">{{request.session.qedit_operation}} </option>
+					{% for item in request.session.qedit_operation_selection %}
+						<option value="{{item.0}}">{{item.0}}</option>
+					{% endfor %}
+			</select>
+
+			<br>
+
+			<br><br>
+
+			<input style="background-color:#849185;border-color:#849185;color:#849185;font-size:0px;align=left;"type="submit" value="" />
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<button style="background-color: #AAAAAA;border-radius: 10px;width:120px;height:40px;font-weight: 700;font-size:15px;align=right;" type="button" onclick="window.location.href = '{{request.session.local_toggle}}/scrap_mgmt';">Cancel</button>
+
+		</div>
+	</div>
+
+</form>  
+
+
+{% endblock %}
+	

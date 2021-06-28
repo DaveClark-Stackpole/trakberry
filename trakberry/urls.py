@@ -149,7 +149,8 @@ from views3 import bounce_matrix,update_matrix_cancel,matrix_cache_matrix, full_
 # *******************************************  Scrap Section ********************************************************************************************
 from views_scrap import scrap_mgmt, scrap_mgmt_login_form,scrap_display,scrap_display_operation,scrap_display_category,scrap_entries,scrap_display_category_shift
 from views_scrap import scrap_entries_next, scrap_entries_prev,scrap_entries_update,scrap_display_date_pick,scrap_display_24hr,operation_department,oper_dept_edit_selection,operation_entries_next, operation_entries_prev,operation_entries_update,kiosk_add_category,kiosk_initiate
-from views_scrap import tpm_display
+from views_scrap import scrap_display_entry_edit,scrap_edit_categories_reset,scrap_edit_categories,scrap_edit_categories_entry
+from views_scrap import tpm_display,scrap_edit_categories_delete,scrap_edit_categories_newentry,scrap_edit_categories_save
 # ***********************************************************************************************************************************************************
 
 # *******************************************  Quality Section ********************************************************************************************
@@ -620,7 +621,12 @@ urlpatterns = [
 	url(r'^scrap_entries_prev/', scrap_entries_prev),
 	url(r'^scrapdate_fix1/', scrapdate_fix1),
 	url(r'^tpm_display/', tpm_display),
-
+	url(r'^scrap_edit_categories_reset/', scrap_edit_categories_reset),
+	url(r'^scrap_edit_categories/', scrap_edit_categories),
+	url(r'^scrap_edit_categories_entry/', scrap_edit_categories_entry),
+	url(r'^scrap_edit_categories_newentry/', scrap_edit_categories_newentry),
+	url(r'^scrap_edit_categories_delete/get/(?P<index>\d+)/$', scrap_edit_categories_delete),
+	url(r'^scrap_edit_categories_save/', scrap_edit_categories_save),
 	url(r'^pie_chart/', pie_chart),
 	url(r'^quality_epv_asset_entry/', quality_epv_asset_entry),
 	# **************************************************************************
@@ -642,6 +648,7 @@ urlpatterns = [
 	# url(r'^scrap_display_category/get/(?P<index>[\w\-]+)/$', scrap_display_category),
 	url(r'^scrap_display_category/get/(?P<index>[\w|\W]+)', scrap_display_category),
 	url(r'^scrap_display_category_shift/get/(?P<index>[\w|\W]+)', scrap_display_category_shift),
+	url(r'^scrap_display_entry_edit/get/(?P<index>[\w|\W]+)', scrap_display_entry_edit),
 	url(r'^scrap_entries/', scrap_entries),
 	url(r'^scrap_entries_update/(?P<index>\d+)/$', scrap_entries_update),
 	#url(r'^scrap_entries/get/(?P<index>[\w\-]+)/$', scrap_entries),

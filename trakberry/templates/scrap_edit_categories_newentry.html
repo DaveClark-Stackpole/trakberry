@@ -1,0 +1,47 @@
+{% extends "scrap_mgmt.html" %}
+
+{% block content2 %}
+
+<form action="" method="post">{% csrf_token %}
+
+	<div class="wrapper_main">
+		<div class="frame1x"><br></div>
+		<div class="frame1">
+			<table id="scrap_cat">
+				<tr>
+			<th><center><font style="font-weight:bolder;font-size:x-large;">Edit Categories</font></center>
+				<button type="button" style="background-color: #949494;color:rgb(255, 255, 255);border-radius: 10px;width:150px;
+				height:20px;font-weight: 700;font-size:12px;float:left;"	onclick="window.location.href = '{{request.session.local_toggle}}/scrap_mgmt';">
+				Cancel</button> 
+
+			
+		</th>
+
+		</tr>
+		<tr>
+			<th><center><font style="font-weight:bolder;font-size:large;">{{request.session.qedit_part}} &nbsp;&nbsp;&nbsp;{{request.session.qedit_operation}}</font></center></th>
+		</tr>
+			{% for item in request.session.qedit_category_selection %}
+
+			<tr><td>
+						<option value="{{item.0}}">{{item.0}}</option>
+				</td>
+				</tr>
+					{% endfor %}
+<tr><td>
+
+	<input style="font-size:14px;width:320px;height:30px;" name="new_category" type="textarea" autofocus>
+
+</td></tr>
+</table>
+
+<br><br><br>
+		</div>
+	</div>
+
+</form>  
+
+
+
+{% endblock %}
+	
