@@ -40,6 +40,16 @@ def week_start_finder(request):
 	date1 = y1 + '-' + (ma + m1) + '-' + (da + d1)
 	return date1
 
+def week_prev_forw(request):
+	date1 = week_start_finder(request)
+	try:
+		d = request.session['date_current_epv']
+	except:
+		request.session['date_current_epv'] = date1
+		
+
+	return date1
+
 def date_finder(request):
 	week_start1 =int(time.time())
 	tm = time.localtime(week_start1)

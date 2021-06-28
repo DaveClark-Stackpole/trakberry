@@ -1,0 +1,47 @@
+{% extends "scrap_mgmt.html" %}
+
+{% block content2 %}
+
+<!-- <form action="" method="post">{% csrf_token %} -->
+
+	<div class="wrapper_main">
+		<div class="frame1x"><br></div>
+		<div class="frame1">
+			<table id="scrap_cat">
+				<tr>
+			<th colspan="2"><center><font style="font-weight:bolder;font-size:x-large;">Edit Categories</font></center>
+				<button type="button" style="background-color: #949494;color:rgb(255, 255, 255);border-radius: 10px;width:150px;
+				height:20px;font-weight: 700;font-size:12px;float:left;"	onclick="window.location.href = '{{request.session.local_toggle}}/scrap_mgmt';">
+				Cancel</button> 
+				<button type="button" style="background-color: #92916c;color:rgb(255, 255, 255);border-radius: 10px;width:150px;
+				height:20px;font-weight: 700;font-size:12px;float:right;"	onclick="window.location.href = '{{request.session.local_toggle}}/scrap_edit_categories_save';">
+				Save Changes</button> 
+			
+		</th>
+
+		</tr>
+		<tr><th><center>Delete</center></th>
+			<th><center><font style="font-weight:bolder;font-size:large;">{{request.session.qedit_part}} &nbsp;&nbsp;&nbsp;{{request.session.qedit_operation}}</font></center></th>
+		</tr>
+			{% for item in request.session.qedit_category_selection %}
+
+			<tr><td><button type="button" onclick="window.location.href = '{{request.session.local_toggle}}/scrap_edit_categories_delete/get/{{item.1}}';">X</button></td>
+				<td>
+						<option value="{{item.0}}">{{item.0}}</option>
+				</td>
+				</tr>
+					{% endfor %}
+<tr><td colspan="2">
+	<button type="button" style="background-color: #849185;color:cornsilk;border-radius: 10px;width:150px;height:20px;font-weight: 700;font-size:15px;align=right;"
+	onclick="window.location.href = '{{request.session.local_toggle}}/scrap_edit_categories_newentry';">New Category</button>
+</td></tr>
+</table><br><br><br>
+		</div>
+	</div>
+
+<!-- </form>   -->
+
+
+
+{% endblock %}
+	

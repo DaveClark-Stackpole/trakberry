@@ -62,17 +62,17 @@
 
 
 
-											<li><a href="{{request.session.local_toggle}}/scrap_entries">Entries</a></li>
-											<li><a href="{{request.session.local_toggle}}/kiosk_initiate">Line Operation</a></li>
+											<!-- <li><a href="{{request.session.local_toggle}}/scrap_entries">Entries</a></li> -->
+											<li><a href="{{request.session.local_toggle}}/scrap_edit_categories_reset">Edit Scrap Categories <b><mark>(** New ! **)</mark></b></a></li>
 
 
 
 											
 
 
-											<li><a href="{{request.session.local_toggle}}/operation_department">Operation Department</a></li>
-											<li><a href="#">Part Cost</a></li>
-											<li><a href="#">Part Line</a></li> 
+											<li><a href="#"><font style="color:rgb(161, 161, 161)">Department</font></a></li>
+											<li><a href="#"><font style="color:rgb(161, 161, 161)">Part Cost</font></a></li>
+											<li><a href="#"><font style="color:rgb(161, 161, 161)">Part Line</font></a></li> 
 										</ul>
 									</li>
 
@@ -89,12 +89,18 @@
 						</div>
 				</div>
 		</div>
-		<br><br><br><br><br>
+		<br>
+{% block content2 %}
+<br><br><br><br>
 
 {% block refresh1 %}
 {% endblock %}
 
 {% block content %}
+
+
+
+
 {% if request.session.scrap_mgmt_login_password_check != 'True' %}
 <meta http-equiv="refresh" content="0; url={{request.session.local_toggle}}/scrap_mgmt_login_form" />
 
@@ -106,6 +112,8 @@
 
 {% endblock %}
 
+
+{% endblock %}
 </body>
 
 {% endblock %}

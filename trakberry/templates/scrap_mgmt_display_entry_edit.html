@@ -1,0 +1,42 @@
+{% extends "scrap_mgmt.html" %}
+
+
+{% block content %}
+<form action="" method="post">{% csrf_token %}
+
+<table id="scrap_edit">
+
+
+	<tr><th><font size="4" style="color:rgb(255, 255, 255)"><b>Part: {{request.session.scrap_24hrs_part}}
+		<br>
+		Operation: {{request.session.scrap_24hrs_operation}}
+		<br>
+		Category: {{request.session.scrap_24hrs_category}}
+	</font></b></th></tr>
+<tr><td>
+	<br>
+
+	<select id="scrap_part" style="font-size:15px;width: 380px;height:40px;" list="browsers" name="scrap_part">	
+		<option value="1">{{tmp.1}}</option>
+		{% for item in request.session.scrap_part_selection %}
+		<option value="{{item.0}}">{{item.0}}</option>
+		{% endfor %}
+</select>
+
+
+<br>
+<input style="font-size:15px;width:380px;height:40px;text-align:center;" value={{request.session.operation6}}  name="scrap_category" type="text">
+<br><br>
+
+	{% for i in tmp %}
+	{{i}}
+	<br>
+	
+	{% endfor %}
+	<br>
+</td></tr>
+
+</table>
+
+</form>
+{% endblock %}
