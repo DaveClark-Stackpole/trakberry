@@ -53,6 +53,8 @@ from test_test import table_mod1
 from view_test1 import kiosk_name,update_column
 from mod_test import wildcard_test
 from views_test2 import machine1, prediction1
+
+from views_manpower import manpower_allocation
 # ***********************************************************************************************************************************************************
 
 
@@ -426,6 +428,9 @@ urlpatterns = [
 	url(r'^test_update_yellow/', test_update_yellow),
 	url(r'^machine1/', machine1),
 	url(r'^prediction1/', prediction1),
+
+	url(r'^manpower_allocation/', manpower_allocation),
+
 	# ************************************************************************
 	
 	# **************  Kiosk Section ***************************************

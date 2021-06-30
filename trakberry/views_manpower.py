@@ -510,3 +510,54 @@ def training_performance(request):
 	args['form'] = form
 
 	return render(request,"training_performance_form.html",{'args':args})
+
+
+def manpower_allocation(request):
+	# label_link = '/home/file/import1/Inventory/importedxls'
+	# os.chdir(label_link)
+	sheet = 'inventory.xls'
+	sheet_name = 'Sheet1'
+
+	book = xlrd.open_workbook(sheet)
+	working = book.sheet_by_name(sheet_name)
+	tot = 266  # Row on Excel Sheet
+	toc = 35   # Col on Excel Sheet
+	tdate = tot+1
+	jj = 1
+	a = []
+	b = []
+	c = []
+
+
+	for fnd in range(1,400):  # Determine what row to start reading manpower from
+		fnd_cell = str(working.cell(fnd,0).value)
+		if fnd_cell == 'Plant 1 Days':
+			start1 = fnd
+			break
+
+	for fnd in range(start1,900):  # Determine what row to start reading jobs from
+		fnd_cell = str(working.cell(fnd,0).value)
+		if fnd_cell == 'Area 1':
+			start2 = fnd-1
+			break
+	kk = 1
+	# initialize 1-13 for a[]
+	for i in range(1,13):
+		exec('a' + str(i) + '= []')
+	ctr = 0
+	for i in range((start2+1),(start2+180)):
+		# try:
+			if len(str(working.cell(i,0).value)) > 5:
+
+				for ii in range(1,13):
+					temp3 = str(working.cell(i,ctr).value)
+					exec('a'+str(ii)+'.append(temp3)')
+					if ctr == 1:
+						ctr = 11
+					ctr = ctr + 1
+			else:
+				break
+		# except:
+		# 	break
+	wwww=4/0
+	return render(request,"test_allocation1.html")
