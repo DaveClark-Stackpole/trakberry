@@ -515,7 +515,7 @@ def training_performance(request):
 def manpower_allocation(request):
 	# label_link = '/home/file/import1/Inventory/importedxls'
 	# os.chdir(label_link)
-	sheet = 'inventory.xls'
+	sheet = 'inventory.xlsx'
 	sheet_name = 'Sheet1'
 
 	book = xlrd.open_workbook(sheet)
@@ -528,6 +528,9 @@ def manpower_allocation(request):
 	b = []
 	c = []
 
+	area7 = []
+	job7 = []
+	label7 = []
 
 	for fnd in range(1,400):  # Determine what row to start reading manpower from
 		fnd_cell = str(working.cell(fnd,0).value)
@@ -540,24 +543,83 @@ def manpower_allocation(request):
 		if fnd_cell == 'Area 1':
 			start2 = fnd-1
 			break
-	kk = 1
+
 	# initialize 1-13 for a[]
 	for i in range(1,13):
 		exec('a' + str(i) + '= []')
-	ctr = 0
-	for i in range((start2+1),(start2+180)):
-		# try:
-			if len(str(working.cell(i,0).value)) > 5:
+		exec('q' + str(i) + '= []')
 
-				for ii in range(1,13):
-					temp3 = str(working.cell(i,ctr).value)
-					exec('a'+str(ii)+'.append(temp3)')
-					if ctr == 1:
-						ctr = 11
-					ctr = ctr + 1
-			else:
+	for i in range((start2+1),(start2+180)):
+		try:
+			if len(str(working.cell(i,0).value)) > 5:
+				area7.append((str(working.cell(i,0).value)))
+				job7.append((str(working.cell(i,1).value)))
+				label_temp = ((str(working.cell(i,12).value)))
+				label_temp=label_temp[:-2]
+				label7.append(int(label_temp))
+
+				hrs7 = 0
+				ctr = 13
+				for ii in range(12,23):
+					temp3=str(working.cell(i,ii).value)
+
+					temp3=int(temp3[:-2])
+					hrs_multiplier = 8
+					if ii > 18:
+						hrs_multiplier=12
+					hrs7=hrs7+(temp3*hrs_multiplier)
+					a3.append(hrs7)
+
+				# Read in the categories
+				for ii in range(23,25):
+					temp3 = str(working.cell(i,ii).value)
+					try:
+						temp3=int(temp3[:-2])
+					except:
+						dummy=0
+					exec('q'+str(ii-22)+'.append(temp3)')
+
+		except:
+			break
+	b=zip(label7,a3)
+	qq=zip(q1,q2)
+	c=sorted(b)
+	b=c
+
+
+# Sum hours grouped by labels
+	w={}
+	for row in c:
+		if row[0] not in w:
+			w[row[0]]=[]
+		w[row[0]].append(row[1])
+	u=[]
+	j=[]
+	k=[]
+
+
+	for i in w:
+		u.append(i)
+		j.append(sum(w[i]))
+		for ii in qq:
+			if int(ii[0]) == i:
+				k.append(ii[1])
 				break
-		# except:
-		# 	break
-	wwww=4/0
+
+	b =zip(u,j,k)
+
+
+
+
+	# b=zip(a4,a5)
+
+	# for i in range((start2+1),(start2+18)):
+	# 	temp3=str(working.cell(i,23).value)
+	# 	temp3=int(temp3)
+
+
+
+	# b=zip(area7,job7,label7,a3)
+	request.session['allocation1'] = b
+
 	return render(request,"test_allocation1.html")
