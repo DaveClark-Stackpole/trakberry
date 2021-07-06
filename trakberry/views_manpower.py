@@ -665,6 +665,8 @@ def manpower_allocation_calculation(request):
 
 	job_list = request.session["job_list"]
 	job_allocation = request.session["job_allocation"]
+
+	
 	u=[]
 	j=[]
 	k=[]
