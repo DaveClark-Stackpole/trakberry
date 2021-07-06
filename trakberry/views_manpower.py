@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
 from views_db import db_open, db_set
-from trakberry.forms import login_Form, login_password_update_Form, kiosk_dispForm4
+from trakberry.forms import login_Form, login_password_update_Form, kiosk_dispForm4, sup_downForm
 from datetime import datetime
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
@@ -17,7 +17,7 @@ from smtplib import SMTP
 import xlrd
 #import pandas
 from views_vacation import vacation_temp, vacation_set_current, vacation_set_current2,vacation_set_current6, vacation_set_current4
-from views_vacation import vacation_set_current5
+from views_vacation import vacation_set_current5,vacation_set_current9
 from views3 import matrix_read,shift_area
 
 def manpower_layout(request):
@@ -510,3 +510,193 @@ def training_performance(request):
 	args['form'] = form
 
 	return render(request,"training_performance_form.html",{'args':args})
+
+# Update Allocation Breakdown
+# Only need to do this when changes occur
+def manpower_allocation(request):
+	# label_link = '/home/file/import1/Inventory/importedxls'
+	# os.chdir(label_link)
+	sheet = 'inventory.xlsx'
+	sheet_name = 'Sheet1'
+
+	book = xlrd.open_workbook(sheet)
+	working = book.sheet_by_name(sheet_name)
+	tot = 266  # Row on Excel Sheet
+	toc = 35   # Col on Excel Sheet
+	tdate = tot+1
+	jj = 1
+	a = []
+	b = []
+	c = []
+
+	area7 = []
+	job7 = []
+	label7 = []
+
+	for fnd in range(1,400):  # Determine what row to start reading manpower from
+		fnd_cell = str(working.cell(fnd,0).value)
+		if fnd_cell == 'Plant 1 Days':
+			start1 = fnd
+			break
+	for fnd in range(start1,900):  # Determine what row to start reading jobs from
+		fnd_cell = str(working.cell(fnd,0).value)
+		if fnd_cell == 'Area 1':
+			start2 = fnd-1
+			break
+
+	# initialize 1-13 for a[]
+	for i in range(1,13):
+		exec('a' + str(i) + '= []')
+		exec('q' + str(i) + '= []')
+
+# Read in the Area, Job, Label and Hours for Allocation
+	for i in range((start2+1),(start2+180)):
+		try:
+			if len(str(working.cell(i,0).value)) > 5:
+				area7.append((str(working.cell(i,0).value)))
+				job7.append((str(working.cell(i,1).value)))
+				label_temp = ((str(working.cell(i,12).value)))
+				label_temp=label_temp[:-2]
+				label7.append(int(label_temp))
+				hrs7 = 0
+				ctr = 13
+				for ii in range(12,23):
+					temp3=str(working.cell(i,ii).value)
+					temp3=int(temp3[:-2])
+					hrs_multiplier = 8
+					if ii > 18:
+						hrs_multiplier=12
+					hrs7=hrs7+(temp3*hrs_multiplier)
+					a3.append(hrs7)
+
+				# Read in the categories
+				for ii in range(23,25):
+					temp3 = str(working.cell(i,ii).value)
+					try:
+						temp3=int(temp3[:-2])
+					except:
+						dummy=0
+					exec('q'+str(ii-22)+'.append(temp3)')
+		except:
+			break
+	b=zip(label7,a3)
+	qq=zip(q1,q2)  # This is the list of Jobs with the label number for reference
+	c=sorted(b) # Sort the list 
+	b=c
+
+# Sum hours grouped by labels
+	w={}
+	for row in c:
+		if row[0] not in w:
+			w[row[0]]=[]
+		w[row[0]].append(row[1])
+	u=[]
+	j=[]
+	k=[]
+
+# Put together the label, hours and Job
+	for i in w:
+		try:
+			u.append(i)
+			j.append(sum(w[i]))
+			for ii in qq:
+				if int(ii[0]) == i:
+					k.append(ii[1])
+					break
+		except:
+			uu=0
+	job_allocation =zip(u,j,k)
+	job_list=zip(job7,label7)
+	request.session['job_allocation'] = job_allocation  # The list of Label , Allocation Hrs, Categories
+	request.session['job_list'] = job_list # The list of Jobs, And each Label for those Jobs
+	return render(request,"test_allocation1.html")
+
+def manpower_allocation_interval_pick(request):
+	t=int(time.time())
+	tm = time.localtime(t)
+	if tm[1] < 10:
+		m = "0" + str(tm[1])
+	else:
+		m = str(tm[1])
+	if tm[2] < 10:
+		d = "0" + str(tm[2])
+	else:
+		d = str(tm[2])
+	date7 = str(tm[0]) + "-" + m + "-" + d
+	t=int(time.time()) - 86400
+	tm = time.localtime(t)
+	if tm[1] < 10:
+		m = "0" + str(tm[1])
+	else:
+		m = str(tm[1])
+	if tm[2] < 10:
+		d = "0" + str(tm[2])
+	else:
+		d = str(tm[2])
+	date6 = str(tm[0]) + "-" + m + "-" + d
+	request.session["date1_default"] =  date7
+	request.session["date2_default"] =  date6
+	if request.POST:
+		request.session["date1_allocation"] = request.POST.get("scrap_display_date1")
+		request.session["date2_allocation"] = request.POST.get("scrap_display_date2")
+		return manpower_allocation_calculation(request)
+	else:
+		form = sup_downForm()
+	args = {}
+	args.update(csrf(request))
+	args['form'] = form
+	return render(request,'manpower_allocation_interval_pick.html',{'args':args})
+
+def manpower_allocation_calculation(request):
+	date1 = request.session["date1_allocation"]
+	date2 = request.session["date2_allocation"]
+	db, cur = db_set(request)
+	ne = 'no entry'
+	aql = "SELECT Job,Hrs FROM tkb_scheduled WHERE Date1 >= '%s' and Date1 <= '%s' and Hrs <> '%s'" % (date1,date2,ne)
+	cur.execute(aql)
+	tmp2 = cur.fetchall()
+		
+	w={}
+	for row in tmp2:
+		if row[0] not in w:
+			w[row[0]]=[]
+		v=int(row[1])
+		w[row[0]].append(v)
+
+	job_list = request.session["job_list"]
+	job_allocation = request.session["job_allocation"]
+	u=[]
+	j=[]
+	k=[]
+	for i in w:
+			u.append(i)
+			j.append(sum(w[i]))
+			for ii in job_list:
+				if (ii[0]) == i:
+					k.append(ii[1])
+					break
+
+	jobz =zip(k,j)
+	jobz = sorted(jobz)
+	qqq=2/0
+	w={}
+	for row in jobz:
+		if row[0] not in w:
+			w[row[0]]=[]
+		w[row[0]].append(row[1])
+	
+	u=[]
+	j=[]
+	k=[]
+	for i in w:
+		u.append(i)
+		j.append(sum(w[i]))
+		for ii in job_allocation:
+			if ii[0]==i:
+				k.append(ii[2])
+				break
+		
+	jobz=zip(u,j,k)
+	t=4/0
+
+	return render(request,'manpower_allocation.html')

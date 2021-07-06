@@ -1,0 +1,42 @@
+{% extends "mgmt.html" %}
+<!-- mgmt_display template form.html -->
+{% block content %}
+<div class="wrapper_main">
+	<div class="frame1">
+	<br>
+	</div>
+	<div class="frame2a">
+
+<form action="" method="post">{% csrf_token %}
+<center><table>
+	<tr><td colspan="3">&nbsp;</td></tr>
+	<tr><th colspan="3"><center><font style="font-weight:bolder;font-size:x-large;"><u>Manpower Allocation</u></font></center></th></tr>
+	<tr><td colspan="3">&nbsp;</td></tr>
+    <tr>
+			<th>&nbsp;&nbsp;&nbsp;</th>
+    <th>Start Date</th>
+    <th>End Date</th>
+</tr>
+<tr>
+							<td>&nbsp;&nbsp;&nbsp;</td>
+							<td><input style="width:150px; height:40px; word-wrap: break-word;"   name="scrap_display_date1" value="{{request.session.date1_default}}" type="date"></td>
+							<td><input style="width:150px; height:40px; word-wrap: break-word;"   name="scrap_display_date2" value="{{request.session.date2_default}}" type="date"></td>
+					</tr>
+<tr><td>&nbsp;&nbsp;&nbsp;</td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;</td>
+	<td>
+<input style="background-color: rgb(177, 167, 182);border-radius: 10px;width:80px;height:30px;font-weight: 400;font-size:11px;align=left;" type="submit" value="Update">
+
+</td>
+
+</tr>
+
+
+</table></center>
+</form>
+<!--  -->
+
+</center>
+</div>
+</div>
+{% endblock %}
