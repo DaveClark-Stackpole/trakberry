@@ -516,7 +516,8 @@ def training_performance(request):
 def manpower_allocation(request):
 	# label_link = '/home/file/import1/Inventory/importedxls'
 	# os.chdir(label_link)
-	sheet = 'inventory.xlsx'
+	sheet = 'inventory.xls'  # Use this for Dell Comp only
+	# sheet = 'inventory.xlsx' # Use this all other places
 	sheet_name = 'Sheet1'
 
 	book = xlrd.open_workbook(sheet)
@@ -552,7 +553,7 @@ def manpower_allocation(request):
 # Read in the Area, Job, Label and Hours for Allocation
 	for i in range((start2+1),(start2+180)):
 		try:
-			if len(str(working.cell(i,0).value)) > 5:
+			if len(str(working.cell(i,0).value)) > 5 and len(str(working.cell(i,12).value)) > 0:
 				area7.append((str(working.cell(i,0).value)))
 				job7.append((str(working.cell(i,1).value)))
 				label_temp = ((str(working.cell(i,12).value)))
@@ -583,6 +584,7 @@ def manpower_allocation(request):
 	qq=zip(q1,q2)  # This is the list of Jobs with the label number for reference
 	c=sorted(b) # Sort the list 
 	b=c
+
 
 # Sum hours grouped by labels
 	w={}
@@ -673,32 +675,58 @@ def manpower_allocation_calculation(request):
 	for i in w:
 			u.append(i)
 			j.append(sum(w[i]))
-			for ii in job_list:
-				if (ii[0]) == i:
-					k.append(ii[1])
-					break
+			# for ii in job_list:
+			# 	if (ii[0]) == i:
+			# 		k.append(ii[1])
+			# 		break
 
-	jobz =zip(k,j)
+	# jobz =zip(k,j)
+	jobz = zip(u,j)
+
+	# Associate Job with Index number 'k' and reginerate list
+	u=[]
+	j=[]
+	for i in jobz:
+		for ii in job_list:
+			if i[0] == ii[0]:
+				k.append(ii[1])
+				u.append(i[0])
+				j.append(i[1])
+				break
+	jobz = zip(k,u,j)
 	jobz = sorted(jobz)
-	qqq=2/0
+
+	# Group all indexes with their sum of hours
 	w={}
 	for row in jobz:
 		if row[0] not in w:
 			w[row[0]]=[]
-		w[row[0]].append(row[1])
+		w[row[0]].append(row[2])
 	
-	u=[]
+# Sum all the indexes appropriately
 	j=[]
 	k=[]
+	u = []
+	pm = []
 	for i in w:
-		u.append(i)
-		j.append(sum(w[i]))
+		jj = sum(w[i])
+		j.append(jj)
 		for ii in job_allocation:
 			if ii[0]==i:
+				u.append(i)
 				k.append(ii[2])
+				if ii[1] < jj:
+					clr7 = '#ff9d96'
+				else:
+					clr7= '#abc8ff'
+				pm.append(clr7)
+
 				break
 		
-	jobz=zip(u,j,k)
-	t=4/0
+	jobz=zip(u,j,k,pm)
 
+
+
+	request.session["job_list"] = jobz
+	return render(request,"test_allocation2.html")
 	return render(request,'manpower_allocation.html')
