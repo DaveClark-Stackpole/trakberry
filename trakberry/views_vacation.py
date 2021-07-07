@@ -256,8 +256,6 @@ def vacation_set_current55(t):
 	return week_start1
 
 
-
-
 def vacation_set_current5():  # Use this one to set Kiosk Date properly
 
 	t = vacation_temp()

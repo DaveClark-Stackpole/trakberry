@@ -53,6 +53,8 @@ from test_test import table_mod1
 from view_test1 import kiosk_name,update_column
 from mod_test import wildcard_test
 from views_test2 import machine1, prediction1
+
+from views_manpower import manpower_allocation
 # ***********************************************************************************************************************************************************
 
 
@@ -108,6 +110,7 @@ from views_kiosk import test_1_10R
 from views_kiosk import manpower_layout, tenr_fix,kiosk_menu,ab1v_manpower,tenr1,trilobe,tenr2, error_hourly_duplicate
 from views_kiosk import kiosk_production_write
 from views_kiosk import set_test1, kiosk_fix55, kiosk_fix44, kiosk_help_close, kiosk_epv_verification, kiosk_epv_entry
+from views_manpower import manpower_allocation_interval_pick
 
 # ***********************************************************************************************************************************************************
 
@@ -426,6 +429,9 @@ urlpatterns = [
 	url(r'^test_update_yellow/', test_update_yellow),
 	url(r'^machine1/', machine1),
 	url(r'^prediction1/', prediction1),
+
+	url(r'^manpower_allocation/', manpower_allocation),
+
 	# ************************************************************************
 	
 	# **************  Kiosk Section ***************************************
@@ -640,6 +646,7 @@ urlpatterns = [
 	url(r'^training_matrix3/', training_matrix3),
 	url(r'^training_performance/', training_performance),
 	url(r'^trained_email/', trained_email),
+	url(r'^manpower_allocation_interval_pick/', manpower_allocation_interval_pick),
 	# **************************************************************************
 
 
