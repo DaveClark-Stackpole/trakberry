@@ -514,8 +514,8 @@ def training_performance(request):
 # Update Allocation Breakdown
 # Only need to do this when changes occur
 def manpower_allocation(request):
-	# label_link = '/home/file/import1/Inventory/importedxls'
-	# os.chdir(label_link)
+	label_link = '/home/file/import1/Inventory/importedxls'
+	os.chdir(label_link)
 	# sheet = 'inventory.xls'  # Use this for Dell Comp only
 	sheet = 'inventory.xlsx' # Use this all other places
 	sheet_name = 'Sheet1'
