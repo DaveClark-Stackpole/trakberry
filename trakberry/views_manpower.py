@@ -516,8 +516,8 @@ def training_performance(request):
 def manpower_allocation(request):
 	# label_link = '/home/file/import1/Inventory/importedxls'
 	# os.chdir(label_link)
-	sheet = 'inventory.xls'  # Use this for Dell Comp only
-	# sheet = 'inventory.xlsx' # Use this all other places
+	# sheet = 'inventory.xls'  # Use this for Dell Comp only
+	sheet = 'inventory.xlsx' # Use this all other places
 	sheet_name = 'Sheet1'
 
 	book = xlrd.open_workbook(sheet)
@@ -561,14 +561,14 @@ def manpower_allocation(request):
 				label7.append(int(label_temp))
 				hrs7 = 0
 				ctr = 13
-				for ii in range(12,23):
+				for ii in range(13,23):
 					temp3=str(working.cell(i,ii).value)
 					temp3=int(temp3[:-2])
 					hrs_multiplier = 8
 					if ii > 18:
 						hrs_multiplier=12
 					hrs7=hrs7+(temp3*hrs_multiplier)
-					a3.append(hrs7)
+				a3.append(hrs7)
 
 				# Read in the categories
 				for ii in range(23,25):
@@ -580,11 +580,11 @@ def manpower_allocation(request):
 					exec('q'+str(ii-22)+'.append(temp3)')
 		except:
 			break
-	b=zip(label7,a3)
+	b=zip(label7,a3,job7)
 	qq=zip(q1,q2)  # This is the list of Jobs with the label number for reference
-	c=sorted(b) # Sort the list 
+	# c=sorted(b) # Sort the list 
+	c=b
 	b=c
-
 
 # Sum hours grouped by labels
 	w={}
@@ -595,19 +595,21 @@ def manpower_allocation(request):
 	u=[]
 	j=[]
 	k=[]
-
 # Put together the label, hours and Job
 	for i in w:
 		try:
-			u.append(i)
-			j.append(sum(w[i]))
+			# u.append(i)
+			# j.append(sum(w[i]))
 			for ii in qq:
 				if int(ii[0]) == i:
+					u.append(i)
 					k.append(ii[1])
+					j.append(sum(w[i]))
 					break
 		except:
 			uu=0
 	job_allocation =zip(u,j,k)
+	job_allocation=sorted(job_allocation)
 	job_list=zip(job7,label7)
 	request.session['job_allocation'] = job_allocation  # The list of Label , Allocation Hrs, Categories
 	request.session['job_list'] = job_list # The list of Jobs, And each Label for those Jobs
