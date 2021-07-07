@@ -720,7 +720,14 @@ def manpower_allocation_calculation(request):
 				if ii[1] < jj:
 					clr7 = '#ff9d96'
 				else:
-					clr7= '#abc8ff'
+					x1 = ii[1]
+					x2 = jj
+					x3 = x2 / float(x1)
+					x3 = x3 * 100
+					if x3 > 79:
+						clr7= '#abc8ff'
+					else:
+						clr7 = '#d1c882'
 				pm.append(clr7)
 
 				break
