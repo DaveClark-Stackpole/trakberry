@@ -26,15 +26,17 @@ def db_open():
 	try:
 		db = MySQLdb.connect(host="127.0.0.1",user="dg417",passwd="dg",db='prodrptdb')
 		cursor = db.cursor()	# request.session["local_switch"] = 1
-	# request.session["local_toggle"] = ""
-		sql = "SELECT * from testtest" 
-  		cursor.execute(sql)
-  		tmp2 = cursor.fetchall()
-		return db, cursor
+	# request.session["local_toggle"] = ""	db = MySQLdb.connect(host="10.4.1.224",user="dg417",passwd="dg",db='prodrptdb')
+	cursor = db.cursor()
+	sql = "SELECT * from testtest" 
+	cursor.execute(sql)
+	tmp2 = cursor.fetchall()
+	return db, cursor
+
 	except:
 		try:
 			db = MySQLdb.connect(host="127.0.0.1",user="root",passwd="password",db='prodrptdb')
-			cursor = db.cursor()
+			cursor = db.cursor()ui0
 			sql = "SELECT * from testtest" 
   			cursor.execute(sql)
   			tmp2 = cursor.fetchall()
