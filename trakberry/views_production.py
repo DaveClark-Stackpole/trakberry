@@ -79,7 +79,7 @@ def track_10r_data(request,t,u):
 	cursor.execute(sql)
 	tmp = cursor.fetchall()	
 	db.close()
-	gr_list, brk1, brk2, multiplier  = Graph_Data(t,u,m,tmp,mrr)
+	gr_list, brk1, brk2, multiplier	 = Graph_Data(t,u,m,tmp,mrr)
 	return gr_list
 
 def track_data(request,t,u,part,rate):
@@ -95,7 +95,7 @@ def track_data(request,t,u,part,rate):
 	cursor.execute(sql)
 	tmp = cursor.fetchall()	
 	db.close()
-	gr_list, brk1, brk2, multiplier  = Graph_Data(t,u,m,tmp,mrr)
+	gr_list, brk1, brk2, multiplier	 = Graph_Data(t,u,m,tmp,mrr)
 	return gr_list
 
 def track_10R80data(request,t,u,part,rate):
@@ -111,31 +111,31 @@ def track_10R80data(request,t,u,part,rate):
 	cursor.execute(sql)
 	tmp = cursor.fetchall()
 	db.close()
-	gr_list, brk1, brk2, multiplier  = Graph_Data(t,u,m,tmp,mrr)
+	gr_list, brk1, brk2, multiplier	 = Graph_Data(t,u,m,tmp,mrr)
 
 	# try:
-	# 	gr_list, brk1, brk2, multiplier  = Graph_Data(t,u,m,tmp,mrr)
+	#	gr_list, brk1, brk2, multiplier	 = Graph_Data(t,u,m,tmp,mrr)
 	# except:
-	# 	gr1=[]
-	# 	gr2=[]
-	# 	gr3=[]
-	# 	gr4=[]
-	# 	gr_list = zip(gr1,gr2,gr3,gr4)
+	#	gr1=[]
+	#	gr2=[]
+	#	gr3=[]
+	#	gr4=[]
+	#	gr_list = zip(gr1,gr2,gr3,gr4)
 	return gr_list
 
 def track_tri_data(request,t,u):
-    # m1 = '650R'
-    m = '650'
-    pt = '50-1467'
-    mrr = (189*(28800))/float(28800)
-    db, cursor = db_set(request)
-    sql = "SELECT Id,Machine,Part,PerpetualCount,TimeStamp FROM GFxPRoduction where TimeStamp >= '%d' and TimeStamp< '%d' and Part = '%s'" %(u,t,pt)
-    cursor.execute(sql)
-    tmp = cursor.fetchall()	
-    db.close()
-    t=4/0
-    gr_list, brk1, brk2, multiplier  = Graph_Data(t,u,m,tmp,mrr)
-    return gr_list
+	# m1 = '650R'
+	m = '650'
+	pt = '50-1467'
+	mrr = (189*(28800))/float(28800)
+	db, cursor = db_set(request)
+	sql = "SELECT Id,Machine,Part,PerpetualCount,TimeStamp FROM GFxPRoduction where TimeStamp >= '%d' and TimeStamp< '%d' and Part = '%s'" %(u,t,pt)
+	cursor.execute(sql)
+	tmp = cursor.fetchall()	
+	db.close()
+	t=4/0
+	gr_list, brk1, brk2, multiplier	 = Graph_Data(t,u,m,tmp,mrr)
+	return gr_list
 
 	# return render(request, "track.html",{"GList":gr_list})
 
@@ -217,7 +217,7 @@ def track_area(request):
 	target = rate1
 
 	t=int(time.time())
-	# t=int(1610761821)  # Temporary time.   just force it for this time
+	# t=int(1610761821)	 # Temporary time.	 just force it for this time
 	x = int(t - 489600)
 	tm = time.localtime(t)
 	request.session["time"] = t
@@ -230,7 +230,7 @@ def track_area(request):
 	cur_hour = tm[3]
 	if cur_hour == 22:
 		cur_hour = -1
-	u = t - (((cur_hour-shift_start)*60*60)+(tm[4]*60)+tm[5])    # Starting unix of shift
+	u = t - (((cur_hour-shift_start)*60*60)+(tm[4]*60)+tm[5])	 # Starting unix of shift
 
 	shift_time = t-u
 	shift_left = 28800 - shift_time
@@ -372,16 +372,16 @@ def track_area(request):
 		request.session["oa1"] = oa
 		
 		# if asset1 == '1533':
-		# 	interval1 = 900
-		# 	m, b, start_count = prediction1(request,u,t,interval1,u)
-		# 	projection = m*e + b
-		# 	projection = projection - start_count
+		#	interval1 = 900
+		#	m, b, start_count = prediction1(request,u,t,interval1,u)
+		#	projection = m*e + b
+		#	projection = projection - start_count
 
-		# 	intervalst = 1610325078
-		# 	interval1 = 2880
-		# 	m, b, start_count = prediction1(request,intervalst,t,interval1,intervalst)
-		# 	week_projection = m*ew + b
-		# 	week_projection = week_projection - start_count
+		#	intervalst = 1610325078
+		#	interval1 = 2880
+		#	m, b, start_count = prediction1(request,intervalst,t,interval1,intervalst)
+		#	week_projection = m*ew + b
+		#	week_projection = week_projection - start_count
 			
 
 		request.session["projection1"] = int(projection)
@@ -421,7 +421,7 @@ def track_area80(request):
 	target = rate1
 
 	t=int(time.time())
-	# t=int(1614366060)  # Temporary time.   just force it for this time
+	# t=int(1614366060)	 # Temporary time.	 just force it for this time
 	x = int(t - 489600)
 	tm = time.localtime(t)
 	request.session["time"] = t
@@ -434,7 +434,7 @@ def track_area80(request):
 	cur_hour = tm[3]
 	if cur_hour == 22:
 		cur_hour = -1
-	u = t - (((cur_hour-shift_start)*60*60)+(tm[4]*60)+tm[5])    # Starting unix of shift
+	u = t - (((cur_hour-shift_start)*60*60)+(tm[4]*60)+tm[5])	 # Starting unix of shift
 
 	shift_time = t-u
 	shift_left = 28800 - shift_time
@@ -484,7 +484,7 @@ def track_10r(request):
 	cur_hour = tm[3]
 	if cur_hour == 22:
 		cur_hour = -1
-	u = t - (((cur_hour-shift_start)*60*60)+(tm[4]*60)+tm[5])    # Starting unix of shift
+	u = t - (((cur_hour-shift_start)*60*60)+(tm[4]*60)+tm[5])	 # Starting unix of shift
 
 	shift_time = t-u
 	shift_left = 28800 - shift_time
@@ -637,7 +637,7 @@ def track_tri(request):
 	cur_hour = tm[3]
 	if cur_hour == 22:
 		cur_hour = -1
-	u = t - (((cur_hour-shift_start)*60*60)+(tm[4]*60)+tm[5])    # Starting unix of shift
+	u = t - (((cur_hour-shift_start)*60*60)+(tm[4]*60)+tm[5])	 # Starting unix of shift
 
 	shift_time = t-u
 	shift_left = 28800 - shift_time
@@ -789,7 +789,7 @@ def track_tri(request):
 
 
 def tracking(request):
-	# net1(request)   # Sets the app to server or local
+	# net1(request)	  # Sets the app to server or local
 	# force changes
 	try:
 		try:
@@ -851,7 +851,7 @@ def tracking(request):
 
 def tracking_10R80_screen(request):
 	try:
-		# net1(request)   # Sets the app to server or local
+		# net1(request)	  # Sets the app to server or local
 		request.session['8area4'] = '50-9341 Finishing'
 		request.session['8data_area'] =4 # Data for 1 or 2 chart
 		request.session['8target_area'] = 4
@@ -940,7 +940,7 @@ def tracking_10R80(request):
 
 
 	try:
-		# net1(request)   # Sets the app to server or local
+		# net1(request)	  # Sets the app to server or local
 		request.session['8area4'] = '50-9341 Finishing'
 		request.session['8data_area'] =4 # Data for 1 or 2 chart
 		request.session['8target_area'] = 4
@@ -1172,22 +1172,22 @@ def chart2_9341(request):
 		request.session['asset4_area2'] = '1533'
 		return render(request, "redirect_tracking.html")
 def chart1_9341_OP30(request):
-		request.session['area1'] = '50-9341 OP30'
+		request.session['area1'] = '50-9341 1539 Only'
 		request.session['part_area1'] = '50-9341'
-		request.session['rate_area1'] = 400
-		request.session['asset1_area1'] = '1502'
-		request.session['asset2_area1'] = '1507'
+		request.session['rate_area1'] = 100
+		request.session['asset1_area1'] = '1539'
+		request.session['asset2_area1'] = '1539'
 		request.session['asset3_area1'] = '1539'
-		request.session['asset4_area1'] = '1540'
+		request.session['asset4_area1'] = '1539'
 		return render(request, "redirect_tracking.html")
 def chart2_9341_OP30(request):
-		request.session['area2'] = '50-9341 OP30'
+		request.session['area2'] = '50-9341 1502 Only'
 		request.session['part_area2'] = '50-9341'
-		request.session['rate_area2'] = 400
+		request.session['rate_area2'] = 100
 		request.session['asset1_area2'] = '1502'
-		request.session['asset2_area2'] = '1507'
-		request.session['asset3_area2'] = '1539'
-		request.session['asset4_area2'] = '1540'
+		request.session['asset2_area2'] = '1502'
+		request.session['asset3_area2'] = '1502'
+		request.session['asset4_area2'] = '1502'
 		return render(request, "redirect_tracking.html")
 def chart1_9341_OP80(request):
 		request.session['area1'] = '50-9341 OP80'
@@ -1348,7 +1348,7 @@ def mgmt(request):
 			request.session['group_asset'] = group_asset
 			summary_data = zip(summary_asset,group_asset)
 
-			mgmt_production_sort(summary_data,request)  # Run the sort algorithm
+			mgmt_production_sort(summary_data,request)	# Run the sort algorithm
 
 			# # Sort list and assign -1 or 1 alternating for groups 
 			# summary_data.sort(key=getKey3)
@@ -1358,13 +1358,13 @@ def mgmt(request):
 			# ab = -1
 			# b = 0
 			# for i in summary_data:
-			# 	a = i[1]
-			# 	if b != a:
-			# 		ab = ab * -1
-			# 		b = a
-			# 	a1.append(i[0]) # Asset number
-			# 	a2.append(i[1]) # Group number
-			# 	a3.append(ab)   # marker   1 or -1 for formating
+			#	a = i[1]
+			#	if b != a:
+			#		ab = ab * -1
+			#		b = a
+			#	a1.append(i[0]) # Asset number
+			#	a2.append(i[1]) # Group number
+			#	a3.append(ab)	# marker   1 or -1 for formating
 			# aa = zip(a1,a2,a3) # aa is the sorted list with -1 or 1 for grouping
 			# request.session['summary_data'] = aa
 
@@ -1400,7 +1400,7 @@ def mgmt(request):
 			summary_data = zip(temp_summary,temp_group)
 
 		
-			mgmt_production_sort(summary_data,request)  # Run the sort algorithm
+			mgmt_production_sort(summary_data,request)	# Run the sort algorithm
 			# mgmt_production_summary(request)
 
 		return render(request, "redirect_mgmt.html")
@@ -1429,7 +1429,7 @@ def mgmt_production_sort(summary_data,request):
 			b = a
 		a1.append(i[0]) # Asset number
 		a2.append(i[1]) # Group number
-		a3.append(ab)   # marker   1 or -1 for formating
+		a3.append(ab)	# marker   1 or -1 for formating
 	aa = zip(a1,a2,a3) # aa is the sorted list with -1 or 1 for grouping
 	request.session['summary_data'] = aa
 	return
@@ -1444,12 +1444,15 @@ def mgmt_production_summary(request):
 	mm = tm[4]
 	ss = tm[5]
 	wd = tm[6]
-	u = tcur - (hh*3600) - (mm*60) - (ss) - (wd*86400)  # Week Start
-	p = u + 604800  #End of Week
-	up = u - 604800   # Previous Week
+	u = tcur - (hh*3600) - (mm*60) - (ss) - (wd*86400)	# Week Start
+	p = u + 604800	#End of Week
+	up = u - 604800	  # Previous Week
 
 
 	now1 = int((tcur - u + (60*60))/float((8*60*60))) # number of shifts completed 
+	if now1 < 1 :
+		now1 = 1
+
 	pred_multiplier = 15 / float(now1)
 
 
@@ -1477,10 +1480,10 @@ def mgmt_production_summary(request):
 	mup = ('0' + mup) if len(mup) == 1 else mup
 	dup= ('0' + dup) if len(dup) == 1 else dup
 
-	date1 = str(tm[0]) + '-' + m + '-' + d       # date for Midnight shift of the 24hr mark
-	date2 = str(tm2[0]) + '-' + mm + '-' + dd    # date for Afternoon and Day shift on the 24hr mark
-	date3 = str(tu[0]) + '-' + mu + '-' + du       # date for start of week
-	date4 = str(tup[0]) + '-' + mup + '-' + dup       # date for start of last week
+	date1 = str(tm[0]) + '-' + m + '-' + d		 # date for Midnight shift of the 24hr mark
+	date2 = str(tm2[0]) + '-' + mm + '-' + dd	 # date for Afternoon and Day shift on the 24hr mark
+	date3 = str(tu[0]) + '-' + mu + '-' + du	   # date for start of week
+	date4 = str(tup[0]) + '-' + mup + '-' + dup		  # date for start of last week
 
 	if hr>= 23 :
 		sh1 = ['Aft','Day','Mid']
@@ -1510,7 +1513,7 @@ def mgmt_production_summary(request):
 	request.session['shift_title2'] = sh1[1]
 	request.session['shift_title3'] = sh1[2]
 
-	# u_sh_start = tcur - (((cur_hour-shift_start)*60*60)+(tm[4]*60)+tm[5])    # Starting unix of shift
+	# u_sh_start = tcur - (((cur_hour-shift_start)*60*60)+(tm[4]*60)+tm[5])	   # Starting unix of shift
 
 
 	db, cur = db_set(request)
@@ -1559,7 +1562,7 @@ def mgmt_production_summary(request):
 			pd = str(ptm[2])
 			pm = ('0' + pm) if len(pm) == 1 else pm
 			pd = ('0' + pd) if len(pd) == 1 else pd
-			date1 = str(ptm[0]) + '-' + pm + '-' + pd      # date to lookup
+			date1 = str(ptm[0]) + '-' + pm + '-' + pd	   # date to lookup
 
 			try:
 				aql = "SELECT SUM(actual_produced) FROM sc_production1 WHERE pdate = '%s' and asset_num = '%s' and shift = '%s'" % (date1,i[0],ii[1])
@@ -1674,7 +1677,7 @@ def mgmt_24hr_production(request):
 	a4 = tm[5]
 	week_start1 = t - a1 - a2 - a3 - a4
 
-	u1 = t - tm[3]*60*60-tm[4]*60-tm[5]-61200    # Starting 7am previous day
+	u1 = t - tm[3]*60*60-tm[4]*60-tm[5]-61200	 # Starting 7am previous day
 	u2 = u1 + 86400
 	week_start2 = week_start1 - 604800
 
@@ -1935,7 +1938,7 @@ def mgmt_production_hourly_edit(request, index):
 		form = kiosk_dispForm3()
 	args = {}
 	args.update(csrf(request))
-	args['form'] = form  
+	args['form'] = form	 
 
 #	db, cur = db_set(request)
 #	s1 = "SELECT MAX(id)  FROM sc_prod_hour WHERE p_cell = '%s'" %(p_cell) 
@@ -1982,14 +1985,14 @@ def mgmt_users_logins_edit(request):
 		db, cursor = db_set(request)
 		cur = db.cursor()
 
-		if b == -3:  # Reroute to the Warning message 
+		if b == -3:	 # Reroute to the Warning message 
 			request.session["bounce"] = 1
 			request.session["user_logins1"] = user_name
 			request.session["password"] = password
 			request.session["department"] = department
 			return render(request,'production/redirect_mgmt_users_logins_edit.html')
 
-		if b == -2:  # Cancel Entry and go back to logins list
+		if b == -2:	 # Cancel Entry and go back to logins list
 			request.session["bounce"] = 0
 
 		return render(request,'production/redirect_mgmt_users_logins.html')
@@ -2046,14 +2049,14 @@ def mgmt_users_logins_add(request):
 		db, cursor = db_set(request)
 		cur = db.cursor()
 
-		if b == -3:  # Reroute to the Warning message 
+		if b == -3:	 # Reroute to the Warning message 
 			request.session["bounce"] = 1
 			request.session["user_logins1"] = user_name
 			request.session["password"] = password
 			request.session["department"] = department
 			return render(request,'production/redirect_mgmt_users_logins_add.html')
 
-		if b == -2:  # Cancel Entry and go back to logins list
+		if b == -2:	 # Cancel Entry and go back to logins list
 			request.session["bounce"] = 0
 
 		return render(request,'production/redirect_mgmt_users_logins.html')
@@ -2151,29 +2154,29 @@ def prioritize(request):
 	# tmp=cur.fetchall()
 	# asset2 = []
 	# for i in tmp:
-	# 	asset = i[0][:4]
-	# 	try:
-	# 		test1 = int(asset)
-	# 	except:
-	# 		asset = asset[:3]
-	# 	try:
-	# 		test1 = int(asset)
-	# 		asset2.append(asset)
-	# 	except:
-	# 		dummy = 1
+	#	asset = i[0][:4]
+	#	try:
+	#		test1 = int(asset)
+	#	except:
+	#		asset = asset[:3]
+	#	try:
+	#		test1 = int(asset)
+	#		asset2.append(asset)
+	#	except:
+	#		dummy = 1
 	# for i in asset2:
-	# 	tmp_asset2 = 1
-	# 	n = 'None'
-	# 	try:
-	# 		sql1 = "SELECT partno FROM sc_production1 where left(asset_num,4) = '%s' and partno != '%s' ORDER BY id DESC LIMIT 1" %(i,n)
-	# 		cur.execute(sql1)
-	# 		tmp_part = cur.fetchall()
-	# 		part2 = tmp_part[0][0]
-	# 		part2 = part2[:7]
-	# 		cur.execute('''INSERT INTO tkb_asset_priority(asset_num,part) VALUES(%s,%s)''', (i,part2))
-	# 		db.commit()
-	# 	except:
-	# 		dummy = 1
+	#	tmp_asset2 = 1
+	#	n = 'None'
+	#	try:
+	#		sql1 = "SELECT partno FROM sc_production1 where left(asset_num,4) = '%s' and partno != '%s' ORDER BY id DESC LIMIT 1" %(i,n)
+	#		cur.execute(sql1)
+	#		tmp_part = cur.fetchall()
+	#		part2 = tmp_part[0][0]
+	#		part2 = part2[:7]
+	#		cur.execute('''INSERT INTO tkb_asset_priority(asset_num,part) VALUES(%s,%s)''', (i,part2))
+	#		db.commit()
+	#	except:
+	#		dummy = 1
 	sql1 = "SELECT * FROM tkb_priorities"
 	cur.execute(sql1)
 	tmp_pr = cur.fetchall()
@@ -2206,8 +2209,8 @@ def wfp(request):
 
 # One system will be running this and it will do all the daily updates.
 # Check production entries, update manpower, update matrix
-def auto_updater(request):  # This will run every 30 min on the refresh page to see if update occurs
-	prioritize(request)   # This will run the asset priority section
+def auto_updater(request):	# This will run every 30 min on the refresh page to see if update occurs
+	prioritize(request)	  # This will run the asset priority section
 	t=int(time.time())
 	tm = time.localtime(t)
 	hr1 = str(tm[3])
