@@ -32,7 +32,7 @@ def maint_job_entry(request):
 		priority = 30000
 		whoisonit = 'Millwright'
 		
-		# take comment into tx and ensure no "" exist.  If they do change them to ''
+		# take comment into tx and ensure no "" exist.	If they do change them to ''
 		tx = problem
 		tx = ' ' + tx
 		tps = list(tx)
@@ -95,7 +95,7 @@ def maint_job_entry(request):
 			db.commit()
 			db.close()
 		except:
-			cur.execute("Alter Table pr_downtime1 ADD Column side VARCHAR(100) DEFAULT '0'") #% (side2)  # Add a Column
+			cur.execute("Alter Table pr_downtime1 ADD Column side VARCHAR(100) DEFAULT '0'") #% (side2)	 # Add a Column
 			db.commit()
 			cur.execute('''INSERT INTO pr_downtime1(machinenum,problem,priority,whoisonit,called4helptime,side) VALUES(%s,%s,%s,%s,%s,%s)''', (asset5,problem,priority,whoisonit,t,side1))
 			db.commit()
@@ -129,12 +129,12 @@ def maint_mgmt_auto(request):
 	return render(request,'redirect_maint_mgmt.html')
 
 def maint_mgmt(request):
-	net1(request)   # Sets the app to server or local
-	request.session["TCUR"] = int(time.time())  # Assign current Timestamp to TCUR for proper image and include refresh 
+	net1(request)	# Sets the app to server or local
+	request.session["TCUR"] = int(time.time())	# Assign current Timestamp to TCUR for proper image and include refresh 
 	maint_initialize_rv(request)  #initialize request variables
 
 	request.session["main_screen_color"] = "#abad97"  # Color of Background in APP
-	request.session["main_menu_color"] = "#f8fcd7"    # Color of Menu Bar in APP
+	request.session["main_menu_color"] = "#f8fcd7"	  # Color of Menu Bar in APP
 	request.session["main_body_color"] = "#EBF0CB"
 	request.session["main_body_menu_color"] = "#D2D2D2"
 	request.session["bounce"] = 0
@@ -197,7 +197,7 @@ def maint_mgmt(request):
 		cursor.execute(SQ2)
 		tmp4 = cursor.fetchall()
 		tmp4 = list(tmp4)
-# 	Determing a list of names currently assigned to jobs
+#	Determing a list of names currently assigned to jobs
 		tmp2 = []
 		tmp3 = []
 		on1 = []
@@ -211,7 +211,7 @@ def maint_mgmt(request):
 			else:
 				for ii in nm:
 					tmp3.append(ii)
-		# need to compare tmp4 and tmp3 and put into two different appends.   on1 and off1
+		# need to compare tmp4 and tmp3 and put into two different appends.	  on1 and off1
 		for i in tmp4:
 			t4.append(i[0])
 			found1 = 0
@@ -238,7 +238,7 @@ def maint_mgmt(request):
 	db.close()
 
 	# if wildcard == 1:
-	# 	ch1 = request.session["maint_mgmt_login_password_check"]
+	#	ch1 = request.session["maint_mgmt_login_password_check"]
 
 
 	if request.POST:
@@ -285,7 +285,7 @@ def maint_mgmt(request):
 				request.session["maint_mgmt_main_switch"] = 1
 				db.close()
 
-			return render(request, "redirect_maint_mgmt.html")  # This will be it once we've determined switch
+			return render(request, "redirect_maint_mgmt.html")	# This will be it once we've determined switch
 
 		request.session["index"] = selected2
 		return render(request, "maint_edit.html")
@@ -321,7 +321,7 @@ def maint_mgmt_login_form(request):
 
 
 		# if len(login_name) < 5:
-		# 	login_password = 'wrong'
+		#	login_password = 'wrong'
 		if check != 'false':
 			request.session["maint_mgmt_login_name"] = request.session["login_name"]
 			request.session["maint_mgmt_login_password"] = request.session["login_password"]
@@ -355,7 +355,7 @@ def maint_mgmt_manpower(request):
 	dep = request.session['login_department']
 	cursor.execute("""CREATE TABLE IF NOT EXISTS tkb_logins(Id INT PRIMARY KEY AUTO_INCREMENT,user_name CHAR(50), password CHAR(50), department CHAR(50), active1 INT(10) default 0)""")
 	db.commit()
-	sql = "SELECT * FROM tkb_logins WHERE department = '%s' ORDER BY user_name ASC" %(dep)  # Select only those in the department  (dep)
+	sql = "SELECT * FROM tkb_logins WHERE department = '%s' ORDER BY user_name ASC" %(dep)	# Select only those in the department  (dep)
 	cursor.execute(sql)
 	tmp = cursor.fetchall()
 	tmp2 = list(tmp)
@@ -375,7 +375,7 @@ def maint_manpower(request):
 	cursor.execute("""CREATE TABLE IF NOT EXISTS tkb_logins(Id INT PRIMARY KEY AUTO_INCREMENT,user_name CHAR(50), password CHAR(50), department CHAR(50),active1 INT(10) default 0)""")
 	# cursor.execute("""CREATE TABLE IF NOT EXISTS tkb_maint_list LIKE tkb_tech_list""")
 	db.commit()
-	sql = "SELECT user_name FROM tkb_logins WHERE department = '%s' ORDER BY user_name ASC" %(dep)  # Select only those in the department  (dep)
+	sql = "SELECT user_name FROM tkb_logins WHERE department = '%s' ORDER BY user_name ASC" %(dep)	# Select only those in the department  (dep)
 	# sql = "SELECT Tech FROM tkb_maint_list"
 	cursor.execute(sql)
 	tmp = cursor.fetchall()
@@ -402,7 +402,7 @@ def maintenance_edit(request):
 	request.session["priority"] = tmp2[3]
 	request.session["manpower"] = tmp2[4]
 
-	nm = multi_name_breakdown(tmp2[4])  # put all the names in a list that are seperated by a   |
+	nm = multi_name_breakdown(tmp2[4])	# put all the names in a list that are seperated by a	|
 
 	db.close()
 
@@ -481,7 +481,7 @@ def maintenance_edit(request):
 			return render(request,'redirect_maint_mgmt.html')  # Need to bounce out to an html and redirect back into a module otherwise infinite loop
 
 
-		if b==-2:   # Route to bounce and check if we are really going to close this item
+		if b==-2:	# Route to bounce and check if we are really going to close this item
 			request.session["bounce"] = 1
 			return render(request,'redirect_maint_edit.html')  # Need to bounce out to an html and redirect back into a module otherwise infinite loop
 
@@ -589,7 +589,7 @@ def tech_email_test(request):
 	return render(request, "email_downtime_cycle.html")
 
 def maint(request):
-	net1(request)   # Sets the app to server or local
+	net1(request)	# Sets the app to server or local
 	# Initialize Request Sessions if they don't exist
 	try:
 		request.session["bounce2_switch"]
@@ -656,13 +656,13 @@ def maint(request):
 
 
 	try:
-		sql = "SELECT side FROM tkb_logins WHERE department = '%s' and user_name = '%s'" %(dep,login2)  # Select only those in the department  (dep)
+		sql = "SELECT side FROM tkb_logins WHERE department = '%s' and user_name = '%s'" %(dep,login2)	# Select only those in the department  (dep)
 		cursor.execute(sql)
 		tmp = cursor.fetchall()
 	except:
 		cursor.execute("Alter Table tkb_logins ADD Column side VARCHAR(100) DEFAULT '0'")  # Add a Column
 		db.commit()
-		sql = "SELECT side FROM tkb_logins WHERE department = '%s' and user_name = '%s'" %(dep,login2)  # Select only those in the department  (dep)
+		sql = "SELECT side FROM tkb_logins WHERE department = '%s' and user_name = '%s'" %(dep,login2)	# Select only those in the department  (dep)
 		cursor.execute(sql)
 		tmp = cursor.fetchall()
 	try:
@@ -678,7 +678,7 @@ def maint(request):
 		sideB = sideA
 		sideC = sideA
 
-	sql = "SELECT user_name FROM tkb_logins WHERE department = '%s' ORDER BY user_name ASC" %(dep)  # Select only those in the department  (dep)
+	sql = "SELECT user_name FROM tkb_logins WHERE department = '%s' ORDER BY user_name ASC" %(dep)	# Select only those in the department  (dep)
 	cursor.execute(sql)
 	tmp = cursor.fetchall()
 	
@@ -729,23 +729,23 @@ def maint(request):
 	ctr2 = 0
 	for x in tmp:
 
-		add_job = 0   # Determines if we add this job to list to display
+		add_job = 0	  # Determines if we add this job to list to display
 		tmp2 = (tmp[ctr2])
 		temp_pr = tmp2[3]
 		# if temp_pr == "A":
-		# 	tp = 1
+		#	tp = 1
 		# elif temp_pr =="c":
-		# 	tp = 3
+		#	tp = 3
 		# elif temp_pr =="b" :
-		# 	tp = 2
+		#	tp = 2
 		# elif temp_pr =="B" :
-		# 	tp = 2
+		#	tp = 2
 		# elif temp_pr =="C" :
-		# 	tp = 3
+		#	tp = 3
 		# elif temp_pr =="D"	:
-		# 	tp = 4
+		#	tp = 4
 		# elif temp_pr =="E":
-		# 	tp = 5
+		#	tp = 5
 
 
 		tmp3 = tmp2[4]
@@ -771,10 +771,10 @@ def maint(request):
 				break
 		# Do this if we need to assign to display tuple
 		if add_job == 1:
-			job.append(tmp2[0])  # Assign machine to job
+			job.append(tmp2[0])	 # Assign machine to job
 			prob.append(tmp2[1]) # Assign problem to prob
 			priority.append(int(tmp2[3]))  #Assign priority number to priority
-			id.append(tmp2[11])  # Assign idnumber to id
+			id.append(tmp2[11])	 # Assign idnumber to id
 			tch.append(tmp3)   # Assign Name to tch
 			ctr = ctr + 1
 		ctr2 = ctr2 + 1
@@ -842,7 +842,7 @@ def maint(request):
   # call up 'display.html' template and transfer appropriate variables.
 
   # *********************************************************************************************************
-  # ******     Messaging portion of the Maint App  *********************  TODO  *****************************
+  # ******	   Messaging portion of the Maint App  *********************  TODO	*****************************
   # *********************************************************************************************************
 #	N = request.session["login_maint"]
 #	R = 0
@@ -876,7 +876,8 @@ def maint(request):
 	M = 'Need Millwright'
 	E = 'Maintenance'
 	wfp = 'WFP'
-	return render(request,"maint.html",{'L':LList,'N':n,'M':M,'E':E,'wfp':wfp})
+	project = 'Project'
+	return render(request,"maint.html",{'L':LList,'N':n,'M':M,'E':E,'wfp':wfp,'project':project})
 
 def maint_close_item(request):
 	index=request.session["index"]
@@ -918,12 +919,12 @@ def maint_call(request, index):
 
 	tec = request.session["login_maint"]  # this is the person logged in's name
 	db, cur = db_set(request)
-	sql1 = "SELECT whoisonit,whoisonit_full FROM pr_downtime1 where idnumber='%s'" %(index)  # Call up that job in downtime table by index# that was passed
+	sql1 = "SELECT whoisonit,whoisonit_full FROM pr_downtime1 where idnumber='%s'" %(index)	 # Call up that job in downtime table by index# that was passed
 	cur.execute(sql1)
 	tmp = cur.fetchall()
 	tmp2 = tmp[0]
-	tmp3 = tmp2[0]  # This is the current name / string of names/ 
-	tmp4 = tmp2[1]  # This is the total names worked on job
+	tmp3 = tmp2[0]	# This is the current name / string of names/ 
+	tmp4 = tmp2[1]	# This is the total names worked on job
 	t = generate_string(tmp3,tec)
 	tfull = generate_full_string(tmp4,tec)
 
