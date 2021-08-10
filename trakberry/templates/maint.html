@@ -199,6 +199,7 @@
 {% elif i.3 == E %}
 	{% if i.1|slice:"-3:" != wfp %}
 		{% if i.1|slice:"-7:" != project %}
+			
 			<div class="row">
 				<div class="col-sm-8" style="background-color: rgb(252, 244, 136);border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;"><font color="#000000" size ="4" border="1">
 					{{i.0}} : {{ i.1 }}
@@ -225,6 +226,8 @@
 {% else %}
 	<div class="row">
 			{% if i.1|slice:"-3:" != wfp %}
+			 {% if i.3 not in techs %}
+
 		<div class="col-sm-8" style="background-color: #999999;border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;"><font color="#000000" size ="4" border="1">{{i.0}} : {{ i.1}}</div>
 		
 	</div>	
@@ -238,6 +241,7 @@
 		<!-- <center><a href="{{request.session.local_toggle}}/mclose/get/{{ i.2 }}" style="color: black">Complete</b></a></center> -->
 		<center><a href="{{request.session.local_toggle}}/mclose/get/{{ i.2 }}" style="color: black">Complete</b></a></center>
 		</div>
+		{% endif %}
 		{% endif %}
 	</div>
 {% endif %}
