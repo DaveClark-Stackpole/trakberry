@@ -682,6 +682,15 @@ def maint(request):
 	cursor.execute(sql)
 	tmp = cursor.fetchall()
 	
+	sql = "SELECT tech FROM tkb_techs"
+	cursor.execute(sql)
+	ttmp = cursor.fetchall()
+	tt = []
+	for i in ttmp:
+		tt.append(i[0])
+	tech_tmp = tt
+	# tech_tmp = list(ttmp)
+	
 
 	for i in tmp:
 		maint.append(i[0])
@@ -877,7 +886,7 @@ def maint(request):
 	E = 'Maintenance'
 	wfp = 'WFP'
 	project = 'Project'
-	return render(request,"maint.html",{'L':LList,'N':n,'M':M,'E':E,'wfp':wfp,'project':project})
+	return render(request,"maint.html",{'L':LList,'N':n,'M':M,'E':E,'wfp':wfp,'project':project,'techs':tech_tmp})
 
 def maint_close_item(request):
 	index=request.session["index"]

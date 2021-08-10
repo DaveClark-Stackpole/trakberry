@@ -246,6 +246,12 @@ def tech(request):
 	bmp = amp[0]
 	count3 = bmp[0]
 	if count2 == 0 and count3 == 0 :
+
+		# We should write the remaining EPVs into a missed EPV list for reference
+		cur.execute("TRUNCATE TABLE quality_epv_week")  # This will clear out remaining EPVs
+		db.commit()
+
+		
 		week_dump = 1
 		sql = "SELECT QC1,OP1,Check1,Desc1,Method1,Asset FROM quality_epv_assets where Person = '%s'" % (clock2)
 		cursor.execute(sql)
@@ -270,8 +276,8 @@ def tech(request):
 	a9 = "Ervin Kuepfer"
 	a10 = "Jonathan Brunk"
 	a11 = "Mayank Gehlot"
-	a13 = "Les Vaters"
-	a12 = "Dan Deighton"
+	a13 = "James Shipway"
+	a12 = "Karissa St.Pierre"
 	a14 = "Jered Pankratz"
 	a15 = "Derek Peachey"
 	a16 = "Rob Wood"
