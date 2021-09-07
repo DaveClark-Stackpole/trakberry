@@ -311,7 +311,7 @@ def track_area(request):
 	utemp = u
 	total_test = 0
 	
-	for i in range(1,8):
+	for i in range(1,18):
 		unew = utemp - 28800
 		x1, x2, x3, x4 = day_breakdown(unew)
 		u1.append(str(unew))
@@ -341,7 +341,7 @@ def track_area(request):
 	# the weekend is 172800
 	wrm = 0
 	if prt == '50-9341':
-		wrm = .4
+		wrm = .5
 	elif prt == '50-1467':
 		wrm = 1
 	elif prt == '50-3050':
@@ -364,6 +364,8 @@ def track_area(request):
 		# week_rate2 = week_rate / float(2)
 		# week_rate2 = week_rate2 * 172800
 		week_projection = week_projection + weekend_projection
+		if prt == '50-9341':
+			week_projection = week_projection + 2400
 
 	current_rate = cnt / float(shift_time)
 	projection = int(current_rate * (shift_left)) + cnt
@@ -1270,21 +1272,21 @@ def chart2_9341_OP80(request):
 		request.session['asset4_area2'] = '1527'
 		return render(request, "redirect_tracking.html")
 def chart1_9341_OP110(request):
-		request.session['area1'] = '50-9341 OP110'
+		request.session['area1'] = '50-9341 OP110 1511'
 		request.session['part_area1'] = '50-9341'
-		request.session['rate_area1'] = 400
+		request.session['rate_area1'] = 200
 		request.session['asset1_area1'] = '1511'
-		request.session['asset2_area1'] = '1528'
+		request.session['asset2_area1'] = '1511'
 		request.session['asset3_area1'] = '1511'
-		request.session['asset4_area1'] = '1528'
+		request.session['asset4_area1'] = '1511'
 		return render(request, "redirect_tracking.html")
 def chart2_9341_OP110(request):
-		request.session['area2'] = '50-9341 OP110'
+		request.session['area2'] = '50-9341 OP110 1528'
 		request.session['part_area2'] = '50-9341'
-		request.session['rate_area2'] = 400
-		request.session['asset1_area2'] = '1511'
+		request.session['rate_area2'] = 200
+		request.session['asset1_area2'] = '1528'
 		request.session['asset2_area2'] = '1528'
-		request.session['asset3_area2'] = '1511'
+		request.session['asset3_area2'] = '1528'
 		request.session['asset4_area2'] = '1528'
 		return render(request, "redirect_tracking.html")
 def chart1_5214_OP30(request):
