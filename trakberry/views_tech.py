@@ -248,7 +248,7 @@ def tech(request):
 	if count2 == 0 and count3 == 0 :
 
 		# We should write the remaining EPVs into a missed EPV list for reference
-		cur.execute("TRUNCATE TABLE quality_epv_week")  # This will clear out remaining EPVs
+		cursor.execute("TRUNCATE TABLE quality_epv_week")  # This will clear out remaining EPVs
 		db.commit()
 
 		
