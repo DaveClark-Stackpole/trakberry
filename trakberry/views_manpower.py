@@ -514,10 +514,10 @@ def training_performance(request):
 # Update Allocation Breakdown
 # Only need to do this when changes occur
 def manpower_allocation(request):
-	label_link = '/home/file/import1/Inventory/importedxls'
-	os.chdir(label_link)
-	# sheet = 'inventory.xls'  # Use this for Dell Comp only
-	sheet = 'inventory.xlsx' # Use this all other places
+	# label_link = '/home/file/import1/Inventory/importedxls'
+	# os.chdir(label_link)
+	sheet = 'inventory.xls'  # Use this for Dell Comp only
+	# sheet = 'inventory.xlsx' # Use this all other places
 	sheet_name = 'Sheet1'
 
 	book = xlrd.open_workbook(sheet)
@@ -595,6 +595,8 @@ def manpower_allocation(request):
 	u=[]
 	j=[]
 	k=[]
+
+	r=4/0
 # Put together the label, hours and Job
 	for i in w:
 		try:
