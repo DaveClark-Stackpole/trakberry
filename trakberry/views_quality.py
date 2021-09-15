@@ -57,7 +57,6 @@ def pie_chart(request):
 	request.session['epv_reqd'] = incomplete
 	request.session['epv_comp'] = completed
 
-
 	return render(request, "pie.html")
 
 def sup_pie_chart(request):
