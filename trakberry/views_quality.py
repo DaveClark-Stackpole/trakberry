@@ -17,6 +17,39 @@ import time
 import datetime 
 from django.core.context_processors import csrf
 
+def pie_chart_date(tm):
+	month_st = tm[1]
+	year_st = tm[0]
+	day_st = tm[2]
+	if int(month_st)<10:
+		current_first = str(year_st) + "-" + "0" + str(month_st) 
+	else:
+		current_first = str(year_st) + "-" + str(month_st) 		
+	if int(day_st)<10:
+		current_first = current_first + "-" + "0" + str(day_st)
+	else:
+		current_first = current_first + "-" + str(day_st)
+	return current_first
+
+def initial_epv(request):
+	dummy=6
+	request.session["direction5"] = 0
+	return render(request, "redirect_pie_chart.html")
+
+def previous_epv(request):
+	direction4 = request.session["direction5"]
+	direction4 = int(direction4) - 1
+	request.session["direction5"] = direction4
+	return render(request,"redirect_pie_chart.html")
+
+def next_epv(request):
+	direction4 = request.session["direction5"]
+	direction4 = int(direction4) + 1
+	if direction4 > 0:
+		direction4 = 0
+	request.session["direction5"] = direction4
+	return render(request,"redirect_pie_chart.html")
+
 
 def pie_chart(request):
 	p = 'CNC Tech'
@@ -25,15 +58,66 @@ def pie_chart(request):
 	cur.execute(sql)
 	tmp = cur.fetchall()
 	tmp2=tmp[0][0]
+
+
 	sql = "SELECT date1 FROM quality_epv_week"
 	cur.execute(sql)
 	tmp = cur.fetchall()
 	tmp_date=tmp[0][0]
 
+
+	try:
+		direction4 = request.session["direction5"]  # -1 is backwards +1 forward
+	except:
+		direction4 = 0
+		request.session["direction5"] = 0
+
+
+	
+	# Take tmp_date and calculate 7 days prior and make it current_first
+	ts = time.mktime(datetime.datetime.strptime(tmp_date,"%Y-%m-%d").timetuple())
+	ts = ts - 86400 + (604800 * direction4)
+	tm = time.localtime(ts)
+	date_start = pie_chart_date(tm)
+
+
+	ts = ts + 691200
+	tm = time.localtime(ts)
+	date_end = pie_chart_date(tm)
+
+
+	cnum = '9999'
+	sql7 = "SELECT Count(*) FROM quality_epv_checks where clock_num >'%s' and date1 > '%s' and date1 < '%s' " % (cnum,date_start,date_end)
+	cur.execute(sql7)
+	tmp7 = cur.fetchall()
+	tmp_cmplt = tmp7[0][0]
+	
 	sql = "SELECT Count(*) FROM quality_epv_assets where Person='%s'" % (p)
 	cur.execute(sql)
 	tmp = cur.fetchall()
 	tmp_reqd=tmp[0][0]
+
+	sql2 = "Select * from quality_epv_assets where Person='%s'" % (p)
+	cur.execute(sql2)
+	tmp2 = cur.fetchall()
+
+	sql3 = "Select * from quality_epv_checks where clock_num > '%s' and date1 > '%s' and date1 < '%s' " % (cnum,date_start,date_end)
+	cur.execute(sql3)
+	tmp3 = cur.fetchall()
+
+	a=[]
+	for i in tmp2:
+		ch = 0
+		for ii in tmp3:
+			if i[1] == ii[3] and i[8] == ii[5]:
+				ch = 1
+				break
+		if ch == 0:
+			a.append(i)
+
+	completed = int(tmp_cmplt)
+	incomplete = int(tmp_reqd) - int(tmp_cmplt)
+
 
 	# pp = 99999
 	# sql = "SELECT Count(*) FROM quality_epv_checks where date1 >= '%s' and clock_num>'%s'" % (tmp_date,pp)
@@ -45,15 +129,18 @@ def pie_chart(request):
 	# completed = int(tmp_done)
 	# incomplete = int(tmp_reqd) - int(tmp_done)
 
-	completed = int(tmp_reqd) - int(tmp2)
-	incomplete = int(tmp2)
 
-	# tt=5/0
+	
+
+	# completed = int(tmp_reqd) - int(tmp2)
+	# incomplete = int(tmp2)
 
 	sql = "SELECT * FROM quality_epv_week"
 	cur.execute(sql)
 	tmp = cur.fetchall()
-	request.session['epv_left'] = tmp
+
+
+	request.session['epv_left'] = a
 	request.session['epv_reqd'] = incomplete
 	request.session['epv_comp'] = completed
 

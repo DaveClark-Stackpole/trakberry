@@ -6,7 +6,12 @@
 		<font style="font-size: 35px; color:rgb(212, 212, 212); text-shadow: 1px 1px 2px black, 0 0 25px rgb(0, 0, 0), 0 0 5px rgb(255, 255, 255);">
 		CNC Tech EPV Completion
 		</font>
-	
+		<br>
+		<button style="background-color: #98b49a;border-radius: 10px;width:130px;height:50px;font-weight: 600;" onclick="window.location.href='{{request.session.local_toggle}}/previous_epv';"><center><font color="#000000"> << Previous Week</font></center></button>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		{% if request.session.direction5 != 0 %}
+		<button style="background-color: #98b49a;border-radius: 10px;width:130px;height:50px;font-weight: 600;" onclick="window.location.href='{{request.session.local_toggle}}/next_epv';"><center><font color="#000000"> Next Week >></font></center></button>
+		{% endif %}
 		<div id="piechart_3d" style="width: 70%; height: 500px;"></div>
 	</center>
 	</div>
@@ -29,11 +34,11 @@
 			{% for i in request.session.epv_left %}
 			<tr>
 			<td style="font-size: 14px; color:rgb(53, 47, 47);border:1px solid rgb(255, 238, 0);background-color:rgb(158, 158, 158);">
-			{{i.7}} </td>
+			{{i.8}} </td>
 			<td style="font-size: 14px; color:rgb(53, 47, 47);border:1px solid rgb(255, 238, 0);background-color:rgb(158, 158, 158);">
-			{{i.4}} </td>
+			{{i.3}} </td>
 			<td style="font-size: 14px; color:rgb(53, 47, 47);border:1px solid rgb(255, 238, 0);background-color:rgb(158, 158, 158);">
-			{{i.2}}</td>
+			{{i.1}}</td>
 		</tr>
 
 			{% endfor %}

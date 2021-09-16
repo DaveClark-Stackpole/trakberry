@@ -159,7 +159,7 @@ from views_scrap import tpm_display,scrap_edit_categories_delete,scrap_edit_cate
 # ***********************************************************************************************************************************************************
 
 # *******************************************  Quality Section ********************************************************************************************
-from views_quality import pie_chart,sup_pie_chart,quality_epv_asset_entry
+from views_quality import pie_chart,sup_pie_chart,quality_epv_asset_entry, initial_epv, previous_epv, next_epv
 # 
 
 # *******************************************  Manpower Section ********************************************************************************************
@@ -644,6 +644,9 @@ urlpatterns = [
 	url(r'^scrap_edit_categories_delete/get/(?P<index>\d+)/$', scrap_edit_categories_delete),
 	url(r'^scrap_edit_categories_save/', scrap_edit_categories_save),
 	url(r'^pie_chart/', pie_chart),
+	url(r'^initial_epv/', initial_epv),
+	url(r'^next_epv/', next_epv),
+	url(r'^previous_epv/', previous_epv),
 	url(r'^quality_epv_asset_entry/', quality_epv_asset_entry),
 	# **************************************************************************
 
