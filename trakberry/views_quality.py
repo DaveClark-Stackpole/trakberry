@@ -85,7 +85,7 @@ def pie_chart(request):
 	tm = time.localtime(ts)
 	date_end = pie_chart_date(tm)
 
-
+	request.session["EPV_Week"] = date_start
 	cnum = '9999'
 	sql7 = "SELECT Count(*) FROM quality_epv_checks where clock_num >'%s' and date1 > '%s' and date1 < '%s' " % (cnum,date_start,date_end)
 	cur.execute(sql7)
