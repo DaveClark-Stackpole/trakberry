@@ -204,6 +204,72 @@ def day_breakdown(tt):
 
 	return wday,mnth,day1,shift
 
+# Quickly calculates p
+def track_email(request):
+	t=int(time.time())
+	tm = time.localtime(t)
+	request.session["time"] = t
+	shift_start = -2
+	current_shift = 3
+	if tm[3]<22 and tm[3]>=14:
+		shift_start = 14
+	elif tm[3]<14 and tm[3]>=6:
+		shift_start = 6
+	cur_hour = tm[3]
+	if cur_hour == 22:
+		cur_hour = -1
+	u = t - (((cur_hour-shift_start)*60*60)+(tm[4]*60)+tm[5])	 # Starting unix of shift
+
+	prt = '50-9341'
+	asset1 = ['1507','1502','1539','1540','1528','1511','1533']
+	count1 = []
+	db, cur = db_set(request)
+
+	for i in asset1:
+		aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (u,t,prt,i,i,i,i)
+		cur.execute(aql)
+		tmp2 = cur.fetchall()
+		tmp3 = tmp2[0]
+		c = tmp3[0] / float ( t-u)
+		c = int(c * 28800)
+		count1.append(c)
+	pred1 = zip(asset1,count1)
+	db.close()
+
+	tm = time.localtime(t)   # Local time
+	mm = str(tm[4])
+	if len((mm)) < 2:
+		mm = '0'+ mm
+	pdate = str(tm[1]) + '-' + str(tm[2]) + '-' + str(tm[0]) + '  ' + str(tm[3]) + ':' + mm  # Date and time of reading
+
+
+	# Email information
+	
+	b = "\r\n"
+	ctr = 0
+	message_subject = '10R80 End Of Shift Prediction at: ' + pdate
+	message3=''
+	for i in pred1:
+		message3 = message3 + b + "Machine:" + i[0] + " Prediction: " + str(i[1])
+	toaddrs = ["dclark@stackpole.com"]
+	#toaddrs = ["rrompen@stackpole.com","rbiram@stackpole.com","rzylstra@stackpole.com","lbaker@stackpole.com","dmilne@stackpole.com","sbrownlee@stackpole.com","pmurphy@stackpole.com","pstreet@stackpole.com","kfrey@stackpole.com","asmith@stackpole.com","smcmahon@stackpole.com","gharvey@stackpole.com","ashoemaker@stackpole.com","jreid@stackpole.com"]
+	fromaddr = 'stackpole@stackpole.com'
+	frname = 'Dave'
+	server = SMTP('smtp.gmail.com', 587)
+	server.ehlo()
+	server.starttls()
+	server.ehlo()
+	server.login('StackpolePMDS@gmail.com', 'stacktest6060')
+	message = "From: %s\r\n" % frname + "To: %s\r\n" % ', '.join(toaddrs) + "Subject: %s\r\n" % message_subject + "\r\n" 
+	message = message+message_subject + "\r\n\r\n" + message3 + "\r\n\r\n" 
+	server.sendmail(fromaddr, toaddrs, message)
+	server.quit()
+	return 
+
+
+
+
+
 def track_area(request):
 
 	data_area = request.session['data_area'] # Data for 1 or 2 chart
@@ -266,6 +332,11 @@ def track_area(request):
 
 
 	db, cur = db_set(request)
+
+	
+
+
+
 
 	aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (u,t,prt,asset1,asset2,asset3,asset4)
 	cur.execute(aql)
@@ -794,6 +865,23 @@ def track_tri(request):
 
 
 def tracking(request):
+
+	# This section will check every 30min and email out counts
+	db, cur = db_set(request)
+	eql = "SELECT MAX(stamp) FROM tkb_email_10r"
+	cur.execute(eql)
+	teql = cur.fetchall()
+	teql2 = int(teql[0][0])
+	ttt=int(time.time())
+	elapsed_time = ttt - teql2
+	if elapsed_time > 1800:
+		x = 1
+		cur.execute('''INSERT INTO tkb_email_10r(Id,stamp) VALUES(%s,%s)''', (x,ttt))
+		db.commit()
+		track_email(request)
+	db.close()
+
+
 	# net1(request)	  # Sets the app to server or local
 	# force changes
 	try:
@@ -849,6 +937,7 @@ def tracking(request):
 			request.session['asset3_area2'] = '769'
 			request.session['asset4_area2'] = '769'
 			data2, gr_list2 = track_area(request)
+
 
 		return render(request, "track.html",{'GList':gr_list1,"datax":data1,'GList2':gr_list2, "datax2":data2})
 	except:
