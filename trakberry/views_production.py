@@ -251,7 +251,7 @@ def track_email(request):
 	message3=''
 	for i in pred1:
 		message3 = message3 + b + "Machine:" + i[0] + " Prediction: " + str(i[1])
-	toaddrs = ["dclark@stackpole.com"]
+	toaddrs = ["dclark@stackpole.com","jmcmaster@stackpole.com"]
 	#toaddrs = ["rrompen@stackpole.com","rbiram@stackpole.com","rzylstra@stackpole.com","lbaker@stackpole.com","dmilne@stackpole.com","sbrownlee@stackpole.com","pmurphy@stackpole.com","pstreet@stackpole.com","kfrey@stackpole.com","asmith@stackpole.com","smcmahon@stackpole.com","gharvey@stackpole.com","ashoemaker@stackpole.com","jreid@stackpole.com"]
 	fromaddr = 'stackpole@stackpole.com'
 	frname = 'Dave'
