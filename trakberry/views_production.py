@@ -220,11 +220,12 @@ def track_email(request):
 		cur_hour = -1
 	u = t - (((cur_hour-shift_start)*60*60)+(tm[4]*60)+tm[5])	 # Starting unix of shift
 
+	db, cur = db_set(request)
+
+	# Calculate 9341 Predictions
 	prt = '50-9341'
 	asset1 = ['1507','1502','1539','1540','1528','1511','1533']
 	count1 = []
-	db, cur = db_set(request)
-
 	for i in asset1:
 		aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (u,t,prt,i,i,i,i)
 		cur.execute(aql)
@@ -234,6 +235,20 @@ def track_email(request):
 		c = int(c * 28800)
 		count1.append(c)
 	pred1 = zip(asset1,count1)
+
+	# Calculate 0455 Predictions
+	prt = '50-0455'
+	asset2 = ['776','1529','1543','1816']
+	count2 = []
+	for i in asset2:
+		aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (u,t,prt,i,i,i,i)
+		cur.execute(aql)
+		tmp2 = cur.fetchall()
+		tmp3 = tmp2[0]
+		c = tmp3[0] / float ( t-u)
+		c = int(c * 28800)
+		count2.append(c)
+	pred2 = zip(asset2,count2)
 	db.close()
 
 	tm = time.localtime(t)   # Local time
@@ -244,13 +259,21 @@ def track_email(request):
 
 
 	# Email information
-	
+	# Unblock when good 
 	b = "\r\n"
 	ctr = 0
 	message_subject = '10R80 End Of Shift Prediction at: ' + pdate
-	message3=''
+	message3 = ''
+	message3 = message3 + '10R80 Production'
 	for i in pred1:
 		message3 = message3 + b + "Machine:" + i[0] + " Prediction: " + str(i[1])
+
+	message3 = message3 + b + b 
+	message3 = message3 + '10R60 Production'
+	for i in pred2:
+		message3 = message3 + b + "Machine:" + i[0] + " Prediction: " + str(i[1])
+
+
 	toaddrs = ["dclark@stackpole.com","jmcmaster@stackpole.com"]
 	#toaddrs = ["rrompen@stackpole.com","rbiram@stackpole.com","rzylstra@stackpole.com","lbaker@stackpole.com","dmilne@stackpole.com","sbrownlee@stackpole.com","pmurphy@stackpole.com","pstreet@stackpole.com","kfrey@stackpole.com","asmith@stackpole.com","smcmahon@stackpole.com","gharvey@stackpole.com","ashoemaker@stackpole.com","jreid@stackpole.com"]
 	fromaddr = 'stackpole@stackpole.com'
@@ -868,6 +891,10 @@ def tracking(request):
 
 	# This section will check every 30min and email out counts
 	db, cur = db_set(request)
+	cur.execute("""CREATE TABLE IF NOT EXISTS tkb_email_10r(Id INT PRIMARY KEY AUTO_INCREMENT,dummy1 INT(30),stamp INT(30) )""")
+
+
+
 	eql = "SELECT MAX(stamp) FROM tkb_email_10r"
 	cur.execute(eql)
 	teql = cur.fetchall()
@@ -876,7 +903,8 @@ def tracking(request):
 	elapsed_time = ttt - teql2
 	if elapsed_time > 1800:
 		x = 1
-		cur.execute('''INSERT INTO tkb_email_10r(Id,stamp) VALUES(%s,%s)''', (x,ttt))
+		dummy = 8
+		cur.execute('''INSERT INTO tkb_email_10r(dummy1,stamp) VALUES(%s,%s)''', (dummy,ttt))
 		db.commit()
 		track_email(request)
 	db.close()
