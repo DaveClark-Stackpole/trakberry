@@ -413,12 +413,19 @@ def barcode_check(request):
 
 		if part_num == "5401" and part == 144:
 			return render(request,"barcode_complete.html")
+		if part_num == "6418" and part == 144:
+			return render(request,"barcode_complete.html")
+
 		if part_num == "3214" and part == 280:
 			return render(request,"barcode_complete.html")
 		if part_num == "5214" and part == 280:
 			return render(request,"barcode_complete.html")
+
 		if part_num == "8670" and part == 40:
 			return render(request,"barcode_complete.html")
+		if part_num == "6420" and part == 40:
+			return render(request,"barcode_complete.html")
+
 		if part_num == "5404" and part == 120:
 			return render(request,"barcode_complete.html")
 		if part_num == "9341" and part == 112:
