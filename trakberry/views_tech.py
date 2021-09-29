@@ -156,6 +156,16 @@ def time_write():
 	
 	
 def tech(request):
+	# Below section is check to ensure a Tech is logged in before loading this main page
+	try:
+		if request.session["login_tech"] =='none':
+			return render(request,"redirect_tech_logout.html",)
+	except:
+		return render(request,"redirect_tech_logout.html",)
+
+
+
+
 	net1(request)
 	#Do the Hour Check to see if email needs sending
 
