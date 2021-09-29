@@ -156,6 +156,7 @@ def time_write():
 	
 	
 def tech(request):
+	net1(request)
 	# Below section is check to ensure a Tech is logged in before loading this main page
 	try:
 		if request.session["login_tech"] =='none':
