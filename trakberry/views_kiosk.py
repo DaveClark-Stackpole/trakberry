@@ -805,7 +805,7 @@ def kiosk_production_entry(request):
 				kiosk_target.append(int(target1))
 				kiosk_machine.append(m)
 				
-				if OA < 70:
+				if OA >0 and OA < 70:
 					# return render(request,'kiosk/kiosk_test.html', {'OA':OA})	
 					oa_check = 1
 					# oa_problem = request.session["oa_problem"]
