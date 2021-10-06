@@ -153,6 +153,7 @@ def butter(request):
 	return render(request,'done_test.html')
 
 
+# This will be up to date with modifications
 def email_hour_check2(request):
 
 	h1 = 7
