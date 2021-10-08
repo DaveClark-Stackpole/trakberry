@@ -1151,18 +1151,54 @@ def chart2_1467(request):
 		request.session['asset4_area2'] = '769'
 		return render(request, "redirect_tracking.html")
 def chart1_1467b(request):
-		request.session['area1'] = '50-1467 Broach/Induction'
+		request.session['area1'] = '728 Induction Faults'
 		request.session['part_area1'] = '50-1467'
-		request.session['rate_area1'] = 189
+		request.session['rate_area1'] = 1
+		request.session['asset1_area1'] = '728R'
+		request.session['asset2_area1'] = '728R'
+		request.session['asset3_area1'] = '728R'
+		request.session['asset4_area1'] = '728R'
+		return render(request, "redirect_tracking.html")
+def chart2_1467b(request):
+		request.session['area2'] = '50-1467 Broach/Induction'
+		request.session['part_area2'] = '50-1467'
+		request.session['rate_area2'] = 1
+		request.session['asset1_area2'] = '728R'
+		request.session['asset2_area2'] = '728R'
+		request.session['asset3_area2'] = '728R'
+		request.session['asset4_area2'] = '728R'
+		return render(request, "redirect_tracking.html")
+def chart1_1467o(request):
+		request.session['area1'] = '728 Overflow'
+		request.session['part_area1'] = '50-1467'
+		request.session['rate_area1'] = 1
+		request.session['asset1_area1'] = '728O'
+		request.session['asset2_area1'] = '728O'
+		request.session['asset3_area1'] = '728O'
+		request.session['asset4_area1'] = '728O'
+		return render(request, "redirect_tracking.html")
+def chart2_1467o(request):
+		request.session['area2'] = '728 Overflow'
+		request.session['part_area2'] = '50-1467'
+		request.session['rate_area2'] = 1
+		request.session['asset1_area2'] = '728O'
+		request.session['asset2_area2'] = '728O'
+		request.session['asset3_area2'] = '728O'
+		request.session['asset4_area2'] = '728O'
+		return render(request, "redirect_tracking.html")
+def chart1_1467br(request):
+		request.session['area1'] = '1467 Hardened'
+		request.session['part_area1'] = '50-1467'
+		request.session['rate_area1'] = 187
 		request.session['asset1_area1'] = '728'
 		request.session['asset2_area1'] = '728'
 		request.session['asset3_area1'] = '728'
 		request.session['asset4_area1'] = '728'
 		return render(request, "redirect_tracking.html")
-def chart2_1467b(request):
-		request.session['area2'] = '50-1467 Broach/Induction'
+def chart2_1467br(request):
+		request.session['area2'] = '1467 Hardened'
 		request.session['part_area2'] = '50-1467'
-		request.session['rate_area2'] = 189
+		request.session['rate_area2'] = 187
 		request.session['asset1_area2'] = '728'
 		request.session['asset2_area2'] = '728'
 		request.session['asset3_area2'] = '728'
