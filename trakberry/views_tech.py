@@ -508,6 +508,7 @@ def tech_epv_complete(request, index):
 	meth1 = tmp2[6]
 	asset1 = tmp2[7]
 	tech = request.session['login_tech']
+
 	cur.execute('''INSERT INTO quality_epv_checks(date1,check1,description1,asset1,master1,clock_num) VALUES(%s,%s,%s,%s,%s,%s)''', (date1,qc1,desc1,asset1,meth1,tech))
 	db.commit()
 	dql = ('DELETE FROM quality_epv_week WHERE Id="%s"' % (index))

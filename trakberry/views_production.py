@@ -892,25 +892,24 @@ def track_tri(request):
 def tracking(request):
 
 	# This section will check every 30min and email out counts
-	db, cur = db_set(request)
-	cur.execute("""CREATE TABLE IF NOT EXISTS tkb_email_10r(Id INT PRIMARY KEY AUTO_INCREMENT,dummy1 INT(30),stamp INT(30) )""")
-
-
-
-	eql = "SELECT MAX(stamp) FROM tkb_email_10r"
-	cur.execute(eql)
-	teql = cur.fetchall()
-	teql2 = int(teql[0][0])
-	ttt=int(time.time())
-	elapsed_time = ttt - teql2
-	if elapsed_time > 1800:
-		x = 1
-		dummy = 8
-		cur.execute('''INSERT INTO tkb_email_10r(dummy1,stamp) VALUES(%s,%s)''', (dummy,ttt))
-		db.commit()
-		track_email(request)
-	db.close()
-
+	try:
+		db, cur = db_set(request)
+		cur.execute("""CREATE TABLE IF NOT EXISTS tkb_email_10r(Id INT PRIMARY KEY AUTO_INCREMENT,dummy1 INT(30),stamp INT(30) )""")
+		eql = "SELECT MAX(stamp) FROM tkb_email_10r"
+		cur.execute(eql)
+		teql = cur.fetchall()
+		teql2 = int(teql[0][0])
+		ttt=int(time.time())
+		elapsed_time = ttt - teql2
+		if elapsed_time > 1800:
+			x = 1
+			dummy = 8
+			cur.execute('''INSERT INTO tkb_email_10r(dummy1,stamp) VALUES(%s,%s)''', (dummy,ttt))
+			db.commit()
+			track_email(request)
+		db.close()
+	except:
+		dummy2=0
 
 	# net1(request)	  # Sets the app to server or local
 	# force changes
