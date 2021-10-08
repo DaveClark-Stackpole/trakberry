@@ -251,11 +251,11 @@ def track_email(request):
 	pred2 = zip(asset2,count2)
 	db.close()
 
-	tm = time.localtime(t)   # Local time
+	tm = time.localtime(t)	 # Local time
 	mm = str(tm[4])
 	if len((mm)) < 2:
 		mm = '0'+ mm
-	pdate = str(tm[1]) + '-' + str(tm[2]) + '-' + str(tm[0]) + '  ' + str(tm[3]) + ':' + mm  # Date and time of reading
+	pdate = str(tm[1]) + '-' + str(tm[2]) + '-' + str(tm[0]) + '  ' + str(tm[3]) + ':' + mm	 # Date and time of reading
 
 
 	# Email information
@@ -459,9 +459,9 @@ def track_area(request):
 		# week_rate2 = week_rate2 * 172800
 		week_projection = week_projection + weekend_projection
 		if prt == '50-9341':
-			week_projection = week_projection + 3000
+			week_projection = week_projection + 0
 	if prt == '50-0455':
-		week_projection = week_projection + 1500
+		week_projection = week_projection + 2100
 
 	current_rate = cnt / float(shift_time)
 	projection = int(current_rate * (shift_left)) + cnt
@@ -892,25 +892,24 @@ def track_tri(request):
 def tracking(request):
 
 	# This section will check every 30min and email out counts
-	db, cur = db_set(request)
-	cur.execute("""CREATE TABLE IF NOT EXISTS tkb_email_10r(Id INT PRIMARY KEY AUTO_INCREMENT,dummy1 INT(30),stamp INT(30) )""")
-
-
-
-	eql = "SELECT MAX(stamp) FROM tkb_email_10r"
-	cur.execute(eql)
-	teql = cur.fetchall()
-	teql2 = int(teql[0][0])
-	ttt=int(time.time())
-	elapsed_time = ttt - teql2
-	if elapsed_time > 1800:
-		x = 1
-		dummy = 8
-		cur.execute('''INSERT INTO tkb_email_10r(dummy1,stamp) VALUES(%s,%s)''', (dummy,ttt))
-		db.commit()
-		track_email(request)
-	db.close()
-
+	try:
+		db, cur = db_set(request)
+		cur.execute("""CREATE TABLE IF NOT EXISTS tkb_email_10r(Id INT PRIMARY KEY AUTO_INCREMENT,dummy1 INT(30),stamp INT(30) )""")
+		eql = "SELECT MAX(stamp) FROM tkb_email_10r"
+		cur.execute(eql)
+		teql = cur.fetchall()
+		teql2 = int(teql[0][0])
+		ttt=int(time.time())
+		elapsed_time = ttt - teql2
+		if elapsed_time > 1800:
+			x = 1
+			dummy = 8
+			cur.execute('''INSERT INTO tkb_email_10r(dummy1,stamp) VALUES(%s,%s)''', (dummy,ttt))
+			db.commit()
+			track_email(request)
+		db.close()
+	except:
+		dummy2 = 0
 
 	# net1(request)	  # Sets the app to server or local
 	# force changes
@@ -1812,7 +1811,7 @@ def mgmt_production_summary(request):
 
 
 def getKey3(item):
-	return item[1]
+	return int(item[1])
 
 def mgmt_initialize_cat_table(request):
 	part1 = [('50-3627','GF6'),('50-3632','GF6'),('50-1713','GF6'),('50-1731','GF6'),('50-9341','10R80'),('50-0455','10R60')]
