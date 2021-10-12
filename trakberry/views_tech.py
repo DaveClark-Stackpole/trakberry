@@ -239,7 +239,7 @@ def tech(request):
 	clock_len = '9999'
 	db, cursor = db_set(request)   
 	cursor.execute("""CREATE TABLE IF NOT EXISTS quality_epv_checks(Id INT PRIMARY KEY AUTO_INCREMENT,date1 CHAR(80),shift1 CHAR(80), check1 Char(80), description1 Char(80), asset1 Char(80), master1 Char(80), comment Char(255), clock_num Char(80))""")
-	cursor.execute("""CREATE TABLE IF NOT EXISTS quality_epv_week(Id INT PRIMARY KEY AUTO_INCREMENT,date1 CHAR(80),QC1 Char(255), OP1 Char(255), Check1 Char(255), Desc1 Char(255), Method1 Char(255), Asset Char(80))""")
+	cursor.execute("""CREATE TABLE IF NOT EXISTS quality_epv_week(Id INT PRIMARY KEY AUTO_INCREMENT,date1 CHAR(80),QC1 Char(255), OP1 Char(255), Check1 Char(255), Desc1 Char(255), Method1 Char(255), Asset Char(80), Person Char(100))""")
 	date_start = week_start_finder(request)
 
 	xql = "SELECT * FROM quality_epv_checks where (clock_num > '%s')" %(clock_len)
@@ -265,20 +265,20 @@ def tech(request):
 		cursor.execute("TRUNCATE TABLE quality_epv_week")  # This will clear out remaining EPVs
 		db.commit()
 
-		
+
 		week_dump = 1
 		sql = "SELECT QC1,OP1,Check1,Desc1,Method1,Asset,Person FROM quality_epv_assets where Person <> '%s'" % (clock2)
 		cursor.execute(sql)
 		tmp = cursor.fetchall()
 		for i in tmp:
-			# try:
-			cursor.execute('''INSERT INTO quality_epv_week(date1,QC1,OP1,Check1,Desc1,Method1,Asset,Person) VALUES(%s,%s,%s,%s,%s,%s,%s,%s)''', (date_start,i[0],i[1],i[2],i[3],i[4],i[5],i[6]))
-			db.commit()
-			# except:
-			# 	cursor.execute("Alter Table quality_epv_week ADD Person Char(30)")
-			# 	db.commit()
-			# 	cursor.execute('''INSERT INTO quality_epv_week(date1,QC1,OP1,Check1,Desc1,Method1,Asset,Person) VALUES(%s,%s,%s,%s,%s,%s,%s,%s)''', (date_start,i[0],i[1],i[2],i[3],i[4],i[5],i[6]))
-			# 	db.commit()
+			try:
+				cursor.execute('''INSERT INTO quality_epv_week(date1,QC1,OP1,Check1,Desc1,Method1,Asset,Person) VALUES(%s,%s,%s,%s,%s,%s,%s,%s)''', (date_start,i[0],i[1],i[2],i[3],i[4],i[5],i[6]))
+				db.commit()
+			except:
+				cursor.execute("Alter Table quality_epv_week ADD Person Char(30)")
+				db.commit()
+				cursor.execute('''INSERT INTO quality_epv_week(date1,QC1,OP1,Check1,Desc1,Method1,Asset,Person) VALUES(%s,%s,%s,%s,%s,%s,%s,%s)''', (date_start,i[0],i[1],i[2],i[3],i[4],i[5],i[6]))
+				db.commit()
 
 	
 	# Retrieve information from Database and put 2 columns in array {list}
@@ -493,6 +493,61 @@ def tech(request):
 	request.session['tech_epv_list'] = b
 
 	return render(request,"tech.html",{'L':list,'cnt':cnt,'M':tmp4,'N':n,'Z':Z,'TCUR':tcur})
+
+
+# Run this after updating EPV_Assest for the CNC Tech Names
+def tech_epv_person_update(request):
+	clock2 = 'Operator'
+	clock3 = 'Once per shift'
+	clock4 = 'Gauge Tech'
+	db, cursor = db_set(request)   
+	try:
+		sql="Select Person From quality_epv_week"
+		cursor.execute(sql)
+		tmp = cursor.fetchall()
+	except:
+		cursor.execute("Alter Table quality_epv_week ADD Person Char(90)")
+		db.commit()
+	sql = "SELECT QC1,OP1,Check1,Desc1,Method1,Asset,Person FROM quality_epv_assets where Person <> '%s' and Person <> '%s' and Person <> '%s' " % (clock2,clock3,clock4)
+	cursor.execute(sql)
+	tmp = cursor.fetchall()
+	for i in tmp:
+		cursor.execute("UPDATE quality_epv_week SET Person = '%s' WHERE QC1 = '%s'"% (i[6],i[0]))
+		db.commit()
+	return render(request,"done_test2.html")
+
+def tech_epv_assign(request):
+	clock2 = 'Operator'
+	clock3 = 'Once per shift'
+	clock4 = 'Gauge Tech'
+	db, cursor = db_set(request)   
+	try:
+		sql="Select Person From quality_epv_week"
+		cursor.execute(sql)
+		tmp = cursor.fetchall()
+	except:
+		cursor.execute("Alter Table quality_epv_week ADD Person Char(90)")
+		db.commit()
+	sql = "SELECT DISTINCT QC1,Person FROM quality_epv_assets where Person <> '%s' and Person <> '%s' and Person <> '%s'  ORDER BY %s %s" % (clock2,clock3,clock4,'QC1','ASC')
+	cursor.execute(sql)
+	tmp = cursor.fetchall()
+	request.session["Q_Person"] = tmp
+
+	if request.POST:
+		scrap_part = request.POST.get("scrap_part")
+		scrap_operation = request.POST.get("scrap_operation")
+		scrap_category = request.POST.get("scrap_category")
+		scrap_amount = request.POST.get("scrap_amount")
+		return render(request, "redirect_kiosk_scrap.html")
+
+	else:
+		form = sup_downForm()
+	args = {}
+	args.update(csrf(request))
+	args['form'] = form
+	return render(request,'tech_epv_assign.html',{'args':args})
+
+
 
 def tech_epv_complete(request, index):
 	date1 = date_finder(request)
