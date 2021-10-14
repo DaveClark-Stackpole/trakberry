@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
 from trakberry.forms import tech_closeForm, tech_loginForm, tech_searchForm, tech_message_Form
+from trakberry.forms import sup_downForm
 from views_db import db_open, db_set,net1
 from views_mod1 import find_current_date
 from views_email import e_test
@@ -531,14 +532,14 @@ def tech_epv_assign(request):
 	sql = "SELECT DISTINCT QC1,Person FROM quality_epv_assets where Person <> '%s' and Person <> '%s' and Person <> '%s'  ORDER BY %s %s" % (clock2,clock3,clock4,'QC1','ASC')
 	cursor.execute(sql)
 	tmp = cursor.fetchall()
-	request.session["Q_Person"] = tmp
+	request.session["CNC_Tech_Person"] = tmp
 
 	if request.POST:
 		scrap_part = request.POST.get("scrap_part")
 		scrap_operation = request.POST.get("scrap_operation")
 		scrap_category = request.POST.get("scrap_category")
 		scrap_amount = request.POST.get("scrap_amount")
-		return render(request, "redirect_kiosk_scrap.html")
+		return render(request, "done_test2.html")
 
 	else:
 		form = sup_downForm()

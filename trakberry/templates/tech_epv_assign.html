@@ -1,0 +1,40 @@
+{% extends "master.html" %}
+
+
+{% block content %}
+
+
+<!-- <a href="{{request.session.local_toggle}}/mgmt_display_edit/get/{{ i.0 }}" class="blue"></a> -->
+<form action="" method="post">{% csrf_token %}
+
+<table class="center">
+	<tr>
+        <td style="font-size: 24px; color:rgb(53, 47, 47);border:1px solid rgb(255, 238, 0);background-color:rgb(158, 158, 158);">
+			&nbsp;&nbsp;&nbsp;Q Number&nbsp;&nbsp;&nbsp;
+		</td>
+        <td style="font-size: 24px; color:rgb(53, 47, 47);border:1px solid rgb(255, 238, 0);background-color:rgb(158, 158, 158);">
+			&nbsp;&nbsp;&nbsp;Tech&nbsp;&nbsp;&nbsp;
+		</td>
+
+
+	</tr>
+
+	{% for i in request.session.CNC_Tech_Person %}
+	<tr>
+        <td style="font-size: 18px; color:rgb(196, 196, 196);border:1px solid rgb(255, 238, 0);">
+            &nbsp;&nbsp;&nbsp;{{i.0}}&nbsp;&nbsp;&nbsp;
+        </td>
+        <td style="font-size: 18px; color:rgb(196, 196, 196);border:1px solid rgb(255, 238, 0);">
+            &nbsp;&nbsp;&nbsp;{{i.1}}&nbsp;&nbsp;&nbsp;
+        </td>
+
+	</tr>
+	
+{% endfor %}
+
+</table>
+
+</form>
+
+
+{% endblock %}
