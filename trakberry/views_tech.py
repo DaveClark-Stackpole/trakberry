@@ -237,6 +237,8 @@ def tech(request):
 
 	# Will update Weekly Tech EPV List once if it doesn't exist 
 	clock2 = 'Operator'
+	clock3 = 'Once per shift'
+	clock4 = 'Gauge Tech'
 	clock_len = '9999'
 	db, cursor = db_set(request)   
 	cursor.execute("""CREATE TABLE IF NOT EXISTS quality_epv_checks(Id INT PRIMARY KEY AUTO_INCREMENT,date1 CHAR(80),shift1 CHAR(80), check1 Char(80), description1 Char(80), asset1 Char(80), master1 Char(80), comment Char(255), clock_num Char(80))""")
@@ -268,7 +270,7 @@ def tech(request):
 
 
 		week_dump = 1
-		sql = "SELECT QC1,OP1,Check1,Desc1,Method1,Asset,Person FROM quality_epv_assets where Person <> '%s'" % (clock2)
+		sql = "SELECT QC1,OP1,Check1,Desc1,Method1,Asset,Person FROM quality_epv_assets where Person <> '%s' and Person <> '%s' and Person <> '%s' " % (clock2,clock3,clock4)
 		cursor.execute(sql)
 		tmp = cursor.fetchall()
 		for i in tmp:
