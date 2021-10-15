@@ -25,7 +25,7 @@ from views_machinery import machinery
 from views_testing import test_display, form_robot_machine_enter, display_robot_machine, machine_list_display, toggletest, test668,create_table_1,test_datalist
 from views_tech import tech, job_call, job_close, tech_logout, job_pass, tech_history, tech_history2, tech_recent, tech_recent2, tech_map, t1_call, reset_call_route,tech_email_test,tech_message, modal_test
 from views_tech import tech_message_close,tech_message_reply1, tech_report_email, email_hour_check,tech_name_update
-from views_tech import tech_epv,tech_epv_back,tech_epv_complete, tech_epv_person_update,tech_epv_assign
+from views_tech import tech_epv,tech_epv_back,tech_epv_complete, tech_epv_person_update,tech_epv_assign,tech_epv_week_assign
 #from views_tech import hour_check
 from views_transfer import transfer
 
@@ -310,6 +310,7 @@ urlpatterns = [
 	url(r'^tech_report_email/', tech_report_email),
 	url(r'^tech_name_update/', tech_name_update),
 	url(r'^tech_epv_assign/', tech_epv_assign),
+	url(r'^tech_epv_week_assign/', tech_epv_week_assign),
 	url(r'^main_password_update/', main_password_update),
 	
 	# **************  Maintenance Section ***************************************

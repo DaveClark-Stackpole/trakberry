@@ -529,17 +529,52 @@ def tech_epv_assign(request):
 	except:
 		cursor.execute("Alter Table quality_epv_week ADD Person Char(90)")
 		db.commit()
+
+	s2ql = "SELECT tech FROM tkb_techs ORDER BY %s %s" % ('tech','ASC')
+	cursor.execute(s2ql)
+	tmp3 = cursor.fetchall()
+	request.session["CNC_Tech_Names"] = tmp3
+
 	sql = "SELECT DISTINCT QC1,Person FROM quality_epv_assets where Person <> '%s' and Person <> '%s' and Person <> '%s'  ORDER BY %s %s" % (clock2,clock3,clock4,'QC1','ASC')
 	cursor.execute(sql)
 	tmp = cursor.fetchall()
-	request.session["CNC_Tech_Person"] = tmp
+	a=[]
+	d=[]
+	b=0
+	for i in tmp:
+		b=b+1
+		a.append(b)
+		try:
+			s3="SELECT Asset From quality_epv_assets where QC1 = '%s'" % (i[0])
+			cursor.execute(s3)
+			tmp2=cursor.fetchall()
+			tmp22=tmp2[0][0]
+		except:
+			tmp22=''
+		d.append(tmp22)
+
+	c=zip(a,tmp,d)
+	request.session["CNC_Tech_Person"] = c
 
 	if request.POST:
-		scrap_part = request.POST.get("scrap_part")
-		scrap_operation = request.POST.get("scrap_operation")
-		scrap_category = request.POST.get("scrap_category")
-		scrap_amount = request.POST.get("scrap_amount")
-		return render(request, "done_test2.html")
+		b=0
+		a=[]
+		aa=[]
+		for i in c:
+			b=b+1
+			bb=str(b)
+			tech1 = str(request.POST.get(bb))
+			a.append(tech1)
+			aa.append(i[1][0])
+		bb=zip(aa,a)
+
+
+		for i in bb:
+			sql =( 'update quality_epv_assets SET Person="%s" WHERE QC1="%s"' % (i[1],i[0]))
+			cursor.execute(sql)
+			db.commit()
+	
+		return render(request, "redirect_sup_pie_chart.html")
 
 	else:
 		form = sup_downForm()
@@ -548,6 +583,71 @@ def tech_epv_assign(request):
 	args['form'] = form
 	return render(request,'tech_epv_assign.html',{'args':args})
 
+def tech_epv_week_assign(request):
+	clock2 = 'Operator'
+	clock3 = 'Once per shift'
+	clock4 = 'Gauge Tech'
+	db, cursor = db_set(request)   
+	try:
+		sql="Select Person From quality_epv_week"
+		cursor.execute(sql)
+		tmp = cursor.fetchall()
+	except:
+		cursor.execute("Alter Table quality_epv_week ADD Person Char(90)")
+		db.commit()
+
+	s2ql = "SELECT tech FROM tkb_techs ORDER BY %s %s" % ('tech','ASC')
+	cursor.execute(s2ql)
+	tmp3 = cursor.fetchall()
+	request.session["CNC_Tech_Names"] = tmp3
+
+	sql = "SELECT DISTINCT QC1,Person FROM quality_epv_week ORDER BY %s %s" % ('QC1','ASC')
+	cursor.execute(sql)
+	tmp = cursor.fetchall()
+	a=[]
+	d=[]
+	b=0
+	for i in tmp:
+		b=b+1
+		a.append(b)
+		try:
+			s3="SELECT Asset From quality_epv_assets where QC1 = '%s'" % (i[0])
+			cursor.execute(s3)
+			tmp2=cursor.fetchall()
+			tmp22=tmp2[0][0]
+		except:
+			tmp22=''
+		d.append(tmp22)
+
+	c=zip(a,tmp,d)
+	request.session["CNC_Tech_Person"] = c
+
+	if request.POST:
+		b=0
+		a=[]
+		aa=[]
+		for i in c:
+			b=b+1
+			bb=str(b)
+			tech1 = str(request.POST.get(bb))
+			a.append(tech1)
+			aa.append(i[1][0])
+		bb=zip(aa,a)
+
+
+		for i in bb:
+			sql =( 'update quality_epv_week SET Person="%s" WHERE QC1="%s"' % (i[1],i[0]))
+			cursor.execute(sql)
+			db.commit()
+	
+		return render(request, "redirect_sup_pie_chart.html")
+
+	else:
+		form = sup_downForm()
+	args = {}
+	args.update(csrf(request))
+	args['form'] = form
+	return render(request,'tech_epv_week_assign.html',{'args':args})
 
 
 def tech_epv_complete(request, index):
