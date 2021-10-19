@@ -53,6 +53,10 @@ def next_epv(request):
 
 def pie_chart(request):
 	p = 'CNC Tech'
+	pp = '99999'
+	c2 = 'Operator'
+	c3 = 'Once per shift'
+	c4 = 'Gauge Tech'
 	db, cur = db_set(request) 
 	sql = "SELECT COUNT(*) FROM quality_epv_week"
 	cur.execute(sql)
@@ -86,24 +90,27 @@ def pie_chart(request):
 	date_end = pie_chart_date(tm)
 
 	request.session["EPV_Week"] = date_start
-	cnum = '9999'
-	sql7 = "SELECT Count(*) FROM quality_epv_checks where clock_num >'%s' and date1 > '%s' and date1 < '%s' " % (cnum,date_start,date_end)
+	cnum = '99999'
+	sql7 = "SELECT Count(*) FROM quality_epv_checks where clock_num >'%s' and date1 > '%s' and date1 < '%s' " % (pp,date_start,date_end)
 	cur.execute(sql7)
 	tmp7 = cur.fetchall()
 	tmp_cmplt = tmp7[0][0]
 	
-	sql = "SELECT Count(*) FROM quality_epv_assets where Person='%s'" % (p)
+	
+	sql = "SELECT Count(*) FROM quality_epv_assets where Person <> '%s' and Person <> '%s' and Person <> '%s'" % (c2,c3,c4)
 	cur.execute(sql)
 	tmp = cur.fetchall()
 	tmp_reqd=tmp[0][0]
 
-	sql2 = "Select * from quality_epv_assets where Person='%s'" % (p)
+	sql2 = "SELECT * FROM quality_epv_assets where Person <> '%s' and Person <> '%s' and Person <> '%s'" % (c2,c3,c4)
+	# sql2 = "Select * from quality_epv_assets where Person>'%s'" % (pp)
 	cur.execute(sql2)
 	tmp2 = cur.fetchall()
 
 	sql3 = "Select * from quality_epv_checks where clock_num > '%s' and date1 > '%s' and date1 < '%s' " % (cnum,date_start,date_end)
 	cur.execute(sql3)
 	tmp3 = cur.fetchall()
+
 
 	a=[]
 	for i in tmp2:
@@ -148,6 +155,10 @@ def pie_chart(request):
 
 def sup_pie_chart(request):
 	p = 'CNC Tech'
+	pp='99999'
+	c2 = 'Operator'
+	c3 = 'Once per shift'
+	c4 = 'Gauge Tech'
 	db, cur = db_set(request) 
 	sql = "SELECT COUNT(*) FROM quality_epv_week"
 	cur.execute(sql)
@@ -158,7 +169,8 @@ def sup_pie_chart(request):
 	tmp = cur.fetchall()
 	tmp_date=tmp[0][0]
 
-	sql = "SELECT Count(*) FROM quality_epv_assets where Person='%s'" % (p)
+	sql = "SELECT Count(*) FROM quality_epv_assets where Person <> '%s' and Person <> '%s' and Person <> '%s'" % (c2,c3,c4)
+	# sql = "SELECT Count(*) FROM quality_epv_assets where Person>'%s'" % (pp)
 	cur.execute(sql)
 	tmp = cur.fetchall()
 	tmp_reqd=tmp[0][0]
@@ -176,7 +188,7 @@ def sup_pie_chart(request):
 	completed = int(tmp_reqd) - int(tmp2)
 	incomplete = int(tmp2)
 
-	# tt=5/0
+
 
 	sql = "SELECT * FROM quality_epv_week"
 	cur.execute(sql)
