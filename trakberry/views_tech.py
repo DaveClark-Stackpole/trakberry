@@ -303,7 +303,7 @@ def tech(request):
 	a13 = "James Shipway"
 	a12 = "Karissa St.Pierre"
 	a14 = "Jered Pankratz"
-	a15 = "Derek Peachey"
+	a15 = "Chris Coakley"
 	a16 = "Rob Wood"
 	a17 = "Jeremy Bourque"
 	a18 = "Scott Warner"
@@ -411,7 +411,7 @@ def tech(request):
 	elif request.session["login_tech"] == "James Kuepfer":
 		request.session["login_image"] = "/static/media/tech_training.jpg"
 		request.session["login_back"] = "/static/media/back_tech_training.jpg"	
-	elif request.session["login_tech"] == "Derek Peachey":
+	elif request.session["login_tech"] == "Chris Coakley":
 		request.session["login_image"] = "/static/media/tech_training.jpg"
 		request.session["login_back"] = "/static/media/back_tech_training.jpg"
 	elif request.session["login_tech"] == "Rob Wood":
