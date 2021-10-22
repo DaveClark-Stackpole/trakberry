@@ -96,7 +96,11 @@ def pie_chart(request):
 	tmp7 = cur.fetchall()
 	tmp_cmplt = tmp7[0][0]
 	
-	
+	sql7 = "SELECT Count(*) FROM quality_epv_week"
+	cur.execute(sql7)
+	tmp7 = cur.fetchall()
+	tmp_week = tmp7[0][0]
+
 	sql = "SELECT Count(*) FROM quality_epv_assets where Person <> '%s' and Person <> '%s' and Person <> '%s'" % (c2,c3,c4)
 	cur.execute(sql)
 	tmp = cur.fetchall()
@@ -122,6 +126,7 @@ def pie_chart(request):
 		if ch == 0:
 			a.append(i)
 
+	tmp_reqd = int(tmp_week) + int(tmp_cmplt)
 	completed = int(tmp_cmplt)
 	incomplete = int(tmp_reqd) - int(tmp_cmplt)
 
