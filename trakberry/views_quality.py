@@ -111,10 +111,9 @@ def pie_chart(request):
 	cur.execute(sql2)
 	tmp2 = cur.fetchall()
 
-	sql3 = "Select * from quality_epv_checks where clock_num > '%s' and date1 > '%s' and date1 < '%s' " % (cnum,date_start,date_end)
+	sql3 = "Select * from quality_epv_checks where clock_num > '%s' and date1 > '%s' and date1 <= '%s' " % (cnum,date_start,date_end)
 	cur.execute(sql3)
 	tmp3 = cur.fetchall()
-
 
 	a=[]
 	for i in tmp2:
@@ -126,7 +125,7 @@ def pie_chart(request):
 		if ch == 0:
 			a.append(i)
 
-	tmp_reqd = int(tmp_week) + int(tmp_cmplt)
+	# tmp_reqd = int(tmp_week) + int(tmp_cmplt)
 	completed = int(tmp_cmplt)
 	incomplete = int(tmp_reqd) - int(tmp_cmplt)
 
