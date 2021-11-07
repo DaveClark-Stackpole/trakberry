@@ -187,6 +187,8 @@ def day_breakdown(tt):
 	elif month1==10:
 		mnth='Oct'
 	elif month1==11:
+		mnth='Nov'
+	elif month1==12:
 		mnth='Dec'
 	elif month1==1:
 		mnth='Jan'
@@ -352,6 +354,7 @@ def track_area(request):
 	request.session['m'] = m
 	request.session['shift'] = shift
 	request.session['day'] = day
+	request.session['yr'] = '2021'
 
 
 	db, cur = db_set(request)
