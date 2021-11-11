@@ -894,7 +894,7 @@ def track_tri(request):
 
 def tracking(request):
 
-	# This section will check every 30min and email out counts
+	# This section will check every 30min and email out counts to Jim and Myself
 	try:
 		db, cur = db_set(request)
 		cur.execute("""CREATE TABLE IF NOT EXISTS tkb_email_10r(Id INT PRIMARY KEY AUTO_INCREMENT,dummy1 INT(30),stamp INT(30) )""")
@@ -909,7 +909,7 @@ def tracking(request):
 			dummy = 8
 			cur.execute('''INSERT INTO tkb_email_10r(dummy1,stamp) VALUES(%s,%s)''', (dummy,ttt))
 			db.commit()
-			track_email(request)
+			track_email(request)  
 		db.close()
 	except:
 		dummy2 = 0

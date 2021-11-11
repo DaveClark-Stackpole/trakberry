@@ -234,6 +234,9 @@ def tech(request):
 	mach_cnt = []
 	tch = []
 
+	# Update CNC TEch PM Lists
+	tech_pm_update(request)
+	# *******************************
 
 	# Will update Weekly Tech EPV List once if it doesn't exist 
 	clock2 = 'Operator'
@@ -466,12 +469,23 @@ def tech(request):
 		request.session['tech_epv_second']
 	except:
 		request.session['tech_epv_second'] = 0
+	try:
+		request.session['tech_pm_second']
+	except:
+		request.session['tech_pm_second'] = 0
 
 	tcur=int(time.time())
 	sql = "SELECT DISTINCT QC1,OP1,Check1,Person FROM quality_epv_week ORDER BY %s %s" % ('QC1','ASC')
 	cur.execute(sql)
 	tmp2 = cur.fetchall()
 	request.session['tech_epv_list'] = tmp2
+
+	tech_log1 = request.session['login_tech']
+	sql = "SELECT DISTINCT Equipment FROM PM_CNC_Tech_due where Assigned = '%s'" % (tech_log1)  
+	cur.execute(sql)
+	tmp5 = cur.fetchall()
+	request.session['tech_pm_list'] = tmp5
+
 
 	# Below will link Asset numers to Q numbers
 	sql2 = "SELECT QC1, OP1, Check1, Asset, Person FROM quality_epv_week"
@@ -481,7 +495,7 @@ def tech(request):
 	a = []
 	b=[]
 	for i in tmp2:
-		if i[3] == request.session['login_tech']:
+		if i[3] == tech_log1:
 			c=''
 			for ii in tmp3:
 				if i[0] == ii[0]:
@@ -679,6 +693,30 @@ def tech_epv_complete(request, index):
 	request.session['tech_epv_list2'] = tmp
 	return render(request,"redirect_tech.html")
 
+def tech_pm_complete(request, index):
+	t = int(time.time())
+	# date1 = date_finder(request)
+	db, cur = db_set(request) 
+	cur.execute('''INSERT PM_CNC_Tech_checks Select * From PM_CNC_Tech_due where Id = "%s"''' % (index))
+	db.commit()
+
+	rql =( 'update PM_CNC_Tech_checks SET Last_Checked="%s" WHERE Id="%s"' % (t,index))
+	cur.execute(rql)
+	db.commit()
+	rql =( 'update PM_CNC_Tech SET Last_Checked="%s" WHERE Id="%s"' % (t,index))
+	cur.execute(rql)
+	db.commit()
+	dql = ('DELETE FROM PM_CNC_Tech_due WHERE Id="%s"' % (index))
+	cur.execute(dql)
+	db.commit()
+	index = request.session['tech_pm_qc'] 
+	sql = "SELECT * FROM PM_CNC_Tech_due WHERE Equipment = '%s'" % (index)
+	cur.execute(sql)
+	tmp = cur.fetchall()
+	request.session['tech_pm_list2'] = tmp
+	db.close()
+	return render(request,"redirect_tech.html")
+
 def tech_epv(request, index):	
 	request.session['tech_epv_second'] = 1
 	index = str(index)
@@ -692,8 +730,24 @@ def tech_epv(request, index):
 	request.session['tech_epv_list2'] = tmp
 	return render(request,"redirect_tech.html")
 
+def tech_pm(request, index):	
+	request.session['tech_pm_second'] = 1
+	index = str(index)
+	db, cur = db_set(request) 
+	sql = "SELECT * FROM PM_CNC_Tech_due WHERE Equipment = '%s'" % (index)
+	cur.execute(sql)
+	tmp = cur.fetchall()
+	db.close()
+	request.session['tech_pm_list2'] = tmp
+	request.session['tech_pm_qc'] = index
+	return render(request,"redirect_tech.html")
+	
 def tech_epv_back(request):
 	request.session['tech_epv_second'] = 0
+	return render(request,"redirect_tech.html")
+
+def tech_pm_back(request):
+	request.session['tech_pm_second'] = 0
 	return render(request,"redirect_tech.html")
 
 def tech_message_close(request):
@@ -1162,10 +1216,79 @@ def tech_report_email(name):
 	return mm
 # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
- 
+def tech_pm_update(request):
+	db, cursor = db_set(request)  
+	# Use below to force values into PM_CNC_Tech   ###################################
+	# a='1630507076' 
+	# b='776'
+	# # tql =( 'update PM_CNC_Tech SET Last_Checked="%s" WHERE Equipment="%s"' % (a,b))
+	# tql =( 'update PM_CNC_Tech SET Last_Checked="%s"' % (a))
+	# cursor.execute(tql)
+	# db.commit()
+	# ################################################################################
+
+
+	sql = "SELECT DISTINCT Equipment,Last_Checked,Frequency FROM PM_CNC_Tech"
+	cursor.execute(sql)
+	tmp = cursor.fetchall()
+	t = int(time.time())
+	asset = []
+	for i in tmp:
+		if (t-int(i[2])) > int(i[1]) :
+			# Check if Equipment in due.   If none found (Except) then write to due
+			try:
+				sql = "SELECT * FROM PM_CNC_Tech_due where Equipment='%s'" % (i[0])
+				cursor.execute(sql)
+				tmp3 = cursor.fetchall()
+				dummy=tmp3[0]
+			except:
+				cursor.execute('''INSERT PM_CNC_Tech_due Select * From PM_CNC_Tech where Equipment = "%s"''' % (i[0]))
+				db.commit()
+	db.close()
+
+	return
+
+def tech_PM_assign(request):
+	clock2 = 'Operator'
+	clock3 = 'Once per shift'
+	clock4 = 'Gauge Tech'
+	db, cursor = db_set(request)   
+
+	s2ql = "SELECT tech FROM tkb_techs ORDER BY %s %s" % ('tech','ASC')
+	cursor.execute(s2ql)
+	tmp3 = cursor.fetchall()
+	request.session["CNC_Tech_Names"] = tmp3
+
+	sql = "SELECT DISTINCT Equipment,Assigned FROM PM_CNC_Tech ORDER BY %s %s" % ('Equipment','ASC')
+	cursor.execute(sql)
+	tmp = cursor.fetchall()
+	request.session["PM_Tech_Person"] = tmp
+
+	if request.POST:
+		b=0
+		a=[]
+		aa=[]
+		for i in tmp:
+			tech1 = str(request.POST.get(i[0]))
+			a.append(tech1)
+			aa.append(i[0])
+		bb=zip(aa,a)
+
+		for i in bb:
+			sql =( 'update PM_CNC_Tech SET Assigned="%s" WHERE Equipment="%s"' % (i[1],i[0]))
+			cursor.execute(sql)
+			db.commit()
+	
+		return render(request, "redirect_master.html")
+
+	else:
+		form = sup_downForm()
+	args = {}
+	args.update(csrf(request))
+	args['form'] = form
+	return render(request,'tech_pm_assign.html',{'args':args})
+
 def tech_name_update(request):
-	
-	
 	tech = []
 	#Assigned Employee
 	tech.append('Jim Barker')
@@ -1190,6 +1313,7 @@ def tech_name_update(request):
 	return render(request,'done_test.html')	
 
 
+	
 
 
 
