@@ -10,7 +10,7 @@ from views_supervisor import supervisor_tech_call
 import MySQLdb
 import time
 import datetime
-
+from views_routes import direction
 import smtplib
 from smtplib import SMTP
 from django.template.loader import render_to_string  #To render html content to string
@@ -716,8 +716,46 @@ def tech_pm_complete(request, index):
 	db.close()
 	return render(request,"redirect_tech.html")
 
-def tech_pm_complete_all(request, index):
-	t = int(time.time())
+def tech_pm_complete_asset(request,index):
+	request.session['tech_pm_asset'] = index
+	if request.POST:
+		try:
+			button1 = int(request.POST.get("button_a"))
+			if button1 == -1:
+				request.session["route_1"] = 'tech_pm_complete_asset'
+				return direction(request)
+		except:
+			date1 = request.POST.get("date_en")
+		t = pdate_stamp(date1)
+		t=str(t)
+		t=t[:-2]
+		db, cur = db_set(request) 
+		cur.execute('''INSERT PM_CNC_Tech_checks Select * From PM_CNC_Tech_due where Equipment = "%s"''' % (index))
+		db.commit()
+		rql =( 'update PM_CNC_Tech_checks SET Last_Checked="%s" WHERE Equipment="%s"' % (t,index))
+		cur.execute(rql)
+		db.commit()
+		rql =( 'update PM_CNC_Tech SET Last_Checked="%s" WHERE Equipment="%s"' % (t,index))
+		cur.execute(rql)
+		db.commit()
+		dql = ('DELETE FROM PM_CNC_Tech_due WHERE Equipment="%s"' % (index))
+		cur.execute(dql)
+		db.commit()
+		db.close()
+		return render(request,"redirect_tech_PM_master_complete.html")
+
+	else:
+		form = sup_downForm()
+	args = {}
+	args.update(csrf(request))
+	args['form'] = form
+	return render(request,'tech_pm_complete_asset.html',{'args':args})
+
+
+def tech_pm_complete_all(request):
+	index = request.session['tech_pm_asset']
+	t = request.session['tech_pm_stamp']
+	# t = int(time.time())
 	db, cur = db_set(request) 
 	cur.execute('''INSERT PM_CNC_Tech_checks Select * From PM_CNC_Tech_due where Equipment = "%s"''' % (index))
 	db.commit()
@@ -733,25 +771,82 @@ def tech_pm_complete_all(request, index):
 	db.close()
 	return render(request,"redirect_tech_PM_master_complete.html")
 
+def pdate_stamp(pdate):
+	string=str(pdate)
+	element = datetime.datetime.strptime(string,"%Y-%m-%d")
+	tuple = element.timetuple()
+	timestamp = time.mktime(tuple)
+	return timestamp
+#convery timestamp to pdate
+def stamp_pdate(stamp):
+	tm = time.localtime(stamp)
+	ma = ''
+	da = ''
+	if tm[1] < 10: ma = '0'
+	if tm[2] < 10: da = '0'
+	y1 = str(tm[0])
+	m1 = str(tm[1])
+	d1 = str(tm[2])
+	pdate = y1 + '-' + (ma + m1) + '-' + (da + d1)
+	return pdate
+
+
 def tech_pm_summary(request):
 	t = int(time.time())
 	db, cur = db_set(request) 
-	sql = "SELECT DISTINCT Equipment FROM PM_CNC_Tech_due ORDER BY %s %s" % ('Equipment','ASC')
-	cursor.execute(sql)
-	tmp = cursor.fetchall()
-	request.session["PM_Tech_Due"] = tmp
-
 	sql = "SELECT DISTINCT Equipment FROM PM_CNC_Tech ORDER BY %s %s" % ('Equipment','ASC')
-	cursor.execute(sql)
-	tmp2 = cursor.fetchall()
+	cur.execute(sql)
+	tmp = cur.fetchall()
+
+	a = []
+	b = []
+	c = []
+	od = []
+	od_count = 0
+	for i in tmp:
+		sql = "SELECT MIN(Last_Checked),MIN(Frequency) FROM PM_CNC_Tech WHERE Equipment = '%s'" % (i[0])
+		cur.execute(sql)
+		tmp3 = cur.fetchall()
+		tmp2=tmp3[0][0]
+		tmp22=tmp3[0][1]
+		x=int(tmp2)
+		y=int(tmp22)
+		z=x+y
+		a.append(i[0])
+		hr = stamp_pdate(int(z))
+		yy=int(x)
+
+		if int(z) < int(t):
+			over_due = 1
+			od_count = od_count + 1
+		else:
+			over_due = 0
+
+		pd = stamp_pdate(int(x))
+		c.append(pd)
+		b.append(hr)
+		od.append(over_due)
+	c = zip(b,a,c,od)
+	c.sort()
+	request.session['CNC_Tech_Overdue_PM'] = od_count
+
+
+	# c = zip(a,b,c)
+
+
+	request.session["PM_Tech_Due"] = c
+
+	# sql = "SELECT DISTINCT Equipment FROM PM_CNC_Tech ORDER BY %s %s" % ('Equipment','ASC')
+	# cursor.execute(sql)
+	# tmp2 = cursor.fetchall()
 	
-	a=[]
-	b=[]
-	for i in tmp2:
+	# a=[]
+	# b=[]
+	# for i in tmp2:
 		
 
 
-	return render(request,"redirect_tech_PM_master_complete.html")
+	return render(request,"tech_pm_summary.html")
 
 
 def tech_epv(request, index):	
@@ -1253,6 +1348,9 @@ def tech_report_email(name):
 	return mm
 # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
+
+
+
 def tech_pm_update(request):
 	db, cursor = db_set(request)  
 	# Use below to force values into PM_CNC_Tech   ###################################
@@ -1282,6 +1380,13 @@ def tech_pm_update(request):
 				cursor.execute('''INSERT PM_CNC_Tech_due Select * From PM_CNC_Tech where Equipment = "%s"''' % (i[0]))
 				db.commit()
 	db.close()
+
+
+
+
+
+
+
 
 	return
 
