@@ -187,6 +187,8 @@ def day_breakdown(tt):
 	elif month1==10:
 		mnth='Oct'
 	elif month1==11:
+		mnth='Nov'
+	elif month1==12:
 		mnth='Dec'
 	elif month1==1:
 		mnth='Jan'
@@ -352,6 +354,7 @@ def track_area(request):
 	request.session['m'] = m
 	request.session['shift'] = shift
 	request.session['day'] = day
+	request.session['yr'] = '2021'
 
 
 	db, cur = db_set(request)
@@ -891,7 +894,7 @@ def track_tri(request):
 
 def tracking(request):
 
-	# This section will check every 30min and email out counts
+	# This section will check every 30min and email out counts to Jim and Myself
 	try:
 		db, cur = db_set(request)
 		cur.execute("""CREATE TABLE IF NOT EXISTS tkb_email_10r(Id INT PRIMARY KEY AUTO_INCREMENT,dummy1 INT(30),stamp INT(30) )""")
@@ -906,7 +909,7 @@ def tracking(request):
 			dummy = 8
 			cur.execute('''INSERT INTO tkb_email_10r(dummy1,stamp) VALUES(%s,%s)''', (dummy,ttt))
 			db.commit()
-			track_email(request)
+			track_email(request)  
 		db.close()
 	except:
 		dummy2 = 0

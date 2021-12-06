@@ -1,0 +1,43 @@
+{% extends "master.html" %}
+
+
+{% block content %}
+
+<!-- <a href="{{request.session.local_toggle}}/mgmt_display_edit/get/{{ i.0 }}" class="blue"></a> -->
+<form action="" method="post">{% csrf_token %}
+	<input style="background-color:#AAA00A;border-radius: 10px;width:140px;height:60px;font-weight: 700;font-size:23px;align=left;"type="submit" value="Enter" />
+<table class="center">
+	<tr>
+        <td style="font-size: 24px; color:rgb(53, 47, 47);border:1px solid rgb(255, 238, 0);background-color:rgb(158, 158, 158);">
+			&nbsp;&nbsp;&nbsp;Asset&nbsp;&nbsp;&nbsp;
+		</td>
+		<td style="font-size: 24px; color:rgb(53, 47, 47);border:1px solid rgb(255, 238, 0);background-color:rgb(158, 158, 158);">
+			&nbsp;&nbsp;&nbsp;Tech&nbsp;&nbsp;&nbsp;
+		</td>
+
+	</tr>
+
+	{% for i in request.session.PM_Tech_Person %}
+	<tr>
+        <td style="font-size: 18px; color:rgb(196, 196, 196);border:1px solid rgb(255, 238, 0);">
+			&nbsp;&nbsp;&nbsp;{{i.0}}&nbsp;&nbsp;&nbsp;
+        </td>
+        <td style="font-size: 18px; color:rgb(22, 21, 21);border:1px solid rgb(255, 238, 0);">
+            <select id="{{i.0}}" style="font-size:18px;" name="{{i.0}}">	
+                <option>{{i.1}}</option>
+                {% for item in request.session.CNC_Tech_Names %}
+                	<option value="{{item.0}}">{{item.0}}</option>
+                {% endfor %}
+			</select>
+        </td>
+
+	</tr>
+	
+{% endfor %}
+
+</table>
+
+</form>
+tech_pm_master_complete.html
+
+{% endblock %}
