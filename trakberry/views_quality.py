@@ -91,10 +91,32 @@ def pie_chart(request):
 
 	request.session["EPV_Week"] = date_start
 	cnum = '99999'
-	sql7 = "SELECT Count(*) FROM quality_epv_checks where clock_num >'%s' and date1 > '%s' and date1 < '%s' " % (pp,date_start,date_end)
-	cur.execute(sql7)
-	tmp7 = cur.fetchall()
-	tmp_cmplt = tmp7[0][0]
+	# sql7 = "SELECT Count(*) FROM quality_epv_checks where clock_num >'%s' and date1 > '%s' and date1 < '%s' " % (pp,date_start,date_end)
+	# sql7 = "SELECT Count(*) FROM quality_epv_checks where shift1 IS NULL and date1 > '%s' and date1 < '%s' " % (date_start,date_end)
+	# cur.execute(sql7)
+	# tmp7 = cur.fetchall()
+	# tmp_cmplt = tmp7[0][0]
+	# sql27 = "SELECT check1,description1,asset1 FROM quality_epv_checks where shift1 IS NULL and date1 > '%s' and date1 < '%s' " % (date_start,date_end)
+	# cur.execute(sql27)
+	# tmp27 = cur.fetchall()
+
+	# Use this to count Completed EPVs in checks because sometimes duplicates get entered for some reason
+	sql17 = "SELECT DISTINCT check1,description1,asset1 FROM quality_epv_checks where shift1 IS NULL and date1 > '%s' and date1 < '%s' " % (date_start,date_end)
+	cur.execute(sql17)
+	tmp17 = cur.fetchall()
+	ctr = 0
+	for j in tmp17:
+		ctr = ctr + 1
+	tmp_cmplt = ctr
+
+
+	sql9 = "SELECT date1,shift1,check1,description1,asset1,master1,clock_num FROM quality_epv_checks where clock_num >'%s' and date1 > '%s' and date1 < '%s' " % (pp,date_start,date_end)
+	cur.execute(sql9)
+	tmp9 = cur.fetchall()
+	request.session['test9'] = tmp9
+	# return render(request, "test_2.html")
+
+
 	
 	sql7 = "SELECT Count(*) FROM quality_epv_week"
 	cur.execute(sql7)
@@ -155,11 +177,57 @@ def pie_chart(request):
 	request.session['epv_reqd'] = incomplete
 	request.session['epv_comp'] = completed
 
+
+
 	return render(request, "pie.html")
 
 def sup_pie_chart(request):
+	# p = 'CNC Tech'
+	# pp='99999'
+	# c2 = 'Operator'
+	# c3 = 'Once per shift'
+	# c4 = 'Gauge Tech'
+	# db, cur = db_set(request) 
+	# sql = "SELECT COUNT(*) FROM quality_epv_week"
+	# cur.execute(sql)
+	# tmp = cur.fetchall()
+	# tmp2=tmp[0][0]
+	# sql = "SELECT date1 FROM quality_epv_week"
+	# cur.execute(sql)
+	# tmp = cur.fetchall()
+	# tmp_date=tmp[0][0]
+
+	# sql = "SELECT Count(*) FROM quality_epv_assets where Person <> '%s' and Person <> '%s' and Person <> '%s'" % (c2,c3,c4)
+	# # sql = "SELECT Count(*) FROM quality_epv_assets where Person>'%s'" % (pp)
+	# cur.execute(sql)
+	# tmp = cur.fetchall()
+	# tmp_reqd=tmp[0][0]
+
+	# # pp = 99999
+	# # sql = "SELECT Count(*) FROM quality_epv_checks where date1 >= '%s' and clock_num>'%s'" % (tmp_date,pp)
+	# # cur.execute(sql)
+	# # tmp = cur.fetchall()
+
+	# # tmp_done=tmp[0][0]
+
+	# # completed = int(tmp_done)
+	# # incomplete = int(tmp_reqd) - int(tmp_done)
+
+	# completed = int(tmp_reqd) - int(tmp2)
+	# incomplete = int(tmp2)
+
+
+
+	# sql = "SELECT * FROM quality_epv_week"
+	# cur.execute(sql)
+	# tmp = cur.fetchall()
+	# request.session['epv_left'] = tmp
+	# request.session['epv_reqd'] = incomplete
+	# request.session['epv_comp'] = completed
+	# END OLD CODE
+
 	p = 'CNC Tech'
-	pp='99999'
+	pp = '99999'
 	c2 = 'Operator'
 	c3 = 'Once per shift'
 	c4 = 'Gauge Tech'
@@ -168,16 +236,95 @@ def sup_pie_chart(request):
 	cur.execute(sql)
 	tmp = cur.fetchall()
 	tmp2=tmp[0][0]
+
+
 	sql = "SELECT date1 FROM quality_epv_week"
 	cur.execute(sql)
 	tmp = cur.fetchall()
 	tmp_date=tmp[0][0]
 
+
+	try:
+		direction4 = request.session["direction5"]  # -1 is backwards +1 forward
+	except:
+		direction4 = 0
+		request.session["direction5"] = 0
+
+
+	
+	# Take tmp_date and calculate 7 days prior and make it current_first
+	ts = time.mktime(datetime.datetime.strptime(tmp_date,"%Y-%m-%d").timetuple())
+	ts = ts - 86400 + (604800 * direction4)
+	tm = time.localtime(ts)
+	date_start = pie_chart_date(tm)
+
+
+	ts = ts + 691200
+	tm = time.localtime(ts)
+	date_end = pie_chart_date(tm)
+
+	request.session["EPV_Week"] = date_start
+	cnum = '99999'
+	# sql7 = "SELECT Count(*) FROM quality_epv_checks where clock_num >'%s' and date1 > '%s' and date1 < '%s' " % (pp,date_start,date_end)
+	# sql7 = "SELECT Count(*) FROM quality_epv_checks where shift1 IS NULL and date1 > '%s' and date1 < '%s' " % (date_start,date_end)
+	# cur.execute(sql7)
+	# tmp7 = cur.fetchall()
+	# tmp_cmplt = tmp7[0][0]
+	# sql27 = "SELECT check1,description1,asset1 FROM quality_epv_checks where shift1 IS NULL and date1 > '%s' and date1 < '%s' " % (date_start,date_end)
+	# cur.execute(sql27)
+	# tmp27 = cur.fetchall()
+
+	# Use this to count Completed EPVs in checks because sometimes duplicates get entered for some reason
+	sql17 = "SELECT DISTINCT check1,description1,asset1 FROM quality_epv_checks where shift1 IS NULL and date1 > '%s' and date1 < '%s' " % (date_start,date_end)
+	cur.execute(sql17)
+	tmp17 = cur.fetchall()
+	ctr = 0
+	for j in tmp17:
+		ctr = ctr + 1
+	tmp_cmplt = ctr
+
+
+	sql9 = "SELECT date1,shift1,check1,description1,asset1,master1,clock_num FROM quality_epv_checks where clock_num >'%s' and date1 > '%s' and date1 < '%s' " % (pp,date_start,date_end)
+	cur.execute(sql9)
+	tmp9 = cur.fetchall()
+	request.session['test9'] = tmp9
+	# return render(request, "test_2.html")
+
+
+	
+	sql7 = "SELECT Count(*) FROM quality_epv_week"
+	cur.execute(sql7)
+	tmp7 = cur.fetchall()
+	tmp_week = tmp7[0][0]
+
 	sql = "SELECT Count(*) FROM quality_epv_assets where Person <> '%s' and Person <> '%s' and Person <> '%s'" % (c2,c3,c4)
-	# sql = "SELECT Count(*) FROM quality_epv_assets where Person>'%s'" % (pp)
 	cur.execute(sql)
 	tmp = cur.fetchall()
 	tmp_reqd=tmp[0][0]
+
+	sql2 = "SELECT * FROM quality_epv_assets where Person <> '%s' and Person <> '%s' and Person <> '%s'" % (c2,c3,c4)
+	# sql2 = "Select * from quality_epv_assets where Person>'%s'" % (pp)
+	cur.execute(sql2)
+	tmp2 = cur.fetchall()
+
+	sql3 = "Select * from quality_epv_checks where clock_num > '%s' and date1 > '%s' and date1 <= '%s' " % (cnum,date_start,date_end)
+	cur.execute(sql3)
+	tmp3 = cur.fetchall()
+
+	a=[]
+	for i in tmp2:
+		ch = 0
+		for ii in tmp3:
+			if i[1] == ii[3] and i[8] == ii[5]:
+				ch = 1
+				break
+		if ch == 0:
+			a.append(i)
+
+	# tmp_reqd = int(tmp_week) + int(tmp_cmplt)
+	completed = int(tmp_cmplt)
+	incomplete = int(tmp_reqd) - int(tmp_cmplt)
+
 
 	# pp = 99999
 	# sql = "SELECT Count(*) FROM quality_epv_checks where date1 >= '%s' and clock_num>'%s'" % (tmp_date,pp)
@@ -189,19 +336,23 @@ def sup_pie_chart(request):
 	# completed = int(tmp_done)
 	# incomplete = int(tmp_reqd) - int(tmp_done)
 
-	completed = int(tmp_reqd) - int(tmp2)
-	incomplete = int(tmp2)
 
+	
 
+	# completed = int(tmp_reqd) - int(tmp2)
+	# incomplete = int(tmp2)
 
 	sql = "SELECT * FROM quality_epv_week"
 	cur.execute(sql)
 	tmp = cur.fetchall()
-	request.session['epv_left'] = tmp
+
+
+	request.session['epv_left'] = a
 	request.session['epv_reqd'] = incomplete
 	request.session['epv_comp'] = completed
 
 
+	
 	return render(request, "sup_pie.html")
 
 def quality_epv_asset_entry(request):
