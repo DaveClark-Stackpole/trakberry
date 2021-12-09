@@ -870,6 +870,10 @@ def tech_pm(request, index):
 	cur.execute(sql)
 	tmp = cur.fetchall()
 	db.close()
+
+
+
+
 	request.session['tech_pm_list2'] = tmp
 	request.session['tech_pm_qc'] = index
 	return render(request,"redirect_tech.html")
