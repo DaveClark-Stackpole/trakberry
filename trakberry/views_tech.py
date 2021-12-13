@@ -801,18 +801,21 @@ def tech_pm_summary(request):
 	a = []
 	b = []
 	c = []
+	tch = []
 	od = []
 	od_count = 0
 	for i in tmp:
-		sql = "SELECT MIN(Last_Checked),MIN(Frequency) FROM PM_CNC_Tech WHERE Equipment = '%s'" % (i[0])
+		sql = "SELECT MIN(Last_Checked),MIN(Frequency),MIN(Assigned) FROM PM_CNC_Tech WHERE Equipment = '%s'" % (i[0])
 		cur.execute(sql)
 		tmp3 = cur.fetchall()
 		tmp2=tmp3[0][0]
 		tmp22=tmp3[0][1]
+		tmp33=tmp3[0][2]
 		x=int(tmp2)
 		y=int(tmp22)
 		z=x+y
 		a.append(i[0])
+		tch.append(tmp33)
 		hr = stamp_pdate(int(z))
 		yy=int(x)
 
@@ -826,7 +829,7 @@ def tech_pm_summary(request):
 		c.append(pd)
 		b.append(hr)
 		od.append(over_due)
-	c = zip(b,a,c,od)
+	c = zip(b,a,c,od,tch)
 	c.sort()
 	request.session['CNC_Tech_Overdue_PM'] = od_count
 
