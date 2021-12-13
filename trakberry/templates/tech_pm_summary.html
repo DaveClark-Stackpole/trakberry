@@ -4,7 +4,7 @@
 
 <table class="center">
 	<tr>
-		<td colspan='3' style="font-size: 28px; color:rgb(53, 47, 47);border:1px solid rgb(255, 238, 0);background-color:rgb(158, 158, 158);">
+		<td colspan='4' style="font-size: 28px; color:rgb(53, 47, 47);border:1px solid rgb(255, 238, 0);background-color:rgb(158, 158, 158);">
 			&nbsp;&nbsp;&nbsp;<b>CNC Tech Asset PM</b>&nbsp;&nbsp;&nbsp;{{request.session.CNC_Tech_Overdue_PM}} Due
 		</td>
 	</tr>
@@ -17,6 +17,9 @@
 		</td>
 		<td style="font-size: 24px; color:rgb(53, 47, 47);border:1px solid rgb(255, 238, 0);background-color:rgb(158, 158, 158);">
 			&nbsp;&nbsp;&nbsp;Last Check&nbsp;&nbsp;&nbsp;
+		</td>
+		<td style="font-size: 24px; color:rgb(53, 47, 47);border:1px solid rgb(255, 238, 0);background-color:rgb(158, 158, 158);">
+			&nbsp;&nbsp;&nbsp;Assigned To&nbsp;&nbsp;&nbsp;
 		</td>
 
 	</tr>
@@ -39,6 +42,11 @@
            		 {{i.2}}
           		  &nbsp;&nbsp;&nbsp;
        		 </td>
+				<td style="font-size: 18px; color:rgb(214, 72, 72);border:1px solid rgb(255, 238, 0);">
+					&nbsp;&nbsp;&nbsp;
+           		 {{i.4}}
+          		  &nbsp;&nbsp;&nbsp;
+       		 </td>
 			</tr>
 		{% else %}
 		<tr>
@@ -55,6 +63,11 @@
 			<td style="font-size: 18px; color:rgb(0, 0, 0);border:1px solid rgb(255, 238, 0);">
 				&nbsp;&nbsp;&nbsp;
 				{{i.2}}
+				&nbsp;&nbsp;&nbsp;
+			</td>
+			<td style="font-size: 18px; color:rgb(0, 0, 0);border:1px solid rgb(255, 238, 0);">
+				&nbsp;&nbsp;&nbsp;
+				{{i.4}}
 				&nbsp;&nbsp;&nbsp;
 			</td>
 		</tr>
