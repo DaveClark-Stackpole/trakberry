@@ -6,6 +6,7 @@ from trakberry.forms import maint_closeForm, maint_loginForm, maint_searchForm, 
 from trakberry.views import done
 from views2 import main_login_form
 from views_mod1 import find_current_date, mgmt_display, mgmt_display_edit
+from views_mod2 import stamp_shift_start
 from trakberry.views2 import login_initial
 from trakberry.views_testing import machine_list_display
 from trakberry.views_vacation import vacation_temp, vacation_set_current, vacation_set_current2_1, vacation_set_current5,vacation_set_current6,vacation_set_current77
@@ -312,20 +313,24 @@ def track_area(request):
 	x = int(t - 489600)
 	tm = time.localtime(t)
 	request.session["time"] = t
-	shift_start = -2
-	current_shift = 3
-	if tm[3]<22 and tm[3]>=14:
-		shift_start = 14
-	elif tm[3]<14 and tm[3]>=6:
-		shift_start = 6
-	cur_hour = tm[3]
-	if cur_hour == 22:
-		cur_hour = -1
-	u = t - (((cur_hour-shift_start)*60*60)+(tm[4]*60)+tm[5])	 # Starting unix of shift
 
-	shift_time = t-u
-	shift_left = 28800 - shift_time
-	e = t + shift_left
+	
+	# shift_start = -2
+	# current_shift = 3
+	# if tm[3]<22 and tm[3]>=14:
+	# 	shift_start = 14
+	# elif tm[3]<14 and tm[3]>=6:
+	# 	shift_start = 6
+	# cur_hour = tm[3]
+	# if cur_hour == 22:
+	# 	cur_hour = -1
+	# u = t - (((cur_hour-shift_start)*60*60)+(tm[4]*60)+tm[5])	 # Starting unix of shift
+	# shift_time = t-u
+	# shift_left = 28800 - shift_time
+	# e = t + shift_left
+
+	u,shift_time,shift_left,e = stamp_shift_start(request)
+
 	request.session["shift_time"] = shift_time
 
 	
@@ -2484,3 +2489,15 @@ def auto_updater(request):	# This will run every 30 min on the refresh page to s
 		dummy = 1
 	return render(request,'tkb_updater.html')
 
+
+def cell_track_9341(request):
+	shift_start, shift_time, shift_left, shift_end = stamp_shift_start(request)  # Get the Time Stamp info
+	machines1 = ['1504','1506','1519','1520','1502','1507','1501','1515','1508','1532','1509','1514','1510','1511','1518','1521','1522','1523','1539','1540','1524','1525','1538','1541','1531','1527','1528','1542','1533']
+	line1 = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,0,0]
+	operation1 = [10,10,10,10,30,30,40,40,50,50,60,70,80,100,10,10,10,10,30,30,40,40,50,60,70,80,100,90,120]
+	
+	jobs1 = zip(machines1,line1,operation1)
+	
+
+
+	return render(request,'tkb_updater.html')

@@ -1,0 +1,46 @@
+{% extends "master.html" %}
+<!-- mgmt_display template form.html -->
+{% block content %}
+
+<table class="center">
+	<tr>
+        <td style="font-size: 24px; color:rgb(53, 47, 47);border:1px solid rgb(255, 238, 0);background-color:rgb(158, 158, 158);">
+			&nbsp;&nbsp;&nbsp;EPV&nbsp;&nbsp;&nbsp;
+		</td>
+		<td style="font-size: 24px; color:rgb(53, 47, 47);border:1px solid rgb(255, 238, 0);background-color:rgb(158, 158, 158);">
+			&nbsp;&nbsp;&nbsp;Tech&nbsp;&nbsp;&nbsp;
+		</td>
+        <td style="font-size: 24px; color:rgb(53, 47, 47);border:1px solid rgb(255, 238, 0);background-color:rgb(158, 158, 158);">
+			&nbsp;&nbsp;&nbsp;Asset&nbsp;&nbsp;&nbsp;
+		</td>
+
+	</tr>
+
+
+
+
+    {% for i in request.session.epv_toclean %}
+	<tr>
+        <td style="font-size: 18px; color:rgb(196, 196, 196);border:1px solid rgb(255, 238, 0);">
+			<a href="{{request.session.local_toggle}}/tech_pm_complete/get/{{i.0}}/" style="background-color: #c7c7c7;border-radius: 10px;padding-left:3px;padding-right:3px;width:90%;height:80%;font-weight: 600;color:rgb(0, 0, 0);">{{i.1}}</a>
+        </td>
+        <td style="font-size: 18px; color:rgb(255, 255, 255);border:1px solid rgb(255, 238, 0);">
+            {{i.7}}
+        </td>
+        <td style="font-size: 18px; color:rgb(255, 255, 255);border:1px solid rgb(255, 238, 0);">
+            {{i.8}}
+        </td>
+
+	</tr>
+
+        
+
+
+
+	{% endfor %}
+		</table>
+
+
+
+
+	{% endblock %}
