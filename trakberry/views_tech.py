@@ -41,6 +41,69 @@ def week_start_finder(request):
 	date1 = y1 + '-' + (ma + m1) + '-' + (da + d1)
 	return date1
 
+
+# This will add week_start, check_id columns then populate epv_checks with the ones not populated.
+# Testing phase to start though
+def epv_checks_update(request):
+	clock = '99999'
+	ws_len = 3
+	db, cursor = db_set(request)  
+	loop1 = 1
+	# Add Columns if not added
+	try:
+		sql ="SELECT Asset_Id FROM quality_epv_checks"
+		cursor.execute(sql)
+		tmp4 = cursor.fetchall()
+	except:
+		cursor.execute("Alter Table quality_epv_checks ADD Asset_Id Int(30)")
+		db.commit()
+		cursor.execute("Alter Table quality_epv_checks ADD Week_Start Char(30)")
+		db.commit()
+
+	while loop1 > 0:
+		try:
+			sql = "SELECT date1,Id FROM quality_epv_checks where clock_num >'%s' and Week_Start IS NULL" %(clock)
+			cursor.execute(sql)
+			tmp7 = cursor.fetchall()
+			pdate = tmp7[0][0]
+		except:
+			loop1 = 0
+		pstamp = pdate_stamp(pdate)
+		pm = time.localtime(pstamp)
+		xm = pm[6]
+		xm = int(xm) * 86400
+		pstamp = pstamp - xm
+		pstamp_next = pstamp + 518400
+		pdate = stamp_pdate(pstamp) # pdate is Monday of week
+		pdate_next = stamp_pdate(pstamp_next) # pdate_next is Sunday of week
+
+		sql = "SELECT Id,date1,shift1,check1,description1,asset1,comment,clock_num FROM quality_epv_checks where date1 >= '%s' and date1 <= '%s' and clock_num >'%s'" %(pdate,pdate_next,clock)
+		cursor.execute(sql)
+		tmp = cursor.fetchall()
+		request.session['epv1'] = tmp
+		dd = []
+		for i in tmp:
+			try:
+				sql = "SELECT Id FROM quality_epv_assets where Asset = '%s' and QC1 = '%s'" % (i[5],i[3])
+				cursor.execute(sql)
+				tmp2 = cursor.fetchall()
+				tmp3 = int(tmp2[0][0])
+				sql =( 'update quality_epv_checks SET Asset_Id = "%s" WHERE Id = "%s"' % (tmp3,i[0]))
+				cursor.execute(sql)
+				db.commit()
+				sql =( 'update quality_epv_checks SET Week_Start = "%s" WHERE Id = "%s"' % (pdate,i[0]))
+				cursor.execute(sql)
+				db.commit()
+			except:
+				dql = ('DELETE FROM quality_epv_checks WHERE Id="%s"' % (i[0]))
+				cursor.execute(dql)
+				db.commit()
+	db.close()
+	return render(request,"epv_check_update_complete.html")
+
+
+
+
 def week_prev_forw(request):
 	date1 = week_start_finder(request)
 	try:
@@ -665,6 +728,24 @@ def tech_epv_week_assign(request):
 	args['form'] = form
 	return render(request,'tech_epv_week_assign.html',{'args':args})
 
+def epv_past_fix(request):
+	# Find Monday timestamp of time t
+	t=int(time.time())
+	pm=time.localtime(t)
+	xm=pm[6]
+	xm=int(xm)*86400
+	t=t-xm
+	pdate =''
+
+	db,cur = db_set(request)
+	# Use Monday timestamp and convert to pdate
+	while pdate !='2021-10-25':
+		pdate = stamp_pdate(t)
+
+		print 'Monday:',pdate
+		t=t-604800
+	return
+
 
 def tech_epv_complete(request, index):
 	date1 = date_finder(request)
@@ -679,8 +760,22 @@ def tech_epv_complete(request, index):
 	desc1 = tmp2[5]
 	meth1 = tmp2[6]
 	asset1 = tmp2[7]
+
+	# Retrieve the Id from asset list
+	sql2="SELECT Id FROM quality_epv_assets where QC1='%s' and Asset='%s'"%(qc1,asset1)
+	cur.execute(sql2)
+	tmp4 = cur.fetchall()
+	tmp44 = int(tmp4[0][0])
+	# Retrieve PDate of Monday of current week
+	t=int(time.time())
+	pm=time.localtime(t)
+	xm=pm[6]
+	xm=int(xm)*86400
+	t=t-xm
+	pdate44 = stamp_pdate(t)
+
 	tech = request.session['login_tech']
-	cur.execute('''INSERT INTO quality_epv_checks(date1,check1,description1,asset1,master1,clock_num) VALUES(%s,%s,%s,%s,%s,%s)''', (date1,qc1,desc1,asset1,meth1,tech))
+	cur.execute('''INSERT INTO quality_epv_checks(date1,check1,description1,asset1,master1,clock_num,Asset_Id,Week_Start) VALUES(%s,%s,%s,%s,%s,%s,%s,%s)''', (date1,qc1,desc1,asset1,meth1,tech,tmp44,pdate44))
 	db.commit()
 	dql = ('DELETE FROM quality_epv_week WHERE Id="%s"' % (index))
 	cur.execute(dql)
@@ -689,8 +784,38 @@ def tech_epv_complete(request, index):
 	sql = "SELECT * FROM quality_epv_week WHERE QC1 = '%s'" % (index)
 	cur.execute(sql)
 	tmp = cur.fetchall()
+
+	# Fix all past EPVs
+	a=[]
+	b=[]
+	ctr = 0
+
+# Determine dates missed previously and add them in as done
+	dates1 = []
+	while pdate44 > '2021-04-30':
+		t=t-604800
+		pdate44=stamp_pdate(t)
+		dates1.append(pdate44)
+	sql3="SELECT * FROM quality_epv_checks WHERE Asset_Id='%s'"%(tmp44)
+	cur.execute(sql3)
+	tmp3=cur.fetchall()
+	dates2 =[]
+	dates_missed=[]
+	for i in tmp3:
+		dates2.append(i[11])
+	for i in dates1:
+		if i not in dates2:
+			dates_missed.append(i)  # This will be the dates missed variable
+
+	for i in dates_missed:
+		cur.execute('''INSERT INTO quality_epv_checks(date1,check1,description1,asset1,master1,clock_num,Asset_Id,Week_Start) VALUES(%s,%s,%s,%s,%s,%s,%s,%s)''', (i,qc1,desc1,asset1,meth1,tech,tmp44,i))
+		db.commit()
+
+
 	db.close()
 	request.session['tech_epv_list2'] = tmp
+
+
 	return render(request,"redirect_tech.html")
 
 def tech_pm_complete(request, index):
