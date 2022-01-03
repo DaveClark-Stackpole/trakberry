@@ -98,10 +98,13 @@
   <!-- <link rel="stylesheet" href="/static/style_1/grid_kiosk_job_production2.css?{{TCUR}}">    -->
 
 	<style type="text/css">
-		.mainset{color:black;text-align:center;float:left;width:100%}
+		.mainset{color:black;text-align:center;float:left;width:85%}
 		.wrapper_main {background:chartreuse;width:90%;margin-left: 10px;}
 		
 		.frame1 {color:black;text-align:center;float:left;width:32%;margin-bottom: 5px;}
+		.framec {color:black;text-align:center;float:left;width:20%;margin-bottom: 5px;}
+		.frameo {color:black;text-align:center;float:left;width:27%;margin-bottom: 5px;}
+		.framel {color:black;text-align:center;float:left;width:7%;margin-left: 50px;margin-bottom: 5px;}
 		.frame2a{color:black;text-align:center;background:rgb(202, 188, 83);float:left;width:32%;position:relative;left:5px;border-radius: 15px;margin-bottom: 5px;}
 
 		.frame2{color:black;text-align:center;background:rgb(83, 134, 202);float:left;width:32%;position:relative;left:5px;margin-bottom: 5px;}
@@ -123,36 +126,69 @@
 
 <!-- Table format for 24hrs-->
 <style>
-	#prod24 {
+	#mainline {
 		font-family: Arial, Helvetica, sans-serif;
 		border-collapse: collapse;
 		width: 100%;
 	}
-	#prod24 td, #prod24 th {
+	#mainline td, #mainline th {
 		border: 1px solid rgb(136, 134, 134);
-		padding: 8px;
+		padding: 4px;
 	}
-	#prod24 tr:nth-child(even){background-color: #f8e996;}
-	#prod24 tr:nth-child(odd){background-color: #e2cc4e;}
-	#prod24 tr:hover {background-color: #ddd;}
-	#prod24 th {
-		padding-top: 12px;
-		padding-bottom: 12px;
+	#mainline th {
+		padding-top: 5px;
+		padding-bottom: 5px;
 		text-align: left;
 		background-color: rgb(139, 128, 107);
 		color: white;
 	}
 	</style>
+<style>
+	#legend {
+		font-family: Arial, Helvetica, sans-serif;
+		border-collapse: collapse;
+		width: 100%;
+	}
+	#legend td, #legend th {
+		border: 1px solid rgb(136, 134, 134);
+		padding: 4px;
+	}
+	#legend th {
+		padding-top: 5px;
+		padding-bottom: 5px;
+		text-align: left;
+		background-color: rgb(139, 128, 107);
+		color: white;
+	}
+	</style>
+	<style>
+		#noneline {
+			font-family: Arial, Helvetica, sans-serif;
+			border-collapse: collapse;
+			width: 100%;
+		}
+		#noneline td, #noneline th {
+			padding: 4.5px;
+		}
+		#noneline th {
+			padding-top: 6px;
+			padding-bottom: 6px;
+			text-align: left;
+			background-color: rgb(139, 128, 107);
+			color: white;
+		}
+		</style>
 
 <!-- Table format for Week Production to Date-->
 <style>
 	#prodwk {
 		font-family: Arial, Helvetica, sans-serif;
 		border-collapse: collapse;
-		width: 100%;
+		width: 30%;
 	}
 	#prodwk td, #prodwk th {
-		border: 1px solid rgb(136, 134, 134);
+		border: 1px solid rgb(0, 0, 0);
+
 		padding: 8px;
 	}
 	#prodwk tr:nth-child(even){background-color: #f8ce96;}
@@ -207,7 +243,7 @@
 		padding-top: 12px;
 		padding-bottom: 12px;
 		text-align: left;
-		background-color: rgb(68, 82, 91);
+		background-color: rgb(218, 218, 218);
 		color: white;
 	}
 </style>
@@ -215,274 +251,188 @@
 
 
 </head>
-{% block grid %}
-{% endblock %}
+
 <body>
 
 <img alt="full screen background image" src="/static/media/mgmt.jpeg?{{TCUR}}" id="full-screen-background-image"/>
-
-
-
-
-
-<div class="navbar navbar-default navbar-fixed-top" style="background-color:rgb(248, 228, 186);border-color: rgb(26, 24, 11);border-width:1px" role="navigation">
-
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-
-			
-            <a class="navbar-brand" href="#" style="position:absolute;left:0px;top:-10px;">
-								<!-- <img src="/static/media/JElogo.gif?{{TCUR}}"  style="border-radius: 25px;" height="40" width="150"> -->
-								<img src="/static/media/JELogo.gif?"  style="border-radius: 25px;" height="40" width="150">   
-            </a>
-
-        </div>
-        <div class="collapse navbar-collapse">
-			
-            <ul class="nav navbar-nav">
-                
-
-                <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
-                <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
-				<li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
-
-
-                    <li><a href="{{request.session.local_toggle}}/mgmt"><span class="glyphicon glyphicon-home"></span> Main</a></li>
-                    <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
-
-                    <li><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-stats"></span> Production<b class="caret"></b></a>
-                         <ul class="dropdown-menu multi-level"  style="background-color:rgb(245, 237, 219)" >
-                            <li><a href="#">Production Reports</a></li>
-                             <li class="divider"   style="background-color:rgb(192, 178, 178)" ></li> 
-                            <li><a href="{{request.session.local_toggle}}/mgmt_production">Production Entries</a></li>
-                            <li><a href="{{request.session.local_toggle}}/mgmt_production_hourly">Hourly Entries</a></li>
-                            <li><a href="{{request.session.local_toggle}}/mgmt_cycletime">Cycle Times</a></li>
-                        </ul>
-                     </li>
-			    	<li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
-
-
-				    <li><a href="#"><span class="glyphicon glyphicon-cog"></span> Assets</a></li>	
-                    <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
-                    
-                    <li><a href="#"><span class="glyphicon glyphicon-user"></span> Manpower</a></li>
-                    <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
-
-                    <li><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-lock"></span> Administration<b class="caret"></b></a>
-                        <ul class="dropdown-menu multi-level"  style="background-color:rgb(245, 237, 219)" >
-                           <li><a href="{{request.session.local_toggle}}/mgmt_users_logins">Users Logins</a></li>
-                           <li><a href="{{request.session.local_toggle}}/mgmt_production_hourly">Hourly Entries</a></li>
-                           
-                       </ul>
-                    </li>
-                   <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
-
-			        </ul>	
-			
-			         <ul class="nav navbar-nav navbar-right">	
-			         <li><font size ="2" style="color:rgb(100, 100, 100)">Welcome:<b>{{request.session.mgmt_login_name}}</b></li>
-                     <li><a href="{{request.session.local_toggle}}/mgmt_logout" style="color:rgb(100, 100, 100)"><span class="glyphicon glyphicon-log-out"></span> Log out</a></li>
-
-
-            </ul>
-			
-        </div><!--/.nav-collapse -->
-    </div>
-</div>
 <br><br>
-<br><br><br>
 
-
-
-{% block content %}
-	{% if request.session.mgmt_login_password_check = 0 %}  <!-- If login failed or required -->
-		<meta http-equiv="refresh" content="0; url={{request.session.local_toggle}}/mgmt_login_form" />
-	{% else %}  <!-- if Login passed and main start up screen -->
-	
 		<div class="wrapper_main">
-			<div class="frame1">  <!-- Default is L24 hr Production-->
-				{% block frame1 %}
-				<table id="prod24">
-					<tr>
-						<th colspan="5"><center><font style="font-weight:bolder;font-size:x-large;">{{request.session.data3title}}</font></center></th>
-					</tr>
-					<tr>
-						<th><center>Part</center></th>
-						<th><center>Finished</center></th>
-						<th colspan="3"><center>Operations</center></th>
+			<div class="mainset">  <!-- MainLine Production-->
+				<center><table id="prodwk"><tr> <!-- OP60 -->
+					<td bgcolor="#9ab87b"><br><center><font style="font-weight:bolder;font-size:x-large;">10R80 Cell Track</font></center><br></td>
+				</tr></table></center><br>
+			</div>
+			<div class="frame1">  <!-- MainLine Production-->
+				<center><table id="mainline"><tr> <!-- OP60 -->
+					<td bgcolor="#bdb4b3" style="font-size:10px;width:15%;"><br><center><font style="font-weight:bolder;font-size:large;">&nbsp;&nbsp;&nbsp;&nbsp;</font></center><br></td>
 
-					{% for i in request.session.data3 %}
-					
-						{% if i.2 = 1 %}
-							</tr><tr>
-							<td><b>{{i.0}}</b></td>
-							<td><u>{{i.3}}</u><br><center>{{i.1}}</center></td>
-						{% else %}
-							{% if i.1 = 0 %}
-								<td>&nbsp;&nbsp;&nbsp;</td>
-							{% else %}
-								<td><u>{{i.3}}</u><br><center>{{i.1}}</center></td>
-							{% endif %}
-						{% endif %}
-					{% endfor %}
-					</tr>
-				</table>
-				{% endblock %}
+					<td bgcolor="#bdb4b3"><br><center><font style="font-weight:bolder;font-size:x-large;">Mainline</font></center><br></td>
+				</tr></table></center>
+				<center><table id="mainline"><tr> <!-- OP10 -->
+						<td bgcolor="#b0aea9" style="font-size:10px;width:15%;"><br><center><font style="font-weight:bolder;font-size:large;">OP 10</font></center><br></td>
+						<td bgcolor="#009700"><br><center><font style="font-weight:bolder;font-size:x-large;">1504</font></center><br></td>
+						<td bgcolor="#009700"><br><center><font style="font-weight:bolder;font-size:x-large;">1506</font></center><br></td>
+						<td bgcolor="#4FC34F"><br><center><font style="font-weight:bolder;font-size:x-large;">1519</font></center><br></td>
+						<td bgcolor="#4FC34F"><br><center><font style="font-weight:bolder;font-size:x-large;">1520</font></center><br></td>
+				</tr></table></center>
+				<center><table id="mainline"><tr> <!-- OP30 -->
+						<td bgcolor="#b0aea9" style="font-size:10px;width:15%;"><br><center><font style="font-weight:bolder;font-size:large;">OP 30</font></center><br></td>
+						<td bgcolor="#DADA3F"><br><center><font style="font-weight:bolder;font-size:x-large;">1502</font></center><br></td>
+						<td bgcolor="#4fe854"><br><center><font style="font-weight:bolder;font-size:x-large;">1507</font></center><br></td>
+				</tr></table></center>
+				<center><table id="mainline"><tr> <!-- OP40 -->
+					<td bgcolor="#b0aea9" style="font-size:10px;width:15%;"><br><center><font style="font-weight:bolder;font-size:large;">OP 40</font></center><br></td>
+					<td bgcolor="#90e893"><br><center><font style="font-weight:bolder;font-size:x-large;">1501</font></center><br></td>
+					<td bgcolor="#4fe854"><br><center><font style="font-weight:bolder;font-size:x-large;">1515</font></center><br></td>
+				</tr></table></center>
+				<center><table id="mainline"><tr> <!-- OP50 -->
+					<td bgcolor="#b0aea9" style="font-size:10px;width:15%;"><br><center><font style="font-weight:bolder;font-size:large;">OP 50</font></center><br></td>
+					<td bgcolor="#4fe854"><br><center><font style="font-weight:bolder;font-size:x-large;">1508</font></center><br></td>
+					<td bgcolor="#4fe854"><br><center><font style="font-weight:bolder;font-size:x-large;">1532</font></center><br></td>
+				</tr></table></center>
+				<center><table id="mainline"><tr> <!-- OP60 -->
+					<td bgcolor="#b0aea9" style="font-size:10px;width:15%;"><br><center><font style="font-weight:bolder;font-size:large;">OP 60</font></center><br></td>
+					<td bgcolor="#009700"><br><center><font style="font-weight:bolder;font-size:x-large;">1509</font></center><br></td>
+				</tr></table></center>
+				<center><table id="mainline"><tr> <!-- OP70 -->
+					<td bgcolor="#b0aea9" style="font-size:10px;width:15%;"><br><center><font style="font-weight:bolder;font-size:large;">OP 70</font></center><br></td>
+					<td bgcolor="#4fe854"><br><center><font style="font-weight:bolder;font-size:x-large;">1514</font></center><br></td>
+				</tr></table></center>
+				<center><table id="mainline"><tr> <!-- OP80 -->
+					<td bgcolor="#b0aea9" style="font-size:10px;width:15%;"><br><center><font style="font-weight:bolder;font-size:large;">OP 80</font></center><br></td>
+					<td bgcolor="#4fe854"><br><center><font style="font-weight:bolder;font-size:x-large;">1510</font></center><br></td>
+				</tr></table></center>
+				<center><table id="noneline"><tr> <!-- OP30 -->
+					<td bgcolor="#b0aea9" style="font-size:10px;width:15%;"><br><center><font style="font-weight:bolder;font-size:large;">OP 90</font></center><br></td>
+					<td><br><center><font style="font-weight:bolder;font-size:x-large;">&nbsp;&nbsp;&nbsp;&nbsp;</font></center><br></td>
+				</tr></table></center>
+				<center><table id="mainline"><tr> <!-- OP100 -->
+					<td bgcolor="#b0aea9" style="font-size:10px;width:15%;"><br><center><font style="font-weight:bolder;font-size:large;">OP 100</font></center><br></td>
+					<td bgcolor="#4fe854"><br><center><font style="font-weight:bolder;font-size:x-large;">1503</font></center><br></td>
+				</tr></table></center>
+				<center><table id="mainline"><tr> <!-- OP110 -->
+					<td bgcolor="#b0aea9" style="font-size:10px;width:15%;"><br><center><font style="font-weight:bolder;font-size:large;">OP 110</font></center><br></td>
+					<td bgcolor="#4fe854"><br><center><font style="font-weight:bolder;font-size:x-large;">1511</font></center><br></td>
+				</tr></table></center>
+				<center><table id="noneline"><tr> <!-- OP120 -->
+					<td bgcolor="#b0aea9" style="font-size:10px;width:15%;"><br><center><font style="font-weight:bolder;font-size:large;">OP 120</font></center><br></td>
+					<td><br><center><font style="font-weight:bolder;font-size:x-large;">&nbsp;&nbsp;&nbsp;&nbsp;</font></center><br></td>
+				</tr></table></center>
 			</div>
 
-
-			<div class="frame2">  <!-- Week Production-->
-				<table id="prodwk">
-					<tr>
-						<th colspan="5"><center><font style="font-weight:bolder;font-size:x-large;">{{request.session.data2title}}</font></center></th>
-					</tr>
-					<tr>
-						<th><center>Part</center></th>
-						<th><center>Finished</center></th>
-						<th colspan="3"><center>Operations</center></th>
-
-					{% for i in request.session.data2 %}
-					
-						{% if i.2 = 1 %}
-							</tr><tr>
-							<td><b>{{i.0}}</b></td>
-							<td><u>{{i.3}}</u><br><center>{{i.1}}</center></td>
-						{% else %}
-							{% if i.1 = 0 %}
-								<td>&nbsp;&nbsp;&nbsp;</td>
-							{% else %}
-								<td><u>{{i.3}}</u><br><center>{{i.1}}</center></td>
-							{% endif %}
-						{% endif %}
-					{% endfor %}
-					</tr>
-				</table>
+			<div class="framec">  <!-- Center Line Production-->
+				<center><table id="noneline"><tr> <!-- OP60 -->
+					<td><br><center><font style="font-weight:bolder;font-size:x-large;">&nbsp;&nbsp;&nbsp;&nbsp;</font></center><br></td>
+				</tr></table></center>
+				<center><table id="noneline"><tr> <!-- OP10 -->
+					<td><br><center><font style="font-weight:bolder;font-size:x-large;">&nbsp;&nbsp;&nbsp;&nbsp;</font></center><br></td>
+				</tr></table></center>
+				<center><table id="noneline"><tr> <!-- OP30 -->
+					<td><br><center><font style="font-weight:bolder;font-size:x-large;">&nbsp;&nbsp;&nbsp;&nbsp;</font></center><br></td>
+				</tr></table></center>
+				<center><table id="noneline"><tr> <!-- OP40 -->
+					<td><br><center><font style="font-weight:bolder;font-size:x-large;">&nbsp;&nbsp;&nbsp;&nbsp;</font></center><br></td>
+				</tr></table></center>
+				<center><table id="noneline"><tr> <!-- OP50 -->
+					<td><br><center><font style="font-weight:bolder;font-size:x-large;">&nbsp;&nbsp;&nbsp;&nbsp;</font></center><br></td>
+				</tr></table></center>
+				<center><table id="noneline"><tr> <!-- OP60 -->
+					<td><br><center><font style="font-weight:bolder;font-size:x-large;">&nbsp;&nbsp;&nbsp;&nbsp;</font></center><br></td>
+				</tr></table></center>
+				<center><table id="noneline"><tr> <!-- OP70 -->
+					<td><br><center><font style="font-weight:bolder;font-size:x-large;">&nbsp;&nbsp;&nbsp;&nbsp;</font></center><br></td>
+				</tr></table></center>
+				<center><table id="noneline"><tr> <!-- OP80 -->
+					<td><br><center><font style="font-weight:bolder;font-size:x-large;">&nbsp;&nbsp;&nbsp;&nbsp;</font></center><br></td>
+				</tr></table></center>
+				<center><table id="mainline"><tr> <!-- OP90 -->
+					<td bgcolor="#4fe854"><br><center><font style="font-weight:bolder;font-size:x-large;">1513</font></center><br></td>
+				</tr></table></center>
+				<center><table id="noneline"><tr> <!-- OP80 -->
+					<td><br><center><font style="font-weight:bolder;font-size:x-large;">&nbsp;&nbsp;&nbsp;&nbsp;</font></center><br></td>
+				</tr></table></center>
+				<center><table id="noneline"><tr> <!-- OP80 -->
+					<td><br><center><font style="font-weight:bolder;font-size:x-large;">&nbsp;&nbsp;&nbsp;&nbsp;</font></center><br></td>
+				</tr></table></center>
+				<center><table id="mainline"><tr> <!-- OP120 -->
+					<td bgcolor="#4fe854"><br><center><font style="font-weight:bolder;font-size:x-large;">1533</font></center><br></td>
+				</tr></table></center>
+			</div>
+			<div class="frameo">  <!-- MainLine Production-->
+				<center><table id="mainline"><tr> <!-- OP60 -->
+					<td bgcolor="#bdb4b3"><br><center><font style="font-weight:bolder;font-size:x-large;">OffLine</font></center><br></td>
+				</tr></table></center>
+				<center><table id="mainline"><tr> <!-- OP10 -->
+						<td bgcolor="#EC7371"><br><center><font style="font-weight:bolder;font-size:x-large;">1519</font></center><br></td>
+						<td bgcolor="#DADA3F"><br><center><font style="font-weight:bolder;font-size:x-large;">1521</font></center><br></td>
+						<td bgcolor="#4fe854"><br><center><font style="font-weight:bolder;font-size:x-large;">1522</font></center><br></td>
+						<td bgcolor="#4fe854"><br><center><font style="font-weight:bolder;font-size:x-large;">1523</font></center><br></td>
+				</tr></table></center>
+				<center><table id="mainline"><tr> <!-- OP30 -->
+						<td bgcolor="#DADA3F"><br><center><font style="font-weight:bolder;font-size:x-large;">1539</font></center><br></td>
+						<td bgcolor="#4fe854"><br><center><font style="font-weight:bolder;font-size:x-large;">1540</font></center><br></td>
+				</tr></table></center>
+				<center><table id="mainline"><tr> <!-- OP40 -->
+					<td bgcolor="#90e893"><br><center><font style="font-weight:bolder;font-size:x-large;">1524</font></center><br></td>
+					<td bgcolor="#4fe854"><br><center><font style="font-weight:bolder;font-size:x-large;">1525</font></center><br></td>
+				</tr></table></center>
+				<center><table id="mainline"><tr> <!-- OP50 -->
+					<td bgcolor="#4fe854"><br><center><font style="font-weight:bolder;font-size:x-large;">1538</font></center><br></td>
+				</tr></table></center>
+				<center><table id="mainline"><tr> <!-- OP60 -->
+					<td bgcolor="#4fe854"><br><center><font style="font-weight:bolder;font-size:x-large;">1541</font></center><br></td>
+				</tr></table></center>
+				<center><table id="mainline"><tr> <!-- OP70 -->
+					<td bgcolor="#4fe854"><br><center><font style="font-weight:bolder;font-size:x-large;">1531</font></center><br></td>
+				</tr></table></center>
+				<center><table id="mainline"><tr> <!-- OP80 -->
+					<td bgcolor="#4fe854"><br><center><font style="font-weight:bolder;font-size:x-large;">1527</font></center><br></td>
+				</tr></table></center>
+				<center><table id="noneline"><tr> <!-- OP30 -->
+					<td><br><center><font style="font-weight:bolder;font-size:x-large;">&nbsp;&nbsp;&nbsp;&nbsp;</font></center><br></td>
+				</tr></table></center>
+				<center><table id="mainline"><tr> <!-- OP100 -->
+					<td bgcolor="#4fe854"><br><center><font style="font-weight:bolder;font-size:x-large;">1531</font></center><br></td>
+				</tr></table></center>
+				<center><table id="mainline"><tr> <!-- OP110 -->
+					<td bgcolor="#4fe854"><br><center><font style="font-weight:bolder;font-size:x-large;">1528</font></center><br></td>
+				</tr></table></center>
+				<center><table id="noneline"><tr> <!-- OP120 -->
+					<td><br><center><font style="font-weight:bolder;font-size:x-large;">&nbsp;&nbsp;&nbsp;&nbsp;</font></center><br></td>
+				</tr></table></center>
+			</div>
+			<div class="framel">  <!-- MainLine Production-->
+				<center><table id="legend"><tr> <!-- OP60 -->
+					<td bgcolor="#bdb4b3"><br><center><font style="font-weight:bolder;font-size:large;">% of Rate</font></center><br></td>
+				</tr></table></center>
+				<center><table id="legend"><tr> <!-- OP50 -->
+					<td bgcolor="#009700"><br><center><font style="font-weight:bolder;font-size:large;">100%</font></center><br></td>
+				</tr></table></center>
+				<center><table id="legend"><tr> <!-- OP60 -->
+					<td bgcolor="#4FC34F"><br><center><font style="font-weight:bolder;font-size:large;">90%</font></center><br></td>
+				</tr></table></center>
+				<center><table id="legend"><tr> <!-- OP70 -->
+					<td bgcolor="#A4F6A4"><br><center><font style="font-weight:bolder;font-size:large;">80%</font></center><br></td>
+				</tr></table></center>
+				<center><table id="legend"><tr> <!-- OP80 -->
+					<td bgcolor="#C3C300"><br><center><font style="font-weight:bolder;font-size:large;">70%</font></center><br></td>
+				</tr></table></center>
+				<center><table id="legend"><tr> <!-- OP80 -->
+					<td bgcolor="#DADA3F"><br><center><font style="font-weight:bolder;font-size:large;">50%</font></center><br></td>
+				</tr></table></center>
+				<center><table id="legend"><tr> <!-- OP80 -->
+					<td bgcolor="#F6F687"><br><center><font style="font-weight:bolder;font-size:large;">25%</font></center><br></td>
+				</tr></table></center>
+				<center><table id="legend"><tr> <!-- OP80 -->
+					<td bgcolor="#EC7371"><br><center><font style="font-weight:bolder;font-size:large;">0%</font></center><br></td>
+				</tr></table></center>
 
 			</div>
-
-			<div class="frame3">  <!-- Week Production-->
-				<table id="prodpast">
-					<tr>
-						<th colspan="5"><center><font style="font-weight:bolder;font-size:x-large;">{{request.session.data1title}}</font></center></th>
-					</tr>
-					<tr>
-						<th><center>Part</center></th>
-						<th><center>Finished</center></th>
-						<th colspan="3"><center>Operations</center></th>
-
-					{% for i in request.session.data1 %}
-						{% if i.2 = 1 %}
-							</tr><tr>
-							<td><b>{{i.0}}</b></td>
-							<td><u>{{i.3}}</u><br><center>{{i.1}}</center></td>
-						{% else %}
-							{% if i.1 = 0 %}
-								<td>&nbsp;&nbsp;&nbsp;</td>
-							{% else %}
-								<td><u>{{i.3}}</u><br><center>{{i.1}}</center></td>
-							{% endif %}
-						{% endif %}
-					{% endfor %}
-					</tr>
-				</table>
-			</div>
-
-			<form action="" method="post">{% csrf_token %}
-			<div class="frame4">  <!-- Production Summary-->
-				<table id="prodsum">
-					<tr>
-						<th colspan="9"><center><font style="font-weight:bolder;font-size:x-large;">Production Summary</font></center></th>
-					</tr>
-					<tr>
-						<th colspan="9"><center>
-							Asset : <input style="font-size:14px;color:rgb(0, 0, 0);width:120px;height:30px;" name="asset" type="textarea"  autofocus/>
-							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-							Group #: <input style="font-size:14px;color:rgb(0, 0, 0);width:120px;height:30px;" name="group" value=1 type="number">
-							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-							<button style="background-color: #5CC4ED;border-radius: 10px;width:110px;height:80%;font-weight: 600;" type="submit" name="button1" value="add_machine" /><center><font color="#000000">Add Asset</font></center></button>
-						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						<button style="background-color: #5CC4ED;border-radius: 10px;width:110px;height:80%;font-weight: 600;" type="submit" name="button1" value="calculate" /><center><font color="#000000">Calculate</font></center></button>
-						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						<button style="background-color: #5CC4ED;border-radius: 10px;width:110px;height:80%;font-weight: 600;" type="submit" name="button1" value="clear" /><center><font color="#000000">Clear All</font></center></button>
-						</center></th>
-					</tr>
-					<tr>
-						<th><center>Group</center></th>
-						<th><center>Asset</center></th>
-						<th><center>{{request.session.shift_title1}}</center></th>
-						<th><center>{{request.session.shift_title2}}</center></th>
-						<th><center>{{request.session.shift_title3}}</center></th>
-						<th><center>24hr Total</center></th>
-						
-						<th><center>Week to Date</center></th>
-						<th><center>Week Prediction</center></th>
-						<th><center>Last Week</center></th>
-						
-						
-					</tr>
-					{% for i in request.session.summary_data %}
-
-					{% if i.2 = -1 %}
-					<tr>
-						<td bgcolor="#96dbf8"><center>
-							<button style="background-color: #5CC4ED;border-radius: 10px;width:20%;height:70%;font-weight: 600;" type="submit" name="button1" value="{{i.1}}|{{i.0}}" /><center><font size = '1' color="#000000">X</font></center></button>
-							&nbsp;&nbsp;<b>{{i.1}}</b></center></td>
-						<td bgcolor="#96dbf8"><center><b>{{i.0}}</b></center></td>
-						<td bgcolor="#96dbf8"><center><b>{{i.3}}</b></center></td>
-						<td bgcolor="#96dbf8"><center><b>{{i.4}}</b></center></td>
-						<td bgcolor="#96dbf8"><center><b>{{i.5}}</b></center></td>
-						{% if i.7 > 0 %}
-							<td rowspan = {{i.7}} bgcolor="#96dbf8"><center><b>{{i.8}}</b></center></td>
-							<td rowspan = {{i.7}} bgcolor="#96dbf8"><center><b>{{i.9}}</b></center></td>
-							<td rowspan = {{i.7}} bgcolor="#96dbf8"><center><b>{{i.10}}</b></center></td>
-							<td rowspan = {{i.7}} bgcolor="#96dbf8"><center><b>{{i.11}}</b></center></td>
-						{% endif %}
-
-					</tr>
-
-					{% else %}
-					<tr>
-						<td bgcolor="#45b4c6"><center>
-							<button style="background-color: #5CC4ED;border-radius: 10px;width:20%;height:70%;font-weight: 600;" type="submit" name="button1" value="{{i.1}}|{{i.0}}" /><center><font size = '1' color="#000000">X</font></center></button>
-							&nbsp;&nbsp;<b>{{i.1}}</b></center></td>
-						<td bgcolor="#45b4c6"><center><b>{{i.0}}</b></center></td>
-						<td bgcolor="#45b4c6"><center><b>{{i.3}}</b></center></td>
-						<td bgcolor="#45b4c6"><center><b>{{i.4}}</b></center></td>
-						<td bgcolor="#45b4c6"><center><b>{{i.5}}</b></center></td>
-						{% if i.7 > 0 %}
-							<td rowspan = {{i.7}} bgcolor="#45b4c6"><center><b>{{i.8}}</b></center></td>
-							<td rowspan = {{i.7}} bgcolor="#45b4c6"><center><b>{{i.9}}</b></center></td>
-							<td rowspan = {{i.7}} bgcolor="#45b4c6"><center><b>{{i.10}}</b></center></td>
-							<td rowspan = {{i.7}} bgcolor="#45b4c6"><center><b>{{i.11}}</b></center></td>
-						{% endif %}
-
-					</tr>
-
-					{% endif %}
-
-					{% endfor %}
-
-					</table>
-					<br><br><br><br>
-			</div>
-		</form>
-
-
-
-
-
 		</div>  <!-- main wrapper-->
 		
 
 
-    {% endif %}
 
-{% endblock %}
 
 </body></html>
