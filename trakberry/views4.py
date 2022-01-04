@@ -195,15 +195,16 @@ def medium_production(request):
 	cur.execute(sql)
 	tmp4 = cur.fetchall()
 	for ii in tmp4:
-		ctr = 0
-		tot = 0
+			ctr = 0
+			tot = 0
 
-		try:
+		# try:
 			asset1 = ii[1]
 			part = ii[2]
 			tuple1 = ['' for x in range(0)]
 			shifthrs1=8
 			iid = 837165
+			pd1 = '2021-12-01'
 
 			try:
 				cql = "Select cycletime from tkb_cycletime where asset = '%s' and part = '%s'" % (asset1,part)
@@ -216,19 +217,23 @@ def medium_production(request):
 			except:
 				trg = 10000
 				
-			bql = "Select actual_produced From sc_production1 where asset_num = '%s' and partno = '%s' and shift_hours_length = '%d' and id > '%d' ORDER BY id DESC limit 35" %(asset1,part,shifthrs1,iid) 
-			cur.execute(bql)
-			tmp3 = cur.fetchall()
-			for i in tmp3:
-				tuple1.append(i[0])
-			lst = list(tuple1)
-			lst2 = median(lst)
-			tot = int(lst2)
-			tot = str(tot)
-			trg = int(trg)
-
-			per = int(tot) / trg
+			try:
+				bql = "Select actual_produced From sc_production1 where asset_num = '%s' and partno = '%s' and shift_hours_length = '%d' and pdate > '%s' ORDER BY id DESC limit 35" %(asset1,part,shifthrs1,pd1) 
+				cur.execute(bql)
+				tmp3 = cur.fetchall()
+				for i in tmp3:
+					tuple1.append(i[0])
+				lst = list(tuple1)
+				lst2 = median(lst)
+				tot = int(lst2)
+				tot = str(tot)
+				trg = int(trg)
+				per = int(tot) / trg
 			# per = per * 100
+			except:
+				tot=0
+				trg=0
+				per=0
 
 			cql = ('update tkb_couldbe SET medium = "%s" WHERE asset = "%s" and part = "%s"' % (tot,asset1,part))
 			cur.execute(cql)
@@ -239,11 +244,6 @@ def medium_production(request):
 			cql = ('update tkb_couldbe SET percent = "%s" WHERE asset = "%s" and part = "%s"' % (per,asset1,part))
 			cur.execute(cql)
 			db.commit()
-
-		except:
-			dummy = 1
-		
-		#rr = request.session["pumpkin"]
 	db.close()
 	
 	return render(request, "kiosk/kiosk_test7.html")
