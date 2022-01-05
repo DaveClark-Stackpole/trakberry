@@ -947,8 +947,8 @@ def tracking(request):
 			request.session['target_area'] = 1
 			request.session['part_area'] = '50-1467'
 			request.session['part_area1'] = '50-1467'
-			request.session['rate_area'] = 189
-			request.session['rate_area1'] = 189
+			request.session['rate_area'] = 165
+			request.session['rate_area1'] = 165
 			request.session['asset1_area'] = '650L'
 			request.session['asset2_area'] = '650R'
 			request.session['asset3_area'] = '769'
@@ -963,8 +963,8 @@ def tracking(request):
 			request.session['target_area'] = 2
 			request.session['part_area'] = '50-3050'
 			request.session['part_area2'] = '50-3050'
-			request.session['rate_area'] = 58
-			request.session['rate_area2'] = 58
+			request.session['rate_area'] = 50
+			request.session['rate_area2'] = 50
 			request.session['asset1_area'] = '769'
 			request.session['asset2_area'] = '769'
 			request.session['asset3_area'] = '769'
@@ -1143,7 +1143,7 @@ def tracking_10R80(request):
 def chart1_1467(request):
 		request.session['area1'] = '50-1467 Inspection'
 		request.session['part_area1'] = '50-1467'
-		request.session['rate_area1'] = 189
+		request.session['rate_area1'] = 165
 		request.session['asset1_area1'] = '650L'
 		request.session['asset2_area1'] = '650R'
 		request.session['asset3_area1'] = '769'
@@ -1152,7 +1152,7 @@ def chart1_1467(request):
 def chart2_1467(request):
 		request.session['area2'] = '50-1467 Inspection'
 		request.session['part_area2'] = '50-1467'
-		request.session['rate_area2'] = 189
+		request.session['rate_area2'] = 165
 		request.session['asset1_area2'] = '650L'
 		request.session['asset2_area2'] = '650R'
 		request.session['asset3_area2'] = '769'
@@ -1215,7 +1215,7 @@ def chart2_1467br(request):
 def chart1_3050(request):
 		request.session['area1'] = '50-3050 Inspection'
 		request.session['part_area1'] = '50-3050'
-		request.session['rate_area1'] = 58
+		request.session['rate_area1'] = 50
 		request.session['asset1_area1'] = '769'
 		request.session['asset2_area1'] = '769'
 		request.session['asset3_area1'] = '769'
@@ -1224,7 +1224,7 @@ def chart1_3050(request):
 def chart2_3050(request):
 		request.session['area2'] = '50-3050 Inspection'
 		request.session['part_area2'] = '50-3050'
-		request.session['rate_area2'] = 58
+		request.session['rate_area2'] = 50
 		request.session['asset1_area2'] = '769'
 		request.session['asset2_area2'] = '769'
 		request.session['asset3_area2'] = '769'
@@ -2492,12 +2492,33 @@ def auto_updater(request):	# This will run every 30 min on the refresh page to s
 
 def cell_track_9341(request):
 	shift_start, shift_time, shift_left, shift_end = stamp_shift_start(request)  # Get the Time Stamp info
-	machines1 = ['1504','1506','1519','1520','1502','1507','1501','1515','1508','1532','1509','1514','1510','1511','1518','1521','1522','1523','1539','1540','1524','1525','1538','1541','1531','1527','1528','1542','1533']
+	machines1 = ['1504','1506','1519','1520','1502','1507','1501','1515','1508','1532','1509','1514','1510','1511','1518','1521','1522','1523','1539','1540','1524','1525','1538','1541','1531','1527','1528','1513','1533']
+	rate = [8,8,8,8,4,4,4,4,3,3,2,2,2,2,8,8,8,8,4,4,4,4,3,2,2,2,2,1,1]
 	line1 = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,0,0]
 	operation1 = [10,10,10,10,30,30,40,40,50,50,60,70,80,100,10,10,10,10,30,30,40,40,50,60,70,80,100,90,120]
-	
+	prt = '50-9341'
+	machine_rate = zip(machines1,rate)
+	machine_color =[]
+	db, cur = db_set(request)
+	for i in machine_rate:
+		machine2 = i[0]
+		rate2 = 3200 / float(i[1])
+		rate2 = (rate2 / float(28800)) * 300
+		t=int(time.time()) - 300
+		sql = "SELECT SUM(Count) FROM GFxPRoduction WHERE TimeStamp >= '%d' and Part = '%s' and Machine = '%s'" % (t,prt,machine2)
+		cur.execute(sql)
+		tmp2 = cur.fetchall()
+		tmp3 = tmp2[0]
+		cnt = tmp3[0]
+		cnt = 2
+		if cnt is None: cnt = 0
+		rate3 = cnt / float(rate2)
+		rate3 = rate3 * 100 # This will be the percentage we use to determine colour
+		
+
+	db.close()
 	jobs1 = zip(machines1,line1,operation1)
 	
 
 
-	return render(request,'tkb_updater.html')
+	return render(request,'cell_track_9341.html')

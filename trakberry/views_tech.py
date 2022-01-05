@@ -822,6 +822,17 @@ def tech_pm_complete(request, index):
 	t = int(time.time())
 	# date1 = date_finder(request)
 	db, cur = db_set(request) 
+
+	# This will take an old check done and move it somewhere so we can enter new check
+	sql="SELECT MAX(Id) FROM PM_CNC_Tech_checks"
+	cur.execute(sql)
+	tmp=cur.fetchall()
+	id_ctr=int(tmp[0][0])
+	id_ctr = id_ctr + 1
+	rql =( 'update PM_CNC_Tech_checks SET Id="%s" WHERE Id="%s"' % (id_ctr,index))
+	cur.execute(rql)
+	db.commit()
+
 	cur.execute('''INSERT PM_CNC_Tech_checks Select * From PM_CNC_Tech_due where Id = "%s"''' % (index))
 	db.commit()
 	rql =( 'update PM_CNC_Tech_checks SET Last_Checked="%s" WHERE Id="%s"' % (t,index))
