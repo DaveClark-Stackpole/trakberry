@@ -252,6 +252,31 @@ def track_email(request):
 		c = int(c * 28800)
 		count2.append(c)
 	pred2 = zip(asset2,count2)
+
+
+	# Calculate 1467 Predictions
+	prt = '50-1467'
+	a1='650L'
+	a2='650R'
+	a3='769'
+	aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s')" % (u,t,prt,a1,a2,a3)
+	cur.execute(aql)
+	tmp2 = cur.fetchall()
+	tmp3 = tmp2[0]
+	count3 = tmp3[0] / float ( t-u)
+	count3 = int(count3 * 28800)
+
+	# Calculate 3050 Predictions
+	prt = '50-3050'
+	a4='769'
+	aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s')" % (u,t,prt,a3)
+	cur.execute(aql)
+	tmp2 = cur.fetchall()
+	tmp3 = tmp2[0]
+	count4 = tmp3[0] / float ( t-u)
+	count4 = int(count4 * 28800)
+
+
 	db.close()
 
 	tm = time.localtime(t)	 # Local time
@@ -275,6 +300,14 @@ def track_email(request):
 	message3 = message3 + '10R60 Production'
 	for i in pred2:
 		message3 = message3 + b + "Machine:" + i[0] + " Prediction: " + str(i[1])
+
+	message3 = message3 + b + b 
+	message3 = message3 + 'Trilobe Production'
+	message3 = message3 + b + "Machine: 650/769" + " Prediction: " + str(count3)
+
+	message3 = message3 + b + b 
+	message3 = message3 + 'Optimized Production'
+	message3 = message3 + b + "Machine: 769" + " Prediction: " + str(count4)
 
 
 	toaddrs = ["dclark@stackpole.com","jmcmaster@stackpole.com"]
