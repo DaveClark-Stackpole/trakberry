@@ -947,8 +947,8 @@ def tracking(request):
 			request.session['target_area'] = 1
 			request.session['part_area'] = '50-1467'
 			request.session['part_area1'] = '50-1467'
-			request.session['rate_area'] = 189
-			request.session['rate_area1'] = 189
+			request.session['rate_area'] = 165
+			request.session['rate_area1'] = 165
 			request.session['asset1_area'] = '650L'
 			request.session['asset2_area'] = '650R'
 			request.session['asset3_area'] = '769'
@@ -963,8 +963,8 @@ def tracking(request):
 			request.session['target_area'] = 2
 			request.session['part_area'] = '50-3050'
 			request.session['part_area2'] = '50-3050'
-			request.session['rate_area'] = 58
-			request.session['rate_area2'] = 58
+			request.session['rate_area'] = 50
+			request.session['rate_area2'] = 50
 			request.session['asset1_area'] = '769'
 			request.session['asset2_area'] = '769'
 			request.session['asset3_area'] = '769'
@@ -1143,7 +1143,7 @@ def tracking_10R80(request):
 def chart1_1467(request):
 		request.session['area1'] = '50-1467 Inspection'
 		request.session['part_area1'] = '50-1467'
-		request.session['rate_area1'] = 189
+		request.session['rate_area1'] = 165
 		request.session['asset1_area1'] = '650L'
 		request.session['asset2_area1'] = '650R'
 		request.session['asset3_area1'] = '769'
@@ -1152,7 +1152,7 @@ def chart1_1467(request):
 def chart2_1467(request):
 		request.session['area2'] = '50-1467 Inspection'
 		request.session['part_area2'] = '50-1467'
-		request.session['rate_area2'] = 189
+		request.session['rate_area2'] = 165
 		request.session['asset1_area2'] = '650L'
 		request.session['asset2_area2'] = '650R'
 		request.session['asset3_area2'] = '769'
@@ -1215,7 +1215,7 @@ def chart2_1467br(request):
 def chart1_3050(request):
 		request.session['area1'] = '50-3050 Inspection'
 		request.session['part_area1'] = '50-3050'
-		request.session['rate_area1'] = 58
+		request.session['rate_area1'] = 50
 		request.session['asset1_area1'] = '769'
 		request.session['asset2_area1'] = '769'
 		request.session['asset3_area1'] = '769'
@@ -1224,7 +1224,7 @@ def chart1_3050(request):
 def chart2_3050(request):
 		request.session['area2'] = '50-3050 Inspection'
 		request.session['part_area2'] = '50-3050'
-		request.session['rate_area2'] = 58
+		request.session['rate_area2'] = 50
 		request.session['asset1_area2'] = '769'
 		request.session['asset2_area2'] = '769'
 		request.session['asset3_area2'] = '769'
