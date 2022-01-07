@@ -1,5 +1,6 @@
 
 <html>
+	<meta http-equiv="refresh" content="10; url={{request.session.local_toggle}}/cell_track_9341/" />
 <head>
 <!-- Test  -->
  <!-- Format for Background image -->
@@ -7,7 +8,6 @@
 
 
 
-#full-screen-background-image {z-index: -999;min-height: 110%; min-width: 100%;width: 100%;height: 110%;position: fixed;top: ;  left: 0;}
 
 .multiple-borders {
   -webkit-box-shadow:
@@ -104,7 +104,7 @@
 		.frame1 {color:black;text-align:center;float:left;width:32%;margin-bottom: 5px;}
 		.framec {color:black;text-align:center;float:left;width:20%;margin-bottom: 5px;}
 		.frameo {color:black;text-align:center;float:left;width:27%;margin-bottom: 5px;}
-		.framel {color:black;text-align:center;float:left;width:7%;margin-left: 50px;margin-bottom: 5px;}
+		.framel {color:black;text-align:center;float:right;width:5%;margin-left: 10px;margin-bottom: 5px;}
 		.frame2a{color:black;text-align:center;background:rgb(202, 188, 83);float:left;width:32%;position:relative;left:5px;border-radius: 15px;margin-bottom: 5px;}
 
 		.frame2{color:black;text-align:center;background:rgb(83, 134, 202);float:left;width:32%;position:relative;left:5px;margin-bottom: 5px;}
@@ -247,185 +247,195 @@
 		color: white;
 	}
 </style>
+<style>
+	body{
+		background-image: url();
+	}
+</style>
 
-
-
+<style>
+	body  {
+	  background-image: url("/static/media/i1.jpg?{{TCUR}}");
+	
+	}
+	
+	</style>
 </head>
 
 <body>
 
-<img alt="full screen background image" src="/static/media/mgmt.jpeg?{{TCUR}}" id="full-screen-background-image"/>
-<br><br>
 
+
+<br>
 		<div class="wrapper_main">
 			<div class="mainset">  <!-- MainLine Production-->
 				<center><table id="prodwk"><tr> <!-- OP60 -->
-					<td bgcolor="#9ab87b"><br><center><font style="font-weight:bolder;font-size:x-large;">10R80 Cell Track</font></center><br></td>
+					<td bgcolor="#DCDCDC"><br><center><font style="font-weight:bolder;font-size:120%;">10R80 Cell Track</font></center><br></td>
 				</tr></table></center><br>
 			</div>
 			<div class="frame1">  <!-- MainLine Production-->
 				<center><table id="mainline"><tr> <!-- OP60 -->
-					<td bgcolor="#bdb4b3" style="font-size:10px;width:15%;"><br><center><font style="font-weight:bolder;font-size:large;">&nbsp;&nbsp;&nbsp;&nbsp;</font></center><br></td>
+					<td bgcolor="#bdb4b3" style="font-size:12px;width:15%;"><br><center><font style="font-weight:bolder;font-size:100%;">&nbsp;&nbsp;&nbsp;&nbsp;</font></center><br></td>
 
-					<td bgcolor="#bdb4b3"><br><center><font style="font-weight:bolder;font-size:x-large;">Mainline</font></center><br></td>
+					<td bgcolor="#bdb4b3"><br><center><font style="font-weight:bolder;font-size:100%;">Mainline</font></center><br></td>
 				</tr></table></center>
 				<center><table id="mainline"><tr> <!-- OP10 -->
-						<td bgcolor="#b0aea9" style="font-size:10px;width:15%;"><br><center><font style="font-weight:bolder;font-size:large;">OP 10</font></center><br></td>
-						<td bgcolor={{codes.0.2}}><br><center><font style="font-weight:bolder;font-size:x-large;">{{codes.0.0}}</font></center><br></td>
-						<td bgcolor={{codes.1.2}}><br><center><font style="font-weight:bolder;font-size:x-large;">{{codes.1.0}}</font></center><br></td>
-						<td bgcolor={{codes.2.2}}><br><center><font style="font-weight:bolder;font-size:x-large;">{{codes.2.0}}</font></center><br></td>
-						<td bgcolor={{codes.3.2}}><br><center><font style="font-weight:bolder;font-size:x-large;">{{codes.3.0}}</font></center><br></td>
+						<td bgcolor="#b0aea9" style="font-size:12px;width:15%;"><br><center><font style="font-weight:bolder;font-size:100%;">OP 10</font></center><br></td>
+						<td bgcolor={{codes.0.2}}><br><center><font style="font-weight:bolder;font-size:100%;">{{codes.0.0}}</font></center><br></td>
+						<td bgcolor={{codes.1.2}}><br><center><font style="font-weight:bolder;font-size:100%;">{{codes.1.0}}</font></center><br></td>
+						<td bgcolor={{codes.2.2}}><br><center><font style="font-weight:bolder;font-size:100%;">{{codes.2.0}}</font></center><br></td>
+						<td bgcolor={{codes.3.2}}><br><center><font style="font-weight:bolder;font-size:100%;">{{codes.3.0}}</font></center><br></td>
 				</tr></table></center>
 				<center><table id="mainline"><tr> <!-- OP30 -->
-						<td bgcolor="#b0aea9" style="font-size:10px;width:15%;"><br><center><font style="font-weight:bolder;font-size:large;">OP 30</font></center><br></td>
-						<td bgcolor={{codes.4.2}}><br><center><font style="font-weight:bolder;font-size:x-large;">{{codes.4.0}}</font></center><br></td>
-						<td bgcolor={{codes.5.2}}><br><center><font style="font-weight:bolder;font-size:x-large;">{{codes.5.0}}</font></center><br></td>
+						<td bgcolor="#b0aea9" style="font-size:12px;width:15%;"><br><center><font style="font-weight:bolder;font-size:100%;">OP 30</font></center><br></td>
+						<td bgcolor={{codes.4.2}}><br><center><font style="font-weight:bolder;font-size:100%;">{{codes.4.0}}</font></center><br></td>
+						<td bgcolor={{codes.5.2}}><br><center><font style="font-weight:bolder;font-size:100%;">{{codes.5.0}}</font></center><br></td>
 				</tr></table></center>
 				<center><table id="mainline"><tr> <!-- OP40 -->
-					<td bgcolor="#b0aea9" style="font-size:10px;width:15%;"><br><center><font style="font-weight:bolder;font-size:large;">OP 40</font></center><br></td>
-					<td bgcolor={{codes.6.2}}><br><center><font style="font-weight:bolder;font-size:x-large;">{{codes.6.0}}</font></center><br></td>
-					<td bgcolor={{codes.7.2}}><br><center><font style="font-weight:bolder;font-size:x-large;">{{codes.7.0}}</font></center><br></td>
+					<td bgcolor="#b0aea9" style="font-size:12px;width:15%;"><br><center><font style="font-weight:bolder;font-size:100%;">OP 40</font></center><br></td>
+					<td bgcolor={{codes.6.2}}><br><center><font style="font-weight:bolder;font-size:100%;">{{codes.6.0}}</font></center><br></td>
+					<td bgcolor={{codes.7.2}}><br><center><font style="font-weight:bolder;font-size:100%;">{{codes.7.0}}</font></center><br></td>
 				</tr></table></center>
 				<center><table id="mainline"><tr> <!-- OP50 -->
-					<td bgcolor="#b0aea9" style="font-size:10px;width:15%;"><br><center><font style="font-weight:bolder;font-size:large;">OP 50</font></center><br></td>
-					<td bgcolor={{codes.8.2}}><br><center><font style="font-weight:bolder;font-size:x-large;">{{codes.8.0}}</font></center><br></td>
-					<td bgcolor={{codes.9.2}}><br><center><font style="font-weight:bolder;font-size:x-large;">{{codes.9.0}}</font></center><br></td>
+					<td bgcolor="#b0aea9" style="font-size:12px;width:15%;"><br><center><font style="font-weight:bolder;font-size:100%;">OP 50</font></center><br></td>
+					<td bgcolor={{codes.8.2}}><br><center><font style="font-weight:bolder;font-size:100%;">{{codes.8.0}}</font></center><br></td>
+					<td bgcolor={{codes.9.2}}><br><center><font style="font-weight:bolder;font-size:100%;">{{codes.9.0}}</font></center><br></td>
 				</tr></table></center>
 				<center><table id="mainline"><tr> <!-- OP60 -->
-					<td bgcolor="#b0aea9" style="font-size:10px;width:15%;"><br><center><font style="font-weight:bolder;font-size:large;">OP 60</font></center><br></td>
-					<td bgcolor={{codes.10.2}}><br><center><font style="font-weight:bolder;font-size:x-large;">{{codes.10.0}}</font></center><br></td>
+					<td bgcolor="#b0aea9" style="font-size:12px;width:15%;"><br><center><font style="font-weight:bolder;font-size:100%;">OP 60</font></center><br></td>
+					<td bgcolor={{codes.10.2}}><br><center><font style="font-weight:bolder;font-size:100%;">{{codes.10.0}}</font></center><br></td>
 				</tr></table></center>
 				<center><table id="mainline"><tr> <!-- OP70 -->
-					<td bgcolor="#b0aea9" style="font-size:10px;width:15%;"><br><center><font style="font-weight:bolder;font-size:large;">OP 70</font></center><br></td>
-					<td bgcolor={{codes.11.2}}><br><center><font style="font-weight:bolder;font-size:x-large;">{{codes.11.0}}</font></center><br></td>
+					<td bgcolor="#b0aea9" style="font-size:12px;width:15%;"><br><center><font style="font-weight:bolder;font-size:100%;">OP 70</font></center><br></td>
+					<td bgcolor={{codes.11.2}}><br><center><font style="font-weight:bolder;font-size:100%;">{{codes.11.0}}</font></center><br></td>
 				</tr></table></center>
 				<center><table id="mainline"><tr> <!-- OP80 -->
-					<td bgcolor="#b0aea9" style="font-size:10px;width:15%;"><br><center><font style="font-weight:bolder;font-size:large;">OP 80</font></center><br></td>
-					<td bgcolor={{codes.12.2}}><br><center><font style="font-weight:bolder;font-size:x-large;">{{codes.12.0}}</font></center><br></td>
+					<td bgcolor="#b0aea9" style="font-size:12px;width:15%;"><br><center><font style="font-weight:bolder;font-size:100%;">OP 80</font></center><br></td>
+					<td bgcolor={{codes.12.2}}><br><center><font style="font-weight:bolder;font-size:100%;">{{codes.12.0}}</font></center><br></td>
 				</tr></table></center>
 				<center><table id="noneline"><tr> <!-- OP30 -->
-					<td bgcolor="#b0aea9" style="font-size:10px;width:15%;"><br><center><font style="font-weight:bolder;font-size:large;">OP 90</font></center><br></td>
-					<td><br><center><font style="font-weight:bolder;font-size:x-large;">&nbsp;&nbsp;&nbsp;&nbsp;</font></center><br></td>
+					<td bgcolor="#b0aea9" style="font-size:12px;width:15%;"><br><center><font style="font-weight:bolder;font-size:100%;">OP 90</font></center><br></td>
+					<td><br><center><font style="font-weight:bolder;font-size:100%;">&nbsp;&nbsp;&nbsp;&nbsp;</font></center><br></td>
 				</tr></table></center>
 				<center><table id="mainline"><tr> <!-- OP100 -->
-					<td bgcolor="#b0aea9" style="font-size:10px;width:15%;"><br><center><font style="font-weight:bolder;font-size:large;">OP 100</font></center><br></td>
-					<td bgcolor={{codes.13.2}}><br><center><font style="font-weight:bolder;font-size:x-large;">{{codes.13.0}}</font></center><br></td>
+					<td bgcolor="#b0aea9" style="font-size:12px;width:15%;"><br><center><font style="font-weight:bolder;font-size:100%;">OP 100</font></center><br></td>
+					<td bgcolor={{codes.13.2}}><br><center><font style="font-weight:bolder;font-size:100%;">{{codes.13.0}}</font></center><br></td>
 				</tr></table></center>
 				<center><table id="mainline"><tr> <!-- OP110 -->
-					<td bgcolor="#b0aea9" style="font-size:10px;width:15%;"><br><center><font style="font-weight:bolder;font-size:large;">OP 110</font></center><br></td>
-					<td bgcolor={{codes.14.2}}><br><center><font style="font-weight:bolder;font-size:x-large;">{{codes.14.0}}</font></center><br></td>
+					<td bgcolor="#b0aea9" style="font-size:12px;width:15%;"><br><center><font style="font-weight:bolder;font-size:100%;">OP 110</font></center><br></td>
+					<td bgcolor={{codes.14.2}}><br><center><font style="font-weight:bolder;font-size:100%;">{{codes.14.0}}</font></center><br></td>
 				</tr></table></center>
 				<center><table id="noneline"><tr> <!-- OP120 -->
-					<td bgcolor="#b0aea9" style="font-size:10px;width:15%;"><br><center><font style="font-weight:bolder;font-size:large;">OP 120</font></center><br></td>
-					<td><br><center><font style="font-weight:bolder;font-size:x-large;">&nbsp;&nbsp;&nbsp;&nbsp;</font></center><br></td>
+					<td bgcolor="#b0aea9" style="font-size:12px;width:15%;"><br><center><font style="font-weight:bolder;font-size:100%;">OP 120</font></center><br></td>
+					<td><br><center><font style="font-weight:bolder;font-size:100%;">&nbsp;&nbsp;&nbsp;&nbsp;</font></center><br></td>
 				</tr></table></center>
 			</div>
 
 			<div class="framec">  <!-- Center Line Production-->
 				<center><table id="noneline"><tr> <!-- OP60 -->
-					<td><br><center><font style="font-weight:bolder;font-size:x-large;">&nbsp;&nbsp;&nbsp;&nbsp;</font></center><br></td>
+					<td><br><center><font style="font-weight:bolder;font-size:100%;">&nbsp;&nbsp;&nbsp;&nbsp;</font></center><br></td>
 				</tr></table></center>
 				<center><table id="noneline"><tr> <!-- OP10 -->
-					<td><br><center><font style="font-weight:bolder;font-size:x-large;">&nbsp;&nbsp;&nbsp;&nbsp;</font></center><br></td>
+					<td><br><center><font style="font-weight:bolder;font-size:100%;">&nbsp;&nbsp;&nbsp;&nbsp;</font></center><br></td>
 				</tr></table></center>
 				<center><table id="noneline"><tr> <!-- OP30 -->
-					<td><br><center><font style="font-weight:bolder;font-size:x-large;">&nbsp;&nbsp;&nbsp;&nbsp;</font></center><br></td>
+					<td><br><center><font style="font-weight:bolder;font-size:100%;">&nbsp;&nbsp;&nbsp;&nbsp;</font></center><br></td>
 				</tr></table></center>
 				<center><table id="noneline"><tr> <!-- OP40 -->
-					<td><br><center><font style="font-weight:bolder;font-size:x-large;">&nbsp;&nbsp;&nbsp;&nbsp;</font></center><br></td>
+					<td><br><center><font style="font-weight:bolder;font-size:100%;">&nbsp;&nbsp;&nbsp;&nbsp;</font></center><br></td>
 				</tr></table></center>
 				<center><table id="noneline"><tr> <!-- OP50 -->
-					<td><br><center><font style="font-weight:bolder;font-size:x-large;">&nbsp;&nbsp;&nbsp;&nbsp;</font></center><br></td>
+					<td><br><center><font style="font-weight:bolder;font-size:100%;">&nbsp;&nbsp;&nbsp;&nbsp;</font></center><br></td>
 				</tr></table></center>
 				<center><table id="noneline"><tr> <!-- OP60 -->
-					<td><br><center><font style="font-weight:bolder;font-size:x-large;">&nbsp;&nbsp;&nbsp;&nbsp;</font></center><br></td>
+					<td><br><center><font style="font-weight:bolder;font-size:100%;">&nbsp;&nbsp;&nbsp;&nbsp;</font></center><br></td>
 				</tr></table></center>
 				<center><table id="noneline"><tr> <!-- OP70 -->
-					<td><br><center><font style="font-weight:bolder;font-size:x-large;">&nbsp;&nbsp;&nbsp;&nbsp;</font></center><br></td>
+					<td><br><center><font style="font-weight:bolder;font-size:100%;">&nbsp;&nbsp;&nbsp;&nbsp;</font></center><br></td>
 				</tr></table></center>
 				<center><table id="noneline"><tr> <!-- OP80 -->
-					<td><br><center><font style="font-weight:bolder;font-size:x-large;">&nbsp;&nbsp;&nbsp;&nbsp;</font></center><br></td>
+					<td><br><center><font style="font-weight:bolder;font-size:100%;">&nbsp;&nbsp;&nbsp;&nbsp;</font></center><br></td>
 				</tr></table></center>
 				<center><table id="mainline"><tr> <!-- OP90 -->
-					<td bgcolor={{codes.29.2}}><br><center><font style="font-weight:bolder;font-size:x-large;">{{codes.29.0}}</font></center><br></td>
+					<td bgcolor={{codes.29.2}}><br><center><font style="font-weight:bolder;font-size:100%;">{{codes.29.0}}</font></center><br></td>
 				</tr></table></center>
 				<center><table id="noneline"><tr> <!-- OP80 -->
-					<td><br><center><font style="font-weight:bolder;font-size:x-large;">&nbsp;&nbsp;&nbsp;&nbsp;</font></center><br></td>
+					<td><br><center><font style="font-weight:bolder;font-size:100%;">&nbsp;&nbsp;&nbsp;&nbsp;</font></center><br></td>
 				</tr></table></center>
 				<center><table id="noneline"><tr> <!-- OP80 -->
-					<td><br><center><font style="font-weight:bolder;font-size:x-large;">&nbsp;&nbsp;&nbsp;&nbsp;</font></center><br></td>
+					<td><br><center><font style="font-weight:bolder;font-size:100%;">&nbsp;&nbsp;&nbsp;&nbsp;</font></center><br></td>
 				</tr></table></center>
 				<center><table id="mainline"><tr> <!-- OP120 -->
-					<td bgcolor={{codes.30.2}}><br><center><font style="font-weight:bolder;font-size:x-large;">{{codes.30.0}}</font></center><br></td>
+					<td bgcolor={{codes.30.2}}><br><center><font style="font-weight:bolder;font-size:100%;">{{codes.30.0}}</font></center><br></td>
 				</tr></table></center>
 			</div>
 			<div class="frameo">  <!-- MainLine Production-->
 				<center><table id="mainline"><tr> <!-- OP60 -->
-					<td bgcolor="#bdb4b3"><br><center><font style="font-weight:bolder;font-size:x-large;">OffLine</font></center><br></td>
+					<td bgcolor="#bdb4b3"><br><center><font style="font-weight:bolder;font-size:100%;">OffLine</font></center><br></td>
 				</tr></table></center>
 				<center><table id="mainline"><tr> <!-- OP10 -->
-						<td bgcolor={{codes.15.2}}><br><center><font style="font-weight:bolder;font-size:x-large;">{{codes.15.0}}</font></center><br></td>
-						<td bgcolor={{codes.16.2}}><br><center><font style="font-weight:bolder;font-size:x-large;">{{codes.16.0}}</font></center><br></td>
-						<td bgcolor={{codes.17.2}}><br><center><font style="font-weight:bolder;font-size:x-large;">{{codes.17.0}}</font></center><br></td>
-						<td bgcolor={{codes.18.2}}><br><center><font style="font-weight:bolder;font-size:x-large;">{{codes.18.0}}</font></center><br></td>
+						<td bgcolor={{codes.15.2}}><br><center><font style="font-weight:bolder;font-size:100%;">{{codes.15.0}}</font></center><br></td>
+						<td bgcolor={{codes.16.2}}><br><center><font style="font-weight:bolder;font-size:100%;">{{codes.16.0}}</font></center><br></td>
+						<td bgcolor={{codes.17.2}}><br><center><font style="font-weight:bolder;font-size:100%;">{{codes.17.0}}</font></center><br></td>
+						<td bgcolor={{codes.18.2}}><br><center><font style="font-weight:bolder;font-size:100%;">{{codes.18.0}}</font></center><br></td>
 				</tr></table></center>
 				<center><table id="mainline"><tr> <!-- OP30 -->
-						<td bgcolor={{codes.19.2}}><br><center><font style="font-weight:bolder;font-size:x-large;">{{codes.19.0}}</font></center><br></td>
-						<td bgcolor={{codes.20.2}}><br><center><font style="font-weight:bolder;font-size:x-large;">{{codes.20.0}}</font></center><br></td>
+						<td bgcolor={{codes.19.2}}><br><center><font style="font-weight:bolder;font-size:100%;">{{codes.19.0}}</font></center><br></td>
+						<td bgcolor={{codes.20.2}}><br><center><font style="font-weight:bolder;font-size:100%;">{{codes.20.0}}</font></center><br></td>
 				</tr></table></center>
 				<center><table id="mainline"><tr> <!-- OP40 -->
-					<td bgcolor={{codes.21.2}}><br><center><font style="font-weight:bolder;font-size:x-large;">{{codes.21.0}}</font></center><br></td>
-					<td bgcolor={{codes.22.2}}><br><center><font style="font-weight:bolder;font-size:x-large;">{{codes.22.0}}</font></center><br></td>
+					<td bgcolor={{codes.21.2}}><br><center><font style="font-weight:bolder;font-size:100%;">{{codes.21.0}}</font></center><br></td>
+					<td bgcolor={{codes.22.2}}><br><center><font style="font-weight:bolder;font-size:100%;">{{codes.22.0}}</font></center><br></td>
 				</tr></table></center>
 				<center><table id="mainline"><tr> <!-- OP50 -->
-					<td bgcolor={{codes.23.2}}><br><center><font style="font-weight:bolder;font-size:x-large;">{{codes.23.0}}</font></center><br></td>
+					<td bgcolor={{codes.23.2}}><br><center><font style="font-weight:bolder;font-size:100%;">{{codes.23.0}}</font></center><br></td>
 				</tr></table></center>
 				<center><table id="mainline"><tr> <!-- OP60 -->
-					<td bgcolor={{codes.24.2}}><br><center><font style="font-weight:bolder;font-size:x-large;">{{codes.24.0}}</font></center><br></td>
+					<td bgcolor={{codes.24.2}}><br><center><font style="font-weight:bolder;font-size:100%;">{{codes.24.0}}</font></center><br></td>
 				</tr></table></center>
 				<center><table id="mainline"><tr> <!-- OP70 -->
-					<td bgcolor={{codes.25.2}}><br><center><font style="font-weight:bolder;font-size:x-large;">{{codes.25.0}}</font></center><br></td>
+					<td bgcolor={{codes.25.2}}><br><center><font style="font-weight:bolder;font-size:100%;">{{codes.25.0}}</font></center><br></td>
 				</tr></table></center>
 				<center><table id="mainline"><tr> <!-- OP80 -->
-					<td bgcolor={{codes.26.2}}><br><center><font style="font-weight:bolder;font-size:x-large;">{{codes.26.0}}</font></center><br></td>
+					<td bgcolor={{codes.26.2}}><br><center><font style="font-weight:bolder;font-size:100%;">{{codes.26.0}}</font></center><br></td>
 				</tr></table></center>
 				<center><table id="noneline"><tr> <!-- OP30 -->
-					<td><br><center><font style="font-weight:bolder;font-size:x-large;">&nbsp;&nbsp;&nbsp;&nbsp;</font></center><br></td>
+					<td><br><center><font style="font-weight:bolder;font-size:100%;">&nbsp;&nbsp;&nbsp;&nbsp;</font></center><br></td>
 				</tr></table></center>
 				<center><table id="mainline"><tr> <!-- OP100 -->
-					<td bgcolor={{codes.27.2}}><br><center><font style="font-weight:bolder;font-size:x-large;">{{codes.27.0}}</font></center><br></td>
+					<td bgcolor={{codes.27.2}}><br><center><font style="font-weight:bolder;font-size:100%;">{{codes.27.0}}</font></center><br></td>
 				</tr></table></center>
 				<center><table id="mainline"><tr> <!-- OP110 -->
-					<td bgcolor={{codes.28.2}}><br><center><font style="font-weight:bolder;font-size:x-large;">{{codes.28.0}}</font></center><br></td>
+					<td bgcolor={{codes.28.2}}><br><center><font style="font-weight:bolder;font-size:100%;">{{codes.28.0}}</font></center><br></td>
 				</tr></table></center>
 				<center><table id="noneline"><tr> <!-- OP120 -->
-					<td><br><center><font style="font-weight:bolder;font-size:x-large;">&nbsp;&nbsp;&nbsp;&nbsp;</font></center><br></td>
+					<td><br><center><font style="font-weight:bolder;font-size:100%;">&nbsp;&nbsp;&nbsp;&nbsp;</font></center><br></td>
 				</tr></table></center>
 			</div>
 			<div class="framel">  <!-- MainLine Production-->
 				<center><table id="legend"><tr> <!-- OP60 -->
-					<td bgcolor="#bdb4b3"><br><center><font style="font-weight:bolder;font-size:large;">% of Rate</font></center><br></td>
+					<td bgcolor="#bdb4b3"><br><center><font style="font-weight:bolder;font-size:75%;">% of Rate</font></center><br></td>
 				</tr></table></center>
 				<center><table id="legend"><tr> <!-- OP50 -->
-					<td bgcolor="#009700"><br><center><font style="font-weight:bolder;font-size:large;">100%</font></center><br></td>
+					<td bgcolor="#009700"><br><center><font style="font-weight:bolder;font-size:75%;">100%</font></center><br></td>
 				</tr></table></center>
 				<center><table id="legend"><tr> <!-- OP60 -->
-					<td bgcolor="#4FC34F"><br><center><font style="font-weight:bolder;font-size:large;">90%</font></center><br></td>
+					<td bgcolor="#4FC34F"><br><center><font style="font-weight:bolder;font-size:75%;">90%</font></center><br></td>
 				</tr></table></center>
 				<center><table id="legend"><tr> <!-- OP70 -->
-					<td bgcolor="#A4F6A4"><br><center><font style="font-weight:bolder;font-size:large;">80%</font></center><br></td>
+					<td bgcolor="#A4F6A4"><br><center><font style="font-weight:bolder;font-size:75%;">80%</font></center><br></td>
 				</tr></table></center>
 				<center><table id="legend"><tr> <!-- OP80 -->
-					<td bgcolor="#C3C300"><br><center><font style="font-weight:bolder;font-size:large;">70%</font></center><br></td>
+					<td bgcolor="#C3C300"><br><center><font style="font-weight:bolder;font-size:75%;">70%</font></center><br></td>
 				</tr></table></center>
 				<center><table id="legend"><tr> <!-- OP80 -->
-					<td bgcolor="#DADA3F"><br><center><font style="font-weight:bolder;font-size:large;">50%</font></center><br></td>
+					<td bgcolor="#DADA3F"><br><center><font style="font-weight:bolder;font-size:75%;">50%</font></center><br></td>
 				</tr></table></center>
 				<center><table id="legend"><tr> <!-- OP80 -->
-					<td bgcolor="#F6F687"><br><center><font style="font-weight:bolder;font-size:large;">25%</font></center><br></td>
+					<td bgcolor="#F6F687"><br><center><font style="font-weight:bolder;font-size:75%;">25%</font></center><br></td>
 				</tr></table></center>
 				<center><table id="legend"><tr> <!-- OP80 -->
-					<td bgcolor="#EC7371"><br><center><font style="font-weight:bolder;font-size:large;">0%</font></center><br></td>
+					<td bgcolor="#EC7371"><br><center><font style="font-weight:bolder;font-size:75%;">0%</font></center><br></td>
 				</tr></table></center>
 
 			</div>
