@@ -500,9 +500,9 @@ def track_area(request):
 		# week_rate2 = week_rate2 * 172800
 		week_projection = week_projection + weekend_projection
 		if prt == '50-9341':
-			week_projection = week_projection + 9500
+			week_projection = week_projection + 4500
 	if prt == '50-0455':
-		week_projection = week_projection + 2800
+		week_projection = week_projection + 2250
 
 	current_rate = cnt / float(shift_time)
 	projection = int(current_rate * (shift_left)) + cnt
@@ -2576,7 +2576,7 @@ def cell_track_9341(request):
 		elif rate3>=25:
 			cc='#F6F687'
 		else:
-			cc='#bdb4b3'
+			cc='#EC7371'
 			#cc='#EC7371'   Change to red when ready to go
 		color8.append(cc)
 		rate8.append(rate3)
