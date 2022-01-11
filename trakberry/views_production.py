@@ -1338,7 +1338,7 @@ def chart2_0455(request):
 def chart1_0455_OP30(request):
 		request.session['area1'] = '50-0455 OP30'
 		request.session['part_area1'] = '50-0455'
-		request.session['rate_area1'] = 110
+		request.session['rate_area1'] = 117
 		request.session['asset1_area1'] = '1543'
 		request.session['asset2_area1'] = '776'
 		request.session['asset3_area1'] = '1529'
@@ -1347,7 +1347,7 @@ def chart1_0455_OP30(request):
 def chart2_0455_OP30(request):
 		request.session['area2'] = '50-0455 OP30'
 		request.session['part_area2'] = '50-0455'
-		request.session['rate_area2'] = 110
+		request.session['rate_area2'] = 117
 		request.session['asset1_area2'] = '1543'
 		request.session['asset2_area2'] = '776'
 		request.session['asset3_area2'] = '1529'
@@ -1356,7 +1356,7 @@ def chart2_0455_OP30(request):
 def chart1_9341(request):
 		request.session['area1'] = '50-9341 Inspection'
 		request.session['part_area1'] = '50-9341'
-		request.session['rate_area1'] = 400
+		request.session['rate_area1'] = 367
 		request.session['asset1_area1'] = '1533'
 		request.session['asset2_area1'] = '1533'
 		request.session['asset3_area1'] = '1533'
@@ -1365,7 +1365,7 @@ def chart1_9341(request):
 def chart2_9341(request):
 		request.session['area2'] = '50-9341 Inspection'
 		request.session['part_area2'] = '50-9341'
-		request.session['rate_area2'] = 400
+		request.session['rate_area2'] = 367
 		request.session['asset1_area2'] = '1533'
 		request.session['asset2_area2'] = '1533'
 		request.session['asset3_area2'] = '1533'
@@ -2591,3 +2591,70 @@ def cell_track_9341(request):
 
 	return render(request,'cell_track_9341.html',{'codes':total8})
 
+def cell_track_9341_mobile(request):
+	shift_start, shift_time, shift_left, shift_end = stamp_shift_start(request)  # Get the Time Stamp info
+	machines1 = ['1504','1506','1519','1520','1502','1507','1501','1515','1508','1532','1509','1514','1510','1503','1511','1518','1521','1522','1523','1539','1540','1524','1525','1538','1541','1531','1527','1530','1528','1513','1533']
+	rate = [8,8,8,8,4,4,4,4,3,3,2,2,2,2,2,8,8,8,8,4,4,4,4,3,2,2,2,2,2,1,1]
+	line1 = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0,0]
+	operation1 = [10,10,10,10,30,30,40,40,50,50,60,70,80,100,110,10,10,10,10,30,30,40,40,50,60,70,80,100,110,90,120]
+	prt = '50-9341'
+	machine_rate = zip(machines1,rate)
+	machine_color =[]
+	db, cur = db_set(request)
+	color8=[]
+	rate8=[]
+	machine8=[]
+	for i in machine_rate:
+		machine2 = i[0]
+		rate2 = 3200 / float(i[1])
+		rate2 = (rate2 / float(28800)) * 300
+		t=int(time.time()) - 300
+
+		try:
+			sql = "SELECT SUM(Count) FROM GFxPRoduction WHERE TimeStamp >= '%d' and Part = '%s' and Machine = '%s'" % (t,prt,machine2)
+			cur.execute(sql)
+			tmp2 = cur.fetchall()
+			tmp3 = tmp2[0]
+			cnt = int(tmp3[0])
+		except:
+			cnt = 0
+		if cnt is None: cnt = 0
+		rate3 = cnt / float(rate2)
+		rate3 = int(rate3 * 100) # This will be the percentage we use to determine colour
+		
+		# Below is the Color Codes
+		#009700 100%
+		#4FC34F 90%
+		#A4F6A4 80%
+		#C3C300 70%
+		#DADA3F 50%
+		#F6F687 25%
+		#EC7371 0%
+
+		if rate3>=100:
+			cc='#009700'
+		elif rate3>=90:
+			cc='#4FC34F'
+		elif rate3>=80:
+			cc='#A4F6A4'
+		elif rate3>=70:
+			cc='#C3C300'
+		elif rate3>=50:
+			cc='#DADA3F'
+		elif rate3>=25:
+			cc='#F6F687'
+		else:
+			cc='#EC7371'
+			#cc='#EC7371'   Change to red when ready to go
+		color8.append(cc)
+		rate8.append(rate3)
+		machine8.append(machine2)
+	total8=zip(machine8,rate8,color8)
+
+
+	db.close()
+	jobs1 = zip(machines1,line1,operation1)
+
+
+
+	return render(request,'cell_track_9341_mobile.html',{'codes':total8})
