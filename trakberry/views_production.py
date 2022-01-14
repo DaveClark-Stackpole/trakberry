@@ -980,8 +980,8 @@ def tracking(request):
 			request.session['target_area'] = 1
 			request.session['part_area'] = '50-1467'
 			request.session['part_area1'] = '50-1467'
-			request.session['rate_area'] = 202
-			request.session['rate_area1'] = 202
+			request.session['rate_area'] = 216
+			request.session['rate_area1'] = 216
 			request.session['asset1_area'] = '650L'
 			request.session['asset2_area'] = '650R'
 			request.session['asset3_area'] = '769'
@@ -996,8 +996,8 @@ def tracking(request):
 			request.session['target_area'] = 2
 			request.session['part_area'] = '50-3050'
 			request.session['part_area2'] = '50-3050'
-			request.session['rate_area'] = 13
-			request.session['rate_area2'] = 13
+			request.session['rate_area'] = 15
+			request.session['rate_area2'] = 15
 			request.session['asset1_area'] = '769'
 			request.session['asset2_area'] = '769'
 			request.session['asset3_area'] = '769'
@@ -1176,7 +1176,7 @@ def tracking_10R80(request):
 def chart1_1467(request):
 		request.session['area1'] = '50-1467 Inspection'
 		request.session['part_area1'] = '50-1467'
-		request.session['rate_area1'] = 202
+		request.session['rate_area1'] = 216
 		request.session['asset1_area1'] = '650L'
 		request.session['asset2_area1'] = '650R'
 		request.session['asset3_area1'] = '769'
@@ -1185,7 +1185,7 @@ def chart1_1467(request):
 def chart2_1467(request):
 		request.session['area2'] = '50-1467 Inspection'
 		request.session['part_area2'] = '50-1467'
-		request.session['rate_area2'] = 202
+		request.session['rate_area2'] = 216
 		request.session['asset1_area2'] = '650L'
 		request.session['asset2_area2'] = '650R'
 		request.session['asset3_area2'] = '769'
@@ -1248,7 +1248,7 @@ def chart2_1467br(request):
 def chart1_3050(request):
 		request.session['area1'] = '50-3050 Inspection'
 		request.session['part_area1'] = '50-3050'
-		request.session['rate_area1'] = 13
+		request.session['rate_area1'] = 15
 		request.session['asset1_area1'] = '769'
 		request.session['asset2_area1'] = '769'
 		request.session['asset3_area1'] = '769'
@@ -1257,7 +1257,7 @@ def chart1_3050(request):
 def chart2_3050(request):
 		request.session['area2'] = '50-3050 Inspection'
 		request.session['part_area2'] = '50-3050'
-		request.session['rate_area2'] = 13
+		request.session['rate_area2'] = 15
 		request.session['asset1_area2'] = '769'
 		request.session['asset2_area2'] = '769'
 		request.session['asset3_area2'] = '769'
@@ -1374,7 +1374,7 @@ def chart2_9341(request):
 def chart1_9341_OP30(request):
 		request.session['area1'] = '50-9341 OP30'
 		request.session['part_area1'] = '50-9341'
-		request.session['rate_area1'] = 400
+		request.session['rate_area1'] = 367
 		request.session['asset1_area1'] = '1502'
 		request.session['asset2_area1'] = '1507'
 		request.session['asset3_area1'] = '1539'
@@ -1383,7 +1383,7 @@ def chart1_9341_OP30(request):
 def chart2_9341_OP30(request):
 		request.session['area2'] = '50-9341 OP30'
 		request.session['part_area2'] = '50-9341'
-		request.session['rate_area2'] = 400
+		request.session['rate_area2'] = 367
 		request.session['asset1_area2'] = '1502'
 		request.session['asset2_area2'] = '1507'
 		request.session['asset3_area2'] = '1539'
@@ -1393,7 +1393,7 @@ def chart2_9341_OP30(request):
 def chart1_1502(request):
 		request.session['area1'] = '50-9341 1502'
 		request.session['part_area1'] = '50-9341'
-		request.session['rate_area1'] = 100
+		request.session['rate_area1'] = 92
 		request.session['asset1_area1'] = '1502'
 		request.session['asset2_area1'] = '1502'
 		request.session['asset3_area1'] = '1502'
@@ -1402,7 +1402,7 @@ def chart1_1502(request):
 def chart2_1502(request):
 		request.session['area2'] = '50-9341 1502'
 		request.session['part_area2'] = '50-9341'
-		request.session['rate_area2'] = 100
+		request.session['rate_area2'] = 92
 		request.session['asset1_area2'] = '1502'
 		request.session['asset2_area2'] = '1502'
 		request.session['asset3_area2'] = '1502'
@@ -1412,7 +1412,7 @@ def chart2_1502(request):
 def chart1_1507(request):
 		request.session['area1'] = '50-9341 1507'
 		request.session['part_area1'] = '50-9341'
-		request.session['rate_area1'] = 100
+		request.session['rate_area1'] = 92
 		request.session['asset1_area1'] = '1507'
 		request.session['asset2_area1'] = '1507'
 		request.session['asset3_area1'] = '1507'
@@ -1421,7 +1421,7 @@ def chart1_1507(request):
 def chart2_1507(request):
 		request.session['area2'] = '50-9341 1507'
 		request.session['part_area2'] = '50-9341'
-		request.session['rate_area2'] = 100
+		request.session['rate_area2'] = 92
 		request.session['asset1_area2'] = '1507'
 		request.session['asset2_area2'] = '1507'
 		request.session['asset3_area2'] = '1507'
@@ -1431,7 +1431,7 @@ def chart2_1507(request):
 def chart1_1539(request):
 		request.session['area1'] = '50-9341 1540'
 		request.session['part_area1'] = '50-9341'
-		request.session['rate_area1'] = 100
+		request.session['rate_area1'] = 92
 		request.session['asset1_area1'] = '1540'
 		request.session['asset2_area1'] = '1540'
 		request.session['asset3_area1'] = '1540'
@@ -1440,7 +1440,7 @@ def chart1_1539(request):
 def chart2_1539(request):
 		request.session['area2'] = '50-9341 1539'
 		request.session['part_area2'] = '50-9341'
-		request.session['rate_area2'] = 100
+		request.session['rate_area2'] = 92
 		request.session['asset1_area2'] = '1539'
 		request.session['asset2_area2'] = '1539'
 		request.session['asset3_area2'] = '1539'
@@ -2522,25 +2522,33 @@ def auto_updater(request):	# This will run every 30 min on the refresh page to s
 		dummy = 1
 	return render(request,'tkb_updater.html')
 
-
 def cell_track_9341(request):
-	shift_start, shift_time, shift_left, shift_end = stamp_shift_start(request)  # Get the Time Stamp info
+	shift_start, shift_time, shift_left, shift_end = stamp_shift_start(request)	 # Get the Time Stamp info
 	machines1 = ['1504','1506','1519','1520','1502','1507','1501','1515','1508','1532','1509','1514','1510','1503','1511','1518','1521','1522','1523','1539','1540','1524','1525','1538','1541','1531','1527','1530','1528','1513','1533']
 	rate = [8,8,8,8,4,4,4,4,3,3,2,2,2,2,2,8,8,8,8,4,4,4,4,3,2,2,2,2,2,1,1]
 	line1 = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0,0]
 	operation1 = [10,10,10,10,30,30,40,40,50,50,60,70,80,100,110,10,10,10,10,30,30,40,40,50,60,70,80,100,110,90,120]
 	prt = '50-9341'
-	machine_rate = zip(machines1,rate)
+	machine_rate = zip(machines1,rate,operation1)
 	machine_color =[]
 	db, cur = db_set(request)
 	color8=[]
 	rate8=[]
 	machine8=[]
+	pred8 = []
+	av55=[]
+	cnt55=[]
+	sh55=[]
+	shl55=[]
+	op8=[]
 	for i in machine_rate:
 		machine2 = i[0]
 		rate2 = 3200 / float(i[1])
 		rate2 = (rate2 / float(28800)) * 300
-		t=int(time.time()) - 300
+		tt = int(time.time())
+		start1 = tt - shift_time
+
+		t= tt-300
 
 		try:
 			sql = "SELECT SUM(Count) FROM GFxPRoduction WHERE TimeStamp >= '%d' and Part = '%s' and Machine = '%s'" % (t,prt,machine2)
@@ -2550,10 +2558,35 @@ def cell_track_9341(request):
 			cnt = int(tmp3[0])
 		except:
 			cnt = 0
+
+
+		try:
+			sql = "SELECT SUM(Count) FROM GFxPRoduction WHERE TimeStamp >= '%d' and Part = '%s' and Machine = '%s'" % (start1,prt,machine2)
+			cur.execute(sql)
+			tmp22 = cur.fetchall()
+			tmp33 = tmp22[0]
+			cnt33 = int(tmp33[0])
+		except:
+			cnt33 = 0
+
+
 		if cnt is None: cnt = 0
 		rate3 = cnt / float(rate2)
 		rate3 = int(rate3 * 100) # This will be the percentage we use to determine colour
-		
+
+		# Pediction
+		avg8 = cnt33 / float(shift_time)
+		avg9 = avg8 * shift_left
+		pred1 = int(cnt33 + avg9)
+
+		op8.append(i[2])
+		av55.append(avg8)
+		cnt55.append(cnt33)
+		sh55.append(shift_time)
+		shl55.append(shift_left)
+
+		pred8.append(pred1)
+	
 		# Below is the Color Codes
 		#009700 100%
 		#4FC34F 90%
@@ -2575,13 +2608,30 @@ def cell_track_9341(request):
 			cc='#DADA3F'
 		elif rate3>=25:
 			cc='#F6F687'
-		else:
+		elif rate3>=10:
+			cc='#F7BA84'
+		elif rate3>0:
 			cc='#EC7371'
-			#cc='#EC7371'   Change to red when ready to go
+		else:
+			cc='#B7B7B7'
+			#cc='#EC7371'	Change to red when ready to go
 		color8.append(cc)
 		rate8.append(rate3)
 		machine8.append(machine2)
-	total8=zip(machine8,rate8,color8)
+
+	total8=zip(machine8,rate8,color8,pred8,op8)
+	total99=0
+	last_op=10
+	op99=[]
+	opt99=[]
+
+	op_total = [0 for x in range(200)]	
+
+
+	for i in total8:
+
+		op_total[i[4]]=op_total[i[4]] + i[3]
+
 
 
 	db.close()
@@ -2589,21 +2639,22 @@ def cell_track_9341(request):
 	
 
 
-	return render(request,'cell_track_9341.html',{'codes':total8})
+	return render(request,'cell_track_9341.html',{'codes':total8,'op':op_total})
 
 def cell_track_9341_mobile(request):
-	shift_start, shift_time, shift_left, shift_end = stamp_shift_start(request)  # Get the Time Stamp info
+	shift_start, shift_time, shift_left, shift_end = stamp_shift_start(request)	 # Get the Time Stamp info
 	machines1 = ['1504','1506','1519','1520','1502','1507','1501','1515','1508','1532','1509','1514','1510','1503','1511','1518','1521','1522','1523','1539','1540','1524','1525','1538','1541','1531','1527','1530','1528','1513','1533']
 	rate = [8,8,8,8,4,4,4,4,3,3,2,2,2,2,2,8,8,8,8,4,4,4,4,3,2,2,2,2,2,1,1]
 	line1 = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0,0]
 	operation1 = [10,10,10,10,30,30,40,40,50,50,60,70,80,100,110,10,10,10,10,30,30,40,40,50,60,70,80,100,110,90,120]
 	prt = '50-9341'
-	machine_rate = zip(machines1,rate)
+	machine_rate = zip(machines1,rate,operation1)
 	machine_color =[]
 	db, cur = db_set(request)
 	color8=[]
 	rate8=[]
 	machine8=[]
+	op8=[]
 	for i in machine_rate:
 		machine2 = i[0]
 		rate2 = 3200 / float(i[1])
@@ -2643,12 +2694,17 @@ def cell_track_9341_mobile(request):
 			cc='#DADA3F'
 		elif rate3>=25:
 			cc='#F6F687'
-		else:
+		elif rate3>=10:
+			cc='#F7BA84'
+		elif rate3>0:
 			cc='#EC7371'
-			#cc='#EC7371'   Change to red when ready to go
+		else:
+			cc='#B7B7B7'
+			#cc='#EC7371'	Change to red when ready to go
 		color8.append(cc)
 		rate8.append(rate3)
 		machine8.append(machine2)
+		op8.i[3]
 	total8=zip(machine8,rate8,color8)
 
 
