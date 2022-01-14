@@ -2654,7 +2654,7 @@ def cell_track_9341_mobile(request):
 	color8=[]
 	rate8=[]
 	machine8=[]
-	op8=[]
+
 	for i in machine_rate:
 		machine2 = i[0]
 		rate2 = 3200 / float(i[1])
@@ -2704,7 +2704,7 @@ def cell_track_9341_mobile(request):
 		color8.append(cc)
 		rate8.append(rate3)
 		machine8.append(machine2)
-		op8.i[3]
+
 	total8=zip(machine8,rate8,color8)
 
 
