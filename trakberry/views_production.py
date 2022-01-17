@@ -2590,11 +2590,7 @@ def cell_track_9341(request):
 
 		if cnt is None: cnt = 0
 
-		# Fix for 1530
-		if machine2=='1530':cnt=cnt*2
-		if machine2=='1530':cnt33=cnt33*2
 
-		# *****************
 
 
 
@@ -2640,7 +2636,7 @@ def cell_track_9341(request):
 		elif rate3>0:
 			cc='#EC7371'
 		else:
-			cc='#B7B7B7'
+			cc='#FF0400'
 			#cc='#EC7371'	Change to red when ready to go
 		color8.append(cc)
 		rate8.append(rate3)
@@ -2709,7 +2705,7 @@ def cell_track_9341_mobile(request):
 		except:
 			cnt = 0
 		if cnt is None: cnt = 0
-		if machine2=='1530':cnt=cnt*2
+
 		rate3 = cnt / float(rate2)
 		rate3 = int(rate3 * 100) # This will be the percentage we use to determine colour
 		
@@ -2739,7 +2735,7 @@ def cell_track_9341_mobile(request):
 		elif rate3>0:
 			cc='#EC7371'
 		else:
-			cc='#B7B7B7'
+			cc='#FF0400'
 			#cc='#EC7371'	Change to red when ready to go
 		color8.append(cc)
 		rate8.append(rate3)
@@ -2814,7 +2810,7 @@ def cell_track_9341_history(request):
 
 
 		if cnt is None: cnt = 0
-		if machine2=='1530':cnt=cnt*2
+
 		rate3 = cnt / float(rate2)
 		rate3 = int(rate3 * 100) # This will be the percentage we use to determine colour
 
@@ -2857,7 +2853,7 @@ def cell_track_9341_history(request):
 		elif rate3>0:
 			cc='#EC7371'
 		else:
-			cc='#B7B7B7'
+			cc='#FF0400'
 			#cc='#EC7371'	Change to red when ready to go
 		color8.append(cc)
 		rate8.append(rate3)
