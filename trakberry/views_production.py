@@ -2597,7 +2597,7 @@ def cell_track_9341(request):
 		# *****************
 
 
-		
+
 		rate3 = cnt / float(rate2)
 		rate3 = int(rate3 * 100) # This will be the percentage we use to determine colour
 
@@ -2709,6 +2709,7 @@ def cell_track_9341_mobile(request):
 		except:
 			cnt = 0
 		if cnt is None: cnt = 0
+		if machine2=='1530':cnt=cnt*2
 		rate3 = cnt / float(rate2)
 		rate3 = int(rate3 * 100) # This will be the percentage we use to determine colour
 		
@@ -2813,6 +2814,7 @@ def cell_track_9341_history(request):
 
 
 		if cnt is None: cnt = 0
+		if machine2=='1530':cnt=cnt*2
 		rate3 = cnt / float(rate2)
 		rate3 = int(rate3 * 100) # This will be the percentage we use to determine colour
 
