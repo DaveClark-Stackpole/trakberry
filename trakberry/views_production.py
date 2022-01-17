@@ -1020,6 +1020,10 @@ def tracking(request):
 		return render(request, "track_error.html")
 
 def tracking_10R80_screen(request):
+
+	return render(request,'redirect_cell_track_9341.html')   # Remove this later
+
+
 	try:
 		# net1(request)	  # Sets the app to server or local
 		request.session['8area4'] = '50-9341 Finishing'
