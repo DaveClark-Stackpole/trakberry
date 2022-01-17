@@ -24,9 +24,9 @@ from datetime import datetime, date
 from views_db import db_open, db_set,net1, db_set2
 from views_test2 import prediction1
 from mod_tracking import Graph_Data
+import datetime
 # from datetime import datetime 
 from time import strftime
-from datetime import datetime
 import time
 
 
@@ -34,6 +34,12 @@ import time
 # MAIN Production View
 # This is the main Administrator View to tackle things like cycle times, view production etc.
 # *********************************************************************************************************
+def pdate_stamp(pdate):
+	string=str(pdate)
+	element = datetime.datetime.strptime(string,"%Y-%m-%d")
+	tuple = element.timetuple()
+	timestamp = time.mktime(tuple)
+	return timestamp
 
 def track_graph_10r_prev(request, index):
 	u = int(index)
@@ -2522,6 +2528,14 @@ def auto_updater(request):	# This will run every 30 min on the refresh page to s
 		dummy = 1
 	return render(request,'tkb_updater.html')
 
+def cell_track_9341_history_on(request):
+	request.session['track_history'] = 1
+	return render(request,'redirect_cell_track_9341.html')
+def cell_track_9341_history_off(request):
+	request.session['track_history'] = ''
+	return render(request,'redirect_cell_track_9341.html')
+
+
 def cell_track_9341(request):
 	shift_start, shift_time, shift_left, shift_end = stamp_shift_start(request)	 # Get the Time Stamp info
 	machines1 = ['1504','1506','1519','1520','1502','1507','1501','1515','1508','1532','1509','1514','1510','1503','1511','1518','1521','1522','1523','1539','1540','1524','1525','1538','1541','1531','1527','1530','1528','1513','1533']
@@ -2637,11 +2651,23 @@ def cell_track_9341(request):
 	db.close()
 	jobs1 = zip(machines1,line1,operation1)
 	
+	# Date entry for History
+	if request.POST:
+		request.session["track_date"] = request.POST.get("date_st")
+		request.session["track_shift"] = request.POST.get("shift")
+		return render(request,'redirect_cell_track_9341_history.html')	
+	else:
+		form = sup_downForm()
+	args = {}
+	args.update(csrf(request))
+	args['form'] = form
 
+	return render(request,'cell_track_9341.html',{'codes':total8,'op':op_total,'args':args})	
 
-	return render(request,'cell_track_9341.html',{'codes':total8,'op':op_total})
 
 def cell_track_9341_mobile(request):
+
+	
 	shift_start, shift_time, shift_left, shift_end = stamp_shift_start(request)	 # Get the Time Stamp info
 	machines1 = ['1504','1506','1519','1520','1502','1507','1501','1515','1508','1532','1509','1514','1510','1503','1511','1518','1521','1522','1523','1539','1540','1524','1525','1538','1541','1531','1527','1530','1528','1513','1533']
 	rate = [8,8,8,8,4,4,4,4,3,3,2,2,2,2,2,8,8,8,8,4,4,4,4,3,2,2,2,2,2,1,1]
@@ -2714,3 +2740,144 @@ def cell_track_9341_mobile(request):
 
 
 	return render(request,'cell_track_9341_mobile.html',{'codes':total8})
+
+def cell_track_9341_history(request):
+
+	track_date = str(request.session['track_date'])
+	track_shift = str(request.session['track_shift'])
+
+	track_stamp = pdate_stamp(track_date)
+	if track_shift=='Mid':
+		track_stamp = track_stamp - 7200
+	elif track_shift=='Day':
+		track_stamp = track_stamp + 21600
+	elif track_shift=='Aft':
+		track_stamp=track_stamp + 50400
+	track_stamp_end = track_stamp + 28800
+
+
+
+	shift_start, shift_time, shift_left, shift_end = stamp_shift_start(request)	 # Get the Time Stamp info
+	machines1 = ['1504','1506','1519','1520','1502','1507','1501','1515','1508','1532','1509','1514','1510','1503','1511','1518','1521','1522','1523','1539','1540','1524','1525','1538','1541','1531','1527','1530','1528','1513','1533']
+	rate = [8,8,8,8,4,4,4,4,3,3,2,2,2,2,2,8,8,8,8,4,4,4,4,3,2,2,2,2,2,1,1]
+	line1 = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0,0]
+	operation1 = [10,10,10,10,30,30,40,40,50,50,60,70,80,100,110,10,10,10,10,30,30,40,40,50,60,70,80,100,110,90,120]
+	prt = '50-9341'
+	machine_rate = zip(machines1,rate,operation1)
+	machine_color =[]
+	db, cur = db_set(request)
+	color8=[]
+	rate8=[]
+	machine8=[]
+	pred8 = []
+	av55=[]
+	cnt55=[]
+	sh55=[]
+	shl55=[]
+	op8=[]
+	for i in machine_rate:
+		machine2 = i[0]
+		rate2 = 3200 / float(i[1])
+
+		try:
+			sql = "SELECT SUM(Count) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and Machine = '%s'" % (track_stamp,track_stamp_end,prt,machine2)
+			cur.execute(sql)
+			tmp2 = cur.fetchall()
+			tmp3 = tmp2[0]
+			cnt = int(tmp3[0])
+		except:
+			cnt = 0
+
+
+		# try:
+		# 	sql = "SELECT SUM(Count) FROM GFxPRoduction WHERE TimeStamp >= '%d' and Part = '%s' and Machine = '%s'" % (start1,prt,machine2)
+		# 	cur.execute(sql)
+		# 	tmp22 = cur.fetchall()
+		# 	tmp33 = tmp22[0]
+		# 	cnt33 = int(tmp33[0])
+		# except:
+		# 	cnt33 = 0
+
+
+		if cnt is None: cnt = 0
+		rate3 = cnt / float(rate2)
+		rate3 = int(rate3 * 100) # This will be the percentage we use to determine colour
+
+		# Pediction
+		# avg8 = cnt33 / float(shift_time)
+		# avg9 = avg8 * shift_left
+		pred1 = int(cnt)
+
+		op8.append(i[2])
+		# av55.append(avg8)
+		# cnt55.append(cnt33)
+		# sh55.append(shift_time)
+		# shl55.append(shift_left)
+
+		pred8.append(pred1)
+	
+		# Below is the Color Codes
+		#009700 100%
+		#4FC34F 90%
+		#A4F6A4 80%
+		#C3C300 70%
+		#DADA3F 50%
+		#F6F687 25%
+		#EC7371 0%
+
+		if rate3>=100:
+			cc='#009700'
+		elif rate3>=90:
+			cc='#4FC34F'
+		elif rate3>=80:
+			cc='#A4F6A4'
+		elif rate3>=70:
+			cc='#C3C300'
+		elif rate3>=50:
+			cc='#DADA3F'
+		elif rate3>=25:
+			cc='#F6F687'
+		elif rate3>=10:
+			cc='#F7BA84'
+		elif rate3>0:
+			cc='#EC7371'
+		else:
+			cc='#B7B7B7'
+			#cc='#EC7371'	Change to red when ready to go
+		color8.append(cc)
+		rate8.append(rate3)
+		machine8.append(machine2)
+
+
+	total8=zip(machine8,rate8,color8,pred8,op8)
+
+	total99=0
+	last_op=10
+	op99=[]
+	opt99=[]
+
+	op_total = [0 for x in range(200)]	
+
+
+	for i in total8:
+
+		op_total[i[4]]=op_total[i[4]] + i[3]
+
+
+
+	db.close()
+	jobs1 = zip(machines1,line1,operation1)
+
+	# Date entry for History
+	if request.POST:
+		request.session["track_date"] = request.POST.get("date_st")
+		request.session["track_shift"] = request.POST.get("shift")
+		return render(request,'redirect_cell_track_9341_history.html')	
+	else:
+		form = sup_downForm()
+	args = {}
+	args.update(csrf(request))
+	args['form'] = form
+
+
+	return render(request,'cell_track_9341.html',{'codes':total8,'op':op_total,'args':args})	
