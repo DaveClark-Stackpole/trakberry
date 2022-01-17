@@ -2589,6 +2589,15 @@ def cell_track_9341(request):
 
 
 		if cnt is None: cnt = 0
+
+		# Fix for 1530
+		if machine2=='1530':cnt=cnt*2
+		if machine2=='1530':cnt33=cnt33*2
+
+		# *****************
+
+
+		
 		rate3 = cnt / float(rate2)
 		rate3 = int(rate3 * 100) # This will be the percentage we use to determine colour
 
