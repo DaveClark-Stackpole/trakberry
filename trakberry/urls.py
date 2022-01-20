@@ -124,7 +124,7 @@ from views_shipping import forklift, forklift_login_form, forklift_logout, forkl
 # *******************************************  Management Section ********************************************************************************************
 from views_production import mgmt,mgmt_login_form,mgmt_logout,mgmt_production_hourly,mgmt_production_hourly_edit, mgmt_production, mgmt_display_edit, mgmt_cycletime
 from views_production import mgmt_users_logins, mgmt_users_logins_edit, mgmt_users_logins_update, mgmt_users_logins_add, mgmt_users_logins_add_new
-from views_production import mgmt_test1,track_10r_data,tracking,track_graph_10r_prev,track_graph_tri_prev, track_graph_prev1,track_graph_prev2
+from views_production import mgmt_test1,track_10r_data,tracking,track_graph_10r_prev,track_graph_tri_prev, track_graph_prev1,track_graph_prev2,track_graph_track
 from views_production import chart1_1467,chart2_1467,chart1_3050,chart2_3050,chart1_0455,chart2_0455,chart1_9341,chart2_9341
 from views_production import chart1_0455_OP30,chart2_0455_OP30
 from views_production import chart1_1502, chart2_1502, chart1_1507, chart2_1507, chart1_1539, chart2_1539
@@ -555,6 +555,7 @@ urlpatterns = [
 	url(r'^track_graph_tri_prev/get/(?P<index>\d+)/$', track_graph_tri_prev),
 	url(r'^track_graph_prev1/get/(?P<index>\d+)/$', track_graph_prev1),
 	url(r'^track_graph_prev2/get/(?P<index>\d+)/$', track_graph_prev2),
+	url(r'^track_graph_track/get/(?P<index>\d+)/$', track_graph_track),
 
 	url(r'^chart1_1467/', chart1_1467),
 	url(r'^chart2_1467/', chart2_1467),
