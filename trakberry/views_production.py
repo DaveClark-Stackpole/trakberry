@@ -59,6 +59,30 @@ def track_graph_prev1(request, index):
 	gr_list = track_data(request,t,u,prt,rate) # Get the Graph Data
 	return render(request, "graph_prev1.html",{'GList':gr_list})
 
+def track_graph_track(request, index):
+	prt= '50-9341'
+	request.session['track_track'] = 'Shift Track for Machine '+ str(index)
+	machines7 = ['1504','1506','1519','1520','1502','1507','1501','1515','1508','1532','1509','1514','1510','1503','1511','1518','1521','1522','1523','1539','1540','1524','1525','1538','1541','1531','1527','1530','1528','1513','1533']
+	rate7 = [8,8,8,8,4,4,4,4,3,3,2,2,2,2,2,8,8,8,8,4,4,4,4,3,2,2,2,2,2,1,1]
+	mr7=zip(machines7,rate7)
+	for i in mr7:
+		if i[0] == index :
+			rate = i[1]
+	rate2 = 3200 / float(rate)
+	rate = rate2 / float(8)
+
+	request.session['asset1_area'] = index
+	request.session['asset2_area'] = index
+	request.session['asset3_area'] = index
+	request.session['asset4_area'] = index
+	u = int(request.session['shift_start'])
+	t = int(u) + 28800
+	t=int(time.time())
+
+	gr_list = track_data(request,t,u,prt,rate) # Get the Graph Data
+	return render(request, "graph_track_track.html",{'GList':gr_list})
+
+
 def track_graph_prev2(request, index):
 	prt= request.session['part_area2']
 	rate = request.session['rate_area2']
@@ -2559,6 +2583,8 @@ def cell_track_9341(request):
 	sh55=[]
 	shl55=[]
 	op8=[]
+	rt8=[]
+	request.session['shift_start'] = shift_start
 	for i in machine_rate:
 		machine2 = i[0]
 		rate2 = 3200 / float(i[1])
@@ -2603,6 +2629,7 @@ def cell_track_9341(request):
 		pred1 = int(cnt33 + avg9)
 
 		op8.append(i[2])
+		rt8.append(i[1])
 		av55.append(avg8)
 		cnt55.append(cnt33)
 		sh55.append(shift_time)
@@ -2642,7 +2669,7 @@ def cell_track_9341(request):
 		rate8.append(rate3)
 		machine8.append(machine2)
 
-	total8=zip(machine8,rate8,color8,pred8,op8)
+	total8=zip(machine8,rate8,color8,pred8,op8,rt8)
 	total99=0
 	last_op=10
 	op99=[]
