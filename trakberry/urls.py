@@ -133,7 +133,7 @@ from views_production import chart1_9341_OP80, chart2_9341_OP80, chart1_9341_OP1
 from views_production import chart1_5214_OP30, chart2_5214_OP30, chart1_8670_OP80, chart2_8670_OP80, chart1_5404_OP80, chart2_5404_OP80
 from views_production import chart1_5401_OP80, chart2_5401_OP80, chart1_3214_OP30, chart2_3214_OP30,chart1_5710,chart2_5710
 from views_production import chart1_1467b,chart2_1467b,chart1_3050b,chart2_3050b,chart1_5710b,chart2_5710b
-from views_production import chart1_1467o,chart2_1467o,chart1_1467br,chart2_1467br
+from views_production import chart1_1467o,chart2_1467o,chart1_1467br,chart2_1467br,chart1_0455_OP50,chart2_0455_OP50,chart1_0455_OP40,chart2_0455_OP40
 from views_production import mgmt_priorities,auto_updater,cell_track_9341,track_email,cell_track_9341_mobile,cell_track_9341_history_on,cell_track_9341_history
 from views_production import cell_track_9341_history_off
 
@@ -577,6 +577,10 @@ urlpatterns = [
 	url(r'^chart2_0455/', chart2_0455),
 	url(r'^chart1_0455_OP30/', chart1_0455_OP30),
 	url(r'^chart2_0455_OP30/', chart2_0455_OP30),
+	url(r'^chart1_0455_OP40/', chart1_0455_OP40),
+	url(r'^chart2_0455_OP40/', chart2_0455_OP40),
+	url(r'^chart1_0455_OP50/', chart1_0455_OP50),
+	url(r'^chart2_0455_OP50/', chart2_0455_OP50),
 	url(r'^chart1_9341/', chart1_9341),
 	url(r'^chart2_9341/', chart2_9341),
 	url(r'^chart1_9341_OP30/', chart1_9341_OP30),
