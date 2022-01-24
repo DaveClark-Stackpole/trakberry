@@ -1,0 +1,61 @@
+{% extends "mgmt.html" %}
+
+
+{% block content %}
+
+<div class="wrapper_main">
+    <div class="frameA">  <!-- Default is L24 hr Production-->
+        <table id="prod24">
+            <tr>
+                <th colspan="8"><center><font style="font-weight:bolder;font-size:x-large;">Track Week Production</font></center></th>
+            </tr>
+            <tr>
+                <th><center>Part</center></th>
+                <th><center>Asset</center></th>
+                <th><center>Production</center></th>
+                <th><center>Operation</center></th>
+                <th><center>Total</center></th>
+                <th><center>Prediction</center></th>
+                <th><center>Goal</center></th>
+                <th><center>+ / -</center></th>
+
+            </tr>
+
+
+            {% for i in request.session.Total_10R %}
+
+            {% if i.5 = -1 %}
+            <tr>
+                <td bgcolor="#96dbf8"><center><b>50-9341</b></center></td>
+                <td bgcolor="#96dbf8"><center><b>{{i.1}}</b></center></td>
+                <td bgcolor="#96dbf8"><center><b>{{i.2}}</b></center></td>
+
+
+            </tr>
+
+            {% else %}
+            <tr>
+                <td bgcolor="#96dbf8"><center><b>50-9341</b></center></td>
+                <td bgcolor="#96dbf8"><center><b>{{i.1}}</b></center></td>
+                <td bgcolor="#96dbf8"><center><b>{{i.2}}</b></center></td>
+
+                {% if i.4 > 0 %}
+                    <td rowspan = {{i.4}} bgcolor="#96dbf8"><center><b>{{i.0}}</b></center></td>
+                    <td rowspan = {{i.4}} bgcolor="#96dbf8"><center><b>{{i.5}}</b></center></td>
+                    <td rowspan = {{i.4}} bgcolor="#96dbf8"><center><b>{{i.6}}</b></center></td>
+                    <td rowspan = {{i.4}} bgcolor="#96dbf8"><center><b>3000</b></center></td>
+                    <td rowspan = {{i.4}} bgcolor="#96dbf8"><center><b>0</b></center></td>
+                {% endif %}
+
+            </tr>
+
+            {% endif %}
+
+            {% endfor %}
+
+        </table>
+    </div>
+</div>
+
+
+{% endblock %}

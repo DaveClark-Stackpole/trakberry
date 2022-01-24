@@ -1,3 +1,4 @@
+from multiprocessing import dummy
 from django.shortcuts import render
 from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
@@ -1743,6 +1744,143 @@ def mgmt(request):
 	return render(request,'mgmt.html',{'args':args})
 	return render(request, "mgmt.html",{'TCUR':tcur})
 	return render(request, "mgmt_start.html",{'TCUR':tcur})
+
+# Monitor Production vs Target on the Big 4
+# Use Live Track and Entries
+def mgmt_track_week(request):
+	machines1 = ['1504','1506','1519','1520','1502','1507','1501','1515','1508','1532','1509','1514','1510','1503','1511','1518','1521','1522','1523','1539','1540','1524','1525','1538','1541','1531','1527','1530','1528','1513','1533']
+	rate = [8,8,8,8,4,4,4,4,3,3,2,2,2,2,2,8,8,8,8,4,4,4,4,3,2,2,2,2,2,1,1]
+	operation1 = [10,10,10,10,30,30,40,40,50,50,60,70,80,100,110,10,10,10,10,30,30,40,40,50,60,70,80,100,110,90,120]
+	opo=[10,30,40,50,60,70,80,90,100,110,120]
+	prt = '50-9341'
+	add_factor = 10100
+	job = zip(operation1,machines1,rate)
+
+	t=int(time.time())
+	tm = time.localtime(t)
+	a1 = tm[6] * 86400
+	a2 = tm[3] * 60 * 60
+	a3 = tm[4] * 60
+	a4 = tm[5]
+	week_start = t - a1 - a2 - a3 - a4
+	week_end = week_start + 432000
+
+	request.session['start_time_week'] = week_start
+
+	m=[]
+	c=[]
+	p=[]
+	o=[]
+	oop=[]
+
+	db, cur = db_set(request)
+	for i in job:
+		aql = "SELECT SUM(Count) FROM GFxPRoduction WHERE TimeStamp >= '%s' and Machine = '%s'" % (week_start,i[1])
+		cur.execute(aql)
+		tmp = cur.fetchall()
+		count1 = int(tmp[0][0])
+		pred = (count1/float(t-week_start))*(week_end-t) + (add_factor/float(i[2]))
+
+		m.append(i[1])
+		c.append(count1)
+		p.append(pred)
+		o.append(i[0])
+		oop.append(i[2])
+		
+
+	totals=zip(o,m,c,p,oop)
+	totals.sort()
+	op=10
+	ctr=0
+	ptr=0
+	ct=[]
+	pt=[]
+	ptr=0
+	point=0
+	oo=[]
+	pp=[]
+	cc=[]
+	mm=[]
+	ooop=[]
+
+	op_c =[]
+	op_cp=[]
+	for i in opo:
+		count2=0
+		count2_p=0
+		for ii in totals:
+
+			if ii[0] == i:
+				count2=count2+ii[2]
+				count2_p=count2_p+ii[3]
+		op_c.append(count2)
+		op_cp.append(count2_p)
+	
+	uu=zip(opo,op_c,op_cp)
+	xx=0
+	xx_ptr=0
+	sum_op=[]
+	pred_op=[]
+	for i in totals:
+		if i[0]!=xx:
+			temp1=int((uu[xx_ptr][1]))
+			temp2=int((uu[xx_ptr][2]))
+
+			sum_op.append(temp1)
+			pred_op.append(temp2)
+			xx_ptr=xx_ptr+1
+			xx=i[0]
+
+		else:
+			sum_op.append(-1)
+			pred_op.append(-1)
+		oo.append(i[0])
+		mm.append(i[1])
+		cc.append(i[2])
+		pp.append(i[3])
+		ooop.append(i[4])
+
+
+	overall=zip(oo,mm,cc,pp,ooop,sum_op,pred_op)
+
+
+
+	# for i in totals:
+	# 	# Next OP is xx
+	# 	try:
+	# 		point=point+1
+	# 		x=totals[point]
+	# 		xx=x[0]
+	# 	except:
+	# 		xx=0
+
+	# 	if i[0]!=xx:
+	# 		ctr=ctr+i[2]
+	# 		ptr=ptr+i[3]
+	# 		ct.append(ctr)
+	# 		pt.append(ptr)
+	# 		ctr=0
+	# 		ptr=0
+	# 	else:
+	# 		ctr=ctr+i[2]
+	# 		ptr=ptr+i[3]
+	# 		ct.append(-1)
+	# 		pt.append(-1)
+	# 	oo.append(i[0])
+	# 	mm.append(i[1])
+	# 	cc.append(i[2])
+	# 	pp.append(i[3])
+	# 	ooop.append(i[4])
+
+
+	# This is the 10R80 Final numbers
+	# totalss=zip(oo,mm,cc,pp,ct,pt,ooop)
+
+
+
+	request.session['Total_10R']= overall
+	return render(request,'mgmt_track_week.html')
+
 
 def mgmt_production_sort(summary_data,request):
 	summary_data.sort(key=getKey3)
