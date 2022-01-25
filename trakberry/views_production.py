@@ -1754,6 +1754,7 @@ def mgmt_track_week(request):
 	opo=[10,30,40,50,60,70,80,90,100,110,120]
 	prt = '50-9341'
 	add_factor = 10100
+	goal_9341=44856
 	job = zip(operation1,machines1,rate)
 
 	t=int(time.time())
@@ -1815,7 +1816,6 @@ def mgmt_track_week(request):
 				count2_p=count2_p+ii[3]
 		op_c.append(count2)
 		op_cp.append(count2_p)
-	
 	uu=zip(opo,op_c,op_cp)
 	xx=0
 	xx_ptr=0
@@ -1840,46 +1840,67 @@ def mgmt_track_week(request):
 		pp.append(i[3])
 		ooop.append(i[4])
 
-
+	# Below section adds -1 or 1 to control color change on chart
 	overall=zip(oo,mm,cc,pp,ooop,sum_op,pred_op)
+	o=[]
+	m=[]
+	c=[]
+	p=[]
+	op=[]
+	tot=[]
+	pred=[]
+	sw=[]
+	pm=[]
+	pms=[]
+	gl=[]
+	switch=1
+	old=0
+	pl_mi=0
+	for i in overall:
+		if old!=i[0]:
+			old=i[0]
+			switch=switch*-1
+		o.append(i[0])
+		m.append(i[1])
+		c.append(int_str_comma(i[2]))
+		p.append(i[3])
+		op.append(i[4])
+		if i[5]==-1:
+			tot.append(i[5])
+		else:
+			tot.append(int_str_comma(i[5]))
 
+		pred.append(int_str_comma(i[6]))
+		sw.append(switch)
+		p6=int(i[6])
+		pl_mi=p6-goal_9341
+		pl_mis=int_str_comma(abs(pl_mi))
 
+		if pl_mi<0:
+			pl_mis='- '+pl_mis
+		else:
+			pl_mis='+ '+pl_mis
 
-	# for i in totals:
-	# 	# Next OP is xx
-	# 	try:
-	# 		point=point+1
-	# 		x=totals[point]
-	# 		xx=x[0]
-	# 	except:
-	# 		xx=0
+		pm.append(pl_mi)
+		pms.append(pl_mis)
+		gl.append(int_str_comma(goal_9341))
 
-	# 	if i[0]!=xx:
-	# 		ctr=ctr+i[2]
-	# 		ptr=ptr+i[3]
-	# 		ct.append(ctr)
-	# 		pt.append(ptr)
-	# 		ctr=0
-	# 		ptr=0
-	# 	else:
-	# 		ctr=ctr+i[2]
-	# 		ptr=ptr+i[3]
-	# 		ct.append(-1)
-	# 		pt.append(-1)
-	# 	oo.append(i[0])
-	# 	mm.append(i[1])
-	# 	cc.append(i[2])
-	# 	pp.append(i[3])
-	# 	ooop.append(i[4])
-
-
-	# This is the 10R80 Final numbers
-	# totalss=zip(oo,mm,cc,pp,ct,pt,ooop)
-
+	overall=zip(o,m,c,p,op,tot,pred,sw,pm,gl,pms)
 
 
 	request.session['Total_10R']= overall
 	return render(request,'mgmt_track_week.html')
+
+def int_str_comma(var1):
+	x=str(var1)
+	y=len(x)
+	z=x
+	if y>3:
+		front1=x[:(y-3)]
+		end1=x[-3:]
+		z=front1+','+end1
+	return z
+
 
 
 def mgmt_production_sort(summary_data,request):
