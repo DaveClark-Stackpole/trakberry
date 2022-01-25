@@ -1,0 +1,86 @@
+{% extends "mgmt.html" %}
+
+
+{% block content %}
+
+<div class="wrapper_main">
+    <div class="frameA">  <!-- Default is L24 hr Production-->
+        <table id="planB">
+            <tr>
+                <th colspan="8"><center><font style="font-weight:bolder;font-size:x-large;">Track Week Production</font></center></th>
+            </tr>
+            <tr>
+                <th><center>Part</center></th>
+                <th><center>Asset</center></th>
+                <th><center>Production</center></th>
+                <th><center>Operation</center></th>
+                <th><center>Total</center></th>
+                <th><center>Prediction</center></th>
+                <th><center>Goal</center></th>
+                <th><center>+ / -</center></th>
+
+            </tr>
+            {% for i in request.session.Total_10R %}
+
+            {% if i.7 = -1 %}
+              {% if i.5 = -1 %}
+                <tr>
+                 <td bgcolor="#E6E2E1"><center><b>{{i.1}}</b></center></td>
+                 <td bgcolor="#E6E2E1"><center><b>{{i.2}}</b></center></td>
+                </tr>
+              {% else %}
+                <tr>
+                    <td  bgcolor="#E6E2E1" rowspan = {{i.4}}><center><b>50-9341</b></center></td>
+                    <td bgcolor="#E6E2E1"><center><b>{{i.1}}</b></center></td>
+                    <td bgcolor="#E6E2E1"><center><b>{{i.2}}</b></center></td>
+                    {% if i.4 > 0 %}
+                        <td  bgcolor="#E6E2E1" rowspan = {{i.4}}><center><b>{{i.0}}</b></center></td>
+                        <td  bgcolor="#E6E2E1" rowspan = {{i.4}}><center><b>{{i.5}}</b></center></td>
+                        <td  bgcolor="#E6E2E1" rowspan = {{i.4}}><center><b>{{i.6}}</b></center></td>
+                        <td  bgcolor="#E6E2E1" rowspan = {{i.4}}><center><b>{{i.9}}</b></center></td>
+                        {% if i.8 < 0 %}
+                            <td  bgcolor="#C18E8E" rowspan = {{i.4}}><center><b>{{i.10}}</b></center></td>
+                        {% else %}
+                            <td  bgcolor="#8CBC90" rowspan = {{i.4}}><center><b>{{i.10}}</b></center></td>
+                        {% endif %}
+                    {% endif %}
+                </tr>
+                {% endif %}
+
+
+                {% else %}
+                {% if i.5 = -1 %}
+                <tr>
+                    <td bgcolor="#C4C4C4"><center><b>{{i.1}}</b></center></td>
+                    <td bgcolor="#C4C4C4"><center><b>{{i.2}}</b></center></td>
+                   </tr>
+                 {% else %}
+                   <tr>
+                       <td  bgcolor="#C4C4C4" rowspan = {{i.4}}><center><b>50-9341</b></center></td>
+                       <td bgcolor="#C4C4C4"><center><b>{{i.1}}</b></center></td>
+                       <td bgcolor="#C4C4C4"><center><b>{{i.2}}</b></center></td>
+                       {% if i.4 > 0 %}
+                           <td  bgcolor="#C4C4C4" rowspan = {{i.4}}><center><b>{{i.0}}</b></center></td>
+                           <td  bgcolor="#C4C4C4" rowspan = {{i.4}}><center><b>{{i.5}}</b></center></td>
+                           <td  bgcolor="#C4C4C4" rowspan = {{i.4}}><center><b>{{i.6}}</b></center></td>
+                           <td  bgcolor="#C4C4C4" rowspan = {{i.4}}><center><b>{{i.9}}</b></center></td>
+                           {% if i.8 < 0 %}
+                                <td  bgcolor="#C18E8E" rowspan = {{i.4}}><center><b>{{i.10}}</b></center></td>
+                           {% else %}
+                                <td  bgcolor="#8CBC90" rowspan = {{i.4}}><center><b>{{i.10}}</b></center></td>
+                           {% endif %}
+                       {% endif %}
+                   </tr>
+
+              {% endif %}
+              {% endif %}
+
+
+
+            {% endfor %}
+        </table>
+    </div>
+</div>
+
+
+{% endblock %}
