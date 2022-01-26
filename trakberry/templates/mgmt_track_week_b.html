@@ -1,0 +1,14 @@
+{% extends "mgmt.html" %}
+
+
+{% block content %}
+<table id="planB">
+ {% for i in request.session.Total_10R %}
+
+<tr>
+    <td bgcolor="#E6E2E1"><center><b>{{i}}</b></center></td>
+
+   </tr>
+{% endfor %}
+</table>
+{% endblock %}

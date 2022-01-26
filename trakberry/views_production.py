@@ -1749,24 +1749,37 @@ def mgmt_production_counts(request):
 # Monitor Production vs Target on the Big 4
 # Use Live Track and Entries
 def mgmt_track_week(request):
-	machines1 = ['1504','1506','1519','1520','1502','1507','1501','1515','1508','1532','1509','1514','1510','1503','1511','1518','1521','1522','1523','1539','1540','1524','1525','1538','1541','1531','1527','1530','1528','1513','1533']
-	rate = [8,8,8,8,4,4,4,4,3,3,2,2,2,2,2,8,8,8,8,4,4,4,4,3,2,2,2,2,2,1,1]
-	operation1 = [10,10,10,10,30,30,40,40,50,50,60,70,80,100,110,10,10,10,10,30,30,40,40,50,60,70,80,100,110,90,120]
-	opo=[10,30,40,50,60,70,80,90,100,110,120]
+	machines1 = ['1504','1506','1519','1520','1502','1507','1501','1515','1508','1532','1509','1514','1510','1503','1511','1518','1521','1522','1523','1539','1540','1524','1525','1538','1541','1531','1527','1530','1528','1513','1533','1543','1529','776','1824','1804','1805','1806','1816']
+	part1=  ['50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-0455','50-0455','50-0455','50-0455','50-0455','50-0455','50-0455','50-0455','50-0455']
+	rate = [8,8,8,8,4,4,4,4,3,3,2,2,2,2,2,8,8,8,8,4,4,4,4,3,2,2,2,2,2,1,1,4,4,4,4,2,2,1,1]
+	operation1 = [10,10,10,10,30,30,40,40,50,50,60,70,80,100,110,10,10,10,10,30,30,40,40,50,60,70,80,100,110,90,120,30,30,30,30,40,40,50,120]
+	ooo=[10,30,40,50,60,70,80,90,100,110,120,10,30,40,50,100,120]
+	opp=['50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-0455','50-0455','50-0455','50-0455','50-0455','50-0455']
 	prt = '50-9341'
 
+	opo=zip(ooo,opp)
 	# Add for weekend total and Goal for Week 
 	add_factor_9341 = 6000
-	goal_9341=39130
-	add_factor_0455 = 10100
-	goal_0455=46985
+	goal_9341=39144
+	add_factor_0455 = 2500
+	goal_0455=14210
 	add_factor_1467 = 10100
 	goal_1467=46985
 	add_factor_3050 = 10100
 	goal_3050=46985
 	# ***************************
 
-	job = zip(operation1,machines1,rate)
+	job = zip(operation1,machines1,rate,part1)
+
+	# Add the Add Factor and Goals to the job List for each part
+	af=[]
+	goal1=[]
+	for i in job:
+		part=i[3][3:7]
+		exec('af.append(add_factor_'+part+')')
+		exec('goal1.append(goal_'+part+')')
+	job = zip(operation1,machines1,rate,part1,af,goal1)
+
 
 	t=int(time.time())
 	tm = time.localtime(t)
@@ -1784,24 +1797,30 @@ def mgmt_track_week(request):
 	p=[]
 	o=[]
 	oop=[]
+	prt4=[]
+
 
 	db, cur = db_set(request)
 	for i in job:
+		part=i[3][3:7]
+		exec('af=add_factor_'+part) # Calculate Add Factor
 		aql = "SELECT SUM(Count) FROM GFxPRoduction WHERE TimeStamp >= '%s' and Machine = '%s'" % (week_start,i[1])
 		cur.execute(aql)
 		tmp = cur.fetchall()
 		count1 = int(tmp[0][0])
-		pred = ((count1/float(t-week_start))*(week_end-t) + (add_factor_9341/float(i[2]))) + count1
+		pred = ((count1/float(t-week_start))*(week_end-t) + (af/float(i[2]))) + count1
 		m.append(i[1])
 		c.append(count1)
 		p.append(pred)
 		o.append(i[0])
 		oop.append(i[2])
+		prt4.append(i[3])
 		
 
-	totals=zip(o,m,c,p,oop)
+	totals=zip(o,m,c,p,oop,prt4)
 	totals.sort()
-	op=10
+	op=totals[0][0]
+	pt=totals[0][5]
 	ctr=0
 	ptr=0
 	ct=[]
@@ -1815,29 +1834,45 @@ def mgmt_track_week(request):
 	ooop=[]
 	op_c =[]
 	op_cp=[]
+	# Calculates predictions and totals by grouping operation and part
 	for i in opo:
 		count2=0
 		count2_p=0
 		for ii in totals:
-
-			if ii[0] == i:
+			if ii[0] == i[0] and ii[5] == i[1]:
 				count2=count2+ii[2]
 				count2_p=count2_p+ii[3]
 		op_c.append(count2)
 		op_cp.append(count2_p)
-	uu=zip(opo,op_c,op_cp)
+	uu=zip(ooo,op_c,op_cp,opp)
+
 	xx=0
-	xx_ptr=0
+
+	# xx_ptr=0
 	sum_op=[]
 	pred_op=[]
+	prt4=[]
+	totals=sorted(totals,key=lambda x:(x[5],x[0]))
 	for i in totals:
 		if i[0]!=xx:
-			temp1=int((uu[xx_ptr][1]))
-			temp2=int((uu[xx_ptr][2]))
+
+			for j in uu:
+				if j[0]==i[0] and j[3]==i[5]:
+					temp1=int(j[1])
+					temp2=int(j[2])
+
+
+
+
+
+
+
+			# temp1=int((uu[xx_ptr][1]))
+			# temp2=int((uu[xx_ptr][2]))
 
 			sum_op.append(temp1)
 			pred_op.append(temp2)
-			xx_ptr=xx_ptr+1
+			# xx_ptr=xx_ptr+1
 			xx=i[0]
 		else:
 			sum_op.append(-1)
@@ -1847,9 +1882,14 @@ def mgmt_track_week(request):
 		cc.append(i[2])
 		pp.append(i[3])
 		ooop.append(i[4])
+		prt4.append(i[5])
 
 	# Below section adds -1 or 1 to control color change on chart
-	overall=zip(oo,mm,cc,pp,ooop,sum_op,pred_op)
+	overall=zip(oo,mm,cc,pp,ooop,sum_op,pred_op,prt4)
+
+	overall2=sorted(overall,key=lambda x:(x[7],x[0],x[1]))
+
+	# rrrr=4/0
 	o=[]
 	m=[]
 	c=[]
@@ -1861,10 +1901,16 @@ def mgmt_track_week(request):
 	pm=[]
 	pms=[]
 	gl=[]
+	prt4=[]
 	switch=1
 	old=0
 	pl_mi=0
+
+
 	for i in overall:
+		part = i[7][3:7]
+		exec('goal1 = (goal_'+part+')')
+
 		if old!=i[0]:
 			old=i[0]
 			switch=switch*-1
@@ -1881,7 +1927,7 @@ def mgmt_track_week(request):
 		pred.append(int_str_comma(i[6]))
 		sw.append(switch)
 		p6=int(i[6])
-		pl_mi=p6-goal_9341
+		pl_mi=p6-goal1
 		pl_mis=int_str_comma(abs(pl_mi))
 
 		if pl_mi<0:
@@ -1891,9 +1937,10 @@ def mgmt_track_week(request):
 
 		pm.append(pl_mi)
 		pms.append(pl_mis)
-		gl.append(int_str_comma(goal_9341))
+		gl.append(int_str_comma(goal1))
+		prt4.append(i[7])
 
-	overall=zip(o,m,c,p,op,tot,pred,sw,pm,gl,pms)
+	overall=zip(o,m,c,p,op,tot,pred,sw,pm,gl,pms,prt4)
 
 	request.session['Total_10R']= overall
 	return render(request,'mgmt_track_week.html')
@@ -2815,9 +2862,6 @@ def cell_track_9341(request):
 
 
 		if cnt is None: cnt = 0
-
-
-
 
 
 		rate3 = cnt / float(rate2)
