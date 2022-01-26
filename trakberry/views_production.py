@@ -1903,15 +1903,16 @@ def mgmt_track_week(request):
 	pms=[]
 	gl=[]
 	prt4=[]
+	min_switch4=[]
 	switch=1
 	old=0
 	pl_mi=0
 
-
+	prt6=''
 	for i in overall:
+		if prt6=='':prt6=i[7]
 		part = i[7][3:7]
 		exec('goal1 = (goal_'+part+')')
-
 		if old!=i[0]:
 			old=i[0]
 			switch=switch*-1
@@ -1940,8 +1941,14 @@ def mgmt_track_week(request):
 		pms.append(pl_mis)
 		gl.append(int_str_comma(goal1))
 		prt4.append(i[7])
+		if prt6 != i[7]:
+			min_switch = 1
+		else:
+			min_switch = 0
+		prt6=i[7]
+		min_switch4.append(min_switch)
 
-	overall=zip(o,m,c,p,op,tot,pred,sw,pm,gl,pms,prt4)
+	overall=zip(o,m,c,p,op,tot,pred,sw,pm,gl,pms,prt4,min_switch4)
 
 	request.session['Total_10R']= overall
 	return render(request,'mgmt_track_week.html')
