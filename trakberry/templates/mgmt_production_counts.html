@@ -1,0 +1,189 @@
+{% extends "mgmt.html" %}
+
+
+{% block content %}
+	{% if request.session.mgmt_login_password_check = 0 %}  <!-- If login failed or required -->
+		<meta http-equiv="refresh" content="0; url={{request.session.local_toggle}}/mgmt_login_form" />
+	{% else %}  <!-- if Login passed and main start up screen -->
+	
+		<div class="wrapper_main">
+			<div class="frame1">  <!-- Default is L24 hr Production-->
+				{% block frame1 %}
+				<table id="prod24">
+					<tr>
+						<th colspan="5"><center><font style="font-weight:bolder;font-size:x-large;">{{request.session.data3title}}</font></center></th>
+					</tr>
+					<tr>
+						<th><center>Part</center></th>
+						<th><center>Finished</center></th>
+						<th colspan="3"><center>Operations</center></th>
+
+					{% for i in request.session.data3 %}
+					
+						{% if i.2 = 1 %}
+							</tr><tr>
+							<td><b>{{i.0}}</b></td>
+							<td><u>{{i.3}}</u><br><center>{{i.1}}</center></td>
+						{% else %}
+							{% if i.1 = 0 %}
+								<td>&nbsp;&nbsp;&nbsp;</td>
+							{% else %}
+								<td><u>{{i.3}}</u><br><center>{{i.1}}</center></td>
+							{% endif %}
+						{% endif %}
+					{% endfor %}
+					</tr>
+				</table>
+				{% endblock %}
+			</div>
+
+
+			<div class="frame2">  <!-- Week Production-->
+				<table id="prodwk">
+					<tr>
+						<th colspan="5"><center><font style="font-weight:bolder;font-size:x-large;">{{request.session.data2title}}</font></center></th>
+					</tr>
+					<tr>
+						<th><center>Part</center></th>
+						<th><center>Finished</center></th>
+						<th colspan="3"><center>Operations</center></th>
+
+					{% for i in request.session.data2 %}
+					
+						{% if i.2 = 1 %}
+							</tr><tr>
+							<td><b>{{i.0}}</b></td>
+							<td><u>{{i.3}}</u><br><center>{{i.1}}</center></td>
+						{% else %}
+							{% if i.1 = 0 %}
+								<td>&nbsp;&nbsp;&nbsp;</td>
+							{% else %}
+								<td><u>{{i.3}}</u><br><center>{{i.1}}</center></td>
+							{% endif %}
+						{% endif %}
+					{% endfor %}
+					</tr>
+				</table>
+
+			</div>
+
+			<div class="frame3">  <!-- Week Production-->
+				<table id="prodpast">
+					<tr>
+						<th colspan="5"><center><font style="font-weight:bolder;font-size:x-large;">{{request.session.data1title}}</font></center></th>
+					</tr>
+					<tr>
+						<th><center>Part</center></th>
+						<th><center>Finished</center></th>
+						<th colspan="3"><center>Operations</center></th>
+
+					{% for i in request.session.data1 %}
+						{% if i.2 = 1 %}
+							</tr><tr>
+							<td><b>{{i.0}}</b></td>
+							<td><u>{{i.3}}</u><br><center>{{i.1}}</center></td>
+						{% else %}
+							{% if i.1 = 0 %}
+								<td>&nbsp;&nbsp;&nbsp;</td>
+							{% else %}
+								<td><u>{{i.3}}</u><br><center>{{i.1}}</center></td>
+							{% endif %}
+						{% endif %}
+					{% endfor %}
+					</tr>
+				</table>
+			</div>
+
+			<form action="" method="post">{% csrf_token %}
+			<div class="frame4">  <!-- Production Summary-->
+				<table id="prodsum">
+					<tr>
+						<th colspan="9"><center><font style="font-weight:bolder;font-size:x-large;">Production Summary</font></center></th>
+					</tr>
+					<tr>
+						<th colspan="9"><center>
+							Asset : <input style="font-size:14px;color:rgb(0, 0, 0);width:120px;height:30px;" name="asset" type="textarea"  autofocus/>
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							Group #: <input style="font-size:14px;color:rgb(0, 0, 0);width:120px;height:30px;" name="group" value=1 type="number">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<button style="background-color: #5CC4ED;border-radius: 10px;width:110px;height:80%;font-weight: 600;" type="submit" name="button1" value="add_machine" /><center><font color="#000000">Add Asset</font></center></button>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<button style="background-color: #5CC4ED;border-radius: 10px;width:110px;height:80%;font-weight: 600;" type="submit" name="button1" value="calculate" /><center><font color="#000000">Calculate</font></center></button>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<button style="background-color: #5CC4ED;border-radius: 10px;width:110px;height:80%;font-weight: 600;" type="submit" name="button1" value="clear" /><center><font color="#000000">Clear All</font></center></button>
+						</center></th>
+					</tr>
+					<tr>
+						<th><center>Group</center></th>
+						<th><center>Asset</center></th>
+						<th><center>{{request.session.shift_title1}}</center></th>
+						<th><center>{{request.session.shift_title2}}</center></th>
+						<th><center>{{request.session.shift_title3}}</center></th>
+						<th><center>24hr Total</center></th>
+						
+						<th><center>Week to Date</center></th>
+						<th><center>Week Prediction</center></th>
+						<th><center>Last Week</center></th>
+						
+						
+					</tr>
+					{% for i in request.session.summary_data %}
+
+					{% if i.2 = -1 %}
+					<tr>
+						<td bgcolor="#96dbf8"><center>
+							<button style="background-color: #5CC4ED;border-radius: 10px;width:20%;height:70%;font-weight: 600;" type="submit" name="button1" value="{{i.1}}|{{i.0}}" /><center><font size = '1' color="#000000">X</font></center></button>
+							&nbsp;&nbsp;<b>{{i.1}}</b></center></td>
+						<td bgcolor="#96dbf8"><center><b>{{i.0}}</b></center></td>
+						<td bgcolor="#96dbf8"><center><b>{{i.3}}</b></center></td>
+						<td bgcolor="#96dbf8"><center><b>{{i.4}}</b></center></td>
+						<td bgcolor="#96dbf8"><center><b>{{i.5}}</b></center></td>
+						{% if i.7 > 0 %}
+							<td rowspan = {{i.7}} bgcolor="#96dbf8"><center><b>{{i.8}}</b></center></td>
+							<td rowspan = {{i.7}} bgcolor="#96dbf8"><center><b>{{i.9}}</b></center></td>
+							<td rowspan = {{i.7}} bgcolor="#96dbf8"><center><b>{{i.10}}</b></center></td>
+							<td rowspan = {{i.7}} bgcolor="#96dbf8"><center><b>{{i.11}}</b></center></td>
+						{% endif %}
+
+					</tr>
+
+					{% else %}
+					<tr>
+						<td bgcolor="#45b4c6"><center>
+							<button style="background-color: #5CC4ED;border-radius: 10px;width:20%;height:70%;font-weight: 600;" type="submit" name="button1" value="{{i.1}}|{{i.0}}" /><center><font size = '1' color="#000000">X</font></center></button>
+							&nbsp;&nbsp;<b>{{i.1}}</b></center></td>
+						<td bgcolor="#45b4c6"><center><b>{{i.0}}</b></center></td>
+						<td bgcolor="#45b4c6"><center><b>{{i.3}}</b></center></td>
+						<td bgcolor="#45b4c6"><center><b>{{i.4}}</b></center></td>
+						<td bgcolor="#45b4c6"><center><b>{{i.5}}</b></center></td>
+						{% if i.7 > 0 %}
+							<td rowspan = {{i.7}} bgcolor="#45b4c6"><center><b>{{i.8}}</b></center></td>
+							<td rowspan = {{i.7}} bgcolor="#45b4c6"><center><b>{{i.9}}</b></center></td>
+							<td rowspan = {{i.7}} bgcolor="#45b4c6"><center><b>{{i.10}}</b></center></td>
+							<td rowspan = {{i.7}} bgcolor="#45b4c6"><center><b>{{i.11}}</b></center></td>
+						{% endif %}
+
+					</tr>
+
+					{% endif %}
+
+					{% endfor %}
+
+					</table>
+					<br><br><br><br>
+			</div>
+		</form>
+
+
+
+
+
+		</div>  <!-- main wrapper-->
+		
+
+
+    {% endif %}
+
+{% endblock %}
+
+</body></html>

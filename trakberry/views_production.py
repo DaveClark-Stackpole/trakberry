@@ -1645,9 +1645,10 @@ def chart2_5401_OP80(request):
 		request.session['asset3_area2'] = '1706'
 		request.session['asset4_area2'] = '1706'
 		return render(request, "redirect_tracking.html")
-
 def mgmt(request):
+	return render(request, "mgmt.html")
 
+def mgmt_production_counts(request):
 	tcur=int(time.time())
 	try:
 		last_time = request.session["mgmt_last_time"]
@@ -1741,7 +1742,7 @@ def mgmt(request):
 	args.update(csrf(request))
 	args['form'] = form
 
-	return render(request,'mgmt.html',{'args':args})
+	return render(request,'mgmt_production_counts.html',{'args':args})
 	return render(request, "mgmt.html",{'TCUR':tcur})
 	return render(request, "mgmt_start.html",{'TCUR':tcur})
 
@@ -1753,8 +1754,18 @@ def mgmt_track_week(request):
 	operation1 = [10,10,10,10,30,30,40,40,50,50,60,70,80,100,110,10,10,10,10,30,30,40,40,50,60,70,80,100,110,90,120]
 	opo=[10,30,40,50,60,70,80,90,100,110,120]
 	prt = '50-9341'
-	add_factor = 10100
-	goal_9341=44856
+
+	# Add for weekend total and Goal for Week 
+	add_factor_9341 = 6000
+	goal_9341=39130
+	add_factor_0455 = 10100
+	goal_0455=46985
+	add_factor_1467 = 10100
+	goal_1467=46985
+	add_factor_3050 = 10100
+	goal_3050=46985
+	# ***************************
+
 	job = zip(operation1,machines1,rate)
 
 	t=int(time.time())
@@ -1780,8 +1791,7 @@ def mgmt_track_week(request):
 		cur.execute(aql)
 		tmp = cur.fetchall()
 		count1 = int(tmp[0][0])
-		pred = (count1/float(t-week_start))*(week_end-t) + (add_factor/float(i[2]))
-
+		pred = ((count1/float(t-week_start))*(week_end-t) + (add_factor_9341/float(i[2]))) + count1
 		m.append(i[1])
 		c.append(count1)
 		p.append(pred)
@@ -1803,7 +1813,6 @@ def mgmt_track_week(request):
 	cc=[]
 	mm=[]
 	ooop=[]
-
 	op_c =[]
 	op_cp=[]
 	for i in opo:
@@ -1830,7 +1839,6 @@ def mgmt_track_week(request):
 			pred_op.append(temp2)
 			xx_ptr=xx_ptr+1
 			xx=i[0]
-
 		else:
 			sum_op.append(-1)
 			pred_op.append(-1)
@@ -1887,7 +1895,6 @@ def mgmt_track_week(request):
 
 	overall=zip(o,m,c,p,op,tot,pred,sw,pm,gl,pms)
 
-
 	request.session['Total_10R']= overall
 	return render(request,'mgmt_track_week.html')
 
@@ -1900,8 +1907,6 @@ def int_str_comma(var1):
 		end1=x[-3:]
 		z=front1+','+end1
 	return z
-
-
 
 def mgmt_production_sort(summary_data,request):
 	summary_data.sort(key=getKey3)
@@ -2819,7 +2824,12 @@ def cell_track_9341(request):
 		rate3 = int(rate3 * 100) # This will be the percentage we use to determine colour
 
 		# Pediction
-		avg8 = cnt33 / float(shift_time)
+		try:
+			avg8 = cnt33 / float(shift_time)
+		except:
+			shift_time = 100
+			avg8 = cnt33 / float(shift_time)
+			
 		avg9 = avg8 * shift_left
 		pred1 = int(cnt33 + avg9)
 
