@@ -1746,6 +1746,133 @@ def mgmt_production_counts(request):
 	return render(request, "mgmt.html",{'TCUR':tcur})
 	return render(request, "mgmt_start.html",{'TCUR':tcur})
 
+def switch_plan_week(var1,var2,var3,request):
+	v1 = request.session['Total_10R']
+	v2 = v1[12][1]
+	v3 = zip(*v1)
+	v4=list(v3)
+	a=list(v4[0])
+	a1=list(v4[1])
+	a2=list(v4[2])
+	a3=list(v4[3])
+	a4=list(v4[4])
+	a5=list(v4[5])
+	a6=list(v4[6])
+	a7=list(v4[7])
+	a8=list(v4[8])
+	a9=list(v4[9])
+	a10=list(v4[10])
+	a11=list(v4[11])
+	min_sw = list(v4[12])
+	b=[]
+	for i in min_sw:
+		if i == var1: 
+			b.append(var1*-1)
+		elif i == var2:
+			b.append(var3)
+		else:
+			b.append(i)
+	overall = zip(a,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,b)
+	request.session['Total_10R'] = overall
+	return overall
+
+def mgmt_goals(request):
+	db, cur = db_set(request)   
+	p='50-0455'
+	sql = "SELECT * FROM tkb_production_goals WHERE part = '%s'" % (p)
+	cur.execute(sql)
+	tmp = cur.fetchall()
+	add_factor_0455 = int(tmp[0][3])
+	goal_0455 = int(tmp[0][2])
+	p='50-9341'
+	sql = "SELECT * FROM tkb_production_goals WHERE part = '%s'" % (p)
+	cur.execute(sql)
+	tmp = cur.fetchall()
+	add_factor_9341 = int(tmp[0][3])
+	goal_9341= int(tmp[0][2])
+	p='50-1467'
+	sql = "SELECT * FROM tkb_production_goals WHERE part = '%s'" % (p)
+	cur.execute(sql)
+	tmp = cur.fetchall()
+	add_factor_1467 = int(tmp[0][3])
+	goal_1467= int(tmp[0][2])
+	p='50-3050'
+	sql = "SELECT * FROM tkb_production_goals WHERE part = '%s'" % (p)
+	cur.execute(sql)
+	tmp = cur.fetchall()
+	add_factor_3050 = int(tmp[0][3])
+	goal_3050 = int(tmp[0][2])
+
+	part = ['50-0455','50-9341','50-1467','50-3050']
+	goals=[]
+	addfac=[]
+	goals.append(goal_0455)
+	goals.append(goal_9341)
+	goals.append(goal_1467)
+	goals.append(goal_3050)
+	addfac.append(add_factor_0455)
+	addfac.append(add_factor_9341)
+	addfac.append(add_factor_1467)
+	addfac.append(add_factor_3050)
+
+	totals=zip(part,goals,addfac)
+	request.session['total_goals'] = totals
+
+	if request.POST:
+		g1=[]
+		pl1=[]
+		pr1=[]
+		for i in totals:
+			goal2=str(i[0]) + '_goal'
+			plan2=str(i[0]) + '_plan'
+			g=request.POST.get(goal2)
+			p=request.POST.get(plan2)
+			pr1.append(i[0])
+			g1.append(g)
+			pl1.append(p)
+		totals=zip(pr1,g1,pl1)
+
+		for i in totals:
+			cql = ('update tkb_production_goals SET goal = "%s",weekend="%s" WHERE part ="%s"' % (i[1],i[2],i[0]))
+			cur.execute(cql)
+			db.commit()
+
+		return render(request, "redirect_mgmt_track_week.html")
+
+	else:
+		form = sup_downForm()
+	args = {}
+	args.update(csrf(request))
+	args['form'] = form
+
+	return render(request,'mgmt_goal_entry.html',{'args':args})
+
+
+def plus_0455(request):
+	switch_plan_week(-2,21,22,request)
+	return render(request, "redirect_mgmt_track_week.html")
+
+def minus_0455(request):
+	switch_plan_week(2,22,21,request)
+	return render(request, "redirect_mgmt_track_week.html")
+
+def plus_9341(request):
+	switch_plan_week(-1,11,12,request)
+	return render(request, "redirect_mgmt_track_week.html")
+
+def minus_9341(request):
+	switch_plan_week(1,12,11,request)
+	return render(request, "redirect_mgmt_track_week.html")
+def plus_3050(request):
+	return render(request, "redirect_mgmt_track_week.html")
+def minus_3050(request):
+	return render(request, "redirect_mgmt_track_week.html")
+def plus_1467(request):
+	return render(request, "redirect_mgmt_track_week.html")
+def minus_1467(request):
+	return render(request, "redirect_mgmt_track_week.html")
+
+
 # Monitor Production vs Target on the Big 4
 # Use Live Track and Entries
 def mgmt_track_week(request):
@@ -1753,23 +1880,80 @@ def mgmt_track_week(request):
 	part1=  ['50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-0455','50-0455','50-0455','50-0455','50-0455','50-0455','50-0455','50-0455','50-1467','50-1467','50-1467','50-3050']
 	rate = [8,8,8,8,4,4,4,4,3,3,2,2,2,2,2,8,8,8,8,4,4,4,4,3,2,2,2,2,2,1,1,4,4,4,4,2,2,1,1,3,3,3,1]
 	operation1 = [10,10,10,10,30,30,40,40,50,50,60,70,80,100,110,10,10,10,10,30,30,40,40,50,60,70,80,100,110,90,120,30,30,30,30,40,40,50,120,130,130,130,140]
+	min_sw = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,11,-2,-2,-2,-2,-2,-2,-2,21,31,31,31,41]
 	ooo=[10,30,40,50,60,70,80,90,100,110,120,10,30,40,50,100,120,130,140]
 	opp=['50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-0455','50-0455','50-0455','50-0455','50-0455','50-0455','50-1467','50-3050']
 	prt = '50-9341'
 
+	# Check if min_sw has values yet
+	try:
+		v1 = request.session['Total_10R']
+		v2 = v1[12][1]
+		v3 = zip(*v1)
+		v4=list(v3)
+		min_sw = list(v4[12])
+		operation1 = list(v4[0])
+		machines1 = list(v4[1])
+		rate = list(v4[4])
+		part1 = list(v4[11])
+		check1=1
+	except:
+		check1=0
+
 	opo=zip(ooo,opp)
 	# Add for weekend total and Goal for Week 
-	add_factor_9341 = 6000
-	goal_9341=39144
-	add_factor_0455 = 2500
-	goal_0455=14210
-	add_factor_1467 = 8400
-	goal_1467=29370
-	add_factor_3050 = 900
-	goal_3050=2750
+	db, cur = db_set(request)   
+	cur.execute("""CREATE TABLE IF NOT EXISTS tkb_production_goals(Id INT PRIMARY KEY AUTO_INCREMENT,part CHAR(80),goal int(80), weekend int(80))""")
+	try:
+		p='50-0455'
+		sql = "SELECT * FROM tkb_production_goals WHERE part = '%s'" % (p)
+		cur.execute(sql)
+		tmp = cur.fetchall()
+		add_factor_0455 = int(tmp[0][3])
+		goal_0455 = int(tmp[0][2])
+		p='50-9341'
+		sql = "SELECT * FROM tkb_production_goals WHERE part = '%s'" % (p)
+		cur.execute(sql)
+		tmp = cur.fetchall()
+		add_factor_9341 = int(tmp[0][3])
+		goal_9341= int(tmp[0][2])
+		p='50-1467'
+		sql = "SELECT * FROM tkb_production_goals WHERE part = '%s'" % (p)
+		cur.execute(sql)
+		tmp = cur.fetchall()
+		add_factor_1467 = int(tmp[0][3])
+		goal_1467= int(tmp[0][2])
+		p='50-3050'
+		sql = "SELECT * FROM tkb_production_goals WHERE part = '%s'" % (p)
+		cur.execute(sql)
+		tmp = cur.fetchall()
+		add_factor_3050 = int(tmp[0][3])
+		goal_3050 = int(tmp[0][2])
+
+	except:
+		add_factor_9341 = 6000
+		goal_9341=39144
+		add_factor_0455 = 2500
+		goal_0455=14210
+		add_factor_1467 = 8400
+		goal_1467=29370
+		add_factor_3050 = 900
+		goal_3050=2750
+		p='50-0455'
+		cur.execute('''INSERT INTO tkb_production_goals(part,goal,weekend) VALUES(%s,%s,%s)''', (p,goal_0455,add_factor_0455))		
+		db.commit()
+		p='50-9341'
+		cur.execute('''INSERT INTO tkb_production_goals(part,goal,weekend) VALUES(%s,%s,%s)''', (p,goal_9341,add_factor_9341))		
+		db.commit()
+		p='50-1467'
+		cur.execute('''INSERT INTO tkb_production_goals(part,goal,weekend) VALUES(%s,%s,%s)''', (p,goal_1467,add_factor_1467))		
+		db.commit()
+		p='50-3050'
+		cur.execute('''INSERT INTO tkb_production_goals(part,goal,weekend) VALUES(%s,%s,%s)''', (p,goal_3050,add_factor_3050))		
+		db.commit()
 	# ***************************
 
-	job = zip(operation1,machines1,rate,part1)
+	job = zip(operation1,machines1,rate,part1,min_sw)
 
 	# Add the Add Factor and Goals to the job List for each part
 	af=[]
@@ -1778,7 +1962,7 @@ def mgmt_track_week(request):
 		part=i[3][3:7]
 		exec('af.append(add_factor_'+part+')')
 		exec('goal1.append(goal_'+part+')')
-	job = zip(operation1,machines1,rate,part1,af,goal1)
+	job = zip(operation1,machines1,rate,part1,af,goal1,min_sw)
 
 
 	t=int(time.time())
@@ -1798,9 +1982,8 @@ def mgmt_track_week(request):
 	o=[]
 	oop=[]
 	prt4=[]
+	ms=[]
 
-
-	db, cur = db_set(request)
 	for i in job:
 		part=i[3][3:7]
 		exec('af=add_factor_'+part) # Calculate Add Factor
@@ -1815,9 +1998,10 @@ def mgmt_track_week(request):
 		o.append(i[0])
 		oop.append(i[2])
 		prt4.append(i[3])
+		ms.append(i[6])
 		
 
-	totals=zip(o,m,c,p,oop,prt4)
+	totals=zip(o,m,c,p,oop,prt4,ms)
 	totals.sort()
 	op=totals[0][0]
 	pt=totals[0][5]
@@ -1852,6 +2036,7 @@ def mgmt_track_week(request):
 	sum_op=[]
 	pred_op=[]
 	prt4=[]
+	ms=[]
 	totals=sorted(totals,key=lambda x:(x[5],x[0]))
 	for i in totals:
 		if i[0]!=xx:
@@ -1884,9 +2069,10 @@ def mgmt_track_week(request):
 		pp.append(i[3])
 		ooop.append(i[4])
 		prt4.append(i[5])
+		ms.append(i[6])
 
 	# Below section adds -1 or 1 to control color change on chart
-	overall=zip(oo,mm,cc,pp,ooop,sum_op,pred_op,prt4)
+	overall=zip(oo,mm,cc,pp,ooop,sum_op,pred_op,prt4,ms)
 
 	overall2=sorted(overall,key=lambda x:(x[7],x[0],x[1]))
 
@@ -1903,15 +2089,17 @@ def mgmt_track_week(request):
 	pms=[]
 	gl=[]
 	prt4=[]
+	ms=[]
+	min_switch4=[]
 	switch=1
 	old=0
 	pl_mi=0
 
-
+	prt6=''
 	for i in overall:
+		if prt6=='':prt6=i[7]
 		part = i[7][3:7]
 		exec('goal1 = (goal_'+part+')')
-
 		if old!=i[0]:
 			old=i[0]
 			switch=switch*-1
@@ -1920,6 +2108,7 @@ def mgmt_track_week(request):
 		c.append(int_str_comma(i[2]))
 		p.append(i[3])
 		op.append(i[4])
+		ms.append(i[8])
 		if i[5]==-1:
 			tot.append(i[5])
 		else:
@@ -1940,8 +2129,14 @@ def mgmt_track_week(request):
 		pms.append(pl_mis)
 		gl.append(int_str_comma(goal1))
 		prt4.append(i[7])
+		if prt6 != i[7]:
+			min_switch = 1
+		else:
+			min_switch = 0
+		prt6=i[7]
+		min_switch4.append(min_switch)
 
-	overall=zip(o,m,c,p,op,tot,pred,sw,pm,gl,pms,prt4)
+	overall=zip(o,m,c,p,op,tot,pred,sw,pm,gl,pms,prt4,ms)
 
 	request.session['Total_10R']= overall
 	return render(request,'mgmt_track_week.html')
