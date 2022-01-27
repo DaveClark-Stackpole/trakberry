@@ -1,0 +1,47 @@
+{% extends "mgmt.html" %}
+
+
+{% block content %}
+
+<!-- <a href="{{request.session.local_toggle}}/mgmt_display_edit/get/{{ i.0 }}" class="blue"></a> -->
+<form action="" method="post">{% csrf_token %}
+	<input style="background-color:#AAA00A;border-radius: 10px;width:140px;height:45px;font-weight: 700;font-size:23px;align=left;"type="submit" value="Enter" /><br>
+<table class="center">
+	<tr>
+        <td style="font-size: 24px; color:rgb(53, 47, 47);border:1px solid rgb(0, 0, 0);background-color:rgb(158, 158, 158);">
+			&nbsp;&nbsp;&nbsp;Part&nbsp;&nbsp;&nbsp;
+		</td>
+		<td style="font-size: 24px; color:rgb(53, 47, 47);border:1px solid rgb(0, 0, 0);background-color:rgb(158, 158, 158);">
+			&nbsp;&nbsp;&nbsp;Goal&nbsp;&nbsp;&nbsp;
+		</td>
+        <td style="font-size: 24px; color:rgb(53, 47, 47);border:1px solid rgb(0, 0, 0);background-color:rgb(158, 158, 158);">
+			&nbsp;&nbsp;&nbsp;Weekend Plan&nbsp;&nbsp;&nbsp;
+		</td>
+
+
+	</tr>
+
+	{% for i in request.session.total_goals %}
+	<tr>
+        <td style="font-size: 18px; color:rgb(0, 0, 0);border:1px solid rgb(0, 0, 0);background-color:rgb(231, 231, 231);">
+			&nbsp;&nbsp;&nbsp;{{i.0}}&nbsp;&nbsp;&nbsp;
+        </td>
+		<td style="font-size: 18px; color:rgb(0, 0, 0);border:1px solid rgb(0, 0, 0);background-color:rgb(231, 231, 231);">
+
+            <input style="font-size:18px;height:60px;text-align:center;" value={{i.1}}  name="{{i.0}}_goal" type="text">
+
+        </td>
+        <td style="font-size: 18px; color:rgb(0, 0, 0);border:1px solid rgb(0, 0, 0);background-color:rgb(231, 231, 231);">
+            <input style="font-size:18px;height:60px;text-align:center;" value={{i.2}}  name="{{i.0}}_plan" type="text">
+        </td>
+
+	</tr>
+	
+{% endfor %}
+
+</table>
+
+</form>
+
+
+{% endblock %}
