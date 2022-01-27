@@ -1746,6 +1746,61 @@ def mgmt_production_counts(request):
 	return render(request, "mgmt.html",{'TCUR':tcur})
 	return render(request, "mgmt_start.html",{'TCUR':tcur})
 
+def switch_plan_week(var1,var2,var3,request):
+	v1 = request.session['Total_10R']
+	v2 = v1[12][1]
+	v3 = zip(*v1)
+	v4=list(v3)
+	a=list(v4[0])
+	a1=list(v4[1])
+	a2=list(v4[2])
+	a3=list(v4[3])
+	a4=list(v4[4])
+	a5=list(v4[5])
+	a6=list(v4[6])
+	a7=list(v4[7])
+	a8=list(v4[8])
+	a9=list(v4[9])
+	a10=list(v4[10])
+	a11=list(v4[11])
+	min_sw = list(v4[12])
+	b=[]
+	for i in min_sw:
+		if i == var1: 
+			b.append(var1*-1)
+		elif i == var2:
+			b.append(var3)
+		else:
+			b.append(i)
+	overall = zip(a,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,b)
+	request.session['Total_10R'] = overall
+	return overall
+
+def plus_0455(request):
+	switch_plan_week(-2,21,22,request)
+	return render(request, "redirect_mgmt_track_week.html")
+
+def minus_0455(request):
+	switch_plan_week(2,22,21,request)
+	return render(request, "redirect_mgmt_track_week.html")
+
+def plus_9341(request):
+	switch_plan_week(-1,11,12,request)
+	return render(request, "redirect_mgmt_track_week.html")
+
+def minus_9341(request):
+	switch_plan_week(1,12,11,request)
+	return render(request, "redirect_mgmt_track_week.html")
+def plus_3050(request):
+	return render(request, "redirect_mgmt_track_week.html")
+def minus_3050(request):
+	return render(request, "redirect_mgmt_track_week.html")
+def plus_1467(request):
+	return render(request, "redirect_mgmt_track_week.html")
+def minus_1467(request):
+	return render(request, "redirect_mgmt_track_week.html")
+
+
 # Monitor Production vs Target on the Big 4
 # Use Live Track and Entries
 def mgmt_track_week(request):
@@ -1753,9 +1808,25 @@ def mgmt_track_week(request):
 	part1=  ['50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-0455','50-0455','50-0455','50-0455','50-0455','50-0455','50-0455','50-0455','50-1467','50-1467','50-1467','50-3050']
 	rate = [8,8,8,8,4,4,4,4,3,3,2,2,2,2,2,8,8,8,8,4,4,4,4,3,2,2,2,2,2,1,1,4,4,4,4,2,2,1,1,3,3,3,1]
 	operation1 = [10,10,10,10,30,30,40,40,50,50,60,70,80,100,110,10,10,10,10,30,30,40,40,50,60,70,80,100,110,90,120,30,30,30,30,40,40,50,120,130,130,130,140]
+	min_sw = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,11,-2,-2,-2,-2,-2,-2,-2,21,31,31,31,41]
 	ooo=[10,30,40,50,60,70,80,90,100,110,120,10,30,40,50,100,120,130,140]
 	opp=['50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-0455','50-0455','50-0455','50-0455','50-0455','50-0455','50-1467','50-3050']
 	prt = '50-9341'
+
+	# Check if min_sw has values yet
+	try:
+		v1 = request.session['Total_10R']
+		v2 = v1[12][1]
+		v3 = zip(*v1)
+		v4=list(v3)
+		min_sw = list(v4[12])
+		operation1 = list(v4[0])
+		machines1 = list(v4[1])
+		rate = list(v4[4])
+		part1 = list(v4[11])
+		check1=1
+	except:
+		check1=0
 
 	opo=zip(ooo,opp)
 	# Add for weekend total and Goal for Week 
@@ -1769,7 +1840,7 @@ def mgmt_track_week(request):
 	goal_3050=2750
 	# ***************************
 
-	job = zip(operation1,machines1,rate,part1)
+	job = zip(operation1,machines1,rate,part1,min_sw)
 
 	# Add the Add Factor and Goals to the job List for each part
 	af=[]
@@ -1778,7 +1849,7 @@ def mgmt_track_week(request):
 		part=i[3][3:7]
 		exec('af.append(add_factor_'+part+')')
 		exec('goal1.append(goal_'+part+')')
-	job = zip(operation1,machines1,rate,part1,af,goal1)
+	job = zip(operation1,machines1,rate,part1,af,goal1,min_sw)
 
 
 	t=int(time.time())
@@ -1798,7 +1869,7 @@ def mgmt_track_week(request):
 	o=[]
 	oop=[]
 	prt4=[]
-
+	ms=[]
 
 	db, cur = db_set(request)
 	for i in job:
@@ -1815,9 +1886,10 @@ def mgmt_track_week(request):
 		o.append(i[0])
 		oop.append(i[2])
 		prt4.append(i[3])
+		ms.append(i[6])
 		
 
-	totals=zip(o,m,c,p,oop,prt4)
+	totals=zip(o,m,c,p,oop,prt4,ms)
 	totals.sort()
 	op=totals[0][0]
 	pt=totals[0][5]
@@ -1852,6 +1924,7 @@ def mgmt_track_week(request):
 	sum_op=[]
 	pred_op=[]
 	prt4=[]
+	ms=[]
 	totals=sorted(totals,key=lambda x:(x[5],x[0]))
 	for i in totals:
 		if i[0]!=xx:
@@ -1884,9 +1957,10 @@ def mgmt_track_week(request):
 		pp.append(i[3])
 		ooop.append(i[4])
 		prt4.append(i[5])
+		ms.append(i[6])
 
 	# Below section adds -1 or 1 to control color change on chart
-	overall=zip(oo,mm,cc,pp,ooop,sum_op,pred_op,prt4)
+	overall=zip(oo,mm,cc,pp,ooop,sum_op,pred_op,prt4,ms)
 
 	overall2=sorted(overall,key=lambda x:(x[7],x[0],x[1]))
 
@@ -1903,6 +1977,7 @@ def mgmt_track_week(request):
 	pms=[]
 	gl=[]
 	prt4=[]
+	ms=[]
 	min_switch4=[]
 	switch=1
 	old=0
@@ -1921,6 +1996,7 @@ def mgmt_track_week(request):
 		c.append(int_str_comma(i[2]))
 		p.append(i[3])
 		op.append(i[4])
+		ms.append(i[8])
 		if i[5]==-1:
 			tot.append(i[5])
 		else:
@@ -1948,7 +2024,7 @@ def mgmt_track_week(request):
 		prt6=i[7]
 		min_switch4.append(min_switch)
 
-	overall=zip(o,m,c,p,op,tot,pred,sw,pm,gl,pms,prt4,min_switch4)
+	overall=zip(o,m,c,p,op,tot,pred,sw,pm,gl,pms,prt4,ms)
 
 	request.session['Total_10R']= overall
 	return render(request,'mgmt_track_week.html')
