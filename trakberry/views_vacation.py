@@ -397,10 +397,16 @@ def scrap_backup(request):
 def scrap_restore(request):
 	# restore Scrap Table
 	db, cursor = db_set(request)  
-	cursor.execute("""DROP TABLE IF EXISTS tkb_scrap""")
-	cursor.execute("""CREATE TABLE IF NOT EXISTS tkb_scrap LIKE tkb_scrap_backup""")
-	cursor.execute('''INSERT tkb_scrap Select * From tkb_scrap_backup''')
+	# cursor.execute("""DROP TABLE IF EXISTS tkb_scrap""")
+	# cursor.execute("""CREATE TABLE IF NOT EXISTS tkb_scrap LIKE tkb_scrap_backup""")
+	# cursor.execute('''INSERT tkb_scrap Select * From tkb_scrap_backup''')
+	
+
+
+	cursor.execute("""CREATE TABLE IF NOT EXISTS tkb_wip_track(Id INT PRIMARY KEY AUTO_INCREMENT timestamp CHAR(80), part CHAR(80), operation CHAR(80), wip int(30))""")
+
 	db.commit()
+
 	db.close()
 	return render(request,"master_excel_message1.html")
 
@@ -423,12 +429,39 @@ def vacation_restore(request):
 	db, cursor = db_set(request)  
 	# Add something
 	
-	#cursor.execute("""DROP TABLE IF EXISTS vacation""")
-	#cursor.execute("""CREATE TABLE IF NOT EXISTS vacation LIKE vacation_backup""")
-	#cursor.execute('''INSERT vacation Select * From vacation_backup''')
+	# cursor.execute("""DROP TABLE IF EXISTS tkb_robot_list_B""")
+	# # Make a table like another but no content ************************************************
+	# cursor.execute("""CREATE TABLE IF NOT EXISTS tkb_robot_list_B LIKE tkb_robot_list""")
+	# db.commit()
+	# *****************************************************************************************
 
-	#db.commit()
+	# Transfer section past criteria ********************************************************
+	ii= 1643000399
+	sql = '''INSERT into GFxPRoduction(Machine,Part,PerpetualCount,TimeStamp,Count) (Select Machine,Part,PerpetualCount,TimeStamp,Count From GFxPRoduction_ARCHIVE where TimeStamp > "%d")''' % (ii)
+	cursor.execute(sql)
+	# ***************************************************************************************
+
+
+	# # Make a table like another but no content ************************************************
+	# cursor.execute("""CREATE TABLE IF NOT EXISTS GFxPRoduction LIKE GFxPRoduction_TEMP""")
+	# db.commit()
+	# # *****************************************************************************************
+
+
+	# # cursor.execute('''INSERT vacation_purge Select * From vacation_backup2 where month_start != month_end ''')
+
+
+	# sql = "SELECT * FROM GFxPRoduction WHERE TimeStamp >= '%d' and Part = '%s'" % (wip_stamp,prt)
+	
+
+	# cursor.execute('''INSERT tkb_techs_B (Select * From tkb_techs where tech = '%s' )''') % (ii)
+	# cursor.execute("""CREATE TABLE IF NOT EXISTS tkb_wip_track(Id INT PRIMARY KEY AUTO_INCREMENT timestamp CHAR(80), part CHAR(80), operation CHAR(80), wip int(30))""")
+
+	db.commit()
 	db.close()
+
+
+
 	return render(request,'done_test.html')
 	
 def vacation_purge(request):
