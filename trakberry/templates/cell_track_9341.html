@@ -147,6 +147,8 @@
 		.frame1 {color:black;text-align:center;float:left;width:32%;margin-bottom: 5px;}
 		.framec {color:black;text-align:center;float:left;width:15%;margin-bottom: 5px;}
 		.frameo {color:black;text-align:center;float:left;width:27%;margin-bottom: 5px;}
+		.frames {color:black;text-align:center;float:left;width:5%;margin-bottom: 5px;}
+		.framew {color:black;text-align:center;float:left;width:9%;margin-bottom: 5px;}
 		.framel {color:black;text-align:center;float:right;width:5%;margin-left: 10px;margin-bottom: 5px;}
 		.frame2a{color:black;text-align:center;background:rgb(202, 188, 83);float:left;width:32%;position:relative;left:5px;border-radius: 15px;margin-bottom: 5px;}
 
@@ -638,6 +640,60 @@
 					<td><br><center><font style="font-weight:bolder;font-size:100%;">&nbsp;&nbsp;&nbsp;&nbsp;</font></center><br></td>
 				</tr></table></center>
 			</div>
+
+			<div class="frames">  <!-- Center Line Production-->
+				<center><table id="noneline"><tr> <!-- OP60 -->
+					<td><br><center><font style="font-weight:bolder;font-size:100%;">&nbsp;&nbsp;&nbsp;&nbsp;</font></center><br></td>
+				</tr></table></center>
+				<center><table id="noneline"><tr> <!-- OP10 -->
+					<td><br><center><font style="font-weight:bolder;font-size:100%;">&nbsp;&nbsp;&nbsp;&nbsp;</font></center><br></td>
+				</tr></table></center>
+				<center><table id="noneline"><tr> <!-- OP30 -->
+					<td><br><center><font style="font-weight:bolder;font-size:100%;">&nbsp;&nbsp;&nbsp;&nbsp;</font></center><br></td>
+				</tr></table></center>
+				<center><table id="noneline"><tr> <!-- OP40 -->
+					<td><br><center><font style="font-weight:bolder;font-size:100%;">&nbsp;&nbsp;&nbsp;&nbsp;</font></center><br></td>
+				</tr></table></center>
+				<center><table id="noneline"><tr> <!-- OP50 -->
+					<td><br><center><font style="font-weight:bolder;font-size:100%;">&nbsp;&nbsp;&nbsp;&nbsp;</font></center><br></td>
+				</tr></table></center>
+				<center><table id="noneline"><tr> <!-- OP60 -->
+					<td><br><center><font style="font-weight:bolder;font-size:100%;">&nbsp;&nbsp;&nbsp;&nbsp;</font></center><br></td>
+				</tr></table></center>
+				<center><table id="noneline"><tr> <!-- OP70 -->
+					<td><br><center><font style="font-weight:bolder;font-size:100%;">&nbsp;&nbsp;&nbsp;&nbsp;</font></center><br></td>
+				</tr></table></center>
+				<center><table id="noneline"><tr> <!-- OP80 -->
+					<td><br><center><font style="font-weight:bolder;font-size:100%;">&nbsp;&nbsp;&nbsp;&nbsp;</font></center><br></td>
+				</tr></table></center>
+				<center><table id="noneline"><tr> <!-- OP80 -->
+					<td><br><center><font style="font-weight:bolder;font-size:100%;">&nbsp;&nbsp;&nbsp;&nbsp;</font></center><br></td>
+				</tr></table></center>
+				<center><table id="noneline"><tr> <!-- OP80 -->
+					<td><br><center><font style="font-weight:bolder;font-size:100%;">&nbsp;&nbsp;&nbsp;&nbsp;</font></center><br></td>
+				</tr></table></center>
+				<center><table id="noneline"><tr> <!-- OP80 -->
+					<td><br><center><font style="font-weight:bolder;font-size:100%;">&nbsp;&nbsp;&nbsp;&nbsp;</font></center><br></td>
+				</tr></table></center>
+				<center><table id="noneline"><tr> <!-- OP80 -->
+					<td><br><center><font style="font-weight:bolder;font-size:100%;">&nbsp;&nbsp;&nbsp;&nbsp;</font></center><br></td>
+				</tr></table></center>
+			</div>
+
+			<div class="framew">  <!-- Center Line Production-->
+				<center><table id="mainline"><tr> 
+					<td bgcolor="#bdb4b3"><br><center><font style="font-weight:bolder;font-size:100%;">Live WIP</font></center><br></td>
+				</tr></table></center>
+				{% for j in wip %}
+					{% if j.0 != '120' %}
+					<center><table id="mainline"><tr> <!-- OP10 -->
+						<td bgcolor="#E8E8E8"><br><center><font style="font-weight:bolder;font-size:100%;">{{j.3}}</font></center><br></td>
+					</tr></table></center>
+					{% endif %}
+				{% endfor %}
+			</div>
+
+
 			<div class="framel">  <!-- MainLine Production-->
 				<center><table id="legend"><tr> <!-- OP60 -->
 					<td bgcolor="#bdb4b3"><br><center><font style="font-weight:bolder;font-size:75%;">% of Rate</font></center><br></td>

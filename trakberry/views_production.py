@@ -3018,6 +3018,56 @@ def cell_track_9341(request):
 	machine_rate = zip(machines1,rate,operation1)
 	machine_color =[]
 	db, cur = db_set(request)
+	sql = "SELECT * FROM tkb_wip_track" 
+	cur.execute(sql)
+	wip = cur.fetchall()
+	wip_stamp = int(wip[0][1])
+
+	# [1] -- Machine    [4] -- Timestamp  [2] -- Part   [5] -- Count ..usually 1
+	sql = "SELECT * FROM GFxPRoduction WHERE TimeStamp >= '%d' and Part = '%s'" % (wip_stamp,prt)
+	cur.execute(sql)
+	wip_data = cur.fetchall()
+	wip_prod = [0 for x in range(140)]	
+	for i in machine_rate:
+		list1 = filter(lambda x:x[1]==i[0],wip_data)  # Filter list and pull out machine to make list1
+		count1=len(list1)  # Total all in list1
+		wip_prod[i[2]] = wip_prod[i[2]] + count1  # Add total to that operation variable
+
+
+	# 	for j in wip_data:
+	# 		if j[1] ==  i[0]:
+
+	op5=[]
+	wip5=[]
+	prd5=[]
+	for i in wip:
+		op5.append(i[3])
+		wip5.append(int(i[4]))
+		x=int(i[3])
+		prd5.append(wip_prod[x])
+	op5.append('120')
+	wip5.append(0)
+	prd5.append(wip_prod[120])
+	wip_zip=zip(op5,wip5,prd5)  # Generates totals beside old WIP
+
+	ptr = 1
+	new_wip=[]
+	for i in wip_zip:
+		try:
+			w1=i[1]
+			i1=i[2]
+			i2=wip_zip[ptr][2]
+			w1=w1+(i1-i2)
+		except:
+			w1=0
+		if w1 < 0 : w1 = 0
+		ptr = ptr + 1
+		new_wip.append(w1)
+	wip_zip=zip(op5,wip5,prd5,new_wip)
+
+
+	# Filter a List
+
 	color8=[]
 	rate8=[]
 	machine8=[]
@@ -3080,17 +3130,7 @@ def cell_track_9341(request):
 		cnt55.append(cnt33)
 		sh55.append(shift_time)
 		shl55.append(shift_left)
-
 		pred8.append(pred1)
-	
-		# Below is the Color Codes
-		#009700 100%
-		#4FC34F 90%
-		#A4F6A4 80%
-		#C3C300 70%
-		#DADA3F 50%
-		#F6F687 25%
-		#EC7371 0%
 
 		if rate3>=100:
 			cc='#009700'
@@ -3110,7 +3150,6 @@ def cell_track_9341(request):
 			cc='#EC7371'
 		else:
 			cc='#FF0400'
-			#cc='#EC7371'	Change to red when ready to go
 		color8.append(cc)
 		rate8.append(rate3)
 		machine8.append(machine2)
@@ -3123,15 +3162,11 @@ def cell_track_9341(request):
 
 	op_total = [0 for x in range(200)]	
 
-
 	for i in total8:
-
 		op_total[i[4]]=op_total[i[4]] + i[3]
-
-
-
 	db.close()
 	jobs1 = zip(machines1,line1,operation1)
+
 	
 	# Date entry for History
 	if request.POST:
@@ -3144,7 +3179,7 @@ def cell_track_9341(request):
 	args.update(csrf(request))
 	args['form'] = form
 
-	return render(request,'cell_track_9341.html',{'codes':total8,'op':op_total,'args':args})	
+	return render(request,'cell_track_9341.html',{'codes':total8,'op':op_total,'wip':wip_zip,'args':args})	
 
 
 def cell_track_9341_mobile(request):
