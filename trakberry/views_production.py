@@ -1974,6 +1974,10 @@ def mgmt_track_week(request):
 	week_start = t - a1 - a2 - a3 - a4
 	week_end = week_start + 432000
 
+
+
+
+
 	request.session['start_time_week'] = week_start
 
 	m=[]
@@ -1990,7 +1994,17 @@ def mgmt_track_week(request):
 		aql = "SELECT SUM(Count) FROM GFxPRoduction WHERE TimeStamp >= '%s' and Machine = '%s' and Part = '%s'" % (week_start,i[1],i[3])
 		cur.execute(aql)
 		tmp = cur.fetchall()
-		count1 = int(tmp[0][0])
+		try:
+			count1 = int(tmp[0][0])
+		except:
+			count1 = 1
+		if t > week_end:
+			week_end = t
+			week_remaining = 172800-(week_start + 604800 - t)
+			wr_factor = week_remaining / float(172800)
+			af = af * wr_factor
+	
+
 		pred = ((count1/float(t-week_start))*(week_end-t) + (af/float(i[2]))) + count1
 		m.append(i[1])
 		c.append(count1)
@@ -3028,6 +3042,7 @@ def cell_track_9341(request):
 	cur.execute(sql)
 	wip_data = cur.fetchall()
 	wip_prod = [0 for x in range(140)]	
+
 	for i in machine_rate:
 		list1 = filter(lambda x:x[1]==i[0],wip_data)  # Filter list and pull out machine to make list1
 		count1=len(list1)  # Total all in list1
