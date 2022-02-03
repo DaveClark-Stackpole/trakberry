@@ -1,0 +1,95 @@
+{% extends "hr_style.html" %}
+
+
+
+
+{% block main %}
+		<body style="background-color:{{request.session.main_screen_color}};">
+		
+		
+			<div class="navbar navbar-default navbar-fixed-top" style="background-color:{{request.session.main_menu_color}};border-color: rgb(26, 24, 11);border-width:1px" role="navigation">
+				<div class="container">
+						<div class="navbar-header">
+								<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+										<span class="sr-only">Toggle navigation</span>
+										<span class="icon-bar"></span>
+										<span class="icon-bar"></span>
+										<span class="icon-bar"></span>
+								</button>
+								<a class="navbar-brand" href="#" style="position:absolute;left:0px;top:-10px;">	<img src="/static/media/JELogo.gif?{{TCUR}}"  style="border-radius: 25px;" height="40" width="150"></a>
+						</div>
+						<div class="collapse navbar-collapse">
+							
+								<!-- This is the indicator to not display menu if not logged in -->
+								{% if request.session.hr_login_password_check = 'True' %}  
+								<ul class="nav navbar-nav">  
+									<li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+									<li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+									<li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+									<li><a href="{{request.session.local_toggle}}/hr"><span class="glyphicon glyphicon-home"></span> Main</a></li>
+									<li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+									<li><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-stats"></span> Employees<b class="caret"></b></a>
+										<ul class="dropdown-menu multi-level"  style="background-color:{{request.session.main_menu_color}}" >
+											<li><a href="#"><font style="color:#CACACA;">Current Direct Summary</font></a></li>
+											<li><a href="#"><font style="color:#CACACA;">Current Indirect Summary</font></a></li>
+											<li><a href="#"><font style="color:#CACACA;">Enter New Employee</font></a></li>
+										</ul>
+									</li>
+									<li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+									
+									<li><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-folder-open"></span> Training<b class="caret"></b></a>
+										<ul class="dropdown-menu multi-level"  style="background-color:{{request.session.main_menu_color}}" >
+											<li><a href="{{request.session.local_toggle}}/training_matrix3">Training Matrix</a></li>
+										</ul>
+									</li>
+									<li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+
+	
+
+									<li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+								</ul>
+
+									<ul class="nav navbar-nav navbar-right">	
+										<li><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> My Account<b class="caret"></b></a>
+											<ul class="dropdown-menu multi-level"  style="background-color:{{request.session.main_menu_color}}" >
+												<li><a href="{{request.session.local_toggle}}/password_edit_form">Change Password</a></li>
+											</ul>
+										</li>
+
+										<li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+										<li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+
+										<li><font size ="2" style="color:rgb(100, 100, 100)">Welcome: <b>{{request.session.hr_login_name}}</b></li>
+										<li><a href="{{request.session.local_toggle}}/hr_login_form" style="color:rgb(100, 100, 100)"><span class="glyphicon glyphicon-log-out"></span> Log out</a></li>
+									</ul>
+										{% endif %}
+
+
+						</div>
+				</div>
+		</div>
+		<br>
+{% block content2 %}
+<br><br><br><br>
+
+{% block refresh1 %}
+{% endblock %}
+
+{% block content %}
+
+
+
+<!-- Check if Login good if not bounce to Login Screen -->
+{% if request.session.hr_login_password_check != 'True' %}
+	<meta http-equiv="refresh" content="0; url={{request.session.local_toggle}}/hr_login_form" />
+{% endif %}
+
+
+
+{% endblock %}
+
+
+{% endblock %}
+</body>
+
+{% endblock %}

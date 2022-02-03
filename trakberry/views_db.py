@@ -49,7 +49,7 @@ def db_open():
 
 # This will set the correct database based on a error acknowledgement.	# return db, cursor
 # It will aslo initialize local_toggle which is used for the workaround on templates
-1	
+
 
 def db_set2(request):
 	db = MySQLdb.connect(host="10.4.1.225",user="prodmon",passwd="pm258",db='prodmon')

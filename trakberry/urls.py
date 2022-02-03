@@ -64,7 +64,7 @@ from views_manpower import manpower_allocation
 from views import display, db_write, create_table, test, details_session, details_track, reports, test_time, scheduler, inventory, display2, fade_in, fade2
 from views import create_test_table, alter_table_name, done, new, graph, graph2, graph3, graph749, graph748, graph750, graph677, ttip,graph_close, display_time, graph_close_snap
 from views import graph677_snap, graph748_snap, graph749_snap, graph750_snap, display_initialize, test44, tech_reset,testB
-from views2 import main_password_update
+from views2 import main_password_update, password_edit_form, main_message_form
 from views3 import excel_test,manpower_update, request_test, scrapdate_fix1
 # ***********************************************************************************************************************************************************
 
@@ -172,6 +172,10 @@ from views_quality import pie_chart,sup_pie_chart,quality_epv_asset_entry, initi
 # *******************************************  Manpower Section ********************************************************************************************
 from views_manpower import manpower_update_v2, training_matrix3, matrix_update_v2, training_performance
 from views_manpower import trained_email
+# ***********************************************************************************************************************************************************
+
+# *******************************************  HR Section ********************************************************************************************
+from views_hr import hr,hr_login_form
 # ***********************************************************************************************************************************************************
 
 urlpatterns = [
@@ -328,6 +332,7 @@ urlpatterns = [
 	url(r'^epv_checks_update/', epv_checks_update),
 
 	url(r'^main_password_update/', main_password_update),
+	url(r'^main_message_form/', main_message_form),
 	
 	# **************  Maintenance Section ***************************************
 	url(r'^maint_mgmt/', maint_mgmt),
@@ -635,6 +640,7 @@ urlpatterns = [
 	url(r'^excel_dump/', excel_dump),
 	url(r'^excel_scrap_dump/', excel_scrap_dump),
 	url(r'^auto_updater/', auto_updater),
+	url(r'^password_edit_form/', password_edit_form),
 
 	# ************************************************************************
 
@@ -707,6 +713,15 @@ urlpatterns = [
 	url(r'^track_email/', track_email),
 	url(r'^manpower_allocation_interval_pick/', manpower_allocation_interval_pick),
 	# **************************************************************************
+
+	# **************  HR Section ***************************************
+	url(r'^hr/', hr),
+	url(r'^hr_login_form/', hr_login_form),
+
+
+	# **************************************************************************
+
+
 
 
 	# url(r'^scrap_display_operation/get/(?P<index>\w{0,50})/$', scrap_display_operation),

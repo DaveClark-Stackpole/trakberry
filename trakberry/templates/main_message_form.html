@@ -1,0 +1,25 @@
+{% extends request.session.extends1 %}
+<!-- main_login_form.html -->
+{% block content %}
+<div class="container"><br><br><br>
+    <div class="row">
+		<div class="col-sm-8">
+            <form action="" method="post">{% csrf_token %}
+            <!-- Style my form to [form_css]  -->
+                <table>
+                    <tr><td colspan="2" style="font-size:18px;background-color: {{request.session.secondary_menu_color}}; color: {{request.session.secondary_text_color}};">
+                        <b><center>Message !</center></b></td><tr>	
+                    <tr><td>&nbsp;&nbsp;&nbsp;</td></tr>
+                    <tr><td>{{request.session.main_message}}</td><td>
+                    </td></tr>
+                    <tr><td>&nbsp;&nbsp;&nbsp;</td></tr>
+                    <tr><td colspan="2" ><center>
+	                    <input style="background-color: #999999;border-radius: 10px;height:30px;" type="submit" value="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OK&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;">
+                        </center>
+                    </td></tr>
+                </table>
+            </form>
+		</div>
+	</div>
+</div>	
+{% endblock %}

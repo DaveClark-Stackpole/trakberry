@@ -281,23 +281,81 @@ def main_login_form(request):
 
 # Password Forgot Form
 def main_login_password_lost_form(request):	
-
 	if request.POST:
-		login_name = request.POST.get("login_name")
-		request.session["login_name"] = login_name
-		main_password_lost_email(request)  # Email password to proper login's email
-		return render(request, "main_log.html")  # Completed sending email of password
-
+		login_name = request.session['login_name']
+		redirect1 = "redirect_" + request.session['app'] + ".html"
+		if len(login_name) > 2:
+			main_password_lost_email(request)  # Email password to proper login's email
+		return render(request, redirect1)  # Completed sending email of password
 	else:
 		form = login_Form()
 	args = {}
 	args.update(csrf(request))
 	args['form'] = form
-	request.session["login_name"] = ""
 	request.session["login_password"] = ""
+	
 	return render(request,'login/main_login_password_lost.html', args)	
+
+# Password Forgot Form
+def main_message_form(request):	
+	if request.POST:
+		redirect1 = "redirect_" + request.session['redirect'] + ".html"
+		return render(request, redirect1)  # Completed message and back to main
+	else:
+		form = login_Form()
+	args = {}
+	args.update(csrf(request))
+	args['form'] = form
+	h=request.session['extends1']
+
+	return render(request,'main_message_form.html', args)	
 	
 # Password Update
+def password_edit_form(request):
+	app1 = str(request.session['app'])
+	if app1 == 'HR': app2 = 'hr'
+	redirect1 = "redirect_" + app1 + "_login_form.html"
+	login_name = request.session['login_name']
+	request.session['extends'] = app2 + '.html'
+	db, cur = db_set(request)
+	sql = "SELECT * FROM tkb_logins where user_name = '%s' and department ='%s'" % (login_name,app1)
+	cur.execute(sql)
+	tmp = cur.fetchall()
+	tmp2 = tmp[0]
+	pwd_old = tmp2[2]
+	request.session['pwd_old'] = pwd_old
+	if request.POST:
+		pwd_old2 = str(request.POST.get("old_pwd"))
+		pwd_new = str(request.POST.get("new_pwd"))
+		pwd_new2 = str(request.POST.get("new_pwd_2"))
+		fail1 = 0
+		if pwd_new2 != pwd_new: fail1 = 1
+		if pwd_old != pwd_old2: fail1 = 2
+		if fail1 == 0:
+			dummy = 0
+			tql =('update tkb_logins SET password="%s" WHERE user_name="%s" and department="%s"' % (pwd_new,login_name,app1))
+			cur.execute(tql)
+			db.commit()
+		elif fail1==1:
+			redirect1 = "redirect_main_message_form.html"
+			app1 = str(request.session['app'])
+			request.session['redirect'] = app1
+			request.session['extends1'] = 'hr.html'
+			request.session['main_message'] = 'The new password is not retyped the same'
+		else:
+			redirect1 = "redirect_main_message_form.html"
+			app1 = str(request.session['app'])
+			request.session['redirect'] = app1
+			request.session['extends1'] = 'hr.html'
+			request.session['main_message'] = 'Old Password is not correct.'
+
+		return render(request, redirect1)  # Completed sending email of password
+	else:
+		form = login_Form()
+	args = {}
+	args.update(csrf(request))
+	args['form'] = form
+	return render(request,'login/password_edit_form.html', args)	
 
 # Send login password via email
 def main_password_lost_email(request):
