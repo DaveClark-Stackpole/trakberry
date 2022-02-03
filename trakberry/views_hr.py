@@ -35,27 +35,23 @@ def hr(request):
 	request.session["main_menu_color"] = "#fffbf0"    # Color of Menu Bar in APP
 	request.session["secondary_menu_color"] = "#943d24"    # Color of Menu Bar in APP
 	request.session["secondary_text_color"] = "#e4ddf4"    # Color of Menu Bar in APP
-	request.session["app"] = "HR"    # Color of Menu Bar in APP
+	request.session["app"] = "hr"    # Color of Menu Bar in APP
 
 	return render(request, "hr.html")
 
 def hr_login_form(request):
-	
-	request.session["login_department"] = 'HR'
-	hr_manpower(request) 
+	request.session["login_department"] = request.session['app']
+	users1(request) 
 	request.session["hr_login_name"] = ""
 	request.session["hr_login_password"] = ""
 	request.session["hr_login_password_check"] = 'False'
 	request.session["hr_main_switch"] = 0
-
 	if 'button1' in request.POST:
 		request.session["login_name"] = request.POST.get("login_name")
 		request.session["login_password"] = request.POST.get("login_password")
 		request.session["login_password_check"] = ''
 		login_password_check(request)
 		check = request.session["login_password_check"]
-
-
 		if check != 'false':
 			request.session["hr_login_name"] = request.session["login_name"]
 			request.session["hr_login_password"] = request.session["login_password"]
@@ -79,7 +75,7 @@ def hr_login_form(request):
 	request.session["hr_login_password"] = ""
 	return render(request,'hr_login_form.html', {'args':args})
 
-def hr_manpower(request):
+def users1(request):
 	db, cursor = db_set(request)
 	dep = request.session['login_department']
 	cursor.execute("""CREATE TABLE IF NOT EXISTS tkb_logins(Id INT PRIMARY KEY AUTO_INCREMENT,user_name CHAR(50), password CHAR(50), department CHAR(50), active1 INT(10) default 0)""")
@@ -89,5 +85,5 @@ def hr_manpower(request):
 	tmp = cursor.fetchall()
 	tmp2 = list(tmp)
 	db.close()
-	request.session["hr_manpower"] = tmp
+	request.session["users1"] = tmp
 	return 

@@ -63,12 +63,21 @@ def track_graph_prev1(request, index):
 def track_graph_track(request, index):
 	prt= '50-9341'
 	request.session['track_track'] = 'Shift Track for Machine '+ str(index)
-	machines7 = ['1504','1506','1519','1520','1502','1507','1501','1515','1508','1532','1509','1514','1510','1503','1511','1518','1521','1522','1523','1539','1540','1524','1525','1538','1541','1531','1527','1530','1528','1513','1533']
-	rate7 = [8,8,8,8,4,4,4,4,3,3,2,2,2,2,2,8,8,8,8,4,4,4,4,3,2,2,2,2,2,1,1]
-	mr7=zip(machines7,rate7)
+	machines7 = ['1504','1506','1519','1520','1502','1507','1501','1515','1508','1532','1509','1514','1510','1503','1511','1518','1521','1522','1523','1539','1540','1524','1525','1538','1541','1531','1527','1530','1528','1513','1533','1800','1801','1802','1529','1543','776','1824','1804','1805','1806','1808','1810','1815','1812','1816']
+	rate7 = [8,8,8,8,4,4,4,4,3,3,2,2,2,2,2,8,8,8,8,4,4,4,4,3,2,2,2,2,2,1,1,2,2,2,4,4,4,4,2,2,1,1,1,1,1,1]
+	part7 = ['50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-0455','50-0455','50-0455','50-0455','50-0455','50-0455','50-0455','50-0455','50-0455','50-0455','50-0455','50-0455','50-0455','50-0455','50-0455']
+
+	# machines1 = ['1800','1801','1802','1529','1543','776','1824','1804','1805','1806','1808','1810','1815','1812','1816']
+	# rate = [2,2,2,4,4,4,4,2,2,1,1,1,1,1,1]
+	# line1 = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+	# operation1 = [10,10,10,30,30,30,30,40,40,50,60,70,80,100,120]
+
+
+	mr7=zip(machines7,rate7,part7)
 	for i in mr7:
 		if i[0] == index :
 			rate = i[1]
+			prt= i[2]
 	rate2 = 3200 / float(rate)
 	rate = rate2 / float(8)
 
@@ -2708,13 +2717,10 @@ def mgmt_users_logins(request):
 	request.session["page_edit"] = "user login"
 	cursor.execute("""CREATE TABLE IF NOT EXISTS tkb_logins(Id INT PRIMARY KEY AUTO_INCREMENT,user_name CHAR(50), password CHAR(50), department CHAR(50),active1 INT(10) default 0)""")
 	db.commit()
-
 	sql = "SELECT * FROM tkb_logins order by department ASC, user_name ASC" 
 	cursor.execute(sql)
 	tmp = cursor.fetchall()
-
 	db.close()
-
 	return render(request, "production/mgmt_users_logins.html",{'tmp':tmp})
 
 def mgmt_users_logins_edit(request):
@@ -3048,10 +3054,6 @@ def cell_track_9341(request):
 		count1=len(list1)  # Total all in list1
 		wip_prod[i[2]] = wip_prod[i[2]] + count1  # Add total to that operation variable
 
-
-	# 	for j in wip_data:
-	# 		if j[1] ==  i[0]:
-
 	op5=[]
 	wip5=[]
 	prd5=[]
@@ -3080,9 +3082,7 @@ def cell_track_9341(request):
 		new_wip.append(w1)
 	wip_zip=zip(op5,wip5,prd5,new_wip)
 
-
 	# Filter a List
-
 	color8=[]
 	rate8=[]
 	machine8=[]
@@ -3194,8 +3194,117 @@ def cell_track_9341(request):
 	args.update(csrf(request))
 	args['form'] = form
 
-	return render(request,'cell_track_9341.html',{'codes':total8,'op':op_total,'wip':wip_zip,'args':args})	
+	total8_0455,op_total_0455 = cell_track_0455(request)
 
+	return render(request,'cell_track_9341.html',{'codes':total8,'op':op_total,'wip':wip_zip,'codes_60':total8_0455,'op_60':op_total_0455,'args':args})	
+
+
+# Same tracking for 0455
+def cell_track_0455(request):
+	shift_start, shift_time, shift_left, shift_end = stamp_shift_start(request)	 # Get the Time Stamp info
+	machines1 = ['1800','1801','1802','1529','1543','776','1824','1804','1805','1806','1808','1810','1815','1812','1816']
+	rate = [2,2,2,4,4,4,4,2,2,1,1,1,1,1,1]
+	line1 = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+	operation1 = [10,10,10,30,30,30,30,40,40,50,60,70,80,100,120]
+	prt = '50-0455'
+	machine_rate = zip(machines1,rate,operation1)
+	machine_color =[]
+	db, cur = db_set(request)
+
+	# Filter a List
+	color8=[]
+	rate8=[]
+	machine8=[]
+	pred8 = []
+	av55=[]
+	cnt55=[]
+	sh55=[]
+	shl55=[]
+	op8=[]
+	rt8=[]
+	request.session['shift_start'] = shift_start
+	for i in machine_rate:
+		machine2 = i[0]
+		rate2 = 900 / float(i[1])
+		rate2 = (rate2 / float(28800)) * 300
+		tt = int(time.time())
+		start1 = tt - shift_time
+		t= tt-300
+		try:
+			sql = "SELECT SUM(Count) FROM GFxPRoduction WHERE TimeStamp >= '%d' and Part = '%s' and Machine = '%s'" % (t,prt,machine2)
+			cur.execute(sql)
+			tmp2 = cur.fetchall()
+			tmp3 = tmp2[0]
+			cnt = int(tmp3[0])
+		except:
+			cnt = 0
+		try:
+			sql = "SELECT SUM(Count) FROM GFxPRoduction WHERE TimeStamp >= '%d' and Part = '%s' and Machine = '%s'" % (start1,prt,machine2)
+			cur.execute(sql)
+			tmp22 = cur.fetchall()
+			tmp33 = tmp22[0]
+			cnt33 = int(tmp33[0])
+		except:
+			cnt33 = 0
+		if cnt is None: cnt = 0
+		rate3 = cnt / float(rate2)
+		rate3 = int(rate3 * 100) # This will be the percentage we use to determine colour
+		# Pediction
+		try:
+			avg8 = cnt33 / float(shift_time)
+		except:
+			shift_time = 100
+			avg8 = cnt33 / float(shift_time)
+			
+		avg9 = avg8 * shift_left
+		pred1 = int(cnt33 + avg9)
+
+		op8.append(i[2])
+		rt8.append(i[1])
+		av55.append(avg8)
+		cnt55.append(cnt33)
+		sh55.append(shift_time)
+		shl55.append(shift_left)
+		pred8.append(pred1)
+
+		if rate3>=100:
+			cc='#009700'
+		elif rate3>=90:
+			cc='#4FC34F'
+		elif rate3>=80:
+			cc='#A4F6A4'
+		elif rate3>=70:
+			cc='#C3C300'
+		elif rate3>=50:
+			cc='#DADA3F'
+		elif rate3>=25:
+			cc='#F6F687'
+		elif rate3>=10:
+			cc='#F7BA84'
+		elif rate3>0:
+			cc='#EC7371'
+		else:
+			cc='#FF0400'
+
+		if machine2=='1800' or machine2=='1801' or machine2 =='1802': cc='#C8C8C8'
+		color8.append(cc)
+		rate8.append(rate3)
+		machine8.append(machine2)
+
+	total8=zip(machine8,rate8,color8,pred8,op8,rt8)
+	total99=0
+	last_op=10
+	op99=[]
+	opt99=[]
+
+	op_total = [0 for x in range(200)]	
+
+	for i in total8:
+		op_total[i[4]]=op_total[i[4]] + i[3]
+	db.close()
+	jobs1 = zip(machines1,line1,operation1)
+
+	return total8, op_total
 
 def cell_track_9341_mobile(request):
 

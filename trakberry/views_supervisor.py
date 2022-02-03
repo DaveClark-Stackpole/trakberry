@@ -459,6 +459,18 @@ def supervisor_down(request):
 		# Genius appostrophe fix
 		problem = hyphon_fix(tx)
 
+		# Add name of person entering job to description
+		try:
+			nm = request.session['login_name']
+		except:
+			nm=''
+		if len(nm)<2:
+			nm = request.session['login_tech']
+		problem = problem + ' (entered by '+nm+')'
+		# ***********************************************
+
+		
+
 		# call external function to produce datetime.datetime.now()
 		t = vacation_temp()
 		
