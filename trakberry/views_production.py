@@ -3038,7 +3038,7 @@ def cell_track_9341(request):
 	machine_rate = zip(machines1,rate,operation1)
 	machine_color =[]
 	db, cur = db_set(request)
-	sql = "SELECT * FROM tkb_wip_track" 
+	sql = "SELECT * FROM tkb_wip_track where part = '%s'" % (prt) 
 	cur.execute(sql)
 	wip = cur.fetchall()
 	wip_stamp = int(wip[0][1])
@@ -3053,7 +3053,6 @@ def cell_track_9341(request):
 		list1 = filter(lambda x:x[1]==i[0],wip_data)  # Filter list and pull out machine to make list1
 		count1=len(list1)  # Total all in list1
 		wip_prod[i[2]] = wip_prod[i[2]] + count1  # Add total to that operation variable
-
 	op5=[]
 	wip5=[]
 	prd5=[]
@@ -3066,7 +3065,6 @@ def cell_track_9341(request):
 	wip5.append(0)
 	prd5.append(wip_prod[120])
 	wip_zip=zip(op5,wip5,prd5)  # Generates totals beside old WIP
-
 	ptr = 1
 	new_wip=[]
 	for i in wip_zip:
@@ -3100,9 +3098,7 @@ def cell_track_9341(request):
 		rate2 = (rate2 / float(28800)) * 300
 		tt = int(time.time())
 		start1 = tt - shift_time
-
 		t= tt-300
-
 		try:
 			sql = "SELECT SUM(Count) FROM GFxPRoduction WHERE TimeStamp >= '%d' and Part = '%s' and Machine = '%s'" % (t,prt,machine2)
 			cur.execute(sql)
@@ -3111,8 +3107,6 @@ def cell_track_9341(request):
 			cnt = int(tmp3[0])
 		except:
 			cnt = 0
-
-
 		try:
 			sql = "SELECT SUM(Count) FROM GFxPRoduction WHERE TimeStamp >= '%d' and Part = '%s' and Machine = '%s'" % (start1,prt,machine2)
 			cur.execute(sql)
@@ -3121,7 +3115,6 @@ def cell_track_9341(request):
 			cnt33 = int(tmp33[0])
 		except:
 			cnt33 = 0
-
 
 		if cnt is None: cnt = 0
 
@@ -3194,9 +3187,9 @@ def cell_track_9341(request):
 	args.update(csrf(request))
 	args['form'] = form
 
-	total8_0455,op_total_0455 = cell_track_0455(request)
+	total8_0455,op_total_0455, wip_zip_0455 = cell_track_0455(request)
 
-	return render(request,'cell_track_9341.html',{'codes':total8,'op':op_total,'wip':wip_zip,'codes_60':total8_0455,'op_60':op_total_0455,'args':args})	
+	return render(request,'cell_track_9341.html',{'codes':total8,'op':op_total,'wip':wip_zip,'codes_60':total8_0455,'op_60':op_total_0455,'wip_60':wip_zip_0455,'args':args})	
 
 
 # Same tracking for 0455
@@ -3210,6 +3203,50 @@ def cell_track_0455(request):
 	machine_rate = zip(machines1,rate,operation1)
 	machine_color =[]
 	db, cur = db_set(request)
+
+
+	sql = "SELECT * FROM tkb_wip_track where part = '%s'" % (prt) 
+	cur.execute(sql)
+	wip = cur.fetchall()
+	wip_stamp = int(wip[0][1])
+
+	# [1] -- Machine    [4] -- Timestamp  [2] -- Part   [5] -- Count ..usually 1
+	sql = "SELECT * FROM GFxPRoduction WHERE TimeStamp >= '%d' and Part = '%s'" % (wip_stamp,prt)
+	cur.execute(sql)
+	wip_data = cur.fetchall()
+	wip_prod = [0 for x in range(140)]	
+
+	for i in machine_rate:
+		list1 = filter(lambda x:x[1]==i[0],wip_data)  # Filter list and pull out machine to make list1
+		count1=len(list1)  # Total all in list1
+		wip_prod[i[2]] = wip_prod[i[2]] + count1  # Add total to that operation variable
+	op5=[]
+	wip5=[]
+	prd5=[]
+	for i in wip:
+		op5.append(i[3])
+		wip5.append(int(i[4]))
+		x=int(i[3])
+		prd5.append(wip_prod[x])
+	op5.append('120')
+	wip5.append(0)
+	prd5.append(wip_prod[120])
+	wip_zip=zip(op5,wip5,prd5)  # Generates totals beside old WIP
+	ptr = 1
+	new_wip=[]
+	for i in wip_zip:
+		try:
+			w1=i[1]
+			i1=i[2]
+			i2=wip_zip[ptr][2]
+			w1=w1+(i1-i2)
+		except:
+			w1=0
+		if w1 < 0 : w1 = 0
+		ptr = ptr + 1
+		new_wip.append(w1)
+	wip_zip=zip(op5,wip5,prd5,new_wip)
+
 
 	# Filter a List
 	color8=[]
@@ -3304,7 +3341,7 @@ def cell_track_0455(request):
 	db.close()
 	jobs1 = zip(machines1,line1,operation1)
 
-	return total8, op_total
+	return total8, op_total, wip_zip
 
 def cell_track_9341_mobile(request):
 
