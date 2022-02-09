@@ -23,7 +23,7 @@
 		<tr><td style="background-color: {{request.session.main_menu_color}};"><b><u>Login Name</b></u>&nbsp;&nbsp;&nbsp;</td><td>
 	<select style="font-size:14px;width:320px;height:30px;" name="login_name" >
 		<option selected = "selected">  </option>
-{% for i in request.session.hr_manpower %}
+{% for i in request.session.users1 %}
 <option value="{{ i.1 }}">{{ i.1 }}</option>
 {% endfor %}
 </select>

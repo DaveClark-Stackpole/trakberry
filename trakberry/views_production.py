@@ -3561,3 +3561,90 @@ def cell_track_9341_history(request):
 
 
 	return render(request,'cell_track_9341.html',{'codes':total8,'op':op_total,'args':args})	
+
+# This will update the WIP_TRACK to current wip and reset time to current time.
+def wip_update(request):
+	machines1 = ['1504','1506','1519','1520','1502','1507','1501','1515','1508','1532','1509','1514','1510','1503','1511','1518','1521','1522','1523','1539','1540','1524','1525','1538','1541','1531','1527','1530','1528','1513','1533']
+	rate1 = [8,8,8,8,4,4,4,4,3,3,2,2,2,2,2,8,8,8,8,4,4,4,4,3,2,2,2,2,2,1,1]
+	line1 = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0,0]
+	operation1 = [10,10,10,10,30,30,40,40,50,50,60,70,80,100,110,10,10,10,10,30,30,40,40,50,60,70,80,100,110,90,120]
+	prt1 = ['50-9341','50-0455']
+
+	machines2 = ['1800','1801','1802','1529','1543','776','1824','1804','1805','1806','1808','1810','1815','1812','1816']
+	rate2 = [2,2,2,4,4,4,4,2,2,1,1,1,1,1,1]
+	line2 = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+	operation2 = [10,10,10,30,30,30,30,40,40,50,60,70,80,100,120]
+
+	prt3 = []
+	for x in machines1:
+		prt3.append('50-9341')
+	for x in machines2:
+		prt3.append('50-0455')
+
+	machines1 = machines1 + machines2
+	rate1 = rate1 + rate2
+	line1 = line1 + line2
+	operation1 = operation1 + operation2
+	machine_rate = zip(machines1,rate1,operation1,prt3)
+
+
+	db, cur = db_set(request)
+	for j in prt1:
+		sql = "SELECT * FROM tkb_wip_track where part = '%s'" % (j) 
+		cur.execute(sql)
+		wip = cur.fetchall()
+		wip_stamp = int(wip[0][1])
+
+		# [1] -- Machine    [4] -- Timestamp  [2] -- Part   [5] -- Count ..usually 1
+		sql = "SELECT * FROM GFxPRoduction WHERE TimeStamp >= '%d' and Part = '%s'" % (wip_stamp,j)
+		cur.execute(sql)
+		wip_data = cur.fetchall()
+		wip_prod = [0 for x in range(140)]	
+
+		for i in machine_rate:
+			list1 = filter(lambda x:x[1]==i[0],wip_data)  # Filter list and pull out machine to make list1
+			count1=len(list1)  # Total all in list1
+			wip_prod[i[2]] = wip_prod[i[2]] + count1  # Add total to that operation variable
+		op5=[]
+		wip5=[]
+		prd5=[]
+
+
+		for i in wip:
+			if j == i[2]:
+				op5.append(i[3])
+				wip5.append(int(i[4]))
+				x=int(i[3])
+				prd5.append(wip_prod[x])
+		op5.append('120')
+		wip5.append(0)
+		prd5.append(wip_prod[120])
+		wip_zip=zip(op5,wip5,prd5)  # Generates totals beside old WIP
+
+
+		ptr = 1
+		new_wip=[]
+		for i in wip_zip:
+			try:
+				w1=i[1]
+				i1=i[2]
+				i2=wip_zip[ptr][2]
+				w1=w1+(i1-i2)
+			except:
+				w1=0
+			if w1 < 0 : w1 = 0
+			ptr = ptr + 1
+			new_wip.append(w1)
+		wip_zip=zip(op5,wip5,prd5,new_wip)
+
+		t=int(time.time())
+
+		for a in wip_zip:
+			mql =( 'update tkb_wip_track SET timestamp="%s",wip="%s"  WHERE (part="%s" and operation = "%s")' % (t,a[3],j,a[0]))
+			cur.execute(mql)
+			db.commit()
+
+
+
+	db.close()
+	return render(request,'test7.html')	

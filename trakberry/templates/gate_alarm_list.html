@@ -1,0 +1,61 @@
+
+{% extends "scrap_mgmt.html" %}
+{% block tables2 %}
+        <!-- <link rel='stylesheet' href='/static/style_1/table1.css'> -->
+{% endblock %}
+
+
+{% block refresh %}
+{% endblock %}
+
+
+{% block content %}
+<font color="#000000" size ="3">
+
+
+
+<form action="" method="post">{% csrf_token %}
+<table>
+	<tr><td colspan="7" style="font-size:20px;background-color: {{request.session.secondary_menu_color}}; color: {{request.session.secondary_text_color}};"><b><center>Gate Alarm List</center></b></td><tr>
+        <tr>
+            <td style="font-size:12px;background-color:#D5D5D5; color:#000000;border: 1px solid black;padding: 3px 17px;"> <b>Part </b></td>
+            <td style="font-size:12px;background-color:#D5D5D5; color:#000000;border: 1px solid black;padding: 3px 17px;"><b> Operation</b> </td>
+            <td style="font-size:12px;background-color:#D5D5D5; color:#000000;border: 1px solid black;padding: 3px 17px;"><b> Category </b></td>
+            <td style="font-size:12px;background-color:#D5D5D5; color:#000000;border: 1px solid black;padding: 3px 17px;"><b> Alarm Qty </b></td>
+            <td style="font-size:12px;background-color:#D5D5D5; color:#000000;border: 1px solid black;padding: 3px 17px;"> <b>Champion</b> </td>
+            <td style="font-size:12px;background-color:#D5D5D5; color:#000000;border: 1px solid black;padding: 3px 17px;"><b> Quality Mgmt</b> </td>
+        </tr>
+
+    {% for i in request.session.gate_alarm_list %}
+    <tr>
+        <td style="font-size:12px;background-color:#D5D5D5; color:#000000;border: 1px solid black;padding: 15px 17px;"> {{i.1}}</td>
+        <td style="font-size:12px;background-color:#D5D5D5; color:#000000;border: 1px solid black;padding: 15px 17px;">{{i.2}} </td>
+        <td style="font-size:12px;background-color:#D5D5D5; color:#000000;border: 1px solid black;padding: 15px 17px;"> {{i.3}}</td>
+        <td style="font-size:12px;background-color:#D5D5D5; color:#000000;border: 1px solid black;padding: 15px 17px;"> {{i.4}}  </td>
+        <td style="font-size:12px;background-color:#D5D5D5; color:#000000;border: 1px solid black;padding: 15px 17px;"> {{i.5}} </td>
+        <td style="font-size:12px;background-color:#D5D5D5; color:#000000;border: 1px solid black;padding: 15px 17px;"> {{i.6}}  </td>
+    </tr>
+    {% endfor %}
+
+<!--
+<tr><td><b><u>Old Password</b></u>&nbsp;&nbsp;&nbsp;</td><td><input style="font-size:14px;width:320px;height:30px;" type="password" name="old_pwd"></td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;</td></tr>
+<tr><td><b><u>New Password</b></u>&nbsp;&nbsp;&nbsp;</td><td><input style="font-size:14px;width:320px;height:30px;" type="password" name="new_pwd"></td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;</td></tr>
+<tr><td><b><u>Retype New Password</b></u>&nbsp;&nbsp;&nbsp;</td><td><input style="font-size:14px;width:320px;height:30px;" type="password" name="new_pwd_2"></td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;</td></tr>
+<tr><td colspan="2" ><center>
+	<input style="background-color: #999999;border-radius: 10px;height:30px;" type="submit" name="button1" value="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Enter&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;">
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+</center></td></tr>
+-->
+
+
+</table>
+</form>
+
+</font>
+
+
+{% endblock %}

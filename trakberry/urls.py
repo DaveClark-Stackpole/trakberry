@@ -137,7 +137,7 @@ from views_production import chart1_1467b,chart2_1467b,chart1_3050b,chart2_3050b
 from views_production import chart1_1467o,chart2_1467o,chart1_1467br,chart2_1467br,chart1_0455_OP50,chart2_0455_OP50,chart1_0455_OP40,chart2_0455_OP40
 from views_production import mgmt_priorities,auto_updater,cell_track_9341,track_email,cell_track_9341_mobile,cell_track_9341_history_on,cell_track_9341_history
 from views_production import cell_track_9341_history_off,mgmt_track_week,mgmt_goals
-from views_production import plus_0455,minus_0455,plus_9341,minus_9341,plus_3050,minus_3050,plus_1467,minus_1467
+from views_production import plus_0455,minus_0455,plus_9341,minus_9341,plus_3050,minus_3050,plus_1467,minus_1467, wip_update
 
 
 from views4 import ios_test, IsDone, NotDone, target_fix1, medium_production, multidrop, scantest, target_fix1
@@ -163,6 +163,7 @@ from views_scrap import scrap_mgmt, scrap_mgmt_login_form,scrap_display,scrap_di
 from views_scrap import scrap_entries_next, scrap_entries_prev,scrap_entries_update,scrap_display_date_pick,scrap_display_24hr,operation_department,oper_dept_edit_selection,operation_entries_next, operation_entries_prev,operation_entries_update,kiosk_add_category,kiosk_initiate
 from views_scrap import scrap_display_entry_edit,scrap_edit_categories_reset,scrap_edit_categories,scrap_edit_categories_entry
 from views_scrap import tpm_display,scrap_edit_categories_delete,scrap_edit_categories_newentry,scrap_edit_categories_save
+from views_scrap import gate_alarm_list
 # ***********************************************************************************************************************************************************
 
 # *******************************************  Quality Section ********************************************************************************************
@@ -629,6 +630,7 @@ urlpatterns = [
 	url(r'^cell_track_9341_history_on/', cell_track_9341_history_on),
 	url(r'^cell_track_9341_history_off/', cell_track_9341_history_off),
 	url(r'^cell_track_9341_history/', cell_track_9341_history),
+	url(r'^wip_update/', wip_update),
 
 
 
@@ -702,6 +704,8 @@ urlpatterns = [
 	url(r'^previous_epv/', previous_epv),
 	url(r'^epv_cleanup/', epv_cleanup),
 	url(r'^quality_epv_asset_entry/', quality_epv_asset_entry),
+
+	url(r'^gate_alarm_list/', gate_alarm_list),
 	# **************************************************************************
 
 	# *************  Manpower Section *********************************************

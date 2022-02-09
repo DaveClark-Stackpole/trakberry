@@ -87,6 +87,12 @@ def scrap_mgmt_login_form(request):
 def scrap_mgmt(request):
 	request.session["main_screen_color"] = "#849185"  # Color of Background in APP
 	request.session["main_menu_color"] = "#d3ded4"    # Color of Menu Bar in APP
+	request.session['extends1'] = 'scrap_mgmt.html'
+	request.session["secondary_menu_color"] = "#a4af73"    # Color of Menu Bar in APP
+	request.session["secondary_text_color"] = "#fafafa"    # Color of Menu Bar in APP
+	request.session["app"] = "Quality"    # Color of Menu Bar in APP
+
+
 	return render(request, "scrap_mgmt.html")
 
 
@@ -159,15 +165,31 @@ def scrap_edit_selection(request):
 		last = cur.fetchall()
 		last = last[0][0]
 		request.session["scrap_ptr"] = last
-
-	
-		
-
-		
-
 	db.close()
 	return
 
+
+def gate_alarm_list(request):
+
+	db, cur = db_set(request)   
+	cur.execute("""CREATE TABLE IF NOT EXISTS tkb_gate_alarm(Id INT PRIMARY KEY AUTO_INCREMENT,part CHAR(80),operation CHAR(80), category CHAR(80), alarm_qty INT(40), champion CHAR(80), quality_engineer CHAR(80), status CHAR(80))""")
+	db.commit()
+	sql = "SELECT * FROM tkb_gate_alarm"
+	cur.execute(sql)
+	tmp = cur.fetchall()
+	request.session['gate_alarm_list'] = tmp
+	if request.POST:
+		new_category = request.POST.get("new_category")
+		list1 = request.session['qedit_category_selection']
+		db.close()
+		return render(request,'scrap_edit_categories_entry.html')
+
+	else:
+		form = sup_downForm()
+	args = {}
+	args.update(csrf(request))
+	args['form'] = form
+	return render(request,'gate_alarm_list.html',{'args':args})
 
 # Edit the Scrap Categories
 # ********************************************
