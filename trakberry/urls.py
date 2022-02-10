@@ -163,7 +163,7 @@ from views_scrap import scrap_mgmt, scrap_mgmt_login_form,scrap_display,scrap_di
 from views_scrap import scrap_entries_next, scrap_entries_prev,scrap_entries_update,scrap_display_date_pick,scrap_display_24hr,operation_department,oper_dept_edit_selection,operation_entries_next, operation_entries_prev,operation_entries_update,kiosk_add_category,kiosk_initiate
 from views_scrap import scrap_display_entry_edit,scrap_edit_categories_reset,scrap_edit_categories,scrap_edit_categories_entry
 from views_scrap import tpm_display,scrap_edit_categories_delete,scrap_edit_categories_newentry,scrap_edit_categories_save
-from views_scrap import gate_alarm_list
+from views_scrap import gate_alarm_list,gate_alarm_list_add
 # ***********************************************************************************************************************************************************
 
 # *******************************************  Quality Section ********************************************************************************************
@@ -706,6 +706,7 @@ urlpatterns = [
 	url(r'^quality_epv_asset_entry/', quality_epv_asset_entry),
 
 	url(r'^gate_alarm_list/', gate_alarm_list),
+	url(r'^gate_alarm_list_add/', gate_alarm_list_add),
 	# **************************************************************************
 
 	# *************  Manpower Section *********************************************

@@ -178,10 +178,19 @@ def gate_alarm_list(request):
 	cur.execute(sql)
 	tmp = cur.fetchall()
 	request.session['gate_alarm_list'] = tmp
+
+	return render(request,'gate_alarm_list.html')
+
+
+
+# Take action and add new item to list
+def gate_alarm_list_add(request):
+
+
 	if request.POST:
 		new_category = request.POST.get("new_category")
-		list1 = request.session['qedit_category_selection']
-		db.close()
+
+
 		return render(request,'scrap_edit_categories_entry.html')
 
 	else:
@@ -190,6 +199,7 @@ def gate_alarm_list(request):
 	args.update(csrf(request))
 	args['form'] = form
 	return render(request,'gate_alarm_list.html',{'args':args})
+
 
 # Edit the Scrap Categories
 # ********************************************
