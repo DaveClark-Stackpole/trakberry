@@ -7,6 +7,7 @@ from views_mod1 import find_current_date
 from views_mod2 import seperate_string, create_new_table,generate_string
 from views_email import e_test
 from views_vacation import vacation_temp, vacation_set_current, vacation_set_current2, vacation_set_current9
+from trakberry.views_tech import stamp_pdate 
 from views_supervisor import supervisor_tech_call
 from views_maintenance import login_password_check
 from trakberry.views_testing import machine_list_display
@@ -168,37 +169,118 @@ def scrap_edit_selection(request):
 	db.close()
 	return
 
+def gate_alarm_list_hide(request):
+	request.session['hide_closed'] = 'yes'
+	return render(request,'redirect_gate_alarm_list.html')
+
+def gate_alarm_list_show(request):
+	request.session['hide_closed'] = 'no'
+	return render(request,'redirect_gate_alarm_list.html')
 
 def gate_alarm_list(request):
+	try:
+		request.session['hide_closed'] 
+	except:
+		request.session['hide_closed'] = 'no'
 
 	db, cur = db_set(request)   
-	cur.execute("""CREATE TABLE IF NOT EXISTS tkb_gate_alarm(Id INT PRIMARY KEY AUTO_INCREMENT,part CHAR(80),operation CHAR(80), category CHAR(80), alarm_qty INT(40), champion CHAR(80), quality_engineer CHAR(80), status CHAR(80))""")
+	cur.execute("""CREATE TABLE IF NOT EXISTS tkb_gate_alarm(Id INT PRIMARY KEY AUTO_INCREMENT,part CHAR(80),operation CHAR(80), category CHAR(80), alarm_qty INT(40), champion CHAR(80), quality_engineer CHAR(80), status CHAR(80), pdate CHAR(80))""")
 	db.commit()
 	sql = "SELECT * FROM tkb_gate_alarm"
 	cur.execute(sql)
 	tmp = cur.fetchall()
+	tmp2=list(tmp)
+	# Sort a List
+	tmp2.sort(key = lambda x: x[7], reverse=True)
+	tmp=tuple(tmp2)
 	request.session['gate_alarm_list'] = tmp
-
-	return render(request,'gate_alarm_list.html')
-
-
-
-# Take action and add new item to list
-def gate_alarm_list_add(request):
-
-
 	if request.POST:
-		new_category = request.POST.get("new_category")
-
-
-		return render(request,'scrap_edit_categories_entry.html')
-
+		three = request.POST.get("three")
+		four = request.POST.get("four")
+		if four == 'hide':
+			return render(request,'redirect_gate_alarm_list_hide.html')
+		if four == 'show':
+			return render(request,'redirect_gate_alarm_list_show.html')
+		if three == 'edit':
+			return render(request,'redirect_gate_alarm_list_add.html')
+		one = request.POST.get("one")
+		one = int(one)
+		request.session["gate_alarm_index"] = one
+		return render(request,'redirect_gate_alarm_list_edit.html')
 	else:
 		form = sup_downForm()
 	args = {}
 	args.update(csrf(request))
 	args['form'] = form
 	return render(request,'gate_alarm_list.html',{'args':args})
+
+def gate_alarm_list_del(request):
+	db, cur = db_set(request)  
+	index = request.session['gate_alarm_index']
+	dql = ('DELETE FROM tkb_gate_alarm WHERE Id = "%d"' %(index))
+	cur.execute(dql)
+	db.commit()
+	db.close()
+	return render(request,'redirect_gate_alarm_list.html')
+
+def gate_alarm_list_edit(request):
+	db, cur = db_set(request)   
+	index = request.session['gate_alarm_index']
+	sql = "SELECT * FROM tkb_gate_alarm where Id = '%d'" % (index)
+	cur.execute(sql)
+	tmp = cur.fetchall()
+	
+
+	request.session['gate_alarm_list'] = tmp
+	if request.POST:
+		part = request.POST.get("part")
+		operation = request.POST.get("operation")
+		category = request.POST.get("category")
+		qty = request.POST.get("qty")
+		champion = request.POST.get("champion")
+		qa = request.POST.get("qa")
+		st = request.POST.get("status")
+		del1 = request.POST.get("two")
+		if del1 == 'del':
+			return render(request,'redirect_gate_alarm_list_del.html')
+
+		sql = '''UPDATE tkb_gate_alarm SET part="%s",operation="%s",category="%s",alarm_qty="%s",champion="%s",quality_engineer="%s",status="%s" WHERE Id="%d"''' % (part,operation,category,qty,champion,qa,st,index)
+		cur.execute(sql)
+		db.commit()
+		db.close()
+		return render(request,'redirect_gate_alarm_list.html')
+	else:
+		form = sup_downForm()
+	args = {}
+	args.update(csrf(request))
+	args['form'] = form
+	return render(request,'gate_alarm_list_edit.html',{'args':args})
+
+
+# Take action and add new item to list
+def gate_alarm_list_add(request):
+	t = int(time.time())
+	pdate = stamp_pdate(t)
+	db, cur = db_set(request)   
+	if request.POST:
+		part = request.POST.get("part")
+		operation = request.POST.get("operation")
+		category = request.POST.get("category")
+		qty = request.POST.get("qty")
+		champion = request.POST.get("champion")
+		qa = request.POST.get("qa")
+		st = 'open'
+		cur.execute('''INSERT INTO tkb_gate_alarm(part,operation,category,alarm_qty,champion,quality_engineer,status,pdate) VALUES(%s,%s,%s,%s,%s,%s,%s,%s)''', (part,operation,category,qty,champion,qa,st,pdate))		
+		db.commit()
+		db.close()
+		return render(request,'redirect_gate_alarm_list.html')
+
+	else:
+		form = sup_downForm()
+	args = {}
+	args.update(csrf(request))
+	args['form'] = form
+	return render(request,'gate_alarm_list_add.html',{'args':args})
 
 
 # Edit the Scrap Categories

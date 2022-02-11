@@ -34,6 +34,7 @@
 
 <script>
 	function alarm_add(){location.replace("{{request.session.local_toggle}}/gate_alarm_list_add")}
+	function alarm_del(){location.replace("{{request.session.local_toggle}}/gate_alarm_list_del")}
 </script>
 
 <style>
@@ -44,7 +45,7 @@
 
 
 
-	table.center{margin-left: 15%; margin-right: 15%; width: 50%;}
+	table.center{margin-left: 15%; margin-right: 15%; width: 70%;}
 	td , th {padding: 1px 5px;}
 	th{background-color: #a8b4a9; color:{{request.session.main_menu_color}}; font-weight: 200; text-transform: uppercase; text-align: center;}
 	tr{width: 100%; background-color: {{request.session.main_menu_color}};}
