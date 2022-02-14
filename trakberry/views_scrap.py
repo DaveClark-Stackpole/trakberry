@@ -259,12 +259,19 @@ def gate_alarm_list_edit(request):
 
 # Take action and add new item to list
 def gate_alarm_list_add(request):
+	db, cur = db_set(request)   
 	try:
 		request.session['gate_add']
 	except:
 		request.session['gate_add'] = 0
 	gate_add = request.session['gate_add']
-	
+	if gate_add == 0:
+		active = '1.0'
+		sql = "SELECT * FROM scrap_part_line where Active = '%s'" % (active)
+		cur.execute(sql)
+		tmp = cur.fetchall()
+		request.session['part_list'] = tmp
+
 	t = int(time.time())
 	pdate = stamp_pdate(t)
 	db, cur = db_set(request)   
@@ -275,7 +282,10 @@ def gate_alarm_list_add(request):
 		qty = request.POST.get("qty")
 		champion = request.POST.get("champion")
 		qa = request.POST.get("qa")
+
+		
 		st = 'open'
+		f=3/0
 		cur.execute('''INSERT INTO tkb_gate_alarm(part,operation,category,alarm_qty,champion,quality_engineer,status,pdate) VALUES(%s,%s,%s,%s,%s,%s,%s,%s)''', (part,operation,category,qty,champion,qa,st,pdate))		
 		db.commit()
 		db.close()

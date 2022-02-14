@@ -33,8 +33,15 @@
 
 
     <tr>
-        <td style="font-size:14px;background-color:#D5D5D5; color:#000000;border: 1px solid black;padding: 5px 17px;">
-            <input style="font-size:14px;background-color:#D5D5D5;border: 1px solid #D5D5D5;text-align:center;" value=""  name="part" type="text">
+				<td style="font-size:14px;background-color:#D5D5D5; color:#000000;border: 1px solid black;padding: 5px 17px;">
+					
+					<select id="part" style="font-size:14px;background-color:#D5D5D5;border: 1px solid #D5D5D5;text-align:center;"
+					 onchange="myFunction();"  list="browsers" name="part" type="text">	
+							<option value="0" selected disabled>{{request.session.scrap_category}}</option>
+								{% for item in request.session.part_list %}
+									<option value="{{item.1}}">{{item.1}}</option>
+								{% endfor %}
+					</select>
         </td>
         <td style="font-size:14px;background-color:#D5D5D5; color:#000000;border: 1px solid black;padding: 5px 17px;">
             <input style="font-size:14px;background-color:#D5D5D5;border: 1px solid #D5D5D5;text-align:center;" value=""  name="operation" type="text">
