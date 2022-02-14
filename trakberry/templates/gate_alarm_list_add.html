@@ -56,7 +56,7 @@
                     onchange="myFunction();"  list="browsers" name="category" type="text" {{request.session.gate_entry3}}>	
                         <option value="0" selected disabled>{{request.session.gate_category}}</option>
                            {% for item in request.session.list_A %}
-                             <option value="{{item.1}}">{{item.1}}</option>
+                             <option value="{{item.0}}">{{item.0}}</option>
                             {% endfor %}
                  </select>
             </td>

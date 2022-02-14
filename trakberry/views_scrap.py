@@ -283,13 +283,23 @@ def gate_alarm_list_add(request):
 		request.session['gate_qty'] = 'Qty'
 		request.session['gate_champion'] = 'Champion'
 		request.session['gate_qa'] = 'Q Engineer'
+
 	if gate_add == 1:  # Pick Operation now
 		part = request.session['gate_part']
 		sql = "SELECT * FROM scrap_part_line where Part = '%s'" % (part)
 		cur.execute(sql)
 		tmp = cur.fetchall()
 		line1 = tmp[0][2]
+		request.session['gate_line'] = line1
 		sql = "SELECT DISTINCT Operation FROM scrap_line_operation_category where Line = '%s'" % (line1)
+		cur.execute(sql)
+		tmp = cur.fetchall()
+		request.session['list_A'] = tmp
+
+	if gate_add == 2:  # Pick Category now
+		operation = request.session['gate_operation']
+		line1 = request.session['gate_line']
+		sql = "SELECT DISTINCT Category FROM scrap_line_operation_category where Line = '%s' and Operation = '%s'" % (line1,operation)
 		cur.execute(sql)
 		tmp = cur.fetchall()
 		request.session['list_A'] = tmp
