@@ -259,6 +259,12 @@ def gate_alarm_list_edit(request):
 
 # Take action and add new item to list
 def gate_alarm_list_add(request):
+	try:
+		request.session['gate_add']
+	except:
+		request.session['gate_add'] = 0
+	gate_add = request.session['gate_add']
+	
 	t = int(time.time())
 	pdate = stamp_pdate(t)
 	db, cur = db_set(request)   
@@ -274,7 +280,6 @@ def gate_alarm_list_add(request):
 		db.commit()
 		db.close()
 		return render(request,'redirect_gate_alarm_list.html')
-
 	else:
 		form = sup_downForm()
 	args = {}
