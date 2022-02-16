@@ -164,6 +164,7 @@ from views_scrap import scrap_entries_next, scrap_entries_prev,scrap_entries_upd
 from views_scrap import scrap_display_entry_edit,scrap_edit_categories_reset,scrap_edit_categories,scrap_edit_categories_entry
 from views_scrap import tpm_display,scrap_edit_categories_delete,scrap_edit_categories_newentry,scrap_edit_categories_save
 from views_scrap import gate_alarm_list,gate_alarm_list_add,gate_alarm_list_edit, gate_alarm_list_del, gate_alarm_list_hide, gate_alarm_list_show
+from views_scrap import gate_alarm_list_add_initial
 # ***********************************************************************************************************************************************************
 
 # *******************************************  Quality Section ********************************************************************************************
@@ -711,6 +712,7 @@ urlpatterns = [
 	url(r'^gate_alarm_list_del/', gate_alarm_list_del),
 	url(r'^gate_alarm_list_hide/', gate_alarm_list_hide),
 	url(r'^gate_alarm_list_show/', gate_alarm_list_show),
+	url(r'^gate_alarm_list_add_initial/', gate_alarm_list_add_initial),
 	# **************************************************************************
 
 	# *************  Manpower Section *********************************************

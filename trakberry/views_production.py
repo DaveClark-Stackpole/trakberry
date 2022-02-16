@@ -3245,6 +3245,7 @@ def cell_track_0455(request):
 		if w1 < 0 : w1 = 0
 		ptr = ptr + 1
 		new_wip.append(w1)
+
 	wip_zip=zip(op5,wip5,prd5,new_wip)
 
 

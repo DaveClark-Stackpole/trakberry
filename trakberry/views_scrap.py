@@ -202,7 +202,7 @@ def gate_alarm_list(request):
 		if four == 'show':
 			return render(request,'redirect_gate_alarm_list_show.html')
 		if three == 'edit':
-			return render(request,'redirect_gate_alarm_list_add.html')
+			return render(request,'redirect_gate_alarm_list_add_initial.html')
 		one = request.POST.get("one")
 		one = int(one)
 		request.session["gate_alarm_index"] = one
@@ -256,6 +256,9 @@ def gate_alarm_list_edit(request):
 	args['form'] = form
 	return render(request,'gate_alarm_list_edit.html',{'args':args})
 
+def gate_alarm_list_add_initial(request):
+	request.session['gate_add'] = 0
+	return render(request,'redirect_gate_alarm_list_add.html')
 
 # Take action and add new item to list
 def gate_alarm_list_add(request):
