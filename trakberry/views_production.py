@@ -1662,10 +1662,10 @@ def mgmt_production_counts(request):
 	try:
 		last_time = request.session["mgmt_last_time"]
 		if (tcur-last_time) > 3600:
-			mgmt_24hr_production(request)
+			# mgmt_24hr_production(request)
 			request.session["mgmt_last_time"] = tcur
 	except:
-		mgmt_24hr_production(request)
+		# mgmt_24hr_production(request)
 		request.session["mgmt_last_time"] = tcur
 
 
