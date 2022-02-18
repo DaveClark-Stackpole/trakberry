@@ -35,7 +35,7 @@
 			<td style="font-size:14px;background-color:#D5D5D5; color:#000000;border: 1px solid black;padding: 5px 17px;">
 				<select id="part" style="font-size:14px;background-color:#D5D5D5;border: 1px solid #D5D5D5;text-align:center;"
 					 onchange="myFunction();"  list="browsers" name="part" type="text" {{request.session.gate_entry1}}>	
-						<option value="0" selected disabled>{{request.session.gate_part}}</option>
+                     <option selected = "selected">{{request.session.gate_part}}</option>
 							{% for item in request.session.list_A %}
 								<option value="{{item.1}}">{{item.1}}</option>
 							{% endfor %}
@@ -44,7 +44,7 @@
             <td style="font-size:14px;background-color:#D5D5D5; color:#000000;border: 1px solid black;padding: 5px 17px;">
                 <select id="operation" style="font-size:14px;background-color:#D5D5D5;border: 1px solid #D5D5D5;text-align:center;"
                     onchange="myFunction();"  list="browsers" name="operation" type="text" {{request.session.gate_entry2}}>	
-                        <option value="0" selected disabled>{{request.session.gate_operation}}</option>
+                    <option selected = "selected">{{request.session.gate_operation}}</option>
                            {% for item in request.session.list_A %}
                              <option value="{{item.0}}">{{item.0}}</option>
                             {% endfor %}
@@ -54,21 +54,43 @@
             <td style="font-size:14px;background-color:#D5D5D5; color:#000000;border: 1px solid black;padding: 5px 17px;">
                 <select id="category" style="font-size:14px;background-color:#D5D5D5;border: 1px solid #D5D5D5;text-align:center;"
                     onchange="myFunction();"  list="browsers" name="category" type="text" {{request.session.gate_entry3}}>	
-                        <option value="0" selected disabled>{{request.session.gate_category}}</option>
+                    <option selected = "selected">{{request.session.gate_category}}</option>
                            {% for item in request.session.list_A %}
                              <option value="{{item.0}}">{{item.0}}</option>
                             {% endfor %}
                  </select>
             </td>
 
+            <td style="font-size:14px;background-color:#D5D5D5; color:#000000;border: 1px solid black;padding: 5px 17px;"> 
+                <select id="qty" style="font-size:14px;background-color:#D5D5D5;border: 1px solid #D5D5D5;text-align:center;"
+                    onchange="myFunction();"  list="browsers" name="qty" type="text" {{request.session.gate_entry4}}>	
+                    <option selected = "selected">{{request.session.gate_qty}}</option>
+                    {% for item in request.session.list_A %}
+                      <option value="{{item}}">{{item}}</option>
+                     {% endfor %}
+                 </select>
+
+
+        </td>
+
         <td style="font-size:14px;background-color:#D5D5D5; color:#000000;border: 1px solid black;padding: 5px 17px;"> 
-            <input style="font-size:14px;background-color:#D5D5D5;border: 1px solid #D5D5D5;text-align:center;" value=""  name="qty" type="text"  {{request.session.gate_entry4}}>
+                <select id="champion" style="font-size:14px;background-color:#D5D5D5;border: 1px solid #D5D5D5;text-align:center;"
+                    onchange="myFunction();"  list="browsers" name="champion" type="text" {{request.session.gate_entry5}}>	
+                    <option selected = "selected">{{request.session.gate_champion}}</option>
+                    {% for item in request.session.list_A %}
+                      <option value="{{item.0}}">{{item.0}}</option>
+                     {% endfor %}
+                 </select>
         </td>
-        <td style="font-size:14px;background-color:#D5D5D5; color:#000000;border: 1px solid black;padding: 5px 17px;">  
-            <input style="font-size:14px;background-color:#D5D5D5;border: 1px solid #D5D5D5;text-align:center;" value=""  name="champion" type="text"  {{request.session.gate_entry5}}>
-        </td>
-        <td style="font-size:14px;background-color:#D5D5D5; color:#000000;border: 1px solid black;padding: 5px 17px;">   
-            <input style="font-size:14px;background-color:#D5D5D5;border: 1px solid #D5D5D5;text-align:center;" value=""  name="qa" type="text"  {{request.session.gate_entry6}}>
+
+        <td style="font-size:14px;background-color:#D5D5D5; color:#000000;border: 1px solid black;padding: 5px 17px;"> 
+            <select id="qa" style="font-size:14px;background-color:#D5D5D5;border: 1px solid #D5D5D5;text-align:center;"
+                onchange="myFunction();"  list="browsers" name="qa" type="text" {{request.session.gate_entry6}}>	
+                <option selected = "selected">{{request.session.gate_qa}}</option>
+                {% for item in request.session.list_A %}
+                  <option value="{{item.0}}">{{item.0}}</option>
+                 {% endfor %}
+             </select>
         </td>
     </tr>
 

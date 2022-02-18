@@ -390,7 +390,7 @@ def trained_email(request):
 		message_subject = 'Training Document Required !'
 		message3 = "The following people require training documents for the noted jobs." 
 		# toaddrs = ["dclark@stackpole.com","menns@stackpole.com"]
-		toaddrs = ["dclark@stackpole.com","kschmidt@stackpole.com"]
+		toaddrs = ["dclark@stackpole.com","menns@stackpole.com"]
 		#toaddrs = ["rrompen@stackpole.com","rbiram@stackpole.com","rzylstra@stackpole.com","lbaker@stackpole.com","dmilne@stackpole.com","sbrownlee@stackpole.com","pmurphy@stackpole.com","pstreet@stackpole.com","kfrey@stackpole.com","asmith@stackpole.com","smcmahon@stackpole.com","gharvey@stackpole.com","ashoemaker@stackpole.com","jreid@stackpole.com"]
 		fromaddr = 'stackpole@stackpole.com'
 		frname = 'Dave'

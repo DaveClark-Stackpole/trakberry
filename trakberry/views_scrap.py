@@ -306,6 +306,26 @@ def gate_alarm_list_add(request):
 		cur.execute(sql)
 		tmp = cur.fetchall()
 		request.session['list_A'] = tmp
+	
+	if gate_add == 3: # Pick Qty
+		qty2 = [1,5,10,15,20,25,30,35,40,45,50,55,60,65,70,80,90,100]
+		request.session['list_A'] = qty2
+
+	if gate_add == 4:  # Pick Champion now
+		a1='main'
+		a2 = 'Quality Manager'
+		sql = "SELECT DISTINCT user_name FROM tkb_logins where department = '%s' or department = '%s'" % (a1,a2)
+		cur.execute(sql)
+		tmp = cur.fetchall()
+		request.session['list_A'] = tmp
+	
+	if gate_add == 5:  # Pick Engineer now
+		a2 = 'Quality Manager'
+		sql = "SELECT DISTINCT user_name FROM tkb_logins where department = '%s'" % (a2)
+		cur.execute(sql)
+		tmp = cur.fetchall()
+		request.session['list_A'] = tmp
+
 
 	t = int(time.time())
 	pdate = stamp_pdate(t)
@@ -349,14 +369,16 @@ def gate_alarm_list_add(request):
 			request.session['gate_add'] = 5
 			return render(request, "redirect_gate_alarm_list_add.html")
 
-
 		if gate_add == 5:
-			r=3/0
-		
-		st = 'open'
+			champion = request.session['gate_champion']
+			qty = request.session['gate_qty']
+			category = request.session['gate_category']
+			operation = request.session['gate_operation']
+			part = request.session['gate_part']
+			st = 'open'
+			cur.execute('''INSERT INTO tkb_gate_alarm(part,operation,category,alarm_qty,champion,quality_engineer,status,pdate) VALUES(%s,%s,%s,%s,%s,%s,%s,%s)''', (part,operation,category,qty,champion,qa,st,pdate))		
+			db.commit()
 
-		cur.execute('''INSERT INTO tkb_gate_alarm(part,operation,category,alarm_qty,champion,quality_engineer,status,pdate) VALUES(%s,%s,%s,%s,%s,%s,%s,%s)''', (part,operation,category,qty,champion,qa,st,pdate))		
-		db.commit()
 		db.close()
 		return render(request,'redirect_gate_alarm_list.html')
 	else:
@@ -386,7 +408,7 @@ def scrap_edit_categories(request):
 	db, cursor = db_set(request)
 	if request.session["qedit_entry"] == 0:
 		active = '1.0'
-		sql = "SELECT Part FROM scrap_part_line WHERE Active = '%s' ORDER BY Part ASC" %(active)
+		sql = "SELECT DISTINCT Part FROM scrap_part_line WHERE Active = '%s' ORDER BY Part ASC" %(active)
 		cursor.execute(sql)
 		tmp = cursor.fetchall()
 		request.session["qedit_part_selection"] = tmp

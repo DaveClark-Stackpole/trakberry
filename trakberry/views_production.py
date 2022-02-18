@@ -1709,18 +1709,18 @@ def mgmt_production_counts(request):
 			# request.session['summary_data'] = aa
 
 			# Add some stuff here to display or sort or etc then redirect
-			return render(request, "redirect_mgmt.html")
+			return render(request, "redirect_mgmt_production_counts.html")
 
 		elif button_1 == "calculate":
 			mgmt_production_summary(request)
-			return render(request, "redirect_mgmt.html")
+			return render(request, "redirect_mgmt_production_counts.html")
 
 		elif button_1 == "clear":
 			del request.session['summary_data']
 			del request.session['group_asset']
 			del request.session['summary_asset']
 
-			return render(request, "redirect_mgmt.html")
+			return render(request, "redirect_mgmt_production_counts.html")
 
 		else:
 			x1=(button_1.split('|'))
@@ -2412,12 +2412,12 @@ def mgmt_initialize_cat_table(request):
 def mgmt_24hr_production(request):
 
 	p =['50-1467','50-1467','50-1467','50-1467','50-3050','50-3050','50-3050','50-3050','50-5710','50-5710','50-5710','50-5710','50-9341','50-9341','50-9341','50-9341','50-0455','50-0455','50-0455','50-0455','50-5401','50-5401','50-5401','50-5401','50-5404','50-5404','50-5404','50-5404','50-8670','50-8670','50-8670','50-8670']
-	a1=['650L','770','','','769','770','','','769','770','','','1533','1511','1510','1502','1816','','','','B','1706','','','B','1719','','','B','1719','','']
-	a2=['650R','728','','','','','','','','','','','','1528','1527','1507','','','','','','','','','','','','','','','','']
-	a3=['769','','','','','','','','','','','','','','','1539','','','','','','','','','','','','','','','','']
-	a4=['','','','','','','','','','','','','','','','1540','','','','','','','','','','','','','','','','']
+	a1=['650L','770','','','769','770','','','769','770','','','1533','','','','1816','','','','','','','','','','','','','','','']
+	a2=['650R','728','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','']
+	a3=['769','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','']
+	a4=['','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','']
 	order1 = [1,2,3,4,1,2,3,4,1,2,3,4,1,2,3,4,1,2,3,4,1,2,3,4,1,2,3,4,1,2,3,4]
-	title1 = ['1467 Finished','1467 Broached','','','3050 Finished','3050 Broached','','','5710 Finished','5710 Broached','','','9341 Finished','9341 OP110','9341 OP80','9341 OP30','0455 Finished','','','','5401 Finished','5401 HP Wash','','','5404 Finished','5404 HP Wash','','','8670 Finished','8670 HP Wash','','']
+	title1 = ['1467 Finished','1467 Broached','','','3050 Finished','3050 Broached','','','5710 Finished','5710 Broached','','','9341 Finished','','','','0455 Finished','','','','','','','','','','','','','','','']
 
 	cnt=[]
 	part2 = []
@@ -2464,6 +2464,7 @@ def mgmt_24hr_production(request):
 			asset2 = i[2]
 			asset3 = i[3]
 			asset4 = i[4]
+			
 			if asset1 == 'B':
 				pp = prt[-4:]
 				aql = "SELECT COUNT(*) FROM barcode WHERE scrap >= '%d' and scrap <= '%d' and right(asset_num,4) = '%s'" % (a1,a2,pp)
@@ -2476,12 +2477,21 @@ def mgmt_24hr_production(request):
 					pprt = 'AB1V Input'
 				else:
 					pprt = prt
+				
+				# if ii[2] == 'data2' and asset1=='1511':
+				# 	ewew=3/0
 
 				aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (a1,a2,pprt,asset1,asset2,asset3,asset4)
+
 				cur.execute(aql)
 				tmp2 = cur.fetchall()
 				tmp3 = tmp2[0]
+
+				# if ii[2] == 'data2' and asset1=='1502':
+				# 	ewew=3/0
+
 				countz = tmp3[0]
+
 			county = number_comma(countz)
 			cnt.append(county)
 			part2.append(prt)
