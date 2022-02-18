@@ -7,6 +7,92 @@
 	{% else %}  <!-- if Login passed and main start up screen -->
 	
 		<div class="wrapper_main">
+			<div class="frame1">  <!-- Default is L24 hr Production-->
+				{% block frame1 %}
+				<table id="prod24">
+					<tr>
+						<th colspan="5"><center><font style="font-weight:bolder;font-size:x-large;">{{request.session.data3title}}</font></center></th>
+					</tr>
+					<tr>
+						<th><center>Part</center></th>
+						<th><center>Finished</center></th>
+						<th colspan="3"><center>Operations</center></th>
+
+					{% for i in request.session.data3 %}
+					
+						{% if i.2 = 1 %}
+							</tr><tr>
+							<td><b>{{i.0}}</b></td>
+							<td><u>{{i.3}}</u><br><center>{{i.1}}</center></td>
+						{% else %}
+							{% if i.1 = 0 %}
+								<td>&nbsp;&nbsp;&nbsp;</td>
+							{% else %}
+								<td><u>{{i.3}}</u><br><center>{{i.1}}</center></td>
+							{% endif %}
+						{% endif %}
+					{% endfor %}
+					</tr>
+				</table>
+				{% endblock %}
+			</div>
+
+
+			<div class="frame2">  <!-- Week Production-->
+				<table id="prodwk">
+					<tr>
+						<th colspan="5"><center><font style="font-weight:bolder;font-size:x-large;">{{request.session.data2title}}</font></center></th>
+					</tr>
+					<tr>
+						<th><center>Part</center></th>
+						<th><center>Finished</center></th>
+						<th colspan="3"><center>Operations</center></th>
+
+					{% for i in request.session.data2 %}
+					
+						{% if i.2 = 1 %}
+							</tr><tr>
+							<td><b>{{i.0}}</b></td>
+							<td><u>{{i.3}}</u><br><center>{{i.1}}</center></td>
+						{% else %}
+							{% if i.1 = 0 %}
+								<td>&nbsp;&nbsp;&nbsp;</td>
+							{% else %}
+								<td><u>{{i.3}}</u><br><center>{{i.1}}</center></td>
+							{% endif %}
+						{% endif %}
+					{% endfor %}
+					</tr>
+				</table>
+
+			</div>
+
+			<div class="frame3">  <!-- Week Production-->
+				<table id="prodpast">
+					<tr>
+						<th colspan="5"><center><font style="font-weight:bolder;font-size:x-large;">{{request.session.data1title}}</font></center></th>
+					</tr>
+					<tr>
+						<th><center>Part</center></th>
+						<th><center>Finished</center></th>
+						<th colspan="3"><center>Operations</center></th>
+
+					{% for i in request.session.data1 %}
+						{% if i.2 = 1 %}
+							</tr><tr>
+							<td><b>{{i.0}}</b></td>
+							<td><u>{{i.3}}</u><br><center>{{i.1}}</center></td>
+						{% else %}
+							{% if i.1 = 0 %}
+								<td>&nbsp;&nbsp;&nbsp;</td>
+							{% else %}
+								<td><u>{{i.3}}</u><br><center>{{i.1}}</center></td>
+							{% endif %}
+						{% endif %}
+					{% endfor %}
+					</tr>
+				</table>
+			</div>
 
 			<form action="" method="post">{% csrf_token %}
 			<div class="frame4">  <!-- Production Summary-->
