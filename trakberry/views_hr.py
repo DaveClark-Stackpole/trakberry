@@ -41,6 +41,7 @@ def hr(request):
 
 def hr_login_form(request):
 	request.session["login_department"] = request.session['app']
+	h = request.session['app']
 	users1(request) 
 	request.session["hr_login_name"] = ""
 	request.session["hr_login_password"] = ""
@@ -58,9 +59,7 @@ def hr_login_form(request):
 			request.session["hr_login_password_check"] = 'True'
 		else:
 			request.session["hr_login_password_check"] = 'False'
-
 		ch2 = request.session["hr_login_password_check"]
-		request.session["wildcard1"] = 1
 		return render(request,'redirect_hr.html')  # Need to bounce out to an html and redirect back into a module otherwise infinite loop
 	elif 'button2' in request.POST:
 		request.session["login_name"] = request.POST.get("login_name")
@@ -77,7 +76,7 @@ def hr_login_form(request):
 
 def users1(request):
 	db, cursor = db_set(request)
-	dep = request.session['login_department']
+	dep = str(request.session['login_department'])
 	cursor.execute("""CREATE TABLE IF NOT EXISTS tkb_logins(Id INT PRIMARY KEY AUTO_INCREMENT,user_name CHAR(50), password CHAR(50), department CHAR(50), active1 INT(10) default 0)""")
 	db.commit()
 	sql = "SELECT * FROM tkb_logins WHERE department = '%s' ORDER BY user_name ASC" %(dep)  # Select only those in the department  (dep)

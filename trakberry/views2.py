@@ -313,10 +313,10 @@ def main_message_form(request):
 # Password Update
 def password_edit_form(request):
 	app1 = str(request.session['app'])
-	if app1 == 'HR': app2 = 'hr'
+	# if app1 == 'HR': app2 = 'hr'
 	redirect1 = "redirect_" + app1 + "_login_form.html"
 	login_name = request.session['login_name']
-	request.session['extends'] = app2 + '.html'
+	request.session['extends'] = app1 + '.html'
 	db, cur = db_set(request)
 	sql = "SELECT * FROM tkb_logins where user_name = '%s' and department ='%s'" % (login_name,app1)
 	cur.execute(sql)

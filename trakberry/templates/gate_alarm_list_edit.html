@@ -1,0 +1,87 @@
+
+{% extends "scrap_mgmt.html" %}
+{% block tables2 %}
+        <!-- <link rel='stylesheet' href='/static/style_1/table1.css'> -->
+{% endblock %}
+
+
+{% block refresh %}
+{% endblock %}
+
+
+{% block content %}
+<font color="#000000" size ="3">
+    <form action="" method="post">{% csrf_token %}
+
+    <table class="center">
+	<tr>
+        <td style="font-size:20px;background-color: {{request.session.secondary_menu_color}}; color: {{request.session.secondary_text_color}};">
+
+        <input style="background-color: #CEDB86;border-radius: 10px;height:90%;font-size:10px;color:#000000" type="submit" value="&nbsp;&nbsp;&nbsp;&nbsp;Enter&nbsp;&nbsp;&nbsp;&nbsp;" /></center>
+
+
+        </td>
+        <td colspan="5" style="font-size:20px;background-color: {{request.session.secondary_menu_color}}; color: {{request.session.secondary_text_color}};"><b><center>Edit Gate Alarm</center></b></td>
+        
+        <td style="font-size:20px;background-color: {{request.session.secondary_menu_color}}; color: {{request.session.secondary_text_color}};">
+
+            <button  style="background-color: #DBBF86;border-radius: 10px;height:90%;font-size:10px;color:#000000"
+            type="submit" name="two" value="del" /><font color="#000000">&nbsp;&nbsp;Delete Entry&nbsp;&nbsp;</font></button>
+
+    </center>
+        </td>
+        <tr>
+        <tr>
+
+            <td style="font-size:14px;background-color:#BCBCBC; color:#000000;border: 1px solid black;padding: 3px 27px;"> <b>Part </b></td>
+            <td style="font-size:14px;background-color:#BCBCBC; color:#000000;border: 1px solid black;padding: 3px 27px;"><b>Operation</b> </td>
+            <td style="font-size:14px;background-color:#BCBCBC; color:#000000;border: 1px solid black;padding: 3px 27px;"><b>Category </b></td>
+            <td style="font-size:14px;background-color:#BCBCBC; color:#000000;border: 1px solid black;padding: 3px 27px;"><b> Alarm Qty </b></td>
+            <td style="font-size:14px;background-color:#BCBCBC; color:#000000;border: 1px solid black;padding: 3px 27px;"> <b>Champion</b> </td>
+            <td style="font-size:14px;background-color:#BCBCBC; color:#000000;border: 1px solid black;padding: 3px 27px;"><b> Quality Mgmt</b> </td>
+            <td style="font-size:14px;background-color:#BCBCBC; color:#000000;border: 1px solid black;padding: 3px 27px;"><b> Status</b> </td>
+        </tr>
+
+
+    <tr>
+        <td style="font-size:14px;background-color:#D5D5D5; color:#000000;border: 1px solid black;padding: 5px 17px;">
+            <input style="font-size:14px;background-color:#D5D5D5;border: 1px solid #D5D5D5;text-align:center;" value="{{request.session.gate_alarm_list.0.1}}"  name="part" type="text">
+        </td>
+        <td style="font-size:14px;background-color:#D5D5D5; color:#000000;border: 1px solid black;padding: 5px 17px;">
+            <input style="font-size:14px;background-color:#D5D5D5;border: 1px solid #D5D5D5;text-align:center;" value="{{request.session.gate_alarm_list.0.2}}"  name="operation" type="text">
+        </td>
+        <td style="font-size:14px;background-color:#D5D5D5; color:#000000;border: 1px solid black;padding: 5px 17px;"> 
+            <input style="font-size:14px;background-color:#D5D5D5;border: 1px solid #D5D5D5;text-align:center;" value="{{request.session.gate_alarm_list.0.3}}"  name="category" type="text">
+        </td>
+        <td style="font-size:14px;background-color:#D5D5D5; color:#000000;border: 1px solid black;padding: 5px 17px;"> 
+            <input style="font-size:14px;background-color:#D5D5D5;border: 1px solid #D5D5D5;text-align:center;" value="{{request.session.gate_alarm_list.0.4}}"  name="qty" type="text">
+        </td>
+        <td style="font-size:14px;background-color:#D5D5D5; color:#000000;border: 1px solid black;padding: 5px 17px;">  
+            <input style="font-size:14px;background-color:#D5D5D5;border: 1px solid #D5D5D5;text-align:center;" value="{{request.session.gate_alarm_list.0.5}}"  name="champion" type="text">
+        </td>
+        <td style="font-size:14px;background-color:#D5D5D5; color:#000000;border: 1px solid black;padding: 5px 17px;">   
+            <input style="font-size:14px;background-color:#D5D5D5;border: 1px solid #D5D5D5;text-align:center;" value="{{request.session.gate_alarm_list.0.6}}"  name="qa" type="text">
+        </td>
+        <td style="font-size:14px;background-color:#D5D5D5; color:#000000;border: 1px solid black;padding: 5px 17px;">   
+            <select style="font-size:14px;background-color:#D5D5D5;border: 1px solid #D5D5D5;text-align:center;" name="status" type="text">
+				<option selected = "selected">{{request.session.gate_alarm_list.0.7}}  </option>
+	
+					<option>open</option>
+                    <option>closed</option>
+
+			</select>
+
+
+        </td>
+    </tr>
+
+
+
+</table>
+
+</form>
+</center>
+</font>
+
+
+{% endblock %}

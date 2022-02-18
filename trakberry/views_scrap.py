@@ -7,6 +7,7 @@ from views_mod1 import find_current_date
 from views_mod2 import seperate_string, create_new_table,generate_string
 from views_email import e_test
 from views_vacation import vacation_temp, vacation_set_current, vacation_set_current2, vacation_set_current9
+from trakberry.views_tech import stamp_pdate 
 from views_supervisor import supervisor_tech_call
 from views_maintenance import login_password_check
 from trakberry.views_testing import machine_list_display
@@ -87,6 +88,12 @@ def scrap_mgmt_login_form(request):
 def scrap_mgmt(request):
 	request.session["main_screen_color"] = "#849185"  # Color of Background in APP
 	request.session["main_menu_color"] = "#d3ded4"    # Color of Menu Bar in APP
+	request.session['extends1'] = 'scrap_mgmt.html'
+	request.session["secondary_menu_color"] = "#a4af73"    # Color of Menu Bar in APP
+	request.session["secondary_text_color"] = "#fafafa"    # Color of Menu Bar in APP
+	request.session["app"] = "Quality"    # Color of Menu Bar in APP
+
+
 	return render(request, "scrap_mgmt.html")
 
 
@@ -159,14 +166,227 @@ def scrap_edit_selection(request):
 		last = cur.fetchall()
 		last = last[0][0]
 		request.session["scrap_ptr"] = last
-
-	
-		
-
-		
-
 	db.close()
 	return
+
+def gate_alarm_list_hide(request):
+	request.session['hide_closed'] = 'yes'
+	return render(request,'redirect_gate_alarm_list.html')
+
+def gate_alarm_list_show(request):
+	request.session['hide_closed'] = 'no'
+	return render(request,'redirect_gate_alarm_list.html')
+
+def gate_alarm_list(request):
+	try:
+		request.session['hide_closed'] 
+	except:
+		request.session['hide_closed'] = 'no'
+
+	db, cur = db_set(request)   
+	cur.execute("""CREATE TABLE IF NOT EXISTS tkb_gate_alarm(Id INT PRIMARY KEY AUTO_INCREMENT,part CHAR(80),operation CHAR(80), category CHAR(80), alarm_qty INT(40), champion CHAR(80), quality_engineer CHAR(80), status CHAR(80), pdate CHAR(80))""")
+	db.commit()
+	sql = "SELECT * FROM tkb_gate_alarm"
+	cur.execute(sql)
+	tmp = cur.fetchall()
+	tmp2=list(tmp)
+	# Sort a List
+	tmp2.sort(key = lambda x: x[7], reverse=True)
+	tmp=tuple(tmp2)
+	request.session['gate_alarm_list'] = tmp
+	if request.POST:
+		three = request.POST.get("three")
+		four = request.POST.get("four")
+		if four == 'hide':
+			return render(request,'redirect_gate_alarm_list_hide.html')
+		if four == 'show':
+			return render(request,'redirect_gate_alarm_list_show.html')
+		if three == 'edit':
+			return render(request,'redirect_gate_alarm_list_add_initial.html')
+		one = request.POST.get("one")
+		one = int(one)
+		request.session["gate_alarm_index"] = one
+		return render(request,'redirect_gate_alarm_list_edit.html')
+	else:
+		form = sup_downForm()
+	args = {}
+	args.update(csrf(request))
+	args['form'] = form
+	return render(request,'gate_alarm_list.html',{'args':args})
+
+def gate_alarm_list_del(request):
+	db, cur = db_set(request)  
+	index = request.session['gate_alarm_index']
+	dql = ('DELETE FROM tkb_gate_alarm WHERE Id = "%d"' %(index))
+	cur.execute(dql)
+	db.commit()
+	db.close()
+	return render(request,'redirect_gate_alarm_list.html')
+
+def gate_alarm_list_edit(request):
+	db, cur = db_set(request)   
+	index = request.session['gate_alarm_index']
+	sql = "SELECT * FROM tkb_gate_alarm where Id = '%d'" % (index)
+	cur.execute(sql)
+	tmp = cur.fetchall()
+	
+
+	request.session['gate_alarm_list'] = tmp
+	if request.POST:
+		part = request.POST.get("part")
+		operation = request.POST.get("operation")
+		category = request.POST.get("category")
+		qty = request.POST.get("qty")
+		champion = request.POST.get("champion")
+		qa = request.POST.get("qa")
+		st = request.POST.get("status")
+		del1 = request.POST.get("two")
+		if del1 == 'del':
+			return render(request,'redirect_gate_alarm_list_del.html')
+
+		sql = '''UPDATE tkb_gate_alarm SET part="%s",operation="%s",category="%s",alarm_qty="%s",champion="%s",quality_engineer="%s",status="%s" WHERE Id="%d"''' % (part,operation,category,qty,champion,qa,st,index)
+		cur.execute(sql)
+		db.commit()
+		db.close()
+		return render(request,'redirect_gate_alarm_list.html')
+	else:
+		form = sup_downForm()
+	args = {}
+	args.update(csrf(request))
+	args['form'] = form
+	return render(request,'gate_alarm_list_edit.html',{'args':args})
+
+def gate_alarm_list_add_initial(request):
+	request.session['gate_add'] = 0
+	return render(request,'redirect_gate_alarm_list_add.html')
+
+# Take action and add new item to list
+def gate_alarm_list_add(request):
+	db, cur = db_set(request)   
+	try:
+		request.session['gate_add']
+	except:
+		request.session['gate_add'] = 0
+	gate_add = request.session['gate_add']
+	if gate_add == 0:  # Initial when we first start
+		active = '1.0'
+		sql = "SELECT * FROM scrap_part_line where Active = '%s'" % (active)
+		cur.execute(sql)
+		tmp = cur.fetchall()
+		request.session['list_A'] = tmp
+		request.session['gate_entry1'] = ''
+		request.session['gate_entry2'] ='''disabled="true"'''
+		request.session['gate_entry3'] ='''disabled="true"'''
+		request.session['gate_entry4'] ='''disabled="true"'''
+		request.session['gate_entry5'] ='''disabled="true"'''
+		request.session['gate_entry6'] ='''disabled="true"'''
+		request.session['gate_part'] = 'Part'
+		request.session['gate_operation'] = 'Operation'
+		request.session['gate_category'] = 'Category'
+		request.session['gate_qty'] = 'Qty'
+		request.session['gate_champion'] = 'Champion'
+		request.session['gate_qa'] = 'Q Engineer'
+
+	if gate_add == 1:  # Pick Operation now
+		part = request.session['gate_part']
+		sql = "SELECT * FROM scrap_part_line where Part = '%s'" % (part)
+		cur.execute(sql)
+		tmp = cur.fetchall()
+		line1 = tmp[0][2]
+		request.session['gate_line'] = line1
+		sql = "SELECT DISTINCT Operation FROM scrap_line_operation_category where Line = '%s'" % (line1)
+		cur.execute(sql)
+		tmp = cur.fetchall()
+		request.session['list_A'] = tmp
+
+	if gate_add == 2:  # Pick Category now
+		operation = request.session['gate_operation']
+		line1 = request.session['gate_line']
+		sql = "SELECT DISTINCT Category FROM scrap_line_operation_category where Line = '%s' and Operation = '%s'" % (line1,operation)
+		cur.execute(sql)
+		tmp = cur.fetchall()
+		request.session['list_A'] = tmp
+	
+	if gate_add == 3: # Pick Qty
+		qty2 = [1,5,10,15,20,25,30,35,40,45,50,55,60,65,70,80,90,100]
+		request.session['list_A'] = qty2
+
+	if gate_add == 4:  # Pick Champion now
+		a1='main'
+		a2 = 'Quality Manager'
+		sql = "SELECT DISTINCT user_name FROM tkb_logins where department = '%s' or department = '%s'" % (a1,a2)
+		cur.execute(sql)
+		tmp = cur.fetchall()
+		request.session['list_A'] = tmp
+	
+	if gate_add == 5:  # Pick Engineer now
+		a2 = 'Quality Manager'
+		sql = "SELECT DISTINCT user_name FROM tkb_logins where department = '%s'" % (a2)
+		cur.execute(sql)
+		tmp = cur.fetchall()
+		request.session['list_A'] = tmp
+
+
+	t = int(time.time())
+	pdate = stamp_pdate(t)
+	db, cur = db_set(request)   
+	if request.POST:
+		part = request.POST.get("part")
+		operation = request.POST.get("operation")
+		category = request.POST.get("category")
+		qty = request.POST.get("qty")
+		champion = request.POST.get("champion")
+		qa = request.POST.get("qa")
+
+		if gate_add == 0:
+			request.session['gate_entry1'] = '''disabled="true"'''
+			request.session['gate_entry2'] =''
+			request.session['gate_part'] = part
+			request.session['gate_add'] = 1
+			return render(request, "redirect_gate_alarm_list_add.html")
+		if gate_add == 1:
+			request.session['gate_entry2'] = '''disabled="true"'''
+			request.session['gate_entry3'] =''
+			request.session['gate_operation'] = operation
+			request.session['gate_add'] = 2
+			return render(request, "redirect_gate_alarm_list_add.html")
+		if gate_add == 2:
+			request.session['gate_entry3'] = '''disabled="true"'''
+			request.session['gate_entry4'] =''
+			request.session['gate_category'] = category
+			request.session['gate_add'] = 3
+			return render(request, "redirect_gate_alarm_list_add.html")
+		if gate_add == 3:
+			request.session['gate_entry4'] = '''disabled="true"'''
+			request.session['gate_entry5'] =''
+			request.session['gate_qty'] = qty
+			request.session['gate_add'] = 4
+			return render(request, "redirect_gate_alarm_list_add.html")
+		if gate_add == 4:
+			request.session['gate_entry5'] = '''disabled="true"'''
+			request.session['gate_entry6'] =''
+			request.session['gate_champion'] = champion
+			request.session['gate_add'] = 5
+			return render(request, "redirect_gate_alarm_list_add.html")
+
+		if gate_add == 5:
+			champion = request.session['gate_champion']
+			qty = request.session['gate_qty']
+			category = request.session['gate_category']
+			operation = request.session['gate_operation']
+			part = request.session['gate_part']
+			st = 'open'
+			cur.execute('''INSERT INTO tkb_gate_alarm(part,operation,category,alarm_qty,champion,quality_engineer,status,pdate) VALUES(%s,%s,%s,%s,%s,%s,%s,%s)''', (part,operation,category,qty,champion,qa,st,pdate))		
+			db.commit()
+
+		db.close()
+		return render(request,'redirect_gate_alarm_list.html')
+	else:
+		form = sup_downForm()
+	args = {}
+	args.update(csrf(request))
+	args['form'] = form
+	return render(request,'gate_alarm_list_add.html',{'args':args})
 
 
 # Edit the Scrap Categories
@@ -188,7 +408,7 @@ def scrap_edit_categories(request):
 	db, cursor = db_set(request)
 	if request.session["qedit_entry"] == 0:
 		active = '1.0'
-		sql = "SELECT Part FROM scrap_part_line WHERE Active = '%s' ORDER BY Part ASC" %(active)
+		sql = "SELECT DISTINCT Part FROM scrap_part_line WHERE Active = '%s' ORDER BY Part ASC" %(active)
 		cursor.execute(sql)
 		tmp = cursor.fetchall()
 		request.session["qedit_part_selection"] = tmp

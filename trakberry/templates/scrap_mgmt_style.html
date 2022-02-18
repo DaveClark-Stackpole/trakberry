@@ -31,16 +31,29 @@
         chart.draw(data, options);
       }
 	</script>
-		
+
+<script>
+	function alarm_add(){location.replace("{{request.session.local_toggle}}/gate_alarm_list_add")}
+	function alarm_del(){location.replace("{{request.session.local_toggle}}/gate_alarm_list_del")}
+</script>
+
 <style>
 	*{margin: 0; padding: 0; outline: 0;}
-	table{position: absolute; z-index: 2;  top: 20%; text-align: center; border-collapse: collapse;
+	table{position: absolute; z-index: 2; background-color: {{request.session.main_menu_color}}; top: 20%; text-align: center; border-collapse: collapse;
 	border-spacing: 0; box-shadow: 0 2px 15px rgba( 64,64,64,.7); border-radius: 12px 12px 0 0; overflow: hidden;}
+
+
+
+
 	table.center{margin-left: 15%; margin-right: 15%; width: 70%;}
 	td , th {padding: 1px 5px;}
-	th{background-color: #a8b4a9; color: #fafafa; font-weight: 200; text-transform: uppercase; text-align: center;}
-	tr{width: 100%; background-color: #fafafa;}
-	tr:nth-child(even){background-color: #dae0c8;}
+	th{background-color: #a8b4a9; color:{{request.session.main_menu_color}}; font-weight: 200; text-transform: uppercase; text-align: center;}
+	tr{width: 100%; background-color: {{request.session.main_menu_color}};}
+	tr:nth-child(even){background-color: {{request.session.main_menu_color}};}
+
+
+
+
 
 	.frame8 {color:black;text-align:left;float:left;width:60%}
 	.frame9{color:black;text-align:center;float:left;width:35%;position:relative;left:5px;}
@@ -50,6 +63,7 @@
 	.frame2{color:black;text-align:center;background:rgb(253, 186, 186);float:left;width:30%;position:relative;left:5px;}
 	.frame3{color:black;text-align:center;background:rgb(42, 165, 83);float:left;width:25%;position:relative;left:10px;}
 	.frame4{color:black;text-align:center;background:rgb(165, 116, 42);float:left;width:15%}
+	.framecen{color:black;text-align:center;background:rgb(165, 116, 42);float:center;width:95%}
 
 	.head1{color:black;text-align:center;border: .4px solid rgb(0, 0, 0);background:rgb(226, 226, 226);width:100%}
 	.head2{color:black;text-align:center;border: .4px solid rgb(0, 0, 0);background:rgb(255, 253, 241);width:100%}
@@ -68,7 +82,10 @@
 	#full-screen-background-image {z-index: -999;min-height: 110%; min-width: 100%;width: 100%;height: 110%;position: fixed;top: 0;  left: 0;}
 	.banner2_bg{position:absolute;background-color: #000000;opacity: 0.8;filter:alpha(opacity=80);width:auto; height:auto;z-index:-440;	border-radius: 25px;;}
 
-
+	.center {
+  margin-left: auto;
+  margin-right: auto;
+}
 </style>
 
 
