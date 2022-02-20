@@ -139,6 +139,8 @@ from views_production import mgmt_priorities,auto_updater,cell_track_9341,track_
 from views_production import cell_track_9341_history_off,mgmt_track_week,mgmt_goals
 from views_production import plus_0455,minus_0455,plus_9341,minus_9341,plus_3050,minus_3050,plus_1467,minus_1467, wip_update
 
+from views_operations import gf6_reaction
+
 
 from views4 import ios_test, IsDone, NotDone, target_fix1, medium_production, multidrop, scantest, target_fix1
 from views4 import target_fix_5401, target_fix_5404, target_fix_5399, target_fix_5214, target_fix_3214
@@ -634,6 +636,12 @@ urlpatterns = [
 	url(r'^wip_update/', wip_update),
 
 
+
+	# ************************************************************************
+
+
+	# **************  Opertions Section ***************************************
+	url(r'^gf6_reaction/', gf6_reaction),
 
 	# ************************************************************************
 
