@@ -108,6 +108,15 @@ def supervisor_display(request):
 	if name_supervisor =="":
 		return main_login_form(request)
 
+	#Purge all old logins and force to use new login info
+	try:
+		if request.session['main_login_verify'] == 1:
+			dummy =1
+		else:
+			return main_login_form(request)
+	except:
+		return main_login_form(request)				
+
 		
   # initialize current time and set 'u' to shift start time
 	t=int(time.time())
@@ -323,7 +332,7 @@ def sup_message(request):
 	db.close()
 
 	if request.POST:
-        			
+					
 		a = request.session["login_name"]
 		b = request.POST.get("name")
 		c = request.POST.get("message")
@@ -382,7 +391,7 @@ def sup_message_reply2(request):
 	db.close()
 
 	if request.POST:
-        			
+					
 		a = request.session["login_name"]
 		#b = request.POST.get("name")
 		b = request.session["sender_name_last"]
@@ -668,7 +677,7 @@ def supervisor_edit(request):
 	db.close()	
 	
 	if request.POST:
-        			
+					
 		machinenum = request.POST.get("machine")
 		problem = request.POST.get("reason")
 		priority = request.POST.get("priority")
@@ -904,7 +913,7 @@ def employee_vac_enter(request):
 
 
 def vacation_entry(request):	
-    
+	
 	st = request.session["date_st"]
 	fi = request.session["date_en"]
 	employee = request.session["employee"]
@@ -1043,8 +1052,8 @@ def vacation_month_fix(request):
 	return render(request,'test4.html',{'X':h})
 	
 	#for k in range(city_count):
-    #cur.execute("UPDATE hqstock SET citylastprice = '%s' WHERE id = '%s'"% (CITYPRICE[k],   tID[k]))
-    #cur.commit()
+	#cur.execute("UPDATE hqstock SET citylastprice = '%s' WHERE id = '%s'"% (CITYPRICE[k],   tID[k]))
+	#cur.commit()
 
 def reset_sfilter(request):
 	request.session["sfilter1"] = ''

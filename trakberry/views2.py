@@ -260,6 +260,7 @@ def main_login_form(request):
 
 		request.session["login_name"] = login_name
 		request.session["login_password"] = login_password
+		request.session['main_login_verify'] = 1
 		
 		login_initial(request,login_name)
 	
