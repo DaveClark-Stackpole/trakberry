@@ -3063,9 +3063,19 @@ def cell_track_9341(request):
 		list1 = filter(lambda x:x[1]==i[0],wip_data)  # Filter list and pull out machine to make list1
 		count1=len(list1)  # Total all in list1
 		wip_prod[i[2]] = wip_prod[i[2]] + count1  # Add total to that operation variable
+	
+
+	# This section is temporary as no grinding *************************************
+	wip_prod[80] = wip_prod[50]
+	wip_prod[70] = wip_prod[50]
+	wip_prod[60] = wip_prod[50]
+	# ******************************************************************************
+
 	op5=[]
 	wip5=[]
 	prd5=[]
+
+
 	for i in wip:
 		op5.append(i[3])
 		wip5.append(int(i[4]))
