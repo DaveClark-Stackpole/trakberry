@@ -28,8 +28,8 @@ def db_open():
 		cursor = db.cursor()	# request.session["local_switch"] = 1
 	# request.session["local_toggle"] = ""
 		sql = "SELECT * from testtest" 
-  		cursor.execute(sql)
-  		tmp2 = cursor.fetchall()
+		cursor.execute(sql)
+		tmp2 = cursor.fetchall()
 		return db, cursor
 	except:
 		try:

@@ -3580,6 +3580,10 @@ def cell_track_9341_history(request):
 	args.update(csrf(request))
 	args['form'] = form
 
+	total8_0455,op_total_0455, wip_zip_0455 = cell_track_0455(request)
+
+	return render(request,'cell_track_9341.html',{'codes':total8,'op':op_total,'codes_60':total8_0455,'op_60':op_total_0455,'args':args})	
+	
 
 	return render(request,'cell_track_9341.html',{'codes':total8,'op':op_total,'args':args})	
 
