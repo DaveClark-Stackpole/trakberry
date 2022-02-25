@@ -1003,7 +1003,10 @@ def tracking(request):
 	except:
 		request.session['reset_tracking'] = rt1
 	if request.session['reset_tracking'] == rt1:
-			del request.session['part_area1']
+			try:
+				del request.session['part_area1']
+			except:
+				dummy=1
 			request.session['reset_tracking'] = rt1+1
 			return render(request, "redirect_tracking.html")
 	# *********************************************************************************
