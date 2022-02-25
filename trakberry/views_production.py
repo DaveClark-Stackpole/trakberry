@@ -486,7 +486,7 @@ def track_area(request):
 	utemp = u
 	total_test = 0
 	
-	for i in range(1,18):
+	for i in range(1,8):
 		unew = utemp - 28800
 		x1, x2, x3, x4 = day_breakdown(unew)
 		u1.append(str(unew))
@@ -971,6 +971,9 @@ def track_tri(request):
 
 
 def tracking(request):
+	# These are the reset values for refreshing tracking .  increment each by one if you 
+	# want to refresh tracking to new rates
+	rt1 = 3
 
 	# This section will check every 30min and email out counts to Jim and Myself
 	try:
@@ -991,6 +994,19 @@ def tracking(request):
 		db.close()
 	except:
 		dummy2 = 0
+
+	# *********************************************************************************
+	# Use a Session Variable to reset tracking to new Rates.   rt1 is set at start of 
+	# this module
+	try:
+		request.session['reset_tracking']
+	except:
+		request.session['reset_tracking'] = rt1
+	if request.session['reset_tracking'] == rt1:
+			del request.session['part_area1']
+			request.session['reset_tracking'] = rt1+1
+			return render(request, "redirect_tracking.html")
+	# *********************************************************************************
 
 	# net1(request)	  # Sets the app to server or local
 	# force changes
@@ -1036,8 +1052,8 @@ def tracking(request):
 			request.session['target_area'] = 2
 			request.session['part_area'] = '50-3050'
 			request.session['part_area2'] = '50-3050'
-			request.session['rate_area'] = 15
-			request.session['rate_area2'] = 15
+			request.session['rate_area'] = 65
+			request.session['rate_area2'] = 65
 			request.session['asset1_area'] = '769'
 			request.session['asset2_area'] = '769'
 			request.session['asset3_area'] = '769'
@@ -1292,7 +1308,7 @@ def chart2_1467br(request):
 def chart1_3050(request):
 		request.session['area1'] = '50-3050 Inspection'
 		request.session['part_area1'] = '50-3050'
-		request.session['rate_area1'] = 15
+		request.session['rate_area1'] = 65
 		request.session['asset1_area1'] = '769'
 		request.session['asset2_area1'] = '769'
 		request.session['asset3_area1'] = '769'
@@ -1301,7 +1317,7 @@ def chart1_3050(request):
 def chart2_3050(request):
 		request.session['area2'] = '50-3050 Inspection'
 		request.session['part_area2'] = '50-3050'
-		request.session['rate_area2'] = 15
+		request.session['rate_area2'] = 65
 		request.session['asset1_area2'] = '769'
 		request.session['asset2_area2'] = '769'
 		request.session['asset3_area2'] = '769'
