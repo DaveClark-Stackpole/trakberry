@@ -448,3 +448,57 @@ def quality_epv_asset_entry(request):
 	args.update(csrf(request))
 	args['form'] = form
 	return render(request,'quality_epv_asset_entry.html', {'args':args})
+
+def gate_alarm_champion(request,index):
+	try:
+		request.session['gate_id_edit']
+	except:
+		request.session['gate_id_edit'] = 1
+	db, cur = db_set(request)
+	sql = "SELECT * FROM tkb_gate_alarm where Id = '%s'" % (index)
+	cur.execute(sql)
+	tmp = cur.fetchall()
+	tmp2=tmp[0]
+	part = tmp2[1]
+	operation = tmp2[2]
+	category = tmp2[3]
+
+	sql = "SELECT * FROM tkb_gate_alarm_log where part = '%s' and operation = '%s' and category = '%s' ORDER BY pdate DESC " % (part,operation,category)
+	cur.execute(sql)
+	tmp = cur.fetchall()  # List of all gate alarms in the log for the selected one
+	request.session['gate_alarm_champion'] = tmp
+	request.session['secondary_menu_color'] = '#131C02'
+	request.session['secondary_text_color'] = '#F4F7E0'
+	request.session['main_screen_color'] = '#DEDEDE'
+
+	if request.POST:
+		v=0
+		value1 = request.POST.get("entry")
+
+		value1=str(value1)
+		value2,value3 = value1[1:],value1[:1]
+
+		if value3 == 'E':
+			v=10
+		elif value3 == 'U':
+			v=20
+	
+
+
+
+		
+		request.session['gate_id_edit'] = int(value2)
+
+
+
+		rrrr=3/0
+
+		return render(request,'quality_epv_asset_list.html')
+
+
+	else:
+		form = sup_downForm()
+	args = {}
+	args.update(csrf(request))
+	args['form'] = form
+	return render(request,'gate_alarm_champion.html', {'args':args})
