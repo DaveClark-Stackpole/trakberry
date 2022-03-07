@@ -1550,6 +1550,7 @@ def tech_PM_assign(request):
 	tmp = cursor.fetchall()
 	request.session["PM_Tech_Person"] = tmp
 
+
 	if request.POST:
 		b=0
 		a=[]
