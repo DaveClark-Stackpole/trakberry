@@ -171,6 +171,7 @@ from views_scrap import gate_alarm_list_add_initial
 
 # *******************************************  Quality Section ********************************************************************************************
 from views_quality import pie_chart,sup_pie_chart,quality_epv_asset_entry, initial_epv, previous_epv, next_epv, epv_cleanup
+from views_quality import gate_alarm_champion,gate_alarm_champion_initial
 # 
 
 # *******************************************  Manpower Section ********************************************************************************************
@@ -724,6 +725,8 @@ urlpatterns = [
 	url(r'^gate_alarm_list_hide/', gate_alarm_list_hide),
 	url(r'^gate_alarm_list_show/', gate_alarm_list_show),
 	url(r'^gate_alarm_list_add_initial/', gate_alarm_list_add_initial),
+	url(r'^gate_alarm_champion_initial/get/(?P<index>\w{0,50})/$', gate_alarm_champion_initial),
+	url(r'^gate_alarm_champion/', gate_alarm_champion),
 	# **************************************************************************
 
 	# *************  Manpower Section *********************************************

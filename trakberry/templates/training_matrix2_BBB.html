@@ -1,0 +1,270 @@
+
+
+<!DOCTYPE html>
+<html>
+<body>
+
+<head>
+
+
+
+
+	<style>
+div {
+  max-width: 100%;
+  max-height: 600px;
+  /* overflow: scroll; */
+}
+
+/* Use position: sticky to have it stick to the edge
+ * and top, right, or left to choose which edge to stick to: */
+
+thead th {
+  position: -webkit-sticky; /* for Safari */
+  position: sticky;
+	top: 0;
+	font-size: 15px;
+
+}
+
+tbody th {
+  position: -webkit-sticky; /* for Safari */
+  position: sticky;
+	left: 0;
+	font-size: 15px;
+}
+
+
+/* To have the header in the first column stick to the left: */
+
+thead th:first-child {
+  left: 0;
+  z-index: ;
+}
+
+
+/* Just to display it nicely: */
+
+thead th {
+  background: rgb(51, 63, 116);
+  color: #FFF;
+  /* Ensure this stays above the emulated border right in tbody th {}: */
+  z-index: 1;
+}
+
+tbody th {
+  background: rgb(255, 255, 255);
+  border-right: 1px solid rgb(255, 255, 255);
+  /* Browsers tend to drop borders on sticky elements, so we emulate the border-right using a box-shadow to ensure it stays: */
+  box-shadow: 1px 0 0 0 #ccc;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+td,
+th {
+  
+}
+</style>
+
+<script>
+	function myFunction() {
+			document.querySelectorAll("input[type=submit]")[0].click();
+	}
+</script>
+
+
+
+
+<script src="/static/bootstrap/js/1.11.3/jquery.min.js"></script>
+      <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+			<link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
+			
+			<link href="/static/bootstrap/css/bootstrap-toggle/bootstrap-toggle.min.css" rel="stylesheet">
+			<script src="/static/bootstrap/css/bootstrap-toggle/bootstrap-toggle.min.js"></script>
+
+
+			{% if request.session.bounce_matrix == 1 %}  
+			<script type="text/javascript">
+			$(document).ready(function(){
+			$("#myModal").modal('show');
+			});
+			</script>
+			<style>
+		
+						.modal-body
+						{background-color: rgb(197, 197, 197);}
+						.modal-header
+						{background-color: rgb(126, 126, 126);}
+						.modal-footer
+						{background-color: rgb(197, 197, 197);}
+						.modal 
+						{border-radius: 25px; }
+		
+			</style>
+		{% endif %}
+
+		
+</head>
+
+<form action="" method="post">{% csrf_token %}
+
+
+<div>
+  <table>
+    <thead>
+      <tr>
+				<th style="border:1px solid black;z-index: 99;">
+				<!-- put in Color Key top left-->
+				
+
+			<select id="matrix_shift" style="background-color: #315238;font-size:15px;" onchange="myFunction();" list="browsers" name="matrix_shift" {{request.session.matrix_shift}}>	
+				<option value="{{request.session.matrix_shift}}" selected>{{request.session.matrix_shift}}</option>
+				<option value="Plant 1 Mid">Area 1 Mid</option>
+				<option value="Plant 1 Aft">Area 1 Aft</option>
+				<option value="Plant 1 Days">Area 1 Day</option>
+				<option value="Plant 3 Mid">Area 2 Mid</option>
+				<option value="Plant 3 Aft">Area 2 Aft</option>
+				<option value="Plant 3 Days">Area 2 Day</option>
+				<option value="Plant 4 Mid">Area 3 Mid</option>
+				<option value="Plant 4 Aft">Area 3 Aft</option>
+				<option value="Plant 4 Day">Area 3 Day</option>
+			</select>
+			<br>
+			
+
+			<!-- <button style="background-color: #555231;border-radius: 5px;width:90%;height:90%;font-size:10px;align=left;" type="button"
+			onclick="window.location.href = '{{request.session.local_toggle}}/bounce_matrix';">Update All</button>
+				<br> -->
+				</th>
+
+
+				{% for item in jobs %}
+				<th style="border:1px solid black;">{{item.1}}</th>
+			{% endfor %}
+
+			</tr>
+
+    </thead>
+    <tbody>
+			{% for item2 in matrix %}
+      <tr>
+
+
+				<!-- <th style="border:1px solid black;z-index: 95;font-size:70%;background-color: #b3b3b3;">
+					<button style="text-align: left;width:100%;font-size: 100%;border-style: solid;border-color:#b3b3b3;border-radius: 0px;background-color:#b3b3b3;" type="button" 
+				onclick="window.location.href = '{{request.session.local_toggle}}/training_matrix_find/get/{{item2.2.0.0}}';">
+				{{item2.0.0}} -->
+
+
+					<th style="border:1px solid black;z-index: 95;font-size:70%;background-color: #b3b3b3;">
+					
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{item2.0.0}}
+
+
+			</th>
+
+				{% for item in item2.1 %}
+			{% if item|slice:"6:" = 'Trained' %}
+			<td  style="border:1px solid black;z-index: 2;padding:0px;background-color: #90f078;"> 
+				<center>
+					Trained
+			{% elif item|slice:"6:" = 'Training <5 days' %}
+			<td  style="border:1px solid black;z-index: 2;padding:0px;background-color: #f77bea;"> 
+				<center>
+					Training
+			{% elif item|slice:"6:" = 'Training >4 days' %}
+			<td  style="border:1px solid black;z-index: 2;padding:0px;background-color: #f8ed4e;"> 
+				<center>
+					Training
+			{% elif item|slice:"6:" = 'A Trainer' %}
+			<td  style="border:1px solid black;z-index: 2;padding:0px;background-color: #5eaace;"> 
+				<center>
+					Trainer
+			{% else %}
+			<td  style="border:1px solid black;z-index: 2;padding:0px;background-color: #c7c7c7;"> 
+				<center>
+					
+			{% endif %}
+
+						
+					
+
+			</center>
+			</td>
+
+		{% endfor %}
+
+		{% for i in '01234567890123456789012345678901234567890123456789012345678901234567890123456789'|make_list %}
+				<td  style="border:0px solid black;">&nbsp; &nbsp; &nbsp;  </td>
+		{% endfor %}	
+
+
+			</tr>
+			{% endfor %}
+
+			{% for item in jobs %}
+			<tr>
+				<th style="border:0px solid black;"> &nbsp; &nbsp; &nbsp; </th>
+				{% for item in jobs %}
+				<td  style="border:0px solid black;">&nbsp; &nbsp; &nbsp;  </td>
+				{% endfor %}
+
+				{% for i in '01234567890123456789012345678901234567890123456789012345678901234567890123456789'|make_list %}
+					<td  style="border:0px solid black;">&nbsp; &nbsp; &nbsp;  </td>
+				{% endfor %}		
+
+			</tr>
+			{% endfor %}
+
+
+			
+		</tbody>
+  </table>
+</div> 
+
+
+
+
+
+<input style="background-color: #315357;border-radius: 5px;width:1%;font-weight: 500;font-size:10px;align=left;" type="submit" value="">
+</form>
+
+<!-- Modal For Are you sure to Close -->
+<div class="modal fade" id="myModal" role="dialog">
+	<div class="modal-dialog modal-sm">
+		<div class="modal-content" >
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title"><mark><font color="#000000" size ="5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					Warning
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></mark></h4>
+			</div>
+			<div class="modal-body" >
+				<font color="#000000" size ="4">
+						<p align="left">
+								<b>You are about to Update Entire Shift. Are you sure?.<br>It Will take about 10min after clicking OK</b><br><br>
+								&nbsp;&nbsp;&nbsp;
+								<button style="background-color: #AAAAAA;border-radius: 10px;width:62px;height:33px;font-weight: 500;font-size:14px;align=left;" 
+								type="button" onclick="window.location.href = '{{request.session.local_toggle}}/full_update';">OK</button>
+								&nbsp;&nbsp;&nbsp;
+								<button style="background-color: #AAAAAA;border-radius: 10px;width:62px;height:33px;font-weight: 500;font-size:14px;align=left;" 
+								type="button" onclick="window.location.href = '{{request.session.local_toggle}}/update_matrix_cancel';">Cancel</button>
+			</p>
+				</font>
+			</div>
+			<div class="modal-footer">
+				<p align="left">
+				<img src="/static/media/JELogo.gif?{{TCUR}}"  style="border-radius: 25px;" height="40" width="150">
+			</p>    
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+</body>
+</html>

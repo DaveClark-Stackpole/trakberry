@@ -1,0 +1,30 @@
+
+
+<!DOCTYPE html>
+<html>
+<body>
+
+{% for item in matrix %}
+
+{{item.0.0}}
+
+{% for item2 in item.1 %}
+
+{% if item2|slice:"6:" = 'Trained' %}
+Y
+{% endif %}
+
+{% if item2|slice:"6:" = 'Not Trained' %}
+O
+{% endif %}
+
+{% endfor %} 
+
+
+
+<br>
+
+
+{% endfor %}
+</body>
+</html>
