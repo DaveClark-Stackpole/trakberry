@@ -449,11 +449,17 @@ def quality_epv_asset_entry(request):
 	args['form'] = form
 	return render(request,'quality_epv_asset_entry.html', {'args':args})
 
-def gate_alarm_champion(request,index):
+def gate_alarm_champion_initial(request,index):
+	request.session['gate_alarm_index'] = index
+	return gate_alarm_champion(request)
+
+def gate_alarm_champion(request):
 	try:
 		request.session['gate_id_edit']
 	except:
 		request.session['gate_id_edit'] = 1
+	index = request.session['gate_alarm_index']
+
 	db, cur = db_set(request)
 	sql = "SELECT * FROM tkb_gate_alarm where Id = '%s'" % (index)
 	cur.execute(sql)
@@ -466,6 +472,7 @@ def gate_alarm_champion(request,index):
 	sql = "SELECT * FROM tkb_gate_alarm_log where part = '%s' and operation = '%s' and category = '%s' ORDER BY pdate DESC " % (part,operation,category)
 	cur.execute(sql)
 	tmp = cur.fetchall()  # List of all gate alarms in the log for the selected one
+
 	request.session['gate_alarm_champion'] = tmp
 	request.session['secondary_menu_color'] = '#131C02'
 	request.session['secondary_text_color'] = '#F4F7E0'
@@ -476,24 +483,26 @@ def gate_alarm_champion(request,index):
 		value1 = request.POST.get("entry")
 
 		value1=str(value1)
-		value2,value3 = value1[1:],value1[:1]
-
+		value2,value3 = value1[1:],value1[:1]  # value2 is the index 
+		value2 = int(value2)
+		
+		request.session['gate_id_edit'] = int(value2)
 		if value3 == 'E':
 			v=10
 		elif value3 == 'U':
 			v=20
-	
 
 
 
-		
-		request.session['gate_id_edit'] = int(value2)
 
+		if v>0:
+			sql = ('update tkb_gate_alarm_log SET reviewed="%s" WHERE Id ="%s"' % (v,value2))
+			cur.execute(sql)
+			db.commit()
+			dummy=3
+			request.session['gate_id_edit'] = int(value2)
 
-
-		rrrr=3/0
-
-		return render(request,'quality_epv_asset_list.html')
+		return render(request,'redirect_gate_alarm_champion.html')
 
 
 	else:

@@ -3058,6 +3058,7 @@ def cell_track_9341_history_off(request):
 
 
 def cell_track_9341(request):
+
 	shift_start, shift_time, shift_left, shift_end = stamp_shift_start(request)	 # Get the Time Stamp info
 	machines1 = ['1504','1506','1519','1520','1502','1507','1501','1515','1508','1532','1509','1514','1510','1503','1511','1518','1521','1522','1523','1539','1540','1524','1525','1538','1541','1531','1527','1530','1528','1513','1533']
 	rate = [8,8,8,8,4,4,4,4,3,3,2,2,2,2,2,8,8,8,8,4,4,4,4,3,2,2,2,2,2,1,1]
@@ -3071,6 +3072,9 @@ def cell_track_9341(request):
 	cur.execute(sql)
 	wip = cur.fetchall()
 	wip_stamp = int(wip[0][1])
+
+
+
 
 	# [1] -- Machine    [4] -- Timestamp  [2] -- Part   [5] -- Count ..usually 1
 	sql = "SELECT * FROM GFxPRoduction WHERE TimeStamp >= '%d' and Part = '%s'" % (wip_stamp,prt)
@@ -3131,33 +3135,48 @@ def cell_track_9341(request):
 	op8=[]
 	rt8=[]
 	request.session['shift_start'] = shift_start
+
+
+	# Preliminary testing variables for new methord
+	tt = int(time.time())
+	t=tt-300
+	start1 = tt-shift_time
+	sql="SELECT * FROM GFxPRoduction WHERE TimeStamp >='%s' and Part='%s'"%(start1,prt)
+	cur.execute(sql)
+	tmpX=cur.fetchall()
+	db.close()
+	# *********************************************
+
 	for i in machine_rate:
 		machine2 = i[0]
 		rate2 = 3200 / float(i[1])
 		rate2 = (rate2 / float(28800)) * 300
-		tt = int(time.time())
-		start1 = tt - shift_time
-		t= tt-300
-		try:
-			sql = "SELECT SUM(Count) FROM GFxPRoduction WHERE TimeStamp >= '%d' and Part = '%s' and Machine = '%s'" % (t,prt,machine2)
-			cur.execute(sql)
-			tmp2 = cur.fetchall()
-			tmp3 = tmp2[0]
-			cnt = int(tmp3[0])
-		except:
-			cnt = 0
-		try:
-			sql = "SELECT SUM(Count) FROM GFxPRoduction WHERE TimeStamp >= '%d' and Part = '%s' and Machine = '%s'" % (start1,prt,machine2)
-			cur.execute(sql)
-			tmp22 = cur.fetchall()
-			tmp33 = tmp22[0]
-			cnt33 = int(tmp33[0])
-		except:
-			cnt33 = 0
+
+		# New faster method to search Data.  Doesn't bog down DB
+		list2 = filter(lambda x:x[4]>=t and x[1]==machine2,tmpX)  # Filter list to get 5 min sum
+		cnt = len(list2)
+		list2 = filter(lambda x:x[4]>=start1 and x[1]==machine2,tmpX)  # Filter list to get 5 min sum
+		cnt33 = len(list2)
+
+		# Old Method to search Data
+		# try:
+		# 	sql = "SELECT SUM(Count) FROM GFxPRoduction WHERE TimeStamp >= '%d' and Part = '%s' and Machine = '%s'" % (t,prt,machine2)
+		# 	cur.execute(sql)
+		# 	tmp2 = cur.fetchall()
+		# 	tmp3 = tmp2[0]
+		# 	cnt = int(tmp3[0])
+		# except:
+		# 	cnt = 0
+		# try:
+		# 	sql = "SELECT SUM(Count) FROM GFxPRoduction WHERE TimeStamp >= '%d' and Part = '%s' and Machine = '%s'" % (start1,prt,machine2)
+		# 	cur.execute(sql)
+		# 	tmp22 = cur.fetchall()
+		# 	tmp33 = tmp22[0]
+		# 	cnt33 = int(tmp33[0])
+		# except:
+		# 	cnt33 = 0
 
 		if cnt is None: cnt = 0
-
-
 		rate3 = cnt / float(rate2)
 		rate3 = int(rate3 * 100) # This will be the percentage we use to determine colour
 
@@ -3211,7 +3230,7 @@ def cell_track_9341(request):
 
 	for i in total8:
 		op_total[i[4]]=op_total[i[4]] + i[3]
-	db.close()
+	
 	jobs1 = zip(machines1,line1,operation1)
 
 	
@@ -3227,6 +3246,7 @@ def cell_track_9341(request):
 	args['form'] = form
 
 	total8_0455,op_total_0455, wip_zip_0455 = cell_track_0455(request)
+
 
 	return render(request,'cell_track_9341.html',{'codes':total8,'op':op_total,'wip':wip_zip,'codes_60':total8_0455,'op_60':op_total_0455,'wip_60':wip_zip_0455,'args':args})	
 
@@ -3300,29 +3320,49 @@ def cell_track_0455(request):
 	op8=[]
 	rt8=[]
 	request.session['shift_start'] = shift_start
+
+
+	# Preliminary testing variables for new methord
+	tt = int(time.time())
+	t=tt-300
+	start1 = tt-shift_time
+	sql="SELECT * FROM GFxPRoduction WHERE TimeStamp >='%s' and Part='%s'"%(start1,prt)
+	cur.execute(sql)
+	tmpX=cur.fetchall()
+	db.close()
+	# *********************************************
+
+
+
 	for i in machine_rate:
 		machine2 = i[0]
 		rate2 = 900 / float(i[1])
 		rate2 = (rate2 / float(28800)) * 300
-		tt = int(time.time())
-		start1 = tt - shift_time
-		t= tt-300
-		try:
-			sql = "SELECT SUM(Count) FROM GFxPRoduction WHERE TimeStamp >= '%d' and Part = '%s' and Machine = '%s'" % (t,prt,machine2)
-			cur.execute(sql)
-			tmp2 = cur.fetchall()
-			tmp3 = tmp2[0]
-			cnt = int(tmp3[0])
-		except:
-			cnt = 0
-		try:
-			sql = "SELECT SUM(Count) FROM GFxPRoduction WHERE TimeStamp >= '%d' and Part = '%s' and Machine = '%s'" % (start1,prt,machine2)
-			cur.execute(sql)
-			tmp22 = cur.fetchall()
-			tmp33 = tmp22[0]
-			cnt33 = int(tmp33[0])
-		except:
-			cnt33 = 0
+
+		# New faster method to search Data.  Doesn't bog down DB
+		list2 = filter(lambda x:x[4]>=t and x[1]==machine2,tmpX)  # Filter list to get 5 min sum
+		cnt = len(list2)
+		list2 = filter(lambda x:x[4]>=start1 and x[1]==machine2,tmpX)  # Filter list to get 5 min sum
+		cnt33 = len(list2)
+
+		# try:
+		# 	sql = "SELECT SUM(Count) FROM GFxPRoduction WHERE TimeStamp >= '%d' and Part = '%s' and Machine = '%s'" % (t,prt,machine2)
+		# 	cur.execute(sql)
+		# 	tmp2 = cur.fetchall()
+		# 	tmp3 = tmp2[0]
+		# 	cnt = int(tmp3[0])
+		# except:
+		# 	cnt = 0
+		# try:
+		# 	sql = "SELECT SUM(Count) FROM GFxPRoduction WHERE TimeStamp >= '%d' and Part = '%s' and Machine = '%s'" % (start1,prt,machine2)
+		# 	cur.execute(sql)
+		# 	tmp22 = cur.fetchall()
+		# 	tmp33 = tmp22[0]
+		# 	cnt33 = int(tmp33[0])
+		# except:
+		# 	cnt33 = 0
+
+
 		if cnt is None: cnt = 0
 		rate3 = cnt / float(rate2)
 		rate3 = int(rate3 * 100) # This will be the percentage we use to determine colour
@@ -3378,7 +3418,7 @@ def cell_track_0455(request):
 
 	for i in total8:
 		op_total[i[4]]=op_total[i[4]] + i[3]
-	db.close()
+
 	jobs1 = zip(machines1,line1,operation1)
 
 	return total8, op_total, wip_zip
@@ -3649,6 +3689,13 @@ def wip_update(request):
 			list1 = filter(lambda x:x[1]==i[0],wip_data)  # Filter list and pull out machine to make list1
 			count1=len(list1)  # Total all in list1
 			wip_prod[i[2]] = wip_prod[i[2]] + count1  # Add total to that operation variable
+	
+		# This section is temporary as no grinding *************************************
+		wip_prod[80] = wip_prod[50]
+		wip_prod[70] = wip_prod[50]
+		wip_prod[60] = wip_prod[50]
+		# ******************************************************************************
+
 		op5=[]
 		wip5=[]
 		prd5=[]

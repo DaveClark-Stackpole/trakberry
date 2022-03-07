@@ -43,8 +43,8 @@
                 <button  style="background-color: #494949;border-radius: 10px;height:100%;font-size:15px;color:#494949" type="submit" name="entry" value="U{{i.0}}" />
                     <font color="#fcff3b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Update Reqd&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 </button> </center><br>
-            {% elif i.10 == 10 %} 
-
+            {% elif i.10 == 20 %} 
+                Hello World
 
             {% else %}
                 <br><center>
@@ -62,7 +62,11 @@
             {% elif i.10 == 2 or i.10 == 20 %}
                 <td style="font-size:14px;background-color:#f8d17e; color:#000000;border: 1px solid black;">
                     <center>
-                    <font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;More Action Reqd&nbsp;&nbsp;</center>                
+                    <font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;More Action Reqd&nbsp;&nbsp;</center>
+            {% elif i.10 == 3 %}
+                <td style="font-size:14px;background-color:#2dce1f; color:#000000;border: 1px solid black;">
+                    <center>
+                    <font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;Accepted&nbsp;&nbsp;</center>                         
             {% endif %}
         </td>   
         <td style="font-size:14px;background-color:#D5D5D5; color:#000000;border: 1px solid black;">{{i.11}}</td>   
