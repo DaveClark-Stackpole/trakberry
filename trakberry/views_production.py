@@ -3092,6 +3092,7 @@ def cell_track_9341(request):
 	wip_prod[80] = wip_prod[50]
 	wip_prod[70] = wip_prod[50]
 	wip_prod[60] = wip_prod[50]
+	
 	# ******************************************************************************
 
 	op5=[]
@@ -3149,14 +3150,24 @@ def cell_track_9341(request):
 
 	for i in machine_rate:
 		machine2 = i[0]
+
 		rate2 = 3200 / float(i[1])
 		rate2 = (rate2 / float(28800)) * 300
 
-		# New faster method to search Data.  Doesn't bog down DB
-		list2 = filter(lambda x:x[4]>=t and x[1]==machine2,tmpX)  # Filter list to get 5 min sum
-		cnt = len(list2)
-		list2 = filter(lambda x:x[4]>=start1 and x[1]==machine2,tmpX)  # Filter list to get 5 min sum
-		cnt33 = len(list2)
+
+		# If 1510 going take out below conditional statement
+		if machine2 == '1510':
+			machine22 = '1514'
+			list2 = filter(lambda x:x[4]>=t and x[1]==machine22,tmpX)  # Filter list to get 5 min sum
+			cnt = len(list2)
+			list2 = filter(lambda x:x[4]>=start1 and x[1]==machine22,tmpX)  # Filter list to get 5 min sum
+			cnt33 = len(list2)
+		else:
+			# New faster method to search Data.  Doesn't bog down DB
+			list2 = filter(lambda x:x[4]>=t and x[1]==machine2,tmpX)  # Filter list to get 5 min sum
+			cnt = len(list2)
+			list2 = filter(lambda x:x[4]>=start1 and x[1]==machine2,tmpX)  # Filter list to get 5 min sum
+			cnt33 = len(list2)
 
 		# Old Method to search Data
 		# try:
