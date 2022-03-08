@@ -361,7 +361,7 @@ def gf6_3627(request):
 
 def gf6_1731(request):
 	# ******************  Below data entered for each part  ******************************
-	goal = 1500   # Weekly6 Goal
+	goal = 3000   # Weekly6 Goal
 	color1 = '#96dbf8'  # Color for line 1
 	color2 = '#82BED7'  # Color for line 2
 	asset = ['627','564','615','781','900']

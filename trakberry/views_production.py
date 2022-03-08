@@ -371,6 +371,9 @@ def track_email(request):
 
 def track_area(request):
 
+
+
+
 	data_area = request.session['data_area'] # Data for 1 or 2 chart
 	target_area = int(request.session['rate_area'])
 	prt = request.session['part_area']
@@ -436,9 +439,6 @@ def track_area(request):
 
 
 	db, cur = db_set(request)
-
-	
-
 
 
 
@@ -971,6 +971,61 @@ def track_tri(request):
 
 
 def tracking(request):
+
+	return render(request, "track_temp.html")
+
+	
+
+
+
+	db, cur = db_set(request)  
+	# cursor.execute("""DROP TABLE IF EXISTS track_data2""")
+	# cursor.execute("""CREATE TABLE IF NOT EXISTS track_history LIKE tkb_matrix_cache""")
+	# # cursor.execute('''INSERT track_data Select * From GFxPRoduction ''')
+
+
+	# ii=1646752913.37
+	# sql = '''INSERT into track_data2(Machine,Part,PerpetualCount,TimeStamp,Count) (Select Machine,Part,PerpetualCount,TimeStamp,Count From GFxPRoduction where TimeStamp > "%d")''' % (ii)
+	# cursor.execute(sql)
+	# db.commit()
+	# db.close()
+
+
+	t=1646763850
+	bql = "SELECT * FROM GFxPRoduction WHERE TimeStamp >= '%d'" % (t)
+	cur.execute(bql)
+	tmp8 = cur.fetchall()
+
+	x=str(tmp8)
+
+	sql="insert into track_history values(%s,%s,%s,%s,%s)" %(tmp8)
+
+
+	# ccc= "INSERT into track_history(LastWeek) VALUES'%s'" % (tmp8)
+	cur.execute(sql)
+	db.commit()
+
+
+	stop1 = 4/0
+
+
+
+
+	t1=int(time.time())
+	db, cur = db_set(request)
+	t = 1646737216.29
+	# m = '1533'
+	bql = "SELECT * FROM track_data2 WHERE TimeStamp >= '%d'" % (t)
+	cur.execute(bql)
+	tmp8 = cur.fetchall()
+	tmp9 = tmp8[0]
+	db.close()
+	t2=int(time.time())
+	ss = t2 - t1
+
+	stop1=78/0
+
+
 	# These are the reset values for refreshing tracking .  increment each by one if you 
 	# want to refresh tracking to new rates
 	rt1 = 3
