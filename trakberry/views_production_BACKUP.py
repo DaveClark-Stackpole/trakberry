@@ -442,7 +442,7 @@ def track_area(request):
 
 
 
-	aql = "SELECT COUNT(*) FROM track_data WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (u,t,prt,asset1,asset2,asset3,asset4)
+	aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (u,t,prt,asset1,asset2,asset3,asset4)
 	cur.execute(aql)
 	tmp2 = cur.fetchall()
 	tmp3 = tmp2[0]
@@ -451,43 +451,36 @@ def track_area(request):
 	# var1 = 'count' + data_area
 	# request.session[var1] = cnt
 	if week_current_seconds > 43200:
-		weekend_cnt = 0
-		# bql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (weekend_start,t,prt,asset1,asset2,asset3,asset4)
-		# cur.execute(bql)
-		# tmp8 = cur.fetchall()
-		# tmp9 = tmp8[0]
-		# weekend_cnt = tmp9[0]
+		bql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (weekend_start,t,prt,asset1,asset2,asset3,asset4)
+		cur.execute(bql)
+		tmp8 = cur.fetchall()
+		tmp9 = tmp8[0]
+		weekend_cnt = tmp9[0]
 
-	# bql = "SELECT SUM(Count) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (week_start1,t,prt,asset1,asset2,asset3,asset4)
-	# cur.execute(bql)
-	# tmp8 = cur.fetchall()
-	# tmp9 = tmp8[0]
-	# try:
-	# 	week_cnt = int(tmp9[0])
-	# except:
-	# 	week_cnt = 0
-	# bql = "SELECT SUM(Count) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (week_start2,week_start1,prt,asset1,asset2,asset3,asset4)
-	# cur.execute(bql)
-	# tmp8 = cur.fetchall()
-	# tmp9 = tmp8[0]
-	# try:
-	# 	week_cnt2 = int(tmp9[0])
-	# except:
-	# 	week_cnt2 = 0
-	# bql = "SELECT SUM(Count) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (week_start3,week_start2,prt,asset1,asset2,asset3,asset4)
-	# cur.execute(bql)
-	# tmp8 = cur.fetchall()
-	# tmp9 = tmp8[0]
-	# try:
-	# 	week_cnt3 = int(tmp9[0])
-	# except:
-	# 	week_cnt3 = 0
-
-	week_cnt = 0
-	week_cnt2 = 0
-	week_cnt3 = 0
-
-
+	bql = "SELECT SUM(Count) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (week_start1,t,prt,asset1,asset2,asset3,asset4)
+	cur.execute(bql)
+	tmp8 = cur.fetchall()
+	tmp9 = tmp8[0]
+	try:
+		week_cnt = int(tmp9[0])
+	except:
+		week_cnt = 0
+	bql = "SELECT SUM(Count) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (week_start2,week_start1,prt,asset1,asset2,asset3,asset4)
+	cur.execute(bql)
+	tmp8 = cur.fetchall()
+	tmp9 = tmp8[0]
+	try:
+		week_cnt2 = int(tmp9[0])
+	except:
+		week_cnt2 = 0
+	bql = "SELECT SUM(Count) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (week_start3,week_start2,prt,asset1,asset2,asset3,asset4)
+	cur.execute(bql)
+	tmp8 = cur.fetchall()
+	tmp9 = tmp8[0]
+	try:
+		week_cnt3 = int(tmp9[0])
+	except:
+		week_cnt3 = 0
 
 	u1, wd1, m1, day1, shift1, prev_cnt1 = [],[],[],[],[],[]
 	utemp = u
@@ -501,19 +494,14 @@ def track_area(request):
 		m1.append(x2)
 		day1.append(x3)
 		shift1.append(x4)
-		# aql = "SELECT SUM(Count) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (unew,utemp,prt,asset1,asset2,asset3,asset4)
+		aql = "SELECT SUM(Count) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (unew,utemp,prt,asset1,asset2,asset3,asset4)
 
-		# # aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (unew,utemp,prt,asset1,asset2,asset3,asset4)
-		# cur.execute(aql)
-		# tmp2 = cur.fetchall()
-		# tmp3 = tmp2[0]
-
-
+		# aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (unew,utemp,prt,asset1,asset2,asset3,asset4)
+		cur.execute(aql)
+		tmp2 = cur.fetchall()
+		tmp3 = tmp2[0]
 		
-		# prev_cnt1.append(str(tmp3[0]))
-
-		prev_cnt1.append('0')
-
+		prev_cnt1.append(str(tmp3[0]))
 		try:
 			total_test = total_test + int(tmp3[0])
 		except:
@@ -992,7 +980,7 @@ def tracking(request):
 
 
 
-	# db, cur = db_set(request)  
+	db, cur = db_set(request)  
 	# cursor.execute("""DROP TABLE IF EXISTS track_data2""")
 	# cursor.execute("""CREATE TABLE IF NOT EXISTS track_history LIKE tkb_matrix_cache""")
 	# # cursor.execute('''INSERT track_data Select * From GFxPRoduction ''')
@@ -1038,6 +1026,7 @@ def tracking(request):
 	t2=int(time.time())
 	ss = t2 - t1
 
+	stop1=78/0
 
 
 	# These are the reset values for refreshing tracking .  increment each by one if you 
@@ -1081,7 +1070,7 @@ def tracking(request):
 	# *********************************************************************************
 
 	# net1(request)	  # Sets the app to server or local
-	# # force changes
+	# force changes
 	try:
 		try:
 			request.session['data_area'] = 1
