@@ -117,7 +117,8 @@ def supervisor_display(request):
 	except:
 		return main_login_form(request)				
 
-		
+	
+	
   # initialize current time and set 'u' to shift start time
 	t=int(time.time())
 	tm = time.localtime(t)
@@ -190,7 +191,7 @@ def supervisor_display(request):
 		whos.append(tmp2[4])
 		box_colour.append(clr)
 		ctr = ctr + 1
-		
+	
 	for i in range(0, ctr-1):
 		for ii in range(i+1, ctr):
 			try:
@@ -291,6 +292,7 @@ def supervisor_display(request):
 #	cnt = 0
 #	request.session["refresh_sup"] = 0
 #	tmp4 =''
+	
 	Z_Value = 1
 	tcur=int(time.time())
 
@@ -320,6 +322,8 @@ def supervisor_display(request):
 
   # call up 'display.html' template and transfer appropriate variables.  
 	#return render(request,"test3.html",{'total':tmp4,'Z':Z_Value,'})
+
+	
 	return render(request,"supervisor.html",{'L':list,'N':n,'cnt':cnt,'help_message_length':help_message_length,'M':tmp4,'Z':Z_Value,'TCUR':tcur,'args':args})
 
 def sup_message(request):	

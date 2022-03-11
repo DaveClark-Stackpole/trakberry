@@ -1023,20 +1023,23 @@ def tracking(request):
 
 
 
+	try:
+		t1=int(time.time())
+		db, cur = db_set(request)
+		# t = 1646737216.29
+		# m = '1533'
+		bql = "SELECT * FROM track_data"
+		cur.execute(bql)
+		tmp8 = cur.fetchall()
+		tmp9 = tmp8[0]
+		db.close()
 
-	t1=int(time.time())
-	db, cur = db_set(request)
-	# t = 1646737216.29
-	# m = '1533'
-	bql = "SELECT * FROM track_data"
-	cur.execute(bql)
-	tmp8 = cur.fetchall()
-	tmp9 = tmp8[0]
-	db.close()
 
 
-	t2=int(time.time())
-	ss = t2 - t1
+		t2=int(time.time())
+		ss = t2 - t1
+	except:
+		return render(request, "track_temp.html")
 
 
 
