@@ -64,6 +64,8 @@ def gf6_reaction_prev(request):
 	gf6_3627(request)
 	return render(request, "gf6_reaction.html") 
 
+
+
 def gf6_input(request):
 	t=int(time.time())
 	week_start_gf6(request,t)
@@ -88,6 +90,20 @@ def week_start_gf6(request,t):
 	a4 = tm[5]
 	week_start = t - a1 - a2 - a3 - a4
 	week_end = week_start + 432000
+	request.session['t'] = t
+	request.session['week_start7'] = week_start
+	request.session['week_end7'] = week_end
+	return
+
+def week_start_10r(request,t):
+	request.session['TCUR'] = t
+	tm = time.localtime(t)
+	a1 = tm[6] * 86400
+	a2 = tm[3] * 60 * 60
+	a3 = tm[4] * 60
+	a4 = tm[5]
+	week_start = t - a1 - a2 - a3 - a4 - 7200
+	week_end = week_start + 604800
 	request.session['t'] = t
 	request.session['week_start7'] = week_start
 	request.session['week_end7'] = week_end
@@ -388,6 +404,8 @@ def gf6_1731(request):
 			if i[1] == b2[c][1]:
 				b2[c][2] = 0
 	operation_totals = b2
+
+
 	total = zip(asset,part,operation)
 	asset_tuple = tuple(asset)
 	partno1 = '50-1731'
@@ -442,6 +460,8 @@ def gf6_1731(request):
 				tot2.append(tot)
 		tot3.append(tot2)
 	color_used = color2
+
+
 	for i in operation_totals:
 		i.append(op[i[1]])
 		if i[2] != 0:
@@ -450,6 +470,8 @@ def gf6_1731(request):
 			else:
 				color_used = color2
 		i.append(color_used)
+
+
 	for i in tot3:
 		for ii in i:
 			a3 = filter(lambda c:c[0]==ii[0],operation_totals)  
@@ -567,4 +589,267 @@ def gf6_3632(request):
 	request.session['op_totals_3632'] = op
 	request.session['op_span_3632'] = operation_totals
 	request.session['goal_3632'] = goal_todate
+
+	
 	return
+
+def prod_9341(request):
+
+	# ******************  Below data entered for each part  ******************************
+	goal = 32970   # Weekly6 Goal
+	color1 = '#96dbf8'  # Color for line 1
+	color2 = '#82BED7'  # Color for line 2
+	asset = ['1533']
+	part  = ['50-9341']
+	operation = [10]
+	# ************************************************************************************
+	shift = ['11pm-7am','7am-3pm','3pm-11pm']
+	shift2 = ['Mid','Day','Aft']
+	pdate_week = []
+	op = [0 for x in range(50)]	
+	ctr_operation = []
+	for i in operation:
+		ctr = 0
+		for ii in operation:
+			if i == ii: ctr = ctr + 1
+		ctr_operation.append(ctr)
+	operation_totals = zip(asset,operation,ctr_operation)
+	b1 = zip(*operation_totals)  # Unzip elements
+	b2 = [list(z) for z in zip(b1[0],b1[1],b1[2]) ]  # Rebuilt list so it's list of list
+	x = 0
+	for i in b2:
+		x = x + 1
+		for c in range(x,len(b2)):
+			if i[1] == b2[c][1]:
+				b2[c][2] = 0
+	operation_totals = b2
+	total = zip(asset,part,operation)
+	asset_tuple = tuple(asset)
+	partno1 = '50-9341'
+	week_start = request.session['week_start7']
+	week_end = request.session['week_end7']
+	t = request.session['t']
+	week_time_todate = t - week_start
+	goal_todate = int((goal / float(432000)) * week_time_todate)  # Current Goal to date
+	if goal_todate > goal: goal_todate = goal
+	pdate_start = stamp_pdate(week_start)
+	pdate_week.append(pdate_start)
+	for i in range(1,7):
+		stamp1 = week_start + (86400 * i)
+		pdate1 = stamp_pdate(stamp1)
+		pdate_week.append(pdate1) # This is the tuple of days in the week to cycle through
+
+
+
+	db, cur = db_set(request)   
+	# Select all reactions in asset list for date range
+	sql = "SELECT * FROM GFxPRoduction WHERE TimeStamp >= '%s' and TimeStamp <= '%s' and Machine = '%s'" %(week_start,week_end,asset[0])
+	cur.execute(sql)
+	tmp = cur.fetchall()
+	t1 = []
+	t2 = []
+	for i in tmp:
+		t1=[]
+		t1.append(i[0])
+		t1.append(str(i[1]))
+		t1.append(i[2])
+		t1.append(i[3])
+		t1.append(i[4])
+		t2.append(t1)
+	tot2 = []
+	tot3 = []
+
+	for i in asset:
+		op4 = filter(lambda c:c[0]==i,operation_totals)
+		op5 = op4[0][1]  # Current operation
+		tot2 =[]
+
+		st = week_start
+		ctr = 0
+
+		for j in pdate_week:
+			for k in shift:
+				ctr = ctr + 1
+				fi = st + 28800
+				tot =[]
+				tot.append(i)
+				tot.append(j)
+				tot.append(k)
+				a3 = filter(lambda c:c[4]>st and c[4]<fi,t2)  
+				sum1 = len(a3)
+
+				a33 = sum1
+				op[op5] = op[op5] + sum1
+
+
+				tot.append(a33)
+				tot2.append(tot)
+				# if ctr > 2:
+				# 	r=3/0
+				st = st + 28800
+
+		tot3.append(tot2)
+
+
+	color_used = color2
+
+
+	for i in operation_totals:
+		i.append(op[i[1]])
+		if i[2] != 0:
+			if color_used == color2 :
+				color_used = color1
+			else:
+				color_used = color2
+		i.append(color_used)
+	for i in tot3:
+		for ii in i:
+			a3 = filter(lambda c:c[0]==ii[0],operation_totals)  
+			a4=a3[0][4]
+			ii.append(a4)
+	request.session['totals_9341'] = tot3
+	request.session['shift_9341'] = shift2  #Need 
+	request.session['pdate_9341'] = pdate_week  #Need
+	request.session['op_totals_9341'] = op
+	request.session['op_span_9341'] = operation_totals
+	request.session['goal_9341'] = goal_todate
+
+	return
+
+def prod_0455(request):
+
+	# ******************  Below data entered for each part  ******************************
+	goal = 12460   # Weekly6 Goal
+	color1 = '#96dbf8'  # Color for line 1
+	color2 = '#82BED7'  # Color for line 2
+	asset = ['1816']
+	part  = ['50-0455']
+	operation = [10]
+	# ************************************************************************************
+	shift = ['11pm-7am','7am-3pm','3pm-11pm']
+	shift2 = ['Mid','Day','Aft']
+	pdate_week = []
+	op = [0 for x in range(50)]	
+	ctr_operation = []
+	for i in operation:
+		ctr = 0
+		for ii in operation:
+			if i == ii: ctr = ctr + 1
+		ctr_operation.append(ctr)
+	operation_totals = zip(asset,operation,ctr_operation)
+	b1 = zip(*operation_totals)  # Unzip elements
+	b2 = [list(z) for z in zip(b1[0],b1[1],b1[2]) ]  # Rebuilt list so it's list of list
+	x = 0
+	for i in b2:
+		x = x + 1
+		for c in range(x,len(b2)):
+			if i[1] == b2[c][1]:
+				b2[c][2] = 0
+	operation_totals = b2
+	total = zip(asset,part,operation)
+	asset_tuple = tuple(asset)
+	partno1 = '50-9341'
+	week_start = request.session['week_start7']
+	week_end = request.session['week_end7']
+	t = request.session['t']
+	week_time_todate = t - week_start
+	goal_todate = int((goal / float(432000)) * week_time_todate)  # Current Goal to date
+	if goal_todate > goal: goal_todate = goal
+	pdate_start = stamp_pdate(week_start)
+	pdate_week.append(pdate_start)
+	for i in range(1,7):
+		stamp1 = week_start + (86400 * i)
+		pdate1 = stamp_pdate(stamp1)
+		pdate_week.append(pdate1) # This is the tuple of days in the week to cycle through
+
+
+
+	db, cur = db_set(request)   
+	# Select all reactions in asset list for date range
+	sql = "SELECT * FROM GFxPRoduction WHERE TimeStamp >= '%s' and TimeStamp <= '%s' and Machine = '%s'" %(week_start,week_end,asset[0])
+	cur.execute(sql)
+	tmp = cur.fetchall()
+	t1 = []
+	t2 = []
+	for i in tmp:
+		t1=[]
+		t1.append(i[0])
+		t1.append(str(i[1]))
+		t1.append(i[2])
+		t1.append(i[3])
+		t1.append(i[4])
+		t2.append(t1)
+	tot2 = []
+	tot3 = []
+
+	for i in asset:
+		op4 = filter(lambda c:c[0]==i,operation_totals)
+		op5 = op4[0][1]  # Current operation
+		tot2 =[]
+
+		st = week_start
+		ctr = 0
+
+		for j in pdate_week:
+			for k in shift:
+				ctr = ctr + 1
+				fi = st + 28800
+				tot =[]
+				tot.append(i)
+				tot.append(j)
+				tot.append(k)
+				a3 = filter(lambda c:c[4]>st and c[4]<fi,t2)  
+				sum1 = len(a3)
+
+				a33 = sum1
+				op[op5] = op[op5] + sum1
+
+
+				tot.append(a33)
+				tot2.append(tot)
+				# if ctr > 2:
+				# 	r=3/0
+				st = st + 28800
+
+		tot3.append(tot2)
+
+
+	color_used = color2
+
+
+	for i in operation_totals:
+		i.append(op[i[1]])
+		if i[2] != 0:
+			if color_used == color2 :
+				color_used = color1
+			else:
+				color_used = color2
+		i.append(color_used)
+	for i in tot3:
+		for ii in i:
+			a3 = filter(lambda c:c[0]==ii[0],operation_totals)  
+			a4=a3[0][4]
+			ii.append(a4)
+	request.session['totals_0455'] = tot3
+	request.session['shift_0455'] = shift2  #Need 
+	request.session['pdate_0455'] = pdate_week  #Need
+	request.session['op_totals_0455'] = op
+	request.session['op_span_0455'] = operation_totals
+	request.session['goal_0455'] = goal_todate
+
+	return
+
+def prod_10R(request):
+	t=int(time.time())
+	week_start_10r(request,t)
+	prod_9341(request)
+	prod_0455(request)
+	return render(request, "prod_10R.html")    
+
+def prod_10R_prev(request):
+	t=request.session['week_end7']
+	t=t-604800
+	week_start_10r(request,t)
+	prod_9341(request)
+	prod_0455(request)
+	return render(request, "prod_10R.html")  
