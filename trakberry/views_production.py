@@ -12,6 +12,7 @@ from trakberry.views2 import login_initial
 from trakberry.views_testing import machine_list_display
 from trakberry.views_vacation import vacation_temp, vacation_set_current, vacation_set_current2_1, vacation_set_current5,vacation_set_current6,vacation_set_current77
 from views_vacation import vacation_1
+from views_operations import week_start_10r
 from django.http import QueryDict
 import MySQLdb
 import json
@@ -1877,6 +1878,9 @@ def switch_plan_week(var1,var2,var3,request):
 	return overall
 
 def mgmt_goals(request):
+
+	
+
 	db, cur = db_set(request)   
 	p='50-0455'
 	sql = "SELECT * FROM tkb_production_goals WHERE part = '%s'" % (p)
@@ -1931,14 +1935,22 @@ def mgmt_goals(request):
 			g1.append(g)
 			pl1.append(p)
 		totals=zip(pr1,g1,pl1)
-
+		t=int(time.time())
+		week_start_10r(request,t)
+		st1 = request.session['week_start7']
+		fi1 = request.session['week_end7']
+		cur.execute("""CREATE TABLE IF NOT EXISTS tkb_weekly_goals(Id INT PRIMARY KEY AUTO_INCREMENT,part CHAR(80),goal CHAR(80), timestamp Int(80))""")
+		db.commit()
 		for i in totals:
 			cql = ('update tkb_production_goals SET goal = "%s",weekend="%s" WHERE part ="%s"' % (i[1],i[2],i[0]))
 			cur.execute(cql)
 			db.commit()
-
+			dql = ('DELETE FROM tkb_weekly_goals WHERE part = "%s" and timestamp > "%s" and timestamp < "%s"' % (i[0],st1,fi1))
+			cur.execute(dql)
+			db.commit()
+			cur.execute('''INSERT INTO tkb_weekly_goals(part,goal,timestamp) VALUES(%s,%s,%s)''', (i[0],i[1],t))
+			db.commit()
 		return render(request, "redirect_mgmt_track_week.html")
-
 	else:
 		form = sup_downForm()
 	args = {}

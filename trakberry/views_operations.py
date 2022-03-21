@@ -64,8 +64,6 @@ def gf6_reaction_prev(request):
 	gf6_3627(request)
 	return render(request, "gf6_reaction.html") 
 
-
-
 def gf6_input(request):
 	t=int(time.time())
 	week_start_gf6(request,t)
@@ -594,9 +592,18 @@ def gf6_3632(request):
 	return
 
 def prod_9341(request):
-
+	prt7 = '50-9341'
+	db, cur = db_set(request) 
+	try:
+		st1 = request.session['week_start7']
+		fi1 = request.session['week_end7']
+		sql = "SELECT * FROM tkb_weekly_goals WHERE part = '%s' and timeStamp >= '%s' and timeStamp <= '%s'" %(prt7,st1,fi1)
+		cur.execute(sql)
+		tmp = cur.fetchall()
+		goal = int(tmp[0][2])
+	except:
+		goal = 32970
 	# ******************  Below data entered for each part  ******************************
-	goal = 32970   # Weekly6 Goal
 	color1 = '#96dbf8'  # Color for line 1
 	color2 = '#82BED7'  # Color for line 2
 	asset = ['1533']
@@ -641,7 +648,7 @@ def prod_9341(request):
 
 
 
-	db, cur = db_set(request)   
+	 
 	# Select all reactions in asset list for date range
 	sql = "SELECT * FROM GFxPRoduction WHERE TimeStamp >= '%s' and TimeStamp <= '%s' and Machine = '%s'" %(week_start,week_end,asset[0])
 	cur.execute(sql)
@@ -717,9 +724,18 @@ def prod_9341(request):
 	return
 
 def prod_0455(request):
-
+	prt7 = '50-0455'
+	db, cur = db_set(request) 
+	# try:
+	st1 = request.session['week_start7']
+	fi1 = request.session['week_end7']
+	sql = "SELECT * FROM tkb_weekly_goals WHERE part = '%s' and timeStamp >= '%s' and timeStamp <= '%s'" %(prt7,st1,fi1)
+	cur.execute(sql)
+	tmp = cur.fetchall()
+	goal = int(tmp[0][2])
+	# except:
+	# 	goal = 12460
 	# ******************  Below data entered for each part  ******************************
-	goal = 12460   # Weekly6 Goal
 	color1 = '#96dbf8'  # Color for line 1
 	color2 = '#82BED7'  # Color for line 2
 	asset = ['1816']
@@ -764,7 +780,6 @@ def prod_0455(request):
 
 
 
-	db, cur = db_set(request)   
 	# Select all reactions in asset list for date range
 	sql = "SELECT * FROM GFxPRoduction WHERE TimeStamp >= '%s' and TimeStamp <= '%s' and Machine = '%s'" %(week_start,week_end,asset[0])
 	cur.execute(sql)
