@@ -73,8 +73,6 @@ def db_set(request):  # Module to set DB settings to the one that works.  Whethe
 		cursor.execute(sql)
 		tmp2 = cursor.fetchall()
 		request.session["local_toggle"]="/trakberry"
-
-		r=4/0
 		return db, cursor
 	except:
 		try:
