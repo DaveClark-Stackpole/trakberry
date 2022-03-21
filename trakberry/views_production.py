@@ -3498,7 +3498,7 @@ def cell_track_0455(request):
 		else:
 			cc='#FF0400'
 
-		if machine2=='1800' or machine2=='1801' or machine2 =='1802': cc='#C8C8C8'
+		# if machine2=='1800' or machine2=='1801' or machine2 =='1802': cc='#C8C8C8'
 		color8.append(cc)
 		rate8.append(rate3)
 		machine8.append(machine2)
