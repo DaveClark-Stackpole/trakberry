@@ -139,7 +139,8 @@ from views_production import mgmt_priorities,auto_updater,cell_track_9341,track_
 from views_production import cell_track_9341_history_off,mgmt_track_week,mgmt_goals
 from views_production import plus_0455,minus_0455,plus_9341,minus_9341,plus_3050,minus_3050,plus_1467,minus_1467, wip_update
 
-from views_operations import gf6_reaction,gf6_input,gf6_reaction_prev,gf6_input_prev,prod_9341,prod_10R,prod_10R_prev
+from views_operations import gf6_reaction,gf6_input,gf6_reaction_prev,gf6_input_prev,prod_9341,prod_10R,prod_10R_prev, prod_728,prod_728fault,prod_728fault_prev
+
 
 
 from views4 import ios_test, IsDone, NotDone, target_fix1, medium_production, multidrop, scantest, target_fix1
@@ -649,6 +650,9 @@ urlpatterns = [
 	url(r'^prod_9341/', prod_9341),
 	url(r'^prod_10R/', prod_10R),
 	url(r'^prod_10R_prev/', prod_10R_prev),
+	url(r'^prod_728/', prod_728),
+	url(r'^prod_728fault/', prod_728fault),
+	url(r'^prod_728fault_prev/', prod_728fault_prev),
 
 	# ************************************************************************
 
