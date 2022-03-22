@@ -12,7 +12,6 @@ from trakberry.views2 import login_initial
 from trakberry.views_testing import machine_list_display
 from trakberry.views_vacation import vacation_temp, vacation_set_current, vacation_set_current2_1, vacation_set_current5,vacation_set_current6,vacation_set_current77
 from views_vacation import vacation_1
-from views_operations import week_start_10r
 from django.http import QueryDict
 import MySQLdb
 import json
@@ -368,7 +367,10 @@ def track_email(request):
 
 
 
+
+
 def track_area(request):
+
 	data_area = request.session['data_area'] # Data for 1 or 2 chart
 	target_area = int(request.session['rate_area'])
 	prt = request.session['part_area']
@@ -435,9 +437,12 @@ def track_area(request):
 
 	db, cur = db_set(request)
 
+	
 
 
-	aql = "SELECT COUNT(*) FROM track_data WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (u,t,prt,asset1,asset2,asset3,asset4)
+
+
+	aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (u,t,prt,asset1,asset2,asset3,asset4)
 	cur.execute(aql)
 	tmp2 = cur.fetchall()
 	tmp3 = tmp2[0]
@@ -446,43 +451,36 @@ def track_area(request):
 	# var1 = 'count' + data_area
 	# request.session[var1] = cnt
 	if week_current_seconds > 43200:
-		weekend_cnt = 0
-		# bql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (weekend_start,t,prt,asset1,asset2,asset3,asset4)
-		# cur.execute(bql)
-		# tmp8 = cur.fetchall()
-		# tmp9 = tmp8[0]
-		# weekend_cnt = tmp9[0]
+		bql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (weekend_start,t,prt,asset1,asset2,asset3,asset4)
+		cur.execute(bql)
+		tmp8 = cur.fetchall()
+		tmp9 = tmp8[0]
+		weekend_cnt = tmp9[0]
 
-	# bql = "SELECT SUM(Count) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (week_start1,t,prt,asset1,asset2,asset3,asset4)
-	# cur.execute(bql)
-	# tmp8 = cur.fetchall()
-	# tmp9 = tmp8[0]
-	# try:
-	# 	week_cnt = int(tmp9[0])
-	# except:
-	# 	week_cnt = 0
-	# bql = "SELECT SUM(Count) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (week_start2,week_start1,prt,asset1,asset2,asset3,asset4)
-	# cur.execute(bql)
-	# tmp8 = cur.fetchall()
-	# tmp9 = tmp8[0]
-	# try:
-	# 	week_cnt2 = int(tmp9[0])
-	# except:
-	# 	week_cnt2 = 0
-	# bql = "SELECT SUM(Count) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (week_start3,week_start2,prt,asset1,asset2,asset3,asset4)
-	# cur.execute(bql)
-	# tmp8 = cur.fetchall()
-	# tmp9 = tmp8[0]
-	# try:
-	# 	week_cnt3 = int(tmp9[0])
-	# except:
-	# 	week_cnt3 = 0
-
-	week_cnt = 0
-	week_cnt2 = 0
-	week_cnt3 = 0
-
-
+	bql = "SELECT SUM(Count) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (week_start1,t,prt,asset1,asset2,asset3,asset4)
+	cur.execute(bql)
+	tmp8 = cur.fetchall()
+	tmp9 = tmp8[0]
+	try:
+		week_cnt = int(tmp9[0])
+	except:
+		week_cnt = 0
+	bql = "SELECT SUM(Count) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (week_start2,week_start1,prt,asset1,asset2,asset3,asset4)
+	cur.execute(bql)
+	tmp8 = cur.fetchall()
+	tmp9 = tmp8[0]
+	try:
+		week_cnt2 = int(tmp9[0])
+	except:
+		week_cnt2 = 0
+	bql = "SELECT SUM(Count) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (week_start3,week_start2,prt,asset1,asset2,asset3,asset4)
+	cur.execute(bql)
+	tmp8 = cur.fetchall()
+	tmp9 = tmp8[0]
+	try:
+		week_cnt3 = int(tmp9[0])
+	except:
+		week_cnt3 = 0
 
 	u1, wd1, m1, day1, shift1, prev_cnt1 = [],[],[],[],[],[]
 	utemp = u
@@ -496,19 +494,14 @@ def track_area(request):
 		m1.append(x2)
 		day1.append(x3)
 		shift1.append(x4)
-		# aql = "SELECT SUM(Count) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (unew,utemp,prt,asset1,asset2,asset3,asset4)
+		aql = "SELECT SUM(Count) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (unew,utemp,prt,asset1,asset2,asset3,asset4)
 
-		# # aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (unew,utemp,prt,asset1,asset2,asset3,asset4)
-		# cur.execute(aql)
-		# tmp2 = cur.fetchall()
-		# tmp3 = tmp2[0]
-
-
+		# aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (unew,utemp,prt,asset1,asset2,asset3,asset4)
+		cur.execute(aql)
+		tmp2 = cur.fetchall()
+		tmp3 = tmp2[0]
 		
-		# prev_cnt1.append(str(tmp3[0]))
-
-		prev_cnt1.append('0')
-
+		prev_cnt1.append(str(tmp3[0]))
 		try:
 			total_test = total_test + int(tmp3[0])
 		except:
@@ -597,8 +590,6 @@ def track_area(request):
 	gr_list = track_data(request,t,u,prt,rate1) # Get the Graph Data
 	data1 = zip(u1,wd1,m1,day1,shift1,prev_cnt1)
 	return data1, gr_list
-
-
 
 def track_area80(request):
 	data_area = request.session['8data_area'] # Data for 1 or 2 chart
@@ -980,66 +971,6 @@ def track_tri(request):
 
 
 def tracking(request):
-
-
-	# #Add this line to server if working on tracking
-	# return render(request, "track_temp.html")
-
-	
-
-
-
-	# db, cur = db_set(request)  
-	# cursor.execute("""DROP TABLE IF EXISTS track_data2""")
-	# cursor.execute("""CREATE TABLE IF NOT EXISTS track_history LIKE tkb_matrix_cache""")
-	# # cursor.execute('''INSERT track_data Select * From GFxPRoduction ''')
-
-
-	# ii=1646752913.37
-	# sql = '''INSERT into track_data2(Machine,Part,PerpetualCount,TimeStamp,Count) (Select Machine,Part,PerpetualCount,TimeStamp,Count From GFxPRoduction where TimeStamp > "%d")''' % (ii)
-	# cursor.execute(sql)
-	# db.commit()
-	# db.close()
-
-
-	# t=1646763850
-	# bql = "SELECT * FROM GFxPRoduction WHERE TimeStamp >= '%d'" % (t)
-	# cur.execute(bql)
-	# tmp8 = cur.fetchall()
-
-	# x=str(tmp8)
-
-	# sql="insert into track_history values(%s,%s,%s,%s,%s)" %(tmp8)
-
-
-	# ccc= "INSERT into track_history(LastWeek) VALUES'%s'" % (tmp8)
-	# cur.execute(sql)
-	# db.commit()
-
-
-
-
-
-	try:
-		t1=int(time.time())
-		db, cur = db_set(request)
-		# t = 1646737216.29
-		# m = '1533'
-		bql = "SELECT * FROM track_data"
-		cur.execute(bql)
-		tmp8 = cur.fetchall()
-		tmp9 = tmp8[0]
-		db.close()
-
-
-
-		t2=int(time.time())
-		ss = t2 - t1
-	except:
-		return render(request, "track_temp.html")
-
-
-
 	# These are the reset values for refreshing tracking .  increment each by one if you 
 	# want to refresh tracking to new rates
 	rt1 = 3
@@ -1081,7 +1012,7 @@ def tracking(request):
 	# *********************************************************************************
 
 	# net1(request)	  # Sets the app to server or local
-	# # force changes
+	# force changes
 	try:
 		try:
 			request.session['data_area'] = 1
@@ -1414,40 +1345,40 @@ def chart2_3050b(request):
 		request.session['asset4_area2'] = '770'
 		return render(request, "redirect_tracking.html")
 def chart1_5710(request):
-		request.session['area1'] = '50-5710 Inspection'
-		request.session['part_area1'] = '50-5710'
-		request.session['rate_area1'] = 58
-		request.session['asset1_area1'] = '769'
-		request.session['asset2_area1'] = '769'
-		request.session['asset3_area1'] = '769'
-		request.session['asset4_area1'] = '769'
+		request.session['area1'] = '1532 Production'
+		request.session['part_area1'] = '50-9341'
+		request.session['rate_area1'] = 112
+		request.session['asset1_area1'] = '1532'
+		request.session['asset2_area1'] = '1532'
+		request.session['asset3_area1'] = '1532'
+		request.session['asset4_area1'] = '1532'
 		return render(request, "redirect_tracking.html")
 def chart2_5710(request):
-		request.session['area2'] = '50-5710 Inspection'
-		request.session['part_area2'] = '50-5710'
-		request.session['rate_area2'] = 58
-		request.session['asset1_area2'] = '769'
-		request.session['asset2_area2'] = '769'
-		request.session['asset3_area2'] = '769'
-		request.session['asset4_area2'] = '769'
+		request.session['area2'] = '1532 Rejects'
+		request.session['part_area2'] = '50-9341'
+		request.session['rate_area2'] = 7
+		request.session['asset1_area2'] = '1532REJ'
+		request.session['asset2_area2'] = '1532REJ'
+		request.session['asset3_area2'] = '1532REJ'
+		request.session['asset4_area2'] = '1532REJ'
 		return render(request, "redirect_tracking.html")
 def chart1_5710b(request):
-		request.session['area1'] = '50-5710 Broach/Induction'
-		request.session['part_area1'] = '50-5710'
-		request.session['rate_area1'] = 189
-		request.session['asset1_area1'] = '770'
-		request.session['asset2_area1'] = '770'
-		request.session['asset3_area1'] = '770'
-		request.session['asset4_area1'] = '770'
+		request.session['area1'] = '1508 Production'
+		request.session['part_area1'] = '50-9341'
+		request.session['rate_area1'] = 112
+		request.session['asset1_area1'] = '1508'
+		request.session['asset2_area1'] = '1508'
+		request.session['asset3_area1'] = '1508'
+		request.session['asset4_area1'] = '1508'
 		return render(request, "redirect_tracking.html")
 def chart2_5710b(request):
-		request.session['area2'] = '50-5710 Broach/Induction'
-		request.session['part_area2'] = '50-5710'
-		request.session['rate_area2'] = 189
-		request.session['asset1_area2'] = '770'
-		request.session['asset2_area2'] = '770'
-		request.session['asset3_area2'] = '770'
-		request.session['asset4_area2'] = '770'
+		request.session['area2'] = '1508 Rejects'
+		request.session['part_area2'] = '50-9341'
+		request.session['rate_area2'] = 7
+		request.session['asset1_area2'] = '1508REJ'
+		request.session['asset2_area2'] = '1508REJ'
+		request.session['asset3_area2'] = '1508REJ'
+		request.session['asset4_area2'] = '1508REJ'
 		return render(request, "redirect_tracking.html")
 def chart1_0455(request):
 		request.session['area1'] = '50-0455 Inspection'
@@ -1874,9 +1805,6 @@ def switch_plan_week(var1,var2,var3,request):
 	return overall
 
 def mgmt_goals(request):
-
-	
-
 	db, cur = db_set(request)   
 	p='50-0455'
 	sql = "SELECT * FROM tkb_production_goals WHERE part = '%s'" % (p)
@@ -1931,22 +1859,14 @@ def mgmt_goals(request):
 			g1.append(g)
 			pl1.append(p)
 		totals=zip(pr1,g1,pl1)
-		t=int(time.time())
-		week_start_10r(request,t)
-		st1 = request.session['week_start7']
-		fi1 = request.session['week_end7']
-		cur.execute("""CREATE TABLE IF NOT EXISTS tkb_weekly_goals(Id INT PRIMARY KEY AUTO_INCREMENT,part CHAR(80),goal CHAR(80), timestamp Int(80))""")
-		db.commit()
+
 		for i in totals:
 			cql = ('update tkb_production_goals SET goal = "%s",weekend="%s" WHERE part ="%s"' % (i[1],i[2],i[0]))
 			cur.execute(cql)
 			db.commit()
-			dql = ('DELETE FROM tkb_weekly_goals WHERE part = "%s" and timestamp > "%s" and timestamp < "%s"' % (i[0],st1,fi1))
-			cur.execute(dql)
-			db.commit()
-			cur.execute('''INSERT INTO tkb_weekly_goals(part,goal,timestamp) VALUES(%s,%s,%s)''', (i[0],i[1],t))
-			db.commit()
+
 		return render(request, "redirect_mgmt_track_week.html")
+
 	else:
 		form = sup_downForm()
 	args = {}
@@ -3138,7 +3058,6 @@ def cell_track_9341_history_off(request):
 
 
 def cell_track_9341(request):
-
 	shift_start, shift_time, shift_left, shift_end = stamp_shift_start(request)	 # Get the Time Stamp info
 	machines1 = ['1504','1506','1519','1520','1502','1507','1501','1515','1508','1532','1509','1514','1510','1503','1511','1518','1521','1522','1523','1539','1540','1524','1525','1538','1541','1531','1527','1530','1528','1513','1533']
 	rate = [8,8,8,8,4,4,4,4,3,3,2,2,2,2,2,8,8,8,8,4,4,4,4,3,2,2,2,2,2,1,1]
@@ -3152,9 +3071,6 @@ def cell_track_9341(request):
 	cur.execute(sql)
 	wip = cur.fetchall()
 	wip_stamp = int(wip[0][1])
-
-
-
 
 	# [1] -- Machine    [4] -- Timestamp  [2] -- Part   [5] -- Count ..usually 1
 	sql = "SELECT * FROM GFxPRoduction WHERE TimeStamp >= '%d' and Part = '%s'" % (wip_stamp,prt)
@@ -3172,7 +3088,6 @@ def cell_track_9341(request):
 	wip_prod[80] = wip_prod[50]
 	wip_prod[70] = wip_prod[50]
 	wip_prod[60] = wip_prod[50]
-	
 	# ******************************************************************************
 
 	op5=[]
@@ -3216,58 +3131,33 @@ def cell_track_9341(request):
 	op8=[]
 	rt8=[]
 	request.session['shift_start'] = shift_start
-
-
-	# Preliminary testing variables for new methord
-	tt = int(time.time())
-	t=tt-300
-	start1 = tt-shift_time
-	sql="SELECT * FROM GFxPRoduction WHERE TimeStamp >='%s' and Part='%s'"%(start1,prt)
-	cur.execute(sql)
-	tmpX=cur.fetchall()
-	db.close()
-	# *********************************************
-
 	for i in machine_rate:
 		machine2 = i[0]
-
 		rate2 = 3200 / float(i[1])
 		rate2 = (rate2 / float(28800)) * 300
-
-
-		# If 1510 going take out below conditional statement
-		if machine2 == '1510':
-			machine22 = '1514'
-			list2 = filter(lambda x:x[4]>=t and x[1]==machine22,tmpX)  # Filter list to get 5 min sum
-			cnt = len(list2)
-			list2 = filter(lambda x:x[4]>=start1 and x[1]==machine22,tmpX)  # Filter list to get 5 min sum
-			cnt33 = len(list2)
-		else:
-			# New faster method to search Data.  Doesn't bog down DB
-			list2 = filter(lambda x:x[4]>=t and x[1]==machine2,tmpX)  # Filter list to get 5 min sum
-			cnt = len(list2)
-			list2 = filter(lambda x:x[4]>=start1 and x[1]==machine2,tmpX)  # Filter list to get 5 min sum
-			cnt33 = len(list2)
-
-		# Old Method to search Data
-		# try:
-		# 	sql = "SELECT SUM(Count) FROM GFxPRoduction WHERE TimeStamp >= '%d' and Part = '%s' and Machine = '%s'" % (t,prt,machine2)
-		# 	cur.execute(sql)
-		# 	tmp2 = cur.fetchall()
-		# 	tmp3 = tmp2[0]
-		# 	cnt = int(tmp3[0])
-		# except:
-		# 	cnt = 0
-		# try:
-		# 	sql = "SELECT SUM(Count) FROM GFxPRoduction WHERE TimeStamp >= '%d' and Part = '%s' and Machine = '%s'" % (start1,prt,machine2)
-		# 	cur.execute(sql)
-		# 	tmp22 = cur.fetchall()
-		# 	tmp33 = tmp22[0]
-		# 	cnt33 = int(tmp33[0])
-		# except:
-		# 	cnt33 = 0
+		tt = int(time.time())
+		start1 = tt - shift_time
+		t= tt-300
+		try:
+			sql = "SELECT SUM(Count) FROM GFxPRoduction WHERE TimeStamp >= '%d' and Part = '%s' and Machine = '%s'" % (t,prt,machine2)
+			cur.execute(sql)
+			tmp2 = cur.fetchall()
+			tmp3 = tmp2[0]
+			cnt = int(tmp3[0])
+		except:
+			cnt = 0
+		try:
+			sql = "SELECT SUM(Count) FROM GFxPRoduction WHERE TimeStamp >= '%d' and Part = '%s' and Machine = '%s'" % (start1,prt,machine2)
+			cur.execute(sql)
+			tmp22 = cur.fetchall()
+			tmp33 = tmp22[0]
+			cnt33 = int(tmp33[0])
+		except:
+			cnt33 = 0
 
 		if cnt is None: cnt = 0
+
+
 		rate3 = cnt / float(rate2)
 		rate3 = int(rate3 * 100) # This will be the percentage we use to determine colour
 
@@ -3321,7 +3211,7 @@ def cell_track_9341(request):
 
 	for i in total8:
 		op_total[i[4]]=op_total[i[4]] + i[3]
-	
+	db.close()
 	jobs1 = zip(machines1,line1,operation1)
 
 	
@@ -3337,7 +3227,6 @@ def cell_track_9341(request):
 	args['form'] = form
 
 	total8_0455,op_total_0455, wip_zip_0455 = cell_track_0455(request)
-
 
 	return render(request,'cell_track_9341.html',{'codes':total8,'op':op_total,'wip':wip_zip,'codes_60':total8_0455,'op_60':op_total_0455,'wip_60':wip_zip_0455,'args':args})	
 
@@ -3411,49 +3300,29 @@ def cell_track_0455(request):
 	op8=[]
 	rt8=[]
 	request.session['shift_start'] = shift_start
-
-
-	# Preliminary testing variables for new methord
-	tt = int(time.time())
-	t=tt-300
-	start1 = tt-shift_time
-	sql="SELECT * FROM GFxPRoduction WHERE TimeStamp >='%s' and Part='%s'"%(start1,prt)
-	cur.execute(sql)
-	tmpX=cur.fetchall()
-	db.close()
-	# *********************************************
-
-
-
 	for i in machine_rate:
 		machine2 = i[0]
 		rate2 = 900 / float(i[1])
 		rate2 = (rate2 / float(28800)) * 300
-
-		# New faster method to search Data.  Doesn't bog down DB
-		list2 = filter(lambda x:x[4]>=t and x[1]==machine2,tmpX)  # Filter list to get 5 min sum
-		cnt = len(list2)
-		list2 = filter(lambda x:x[4]>=start1 and x[1]==machine2,tmpX)  # Filter list to get 5 min sum
-		cnt33 = len(list2)
-
-		# try:
-		# 	sql = "SELECT SUM(Count) FROM GFxPRoduction WHERE TimeStamp >= '%d' and Part = '%s' and Machine = '%s'" % (t,prt,machine2)
-		# 	cur.execute(sql)
-		# 	tmp2 = cur.fetchall()
-		# 	tmp3 = tmp2[0]
-		# 	cnt = int(tmp3[0])
-		# except:
-		# 	cnt = 0
-		# try:
-		# 	sql = "SELECT SUM(Count) FROM GFxPRoduction WHERE TimeStamp >= '%d' and Part = '%s' and Machine = '%s'" % (start1,prt,machine2)
-		# 	cur.execute(sql)
-		# 	tmp22 = cur.fetchall()
-		# 	tmp33 = tmp22[0]
-		# 	cnt33 = int(tmp33[0])
-		# except:
-		# 	cnt33 = 0
-
-
+		tt = int(time.time())
+		start1 = tt - shift_time
+		t= tt-300
+		try:
+			sql = "SELECT SUM(Count) FROM GFxPRoduction WHERE TimeStamp >= '%d' and Part = '%s' and Machine = '%s'" % (t,prt,machine2)
+			cur.execute(sql)
+			tmp2 = cur.fetchall()
+			tmp3 = tmp2[0]
+			cnt = int(tmp3[0])
+		except:
+			cnt = 0
+		try:
+			sql = "SELECT SUM(Count) FROM GFxPRoduction WHERE TimeStamp >= '%d' and Part = '%s' and Machine = '%s'" % (start1,prt,machine2)
+			cur.execute(sql)
+			tmp22 = cur.fetchall()
+			tmp33 = tmp22[0]
+			cnt33 = int(tmp33[0])
+		except:
+			cnt33 = 0
 		if cnt is None: cnt = 0
 		rate3 = cnt / float(rate2)
 		rate3 = int(rate3 * 100) # This will be the percentage we use to determine colour
@@ -3494,7 +3363,7 @@ def cell_track_0455(request):
 		else:
 			cc='#FF0400'
 
-		# if machine2=='1800' or machine2=='1801' or machine2 =='1802': cc='#C8C8C8'
+		if machine2=='1800' or machine2=='1801' or machine2 =='1802': cc='#C8C8C8'
 		color8.append(cc)
 		rate8.append(rate3)
 		machine8.append(machine2)
@@ -3509,7 +3378,7 @@ def cell_track_0455(request):
 
 	for i in total8:
 		op_total[i[4]]=op_total[i[4]] + i[3]
-
+	db.close()
 	jobs1 = zip(machines1,line1,operation1)
 
 	return total8, op_total, wip_zip
@@ -3780,13 +3649,6 @@ def wip_update(request):
 			list1 = filter(lambda x:x[1]==i[0],wip_data)  # Filter list and pull out machine to make list1
 			count1=len(list1)  # Total all in list1
 			wip_prod[i[2]] = wip_prod[i[2]] + count1  # Add total to that operation variable
-	
-		# This section is temporary as no grinding *************************************
-		wip_prod[80] = wip_prod[50]
-		wip_prod[70] = wip_prod[50]
-		wip_prod[60] = wip_prod[50]
-		# ******************************************************************************
-
 		op5=[]
 		wip5=[]
 		prd5=[]

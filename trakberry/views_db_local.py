@@ -8,8 +8,8 @@ from smtplib import SMTP
 import MySQLdb
 
 def net1(request):
-	# request.session["local_switch"] = 0
-	# request.session["local_toggle"] = "/trakberry"
+	request.session["local_switch"] = 0
+	request.session["local_toggle"] = "/trakberry"
 	# ###this
 	request.session["local_switch"] = 1
 	request.session["local_toggle"] = ""
@@ -73,8 +73,6 @@ def db_set(request):  # Module to set DB settings to the one that works.  Whethe
 		cursor.execute(sql)
 		tmp2 = cursor.fetchall()
 		request.session["local_toggle"]="/trakberry"
-
-		r=4/0
 		return db, cursor
 	except:
 		try:
