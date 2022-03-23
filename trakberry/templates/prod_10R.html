@@ -121,6 +121,48 @@
 		color: white;
 	}
 </style>
+<style>   
+	#prodto {
+		font-family: Arial, Helvetica, sans-serif;
+		border-collapse: collapse;
+		width: 100%;
+	}
+	#prodto td, #prodto th {
+		border: 1px solid rgb(179, 117, 24);
+		padding: 3px;
+	}
+	/* #prodsum tr:nth-child(even){background-color: #96dbf8;}
+	#prodsum tr:nth-child(odd){background-color: #45b4c6;} */
+	#prodto tr:hover {background-color: #ddd;}
+	#prodto th {
+		padding-top: 10px;
+		padding-bottom: 10px;
+		text-align: left;
+		background-color: rgb(184, 145, 88);
+		color: white;
+	}
+</style>
+<style>   
+	#prodtr {
+		font-family: Arial, Helvetica, sans-serif;
+		border-collapse: collapse;
+		width: 100%;
+	}
+	#prodtr td, #prodtr th {
+		border: 1px solid rgb(180, 142, 216);
+		padding: 3px;
+	}
+	/* #prodsum tr:nth-child(even){background-color: #96dbf8;}
+	#prodsum tr:nth-child(odd){background-color: #45b4c6;} */
+	#prodtr tr:hover {background-color: #ddd;}
+	#prodtr th {
+		padding-top: 10px;
+		padding-bottom: 10px;
+		text-align: left;
+		background-color: rgb(80, 54, 85);
+		color: white;
+	}
+</style>
 
 </head>
 
@@ -224,6 +266,106 @@
 {% endfor %}
 </table>
 
+		<br><br>
+		<table id="prodtr">
+			<th colspan="25"><center><font style="font-weight:bolder;font-size:x-large;color:#fff;">1467 Weekly Production</font>
+			</th>
+			<tr><th rowspan="2"><center>Machine</center></th>
+				{% for i in request.session.pdate_1467 %}
+					<th colspan="3"><center>{{i}}</center></th>
+				{% endfor %}
+				<th rowspan="2"><center>Week Totals</center></th>
+				<th rowspan="2"><center>Current Goal</center></th>
+				<th rowspan="2"><center>Inventory Change</center></th>
+			</tr><tr>
+				{% for i in request.session.pdate_1467 %}
+					{% for ii in request.session.shift_1467 %}
+						<th><center>{{ii}}</center></th>
+					{% endfor %}
+				{% endfor %}
+			</tr>
+		{% for i in request.session.totals_1467 %}
+			<tr>
+					<td bgcolor="#C0A8D9"><center>Inspection</center></td>
+					{% for ii in i %}
+					   <td bgcolor="#C0A8D9"><center>{{ii.3}}</center></td>
+				{% endfor %}
+				{% for x in request.session.op_span_1467 %}
+					{% if x.0 == i.0.0 and x.2 > 0 %} 
+						{% if x.3 < request.session.goal_1467 %}
+							<td  bgcolor="#C0A8D9" rowspan="{{x.2}}"><center><b><font style="color:rgb(180, 0, 0);">{{x.3}}</font></b></center></td>
+						{% else %}
+							<td  bgcolor="#C0A8D9" rowspan="{{x.2}}"><center><b>{{x.3}}</b></center></td>
+						{% endif %}
+							<td  bgcolor="#C0A8D9" rowspan="{{x.2}}"><center><b>{{request.session.goal_1467}}</b></center></td>
+							{% if request.session.inv_change_1467 < 0 %}
+									<td  bgcolor="#C0A8D9" rowspan="{{x.2}}"><center><b><font style="color:rgb(180, 0, 0);">{{request.session.inv_change_1467}}</font></b></center></td>
+							{% else %}
+									<td  bgcolor="#C0A8D9" rowspan="{{x.2}}"><center><b><font style="color:rgb(12, 12, 12);">{{request.session.inv_change_1467}}</font></b></center></td>
+							{% endif %}
+							
+					{% endif %}
+				{% endfor %}
+			</tr>
+		{% endfor %}
+		</table>
+		<br><br>
+        <table id="prodto">
+			<td colspan="25" bgcolor="#9B7A4A"><center><font style="font-weight:bolder;font-size:x-large;color:#fff;">3050 Weekly Production</font></center></td>
+		</th>
+		<tr><th rowspan="2"><center>Machine</center></th>
+			{% for i in request.session.pdate_3050 %}
+				<th colspan="3"><center>{{i}}</center></th>
+			{% endfor %}
+			<th rowspan="2"><center>Week Totals</center></th>
+			<th rowspan="2"><center>Current Goal</center></th>
+			<th rowspan="2"><center>Inventory Change</center></th>
+		</tr><tr>
+			{% for i in request.session.pdate_3050 %}
+				{% for ii in request.session.shift_3050 %}
+					<th><center>{{ii}}</center></th>
+				{% endfor %}
+			{% endfor %}
+		</tr>
+        {% for i in request.session.totals_3050 %}
+            <tr>
+                {% if i.0.0 == '900' %}
+                    <td bgcolor="{{i.0.4}}"><center>Pack</center></td>
+                {% else %} 
+                    <td bgcolor="{{i.0.4}}"><center>{{i.0.0}}</center></td>
+                {% endif %}
+           		 {% for ii in i %}
+               		<td bgcolor="{{ii.4}}"><center>{{ii.3}}</center></td>
+            	{% endfor %}
+				{% for x in request.session.op_span_3050 %}
+					{% if x.0 == i.0.0 and x.2 > 0 %} 
+						{% if x.3 < request.session.goal_3050 %}
+							<td  bgcolor="{{i.0.4}}" rowspan="{{x.2}}"><center><b><font style="color:rgb(180, 0, 0);">{{x.3}}</font></b></center></td>
+						{% else %}
+							<td  bgcolor="{{i.0.4}}" rowspan="{{x.2}}"><center><b>{{x.3}}</b></center></td>
+						{% endif %}
+							<td  bgcolor="{{i.0.4}}" rowspan="{{x.2}}"><center><b>{{request.session.goal_3050}}</b></center></td>
+
+							{% if i.0.0 == '900' %}
+								{% if request.session.inv_change_3050_2 < 0 %}
+									<td  bgcolor="{{i.0.4}}" rowspan="{{x.2}}"><center><b><font style="color:rgb(180, 0, 0);">{{request.session.inv_change_3050_2}}</font></b></center></td>
+								{% else %}
+									<td  bgcolor="{{i.0.4}}" rowspan="{{x.2}}"><center><b><font style="color:rgb(12, 12, 12);">{{request.session.inv_change_3050_2}}</font></b></center></td>
+								{% endif %}
+							{% else %}
+								{% if request.session.inv_change_3050_1 < 0 %}
+									<td  bgcolor="{{i.0.4}}" rowspan="{{x.2}}"><center><b><font style="color:rgb(180, 0, 0);">{{request.session.inv_change_3050_1}}</font></b></center></td>
+								{% else %}
+									<td  bgcolor="{{i.0.4}}" rowspan="{{x.2}}"><center><b><font style="color:rgb(12, 12, 12);">{{request.session.inv_change_3050_1}}</font></b></center></td>
+								{% endif %}
+							{% endif %}
+
+
+					{% endif %}
+				{% endfor %}
+			</tr>
+        {% endfor %}
+        </table>
     </div>
 </div>
 </body></html>
