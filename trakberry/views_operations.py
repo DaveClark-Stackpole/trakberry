@@ -1139,6 +1139,8 @@ def prod_10R_prev(request):
 	week_start_10r(request,t)
 	prod_9341(request)
 	prod_0455(request)
+	prod_3050(request)
+	prod_1467(request)
 	return render(request, "prod_10R.html")  
 
 def prod_728(request):
