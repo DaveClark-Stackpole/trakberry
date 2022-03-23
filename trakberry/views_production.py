@@ -3338,8 +3338,9 @@ def cell_track_9341(request):
 
 	total8_0455,op_total_0455, wip_zip_0455 = cell_track_0455(request)
 
-
-	return render(request,'cell_track_9341.html',{'codes':total8,'op':op_total,'wip':wip_zip,'codes_60':total8_0455,'op_60':op_total_0455,'wip_60':wip_zip_0455,'args':args})	
+	t = int(time.time())
+	
+	return render(request,'cell_track_9341.html',{'t':t,'codes':total8,'op':op_total,'wip':wip_zip,'codes_60':total8_0455,'op_60':op_total_0455,'wip_60':wip_zip_0455,'args':args})	
 
 
 # Same tracking for 0455
