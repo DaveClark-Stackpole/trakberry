@@ -858,8 +858,21 @@ def prod_0455(request):
 
 	return
 def prod_3050(request):
+	prt7 = '50-3050'
+	db, cur = db_set(request) 
+	st1 = request.session['week_start7']
+	fi1 = request.session['week_end7']
+	sql = "SELECT * FROM tkb_weekly_goals WHERE part = '%s' and timeStamp >= '%s' and timeStamp <= '%s'" %(prt7,st1,fi1)
+	cur.execute(sql)
+	tmp = cur.fetchall()
+	goal = int(tmp[0][2])
+
+
+
+
+
 	# ******************  Below data entered for each part  ******************************
-	goal = 6500   # Weekly6 Goal
+	# goal = 6500   # Weekly6 Goal
 	color1 = '#F1CE98'  # Color for line 1
 	color2 = '#E1C394'  # Color for line 2
 	asset = ['618','619','624','575','900']
@@ -993,15 +1006,13 @@ def prod_3050(request):
 def prod_1467(request):
 	prt7 = '50-1467'
 	db, cur = db_set(request) 
-	# try:
 	st1 = request.session['week_start7']
 	fi1 = request.session['week_end7']
 	sql = "SELECT * FROM tkb_weekly_goals WHERE part = '%s' and timeStamp >= '%s' and timeStamp <= '%s'" %(prt7,st1,fi1)
 	cur.execute(sql)
 	tmp = cur.fetchall()
 	goal = int(tmp[0][2])
-	# except:
-	# 	goal = 12460
+
 	# ******************  Below data entered for each part  ******************************
 	color1 = '#96dbf8'  # Color for line 1
 	color2 = '#82BED7'  # Color for line 2
