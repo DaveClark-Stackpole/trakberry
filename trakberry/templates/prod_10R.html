@@ -334,44 +334,32 @@
 			{% endfor %}
 		</tr>
         {% for i in request.session.totals_3050 %}
-            <tr>
-                {% if i.0.0 == '900' %}
-                    <td bgcolor="{{i.0.4}}"><center>Pack</center></td>
-                {% else %} 
-                    <td bgcolor="{{i.0.4}}"><center>{{i.0.0}}</center></td>
-                {% endif %}
-           		 {% for ii in i %}
-               		<td bgcolor="{{ii.4}}"><center>{{ii.3}}</center></td>
-            	{% endfor %}
+			<tr>
+					<td bgcolor="{{i.0.4}}"><center>Inspection</center></td>
+					{% for ii in i %}
+					   <td bgcolor="{{i.0.4}}"><center>{{ii.3}}</center></td>
+				{% endfor %}
 				{% for x in request.session.op_span_3050 %}
 					{% if x.0 == i.0.0 and x.2 > 0 %} 
-						{% if x.3 < request.session.goal_3050 %}
-							<td  bgcolor="{{i.0.4}}" rowspan="{{x.2}}"><center><b><font style="color:rgb(180, 0, 0);">{{x.3}}</font></b></center></td>
+						{% if request.session.total_prod_3050 < request.session.goal_3050 %}
+							<td  bgcolor="{{i.0.4}}" rowspan="{{x.2}}"><center><b><font style="color:rgb(180, 0, 0);">{{request.session.total_prod_3050}}</font></b></center></td>
 						{% else %}
-							<td  bgcolor="{{i.0.4}}" rowspan="{{x.2}}"><center><b>{{x.3}}</b></center></td>
+							<td  bgcolor="{{i.0.4}}" rowspan="{{x.2}}"><center><b>{{request.session.total_prod_3050}}</b></center></td>
 						{% endif %}
 							<td  bgcolor="{{i.0.4}}" rowspan="{{x.2}}"><center><b>{{request.session.goal_3050}}</b></center></td>
-
-							{% if i.0.0 == '900' %}
-								{% if request.session.inv_change_3050_2 < 0 %}
-									<td  bgcolor="{{i.0.4}}" rowspan="{{x.2}}"><center><b><font style="color:rgb(180, 0, 0);">{{request.session.inv_change_3050_2}}</font></b></center></td>
-								{% else %}
-									<td  bgcolor="{{i.0.4}}" rowspan="{{x.2}}"><center><b><font style="color:rgb(12, 12, 12);">{{request.session.inv_change_3050_2}}</font></b></center></td>
-								{% endif %}
+							{% if request.session.inv_change_3050 < 0 %}
+									<td  bgcolor="{{i.0.4}}" rowspan="{{x.2}}"><center><b><font style="color:rgb(180, 0, 0);">{{request.session.inv_change_3050}}</font></b></center></td>
 							{% else %}
-								{% if request.session.inv_change_3050_1 < 0 %}
-									<td  bgcolor="{{i.0.4}}" rowspan="{{x.2}}"><center><b><font style="color:rgb(180, 0, 0);">{{request.session.inv_change_3050_1}}</font></b></center></td>
-								{% else %}
-									<td  bgcolor="{{i.0.4}}" rowspan="{{x.2}}"><center><b><font style="color:rgb(12, 12, 12);">{{request.session.inv_change_3050_1}}</font></b></center></td>
-								{% endif %}
+									<td  bgcolor="{{i.0.4}}" rowspan="{{x.2}}"><center><b><font style="color:rgb(12, 12, 12);">{{request.session.inv_change_3050}}</font></b></center></td>
 							{% endif %}
-
-
+							
 					{% endif %}
 				{% endfor %}
 			</tr>
-        {% endfor %}
-        </table>
+		{% endfor %}
+		</table>
+
+
     </div>
 </div>
 </body></html>
