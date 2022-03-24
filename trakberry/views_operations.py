@@ -856,34 +856,37 @@ def prod_0455(request):
 	inv_change =  int(operation_totals[0][3]) - int(goal_todate)
 	request.session['inv_change_0455'] = inv_change
 
+	color1 = '#F1CE98'  # Color for line 1
+	color2 = '#E1C394'  # Color for line 2
+
+
+
 	return
+
+
 def prod_3050(request):
 	prt7 = '50-3050'
 	db, cur = db_set(request) 
+	# try:
 	st1 = request.session['week_start7']
 	fi1 = request.session['week_end7']
 	sql = "SELECT * FROM tkb_weekly_goals WHERE part = '%s' and timeStamp >= '%s' and timeStamp <= '%s'" %(prt7,st1,fi1)
 	cur.execute(sql)
 	tmp = cur.fetchall()
 	goal = int(tmp[0][2])
-
-
-
-
-
+	# except:
+	# 	goal = 12460
 	# ******************  Below data entered for each part  ******************************
-	# goal = 6500   # Weekly6 Goal
 	color1 = '#F1CE98'  # Color for line 1
 	color2 = '#E1C394'  # Color for line 2
-	asset = ['618','619','624','575','900']
-	part  = ['50-3050','50-3050','50-3050','50-3050']
-	operation = [10,10,10,10,20]
+	asset = ['769']
+	part  = ['50-3050']
+	operation = [10]
 	# ************************************************************************************
-
 	shift = ['11pm-7am','7am-3pm','3pm-11pm']
 	shift2 = ['Mid','Day','Aft']
 	pdate_week = []
-	op = [0 for x in range(140)]	
+	op = [0 for x in range(50)]	
 	ctr_operation = []
 	for i in operation:
 		ctr = 0
@@ -891,10 +894,8 @@ def prod_3050(request):
 			if i == ii: ctr = ctr + 1
 		ctr_operation.append(ctr)
 	operation_totals = zip(asset,operation,ctr_operation)
-
 	b1 = zip(*operation_totals)  # Unzip elements
 	b2 = [list(z) for z in zip(b1[0],b1[1],b1[2]) ]  # Rebuilt list so it's list of list
-
 	x = 0
 	for i in b2:
 		x = x + 1
@@ -902,31 +903,26 @@ def prod_3050(request):
 			if i[1] == b2[c][1]:
 				b2[c][2] = 0
 	operation_totals = b2
-
 	total = zip(asset,part,operation)
-
 	asset_tuple = tuple(asset)
 	partno1 = '50-3050'
-
 	week_start = request.session['week_start7']
 	week_end = request.session['week_end7']
 	t = request.session['t']
-
 	week_time_todate = t - week_start
 	goal_todate = int((goal / float(432000)) * week_time_todate)  # Current Goal to date
 	if goal_todate > goal: goal_todate = goal
-
 	pdate_start = stamp_pdate(week_start)
 	pdate_week.append(pdate_start)
-
 	for i in range(1,7):
 		stamp1 = week_start + (86400 * i)
 		pdate1 = stamp_pdate(stamp1)
 		pdate_week.append(pdate1) # This is the tuple of days in the week to cycle through
 
-	db, cur = db_set(request)   
+
+
 	# Select all reactions in asset list for date range
-	sql = "SELECT asset_num,pdate,shift,partno,actual_produced FROM sc_production1 WHERE pdate >= '%s' and pdate <= '%s' and (partno = '%s') and asset_num IN {}; ".format(asset_tuple) %(pdate_week[0],pdate_week[6],partno1)
+	sql = "SELECT * FROM GFxPRoduction WHERE TimeStamp >= '%s' and TimeStamp <= '%s' and Machine = '%s' and Part = '%s'" %(week_start,week_end,asset[0],part[0])
 	cur.execute(sql)
 	tmp = cur.fetchall()
 	t1 = []
@@ -939,41 +935,44 @@ def prod_3050(request):
 		t1.append(i[3])
 		t1.append(i[4])
 		t2.append(t1)
-		
-	# # *************************  Filter a list *****************************************************************
-	# a1 = zip(*tmp)  # Unzip elements
-	# a2 = [list(z) for z in zip(a1[0],a1[1],a1[2],a1[3],a1[4]) ]  # Rebuilt list so it's list of list
-	# aa2 = [list(z) for z in zip(a1[4])]  # Rebuilt list so it's list of list
-	# a3 = filter(lambda c:c[0]=='672',a2)  # Filter out '672' and form list a3
-	# a22 = int(aa2[0][0])
-	# a4 = filter(lambda c:c[2] == '3pm-11pm',a3)
-	# # **********************************************************************************************************
-
 	tot2 = []
 	tot3 = []
+
 	for i in asset:
 		op4 = filter(lambda c:c[0]==i,operation_totals)
 		op5 = op4[0][1]  # Current operation
 		tot2 =[]
+
+		st = week_start
+		ctr = 0
+
 		for j in pdate_week:
 			for k in shift:
+				ctr = ctr + 1
+				fi = st + 28800
 				tot =[]
 				tot.append(i)
 				tot.append(j)
 				tot.append(k)
-				a3 = filter(lambda c:c[0]==i and c[1]==j and c[2]==k,t2)  
-				try:
-					a33 = 0
-					for m in a3:
-						a33 = a33 + int(m[4])
-						op[op5] = op[op5] + int(m[4])
-				except:
-					a33 = 0
+				a3 = filter(lambda c:c[4]>st and c[4]<fi,t2)  
+				sum1 = len(a3)
+
+				a33 = sum1
+				op[op5] = op[op5] + sum1
+
+
 				tot.append(a33)
 				tot2.append(tot)
+				# if ctr > 2:
+				# 	r=3/0
+				st = st + 28800
+
 		tot3.append(tot2)
 
+
 	color_used = color2
+
+
 	for i in operation_totals:
 		i.append(op[i[1]])
 		if i[2] != 0:
@@ -982,26 +981,21 @@ def prod_3050(request):
 			else:
 				color_used = color2
 		i.append(color_used)
-
 	for i in tot3:
 		for ii in i:
 			a3 = filter(lambda c:c[0]==ii[0],operation_totals)  
 			a4=a3[0][4]
 			ii.append(a4)
 	request.session['totals_3050'] = tot3
-	request.session['shift_3050'] = shift2
-	request.session['pdate_3050'] = pdate_week
+	request.session['shift_3050'] = shift2  #Need 
+	request.session['pdate_3050'] = pdate_week  #Need
 	request.session['op_totals_3050'] = op
 	request.session['op_span_3050'] = operation_totals
-
-	inv_change1 =  int(operation_totals[0][3]) - int(goal_todate)
-	inv_change2 =  int(operation_totals[4][3]) - int(goal_todate)
-
-	request.session['inv_change_3050_1'] = inv_change1
-	request.session['inv_change_3050_2'] = inv_change2
-
-
 	request.session['goal_3050'] = goal_todate
+	request.session['total_prod_3050'] = int(operation_totals[0][3]) + 724
+	inv_change =  int(operation_totals[0][3]) - int(goal_todate)+724
+	request.session['inv_change_3050'] = inv_change
+
 	return
 def prod_1467(request):
 	prt7 = '50-1467'
