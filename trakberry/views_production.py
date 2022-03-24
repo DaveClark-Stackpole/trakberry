@@ -353,13 +353,13 @@ def track_email(request):
 
 	toaddrs = ["dclark@stackpole.com","jmcmaster@stackpole.com"]
 	#toaddrs = ["rrompen@stackpole.com","rbiram@stackpole.com","rzylstra@stackpole.com","lbaker@stackpole.com","dmilne@stackpole.com","sbrownlee@stackpole.com","pmurphy@stackpole.com","pstreet@stackpole.com","kfrey@stackpole.com","asmith@stackpole.com","smcmahon@stackpole.com","gharvey@stackpole.com","ashoemaker@stackpole.com","jreid@stackpole.com"]
-	fromaddr = 'stackpole@stackpole.com'
+	fromaddr = 'stackpolepmds@outlook.com'
 	frname = 'Dave'
-	server = SMTP('smtp.gmail.com', 587)
+	server = SMTP('smtp.office365.com', 587)
 	server.ehlo()
 	server.starttls()
 	server.ehlo()
-	server.login('StackpolePMDS@gmail.com', 'stacktest6060')
+	server.login('stackpolepmds@outlook.com', 'stacktest6060')
 	message = "From: %s\r\n" % frname + "To: %s\r\n" % ', '.join(toaddrs) + "Subject: %s\r\n" % message_subject + "\r\n" 
 	message = message+message_subject + "\r\n\r\n" + message3 + "\r\n\r\n" 
 	server.sendmail(fromaddr, toaddrs, message)
