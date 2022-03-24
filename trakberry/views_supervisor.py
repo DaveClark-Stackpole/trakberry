@@ -82,6 +82,7 @@ def hour_check(request):
 	return send_email
 	
 def supervisor_display(request):
+	
 
 #	Below is a check to send an email for techs once a day. If yes then it reroutes from email_hour_check() 
 	email_hour_check()
@@ -117,6 +118,8 @@ def supervisor_display(request):
 	except:
 		return main_login_form(request)				
 
+	if request.session['login_name'] == 'Dave Clark':
+			return main_login_form(request)	
 	
 	
   # initialize current time and set 'u' to shift start time
