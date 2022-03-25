@@ -1320,8 +1320,8 @@ def test_email_7(request):
 	message_subject = 'Test Email'
 	message3 = "Just Checking this Email Route" + current_part 
 	toaddrs = ["dclark@stackpole.com"]
-	fromaddr = 'dclark@stackpole.com'
-	frname = 'Dave'
+	fromaddr = 'stratford.reports@stackpole.com'
+	frname = '10R Production'
 	server = SMTP('mesg06.stackpole.ca')
 	server.ehlo()
 	server.starttls()
