@@ -353,8 +353,8 @@ def track_email(request):
 
 	toaddrs = ["dclark@stackpole.com","jmcmaster@stackpole.com"]
 	#toaddrs = ["rrompen@stackpole.com","rbiram@stackpole.com","rzylstra@stackpole.com","lbaker@stackpole.com","dmilne@stackpole.com","sbrownlee@stackpole.com","pmurphy@stackpole.com","pstreet@stackpole.com","kfrey@stackpole.com","asmith@stackpole.com","smcmahon@stackpole.com","gharvey@stackpole.com","ashoemaker@stackpole.com","jreid@stackpole.com"]
-	fromaddr = 'dclark@stackpole.com'
-	frname = 'Dave'
+	fromaddr = 'stratford.reports@stackpole.com'
+	frname = '10R Production'
 	server = SMTP('mesg06.stackpole.ca')
 	server.ehlo()
 	server.starttls()
