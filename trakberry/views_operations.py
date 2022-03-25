@@ -1320,13 +1320,13 @@ def test_email_7(request):
 	message_subject = 'Test Email'
 	message3 = "Just Checking this Email Route" + current_part 
 	toaddrs = ["dclark@stackpole.com"]
-	fromaddr = 'stackpolepmds@outlook.com'
+	fromaddr = 'stackpolepmds@gmail.com'
 	frname = 'Dave'
-	server = SMTP('smtp.office365.com', 587)
+	server = SMTP('smtp.gmail.com', 587)
 	server.ehlo()
 	server.starttls()
 	server.ehlo()
-	server.login('stackpolepmds@outlook.com', 'stacktest6060')
+	server.login('stackpolepmds@gmail.com', 'stacktest6060')
 	message = "From: %s\r\n" % frname + "To: %s\r\n" % ', '.join(toaddrs) + "Subject: %s\r\n" % message_subject + "\r\n" 
 	message = message+message_subject + "\r\n\r\n" + "\r\n\r\n" + message3 + "\r\n\r\n" 
 	server.sendmail(fromaddr, toaddrs, message)
