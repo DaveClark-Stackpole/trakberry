@@ -1322,7 +1322,7 @@ def test_email_7(request):
 	toaddrs = ["dclark@stackpole.com"]
 	fromaddr = 'stratford.reports@stackpole.com'
 	frname = '10R Production'
-	server = SMTP('mesg06.stackpole.ca')
+	server = SMTP('smtp01.stackpole.ca')
 	server.ehlo()
 	server.starttls()
 	server.ehlo()
