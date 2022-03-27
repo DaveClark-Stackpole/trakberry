@@ -139,7 +139,9 @@ from views_production import mgmt_priorities,auto_updater,cell_track_9341,track_
 from views_production import cell_track_9341_history_off,mgmt_track_week,mgmt_goals
 from views_production import plus_0455,minus_0455,plus_9341,minus_9341,plus_3050,minus_3050,plus_1467,minus_1467, wip_update
 
-from views_operations import gf6_reaction
+from views_operations import gf6_reaction,gf6_input,gf6_reaction_prev,gf6_input_prev,prod_9341,prod_10R,prod_10R_prev, prod_728,prod_728fault,prod_728fault_prev
+from views_operations import test_email_7
+
 
 
 from views4 import ios_test, IsDone, NotDone, target_fix1, medium_production, multidrop, scantest, target_fix1
@@ -171,6 +173,7 @@ from views_scrap import gate_alarm_list_add_initial
 
 # *******************************************  Quality Section ********************************************************************************************
 from views_quality import pie_chart,sup_pie_chart,quality_epv_asset_entry, initial_epv, previous_epv, next_epv, epv_cleanup
+from views_quality import gate_alarm_champion,gate_alarm_champion_initial
 # 
 
 # *******************************************  Manpower Section ********************************************************************************************
@@ -642,6 +645,16 @@ urlpatterns = [
 
 	# **************  Opertions Section ***************************************
 	url(r'^gf6_reaction/', gf6_reaction),
+	url(r'^gf6_input/', gf6_input),
+	url(r'^gf6_reaction_prev/', gf6_reaction_prev),
+	url(r'^gf6_input_prev/', gf6_input_prev),
+	url(r'^prod_9341/', prod_9341),
+	url(r'^prod_10R/', prod_10R),
+	url(r'^prod_10R_prev/', prod_10R_prev),
+	url(r'^prod_728/', prod_728),
+	url(r'^prod_728fault/', prod_728fault),
+	url(r'^prod_728fault_prev/', prod_728fault_prev),
+	url(r'^test_email_7/', test_email_7),
 
 	# ************************************************************************
 
@@ -721,6 +734,8 @@ urlpatterns = [
 	url(r'^gate_alarm_list_hide/', gate_alarm_list_hide),
 	url(r'^gate_alarm_list_show/', gate_alarm_list_show),
 	url(r'^gate_alarm_list_add_initial/', gate_alarm_list_add_initial),
+	url(r'^gate_alarm_champion_initial/get/(?P<index>\w{0,50})/$', gate_alarm_champion_initial),
+	url(r'^gate_alarm_champion/', gate_alarm_champion),
 	# **************************************************************************
 
 	# *************  Manpower Section *********************************************

@@ -353,13 +353,13 @@ def track_email(request):
 
 	toaddrs = ["dclark@stackpole.com","jmcmaster@stackpole.com"]
 	#toaddrs = ["rrompen@stackpole.com","rbiram@stackpole.com","rzylstra@stackpole.com","lbaker@stackpole.com","dmilne@stackpole.com","sbrownlee@stackpole.com","pmurphy@stackpole.com","pstreet@stackpole.com","kfrey@stackpole.com","asmith@stackpole.com","smcmahon@stackpole.com","gharvey@stackpole.com","ashoemaker@stackpole.com","jreid@stackpole.com"]
-	fromaddr = 'stratford.reports@stackpole.com'
-	frname = '10R Production'
-	server = SMTP('mesg06.stackpole.ca')
+	fromaddr = 'stackpole@stackpole.com'
+	frname = 'Dave'
+	server = SMTP('smtp.gmail.com', 587)
 	server.ehlo()
 	server.starttls()
 	server.ehlo()
-	# server.login('stackpolepmds@gmail.com', 'stacktest6060')
+	server.login('StackpolePMDS@gmail.com', 'stacktest6060')
 	message = "From: %s\r\n" % frname + "To: %s\r\n" % ', '.join(toaddrs) + "Subject: %s\r\n" % message_subject + "\r\n" 
 	message = message+message_subject + "\r\n\r\n" + message3 + "\r\n\r\n" 
 	server.sendmail(fromaddr, toaddrs, message)
@@ -3338,9 +3338,8 @@ def cell_track_9341(request):
 
 	total8_0455,op_total_0455, wip_zip_0455 = cell_track_0455(request)
 
-	t = int(time.time())
-	
-	return render(request,'cell_track_9341.html',{'t':t,'codes':total8,'op':op_total,'wip':wip_zip,'codes_60':total8_0455,'op_60':op_total_0455,'wip_60':wip_zip_0455,'args':args})	
+
+	return render(request,'cell_track_9341.html',{'codes':total8,'op':op_total,'wip':wip_zip,'codes_60':total8_0455,'op_60':op_total_0455,'wip_60':wip_zip_0455,'args':args})	
 
 
 # Same tracking for 0455

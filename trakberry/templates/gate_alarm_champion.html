@@ -1,0 +1,85 @@
+
+{% extends "scrap_mgmt_style.html" %}
+
+{% block main %}
+<body style="background-color:{{request.session.main_screen_color}};">
+<font color="#000000" size ="3">
+    <form action="" method="post">{% csrf_token %}
+    <table class="center">
+	<tr>
+        <td colspan="9" style="font-size:20px;background-color: {{request.session.secondary_menu_color}}; color: {{request.session.secondary_text_color}};"><b><center>Gate Alarm List</b></center></td>
+    </tr>
+        <tr>
+            <td style="font-size:14px;background-color:#BCBCBC; color:#000000;border: 1px solid black;padding: 3px 27px;"> <b>Date</b></td>
+            <td style="font-size:14px;background-color:#BCBCBC; color:#000000;border: 1px solid black;padding: 3px 27px;"><b> Part</b> </td>
+            <td style="font-size:14px;background-color:#BCBCBC; color:#000000;border: 1px solid black;padding: 3px 27px;"><b> Operation </b></td>
+            <td style="font-size:14px;background-color:#BCBCBC; color:#000000;border: 1px solid black;padding: 3px 27px;"><b> Category</b></td>
+            <td style="font-size:14px;background-color:#BCBCBC; color:#000000;border: 1px solid black;padding: 3px 27px;"> <b>Scrap</b> </td>
+            <td style="font-size:14px;background-color:#BCBCBC; color:#000000;border: 1px solid black;padding: 3px 27px;"><b>Gate Alarm</b> </td>
+            <td style="font-size:14px;background-color:#BCBCBC; color:#000000;border: 1px solid black;padding: 3px 27px;"><b> Action</b> </td>
+            <td style="font-size:14px;background-color:#BCBCBC; color:#000000;border: 1px solid black;padding: 3px 27px;"><b> Reviewed</b> </td>
+            <td style="font-size:14px;background-color:#BCBCBC; color:#000000;border: 1px solid black;padding: 3px 27px;"><b> QA Comments</b> </td>
+        </tr>
+
+
+    {% for i in request.session.gate_alarm_champion %}
+
+    <tr>
+        <td style="font-size:14px;background-color:#D5D5D5; color:#000000;border: 1px solid black;">{{i.1}}</td>
+        <td style="font-size:14px;background-color:#D5D5D5; color:#000000;border: 1px solid black;">{{i.2}}</td>
+        <td style="font-size:14px;background-color:#D5D5D5; color:#000000;border: 1px solid black;">{{i.3}}</td>
+        <td style="font-size:14px;background-color:#D5D5D5; color:#000000;border: 1px solid black;">{{i.4}}</td>        
+        <td style="font-size:14px;background-color:#D5D5D5; color:#000000;border: 1px solid black;">{{i.5}}</td>        
+        <td style="font-size:14px;background-color:#D5D5D5; color:#000000;border: 1px solid black;">{{i.6}}</td>        
+        <td style="font-size:14px;background-color:#D5D5D5; color:#000000;border: 1px solid black;">
+            {% if i.10 == 0 %}     
+                <br><center>
+                <button  style="background-color: #494949;border-radius: 10px;height:100%;font-size:15px;color:#494949" type="submit" name="entry" value="E{{i.0}}" />
+                    <font color="#fcff3b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Entry Reqd&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </button> </center><br>
+            {% elif i.10 == 2 %} 
+                {{i.9}}
+                <br><br><center>
+                <button  style="background-color: #494949;border-radius: 10px;height:100%;font-size:15px;color:#494949" type="submit" name="entry" value="U{{i.0}}" />
+                    <font color="#fcff3b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Update Reqd&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </button> </center><br>
+            {% elif i.10 == 20 %} 
+                Hello World
+
+            {% else %}
+                <br><center>
+                <font color="#000000">{{i.9}}</center><br>
+            {% endif %}
+        </td>
+            {% if i.10 == 0 or i.10 == 10 %} &nbsp;&nbsp;&nbsp;&nbsp;
+               <td style="font-size:14px;background-color:#b8ffb1; color:#000000;border: 1px solid black;">
+                <center>
+              <font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;Action Required&nbsp;&nbsp;</center>
+            {% elif i.10 == 1 %}
+                <td style="font-size:14px;background-color:#f0f87e; color:#000000;border: 1px solid black;">
+                    <center>
+                    <font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;Waiting on Review&nbsp;&nbsp;</center>
+            {% elif i.10 == 2 or i.10 == 20 %}
+                <td style="font-size:14px;background-color:#f8d17e; color:#000000;border: 1px solid black;">
+                    <center>
+                    <font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;More Action Reqd&nbsp;&nbsp;</center>
+            {% elif i.10 == 3 %}
+                <td style="font-size:14px;background-color:#2dce1f; color:#000000;border: 1px solid black;">
+                    <center>
+                    <font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;Accepted&nbsp;&nbsp;</center>                         
+            {% endif %}
+        </td>   
+        <td style="font-size:14px;background-color:#D5D5D5; color:#000000;border: 1px solid black;">{{i.11}}</td>   
+    </tr>
+
+    {% endfor %}
+
+
+
+</table></center>
+
+</form>
+</font>
+<br><br><br><br>
+</body>
+{% endblock %}

@@ -82,6 +82,7 @@ def hour_check(request):
 	return send_email
 	
 def supervisor_display(request):
+	
 
 #	Below is a check to send an email for techs once a day. If yes then it reroutes from email_hour_check() 
 	email_hour_check()
@@ -108,7 +109,19 @@ def supervisor_display(request):
 	if name_supervisor =="":
 		return main_login_form(request)
 
-		
+	#Purge all old logins and force to use new login info
+	try:
+		if request.session['main_login_verify'] == 1:
+			dummy =1
+		else:
+			return main_login_form(request)
+	except:
+		return main_login_form(request)				
+
+	if request.session['login_name'] == 'Dave Clark':
+			return main_login_form(request)	
+	
+	
   # initialize current time and set 'u' to shift start time
 	t=int(time.time())
 	tm = time.localtime(t)
@@ -181,7 +194,7 @@ def supervisor_display(request):
 		whos.append(tmp2[4])
 		box_colour.append(clr)
 		ctr = ctr + 1
-		
+	
 	for i in range(0, ctr-1):
 		for ii in range(i+1, ctr):
 			try:
@@ -282,6 +295,7 @@ def supervisor_display(request):
 #	cnt = 0
 #	request.session["refresh_sup"] = 0
 #	tmp4 =''
+	
 	Z_Value = 1
 	tcur=int(time.time())
 
@@ -311,6 +325,8 @@ def supervisor_display(request):
 
   # call up 'display.html' template and transfer appropriate variables.  
 	#return render(request,"test3.html",{'total':tmp4,'Z':Z_Value,'})
+
+	
 	return render(request,"supervisor.html",{'L':list,'N':n,'cnt':cnt,'help_message_length':help_message_length,'M':tmp4,'Z':Z_Value,'TCUR':tcur,'args':args})
 
 def sup_message(request):	
@@ -323,7 +339,7 @@ def sup_message(request):
 	db.close()
 
 	if request.POST:
-        			
+					
 		a = request.session["login_name"]
 		b = request.POST.get("name")
 		c = request.POST.get("message")
@@ -382,7 +398,7 @@ def sup_message_reply2(request):
 	db.close()
 
 	if request.POST:
-        			
+					
 		a = request.session["login_name"]
 		#b = request.POST.get("name")
 		b = request.session["sender_name_last"]
@@ -668,7 +684,7 @@ def supervisor_edit(request):
 	db.close()	
 	
 	if request.POST:
-        			
+					
 		machinenum = request.POST.get("machine")
 		problem = request.POST.get("reason")
 		priority = request.POST.get("priority")
@@ -904,7 +920,7 @@ def employee_vac_enter(request):
 
 
 def vacation_entry(request):	
-    
+	
 	st = request.session["date_st"]
 	fi = request.session["date_en"]
 	employee = request.session["employee"]
@@ -1043,8 +1059,8 @@ def vacation_month_fix(request):
 	return render(request,'test4.html',{'X':h})
 	
 	#for k in range(city_count):
-    #cur.execute("UPDATE hqstock SET citylastprice = '%s' WHERE id = '%s'"% (CITYPRICE[k],   tID[k]))
-    #cur.commit()
+	#cur.execute("UPDATE hqstock SET citylastprice = '%s' WHERE id = '%s'"% (CITYPRICE[k],   tID[k]))
+	#cur.commit()
 
 def reset_sfilter(request):
 	request.session["sfilter1"] = ''

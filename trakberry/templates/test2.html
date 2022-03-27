@@ -4,10 +4,9 @@
 <html>
 <body>
 
-{% for item in List %}
-{{item.0}}:{{item.1}} Idle Time: 
+{% for item in request.session.PM_Tech_Person %}
+{{item.0}}  {{item.1}} 
 
-{{item.2}} / Down: {{item.4}} / Part: {{item.5}} / HRate {{item.7}} / Projection {{item.6}}
 <br>
 {% endfor %}
 

@@ -1,4 +1,3 @@
-
 <html>
 	<body>
 	<head>
@@ -219,11 +218,12 @@
 	<input type="button" value="Close this window" onclick="windowClose();"> -->
 	
 	
-	<meta http-equiv="refresh" content="300; url={{request.session.local_toggle}}/tracking" />
+	<meta http-equiv="refresh" content="10; url={{request.session.local_toggle}}/tracking" />
 	
 	<div class="wrapper_main">
 	<div class="head1_u">
 		<font size="6"><b><u>Live Tracking</u></b></font>
+		<button style="position:absolute; left:80%;top:1%; background-color: #bba943;border-radius: 10px;width:70pxpx;height:25px;font-weight: 600;" onclick="all_track()">10R80 Tracking</button>
 
 	</div>
 	
@@ -235,7 +235,7 @@
 			{{request.session.area1}} 
 	</font>
 	</center>
-	<div id="chart_div" style="width: 100%; height: 600px; "></div>
+	<div id="chart_div" style="width: 100%; height: 400px; "></div>
 	<br>
 	
 	
@@ -256,7 +256,7 @@
 	</td><td style="border:1px solid black;">
 	<u>End of Shift Projection : </u><br>{{request.session.projection1}}
 	</td></tr>
-	<!-- <tr><td>
+	<tr><td>
 		<u>Week to Date:</u> <br>{{request.session.week_count1}}
 		</td><td style="border:1px solid black;">
 		<u>Week Projection: </u><br>{{request.session.week_projection1}}
@@ -264,10 +264,10 @@
 		<u>Last Week: </u><br>{{request.session.week_count1a}}
 	</td><td style="border:1px solid black;">
 		<u>2 Weeks Ago: </u><br>{{request.session.week_count1b}}
-		</td></tr> -->
+		</td></tr>
 	
 	</table>
-	<!-- <br><br>
+	<br><br>
 	<b><u>Previous Shifts</u>  {{request.session.total_test}}</b>
 	<br>
 	<table style="width:40%;border: 1px solid black;"><tr><td style="border:1px solid black;">
@@ -285,7 +285,7 @@
 	{{i.5}}
 	</td></tr>
 	{% endfor %}
-	</table> -->
+	</table>
 	</div>
 	
 	
@@ -296,7 +296,7 @@
 			{{request.session.area2}}
 		</font>
 	</center>
-		<div id="chart2_div" style="width: 100%; height: 600px; "></div>
+		<div id="chart2_div" style="width: 100%; height: 400px; "></div>
 		<br>
 		
 		
@@ -317,7 +317,7 @@
 	</td><td style="border:1px solid black;">
 	<u>End of Shift Projection : </u><br>{{request.session.projection2}}
 	</td></tr>
-	<!-- <tr><td>
+	<tr><td>
 		<u>Week to Date:</u> <br>{{request.session.week_count2}}
 		</td><td style="border:1px solid black;">
 		<u>Week Projection: </u><br>{{request.session.week_projection2}}
@@ -325,11 +325,9 @@
 		<u>Last Week: </u><br>{{request.session.week_count2a}}
 	</td><td style="border:1px solid black;">
 		<u>2 Weeks Ago: </u><br>{{request.session.week_count2b}}
-		</td></tr> -->
+		</td></tr>
 	
 	</table>
-
-<!-- 
 		<br><br>
 		<b><u>Previous Shifts</u></b>
 		<br>
@@ -348,9 +346,7 @@
 		{{i.5}}
 		</td></tr>
 		{% endfor %}
-		</table> -->
-
-
+		</table>
 		</div>
 	
 	
