@@ -1332,3 +1332,14 @@ def test_email_7(request):
 	server.sendmail(fromaddr, toaddrs, message)
 	server.quit()
 	return render(request,"done_test2.html")
+
+def track_single(request):
+	request.session['data_area'] = 1
+	request.session['target_area'] = 1
+	request.session['part_area'] = request.session['part_area1']
+	request.session['rate_area'] = request.session['rate_area1']
+	request.session['asset1_area'] = request.session['asset1_area1']
+	request.session['asset2_area'] = request.session['asset2_area1']
+	request.session['asset3_area'] = request.session['asset3_area1']
+	request.session['asset4_area'] = request.session['asset4_area1']
+	data1, gr_list1 = track_area(request)

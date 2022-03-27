@@ -1027,7 +1027,7 @@ def tracking(request):
 			request.session['data_area'] = 2
 			request.session['target_area'] = 2
 			request.session['part_area'] = request.session['part_area2']
-			request.session['rate_area'] = request.session['rate_area2']
+			request.session['ate_area'] = request.session['rate_area2']
 			request.session['asset1_area'] = request.session['asset1_area2']
 			request.session['asset2_area'] = request.session['asset2_area2']
 			request.session['asset3_area'] = request.session['asset3_area2']
