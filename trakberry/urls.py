@@ -141,6 +141,7 @@ from views_production import plus_0455,minus_0455,plus_9341,minus_9341,plus_3050
 
 from views_operations import gf6_reaction,gf6_input,gf6_reaction_prev,gf6_input_prev,prod_9341,prod_10R,prod_10R_prev, prod_728,prod_728fault,prod_728fault_prev
 from views_operations import test_email_7
+from views_operations import track_single
 
 
 
@@ -655,6 +656,8 @@ urlpatterns = [
 	url(r'^prod_728fault/', prod_728fault),
 	url(r'^prod_728fault_prev/', prod_728fault_prev),
 	url(r'^test_email_7/', test_email_7),
+
+	url(r'^track_single/', track_single),
 
 	# ************************************************************************
 
