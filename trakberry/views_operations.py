@@ -7,7 +7,6 @@ from trakberry.forms import maint_closeForm, maint_loginForm, maint_searchForm, 
 from trakberry.views import done
 from views2 import main_login_form
 from views_mod1 import find_current_date, mgmt_display, mgmt_display_edit
-from views_mod2 import stamp_shift_start
 from trakberry.views2 import login_initial
 from trakberry.views_testing import machine_list_display
 from trakberry.views_vacation import vacation_temp, vacation_set_current, vacation_set_current2_1, vacation_set_current5,vacation_set_current6,vacation_set_current77
@@ -29,6 +28,67 @@ import datetime
 # from datetime import datetime 
 from time import strftime
 import time
+
+def day_breakdown(tt):
+	mnth = ''
+	wday = ''
+	tm = time.localtime(tt)
+	if tm[3] == 22:
+		tt = tt + 10800
+		tm = time.localtime(tt)
+		hrr = tm[3]
+	month1 = tm[1]
+	day1 = tm[2]
+	wd = tm[6]
+	hr1 = tm[3]
+	shift = 'None'
+	if hr1 == 6:
+		shift = 'Day'
+	elif hr1 == 14:
+		shift = 'Aft'
+	elif hr1 == 1:
+		shift ='Mid'
+	if wd == 7:
+		wd = 0
+	if wd == 6:
+		wday = 'Sunday'
+	elif wd == 0:
+		wday = 'Monday'
+	elif wd == 1:
+		wday = 'Tuesday'
+	elif wd == 2:
+		wday = 'Wednesday'
+	elif wd == 3:
+		wday = 'Thursday'
+	elif wd == 4:
+		wday = 'Friday'
+	elif wd == 5:
+		wday = 'Saturday'
+	if month1 == 8:
+		mnth = 'Aug'
+	elif month1==7:
+		mnth = 'Jul'
+	elif month1==9:
+		mnth='Sep'
+	elif month1==10:
+		mnth='Oct'
+	elif month1==11:
+		mnth='Nov'
+	elif month1==12:
+		mnth='Dec'
+	elif month1==1:
+		mnth='Jan'
+	elif month1==2:
+		mnth='Feb'
+	elif month1==3:
+		mnth='Mar'
+	elif month1==4:
+		mnth='Apr'
+	elif month1==5:
+		mnth='May'
+	elif month1==6:
+		mnth='Jun'
+	return wday,mnth,day1,shift
 
 def pdate_stamp(pdate):
 	string=str(pdate)
@@ -1332,3 +1392,277 @@ def test_email_7(request):
 	server.sendmail(fromaddr, toaddrs, message)
 	server.quit()
 	return render(request,"done_test2.html")
+
+def track_single(request):
+	request.session['data_area'] = 1
+	request.session['target_area'] = 1
+	request.session['part_area'] = '50-9341'
+	request.session['rate_area'] = 217
+	request.session['asset1_area'] = '1533'
+	request.session['asset2_area'] = '1533'
+	request.session['asset3_area'] = '1533'
+	request.session['asset4_area'] = '1533'
+	data1, gr_list1 = track_area_single(request)
+	return render(request, "track_single.html",{'GList':gr_list1,"datax":data1})
+
+def stamp_shift_start(request):
+	t = 1624725088  # Temporary time
+	stamp = t
+	# stamp=int(time.time())
+	tm = time.localtime(stamp)
+	hour1 = tm[3]
+	# t=int(time.time())
+	tm = time.localtime(t)
+	shift_start = -2
+	current_shift = 3
+	if tm[3]<22 and tm[3]>=14:
+		shift_start = 14
+	elif tm[3]<14 and tm[3]>=6:
+		shift_start = 6
+	cur_hour = tm[3]
+	if cur_hour == 22:
+		cur_hour = -1
+
+	# Unix Time Stamp for start of shift Area 1
+	u = t - (((cur_hour-shift_start)*60*60)+(tm[4]*60)+tm[5])	
+
+	# Amount of seconds run so far on the shift
+	shift_time = t-u  
+
+	# Amount of seconds left on the shift to run
+	shift_left = 28800 - shift_time  
+
+	# Unix Time Stamp for the end of the shift
+	shift_end = t + shift_left
+	
+	return u,shift_time,shift_left,shift_end
+
+
+def track_area_single(request):
+	data_area = '1'
+	target_area = int(request.session['rate_area'])
+	prt = request.session['part_area']
+	rate1 = request.session['rate_area']
+	asset1 = str(request.session['asset1_area'])
+	asset2 = str(request.session['asset2_area'])
+	asset3 = str(request.session['asset3_area'])
+	asset4 = str(request.session['asset4_area'])
+	target = rate1
+
+	t=int(time.time())
+	t = 1624725088  # Temporary time
+	x = int(t - 489600)
+	tm = time.localtime(t)
+	request.session["time"] = t
+
+	u,shift_time,shift_left,e = stamp_shift_start(request)
+
+	request.session["shift_time"] = shift_time
+
+	
+	# Calculate start of week unix (Monday 00:00am)
+	a1 = tm[6] * 86400
+	a2 = tm[3] * 60 * 60
+	a3 = tm[4] * 60
+	a4 = tm[5]
+	week_start1 = t - a1 - a2 - a3 - a4
+	week_current_seconds = t - week_start1
+	weekend_start = week_start1 + 43200
+	weekend_current_seconds = t - weekend_start
+
+	week_start2 = week_start1 - 604800
+	week_start3 = week_start2 - 604800
+	ew = week_start1 + 604800
+
+	# var1 = 'target' + data_area
+	target = target_area / float(3600) 
+	target = shift_time * target
+
+	# request.session[var1] = int(shift_time * target)
+	
+	wd, m, day, shift = day_breakdown(u)
+	request.session['wd'] = wd
+	request.session['m'] = m
+	request.session['shift'] = shift
+	request.session['day'] = day
+	request.session['yr'] = '2021'
+	
+	
+	db, cur = db_set(request)
+	aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (u,t,prt,asset1,asset2,asset3,asset4)
+
+	cur.execute(aql)
+	tmp2 = cur.fetchall()
+	tmp3 = tmp2[0]
+	cnt = tmp3[0]
+	var1 = 'count' + data_area
+	request.session[var1] = cnt
+	if week_current_seconds > 43200:
+		weekend_cnt = 0
+		bql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (weekend_start,t,prt,asset1,asset2,asset3,asset4)
+		cur.execute(bql)
+		tmp8 = cur.fetchall()
+		tmp9 = tmp8[0]
+		weekend_cnt = tmp9[0]
+
+	bql = "SELECT SUM(Count) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (week_start1,t,prt,asset1,asset2,asset3,asset4)
+	cur.execute(bql)
+	tmp8 = cur.fetchall()
+	tmp9 = tmp8[0]
+	try:
+		week_cnt = int(tmp9[0])
+	except:
+		week_cnt = 0
+	bql = "SELECT SUM(Count) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (week_start2,week_start1,prt,asset1,asset2,asset3,asset4)
+	cur.execute(bql)
+	tmp8 = cur.fetchall()
+	tmp9 = tmp8[0]
+	try:
+		week_cnt2 = int(tmp9[0])
+	except:
+		week_cnt2 = 0
+	bql = "SELECT SUM(Count) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (week_start3,week_start2,prt,asset1,asset2,asset3,asset4)
+	cur.execute(bql)
+	tmp8 = cur.fetchall()
+	tmp9 = tmp8[0]
+	try:
+		week_cnt3 = int(tmp9[0])
+	except:
+		week_cnt3 = 0
+
+	week_cnt = 0
+	week_cnt2 = 0
+	week_cnt3 = 0
+
+
+
+	u1, wd1, m1, day1, shift1, prev_cnt1 = [],[],[],[],[],[]
+	utemp = u
+	total_test = 0
+	
+	for i in range(1,16):
+		unew = utemp - 28800
+		x1, x2, x3, x4 = day_breakdown(unew)
+		u1.append(str(unew))
+		wd1.append(x1)
+		m1.append(x2)
+		day1.append(x3)
+		shift1.append(x4)
+		aql = "SELECT SUM(Count) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (unew,utemp,prt,asset1,asset2,asset3,asset4)
+
+		# aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (unew,utemp,prt,asset1,asset2,asset3,asset4)
+		cur.execute(aql)
+		tmp2 = cur.fetchall()
+		tmp3 = tmp2[0]
+
+
+		
+		prev_cnt1.append(str(tmp3[0]))
+
+		# prev_cnt1.append('0')
+
+		try:
+			total_test = total_test + int(tmp3[0])
+		except:
+			total_test = total_test + 0
+		utemp = unew
+
+	db.close()
+	request.session['total_test'] = total_test
+
+	# 5 day week 432000
+	# 7 day week 604800
+	# the weekend is 172800
+	wrm = 0
+	if prt == '50-9341':
+		wrm = 0
+	elif prt == '50-1467':
+		wrm = 1
+	elif prt == '50-3050':
+		wrm = 1
+
+	weekend_projection = 1
+	if week_current_seconds < 432000:
+		week_left = 432000 - week_current_seconds
+		week_rate = week_cnt / float(week_current_seconds)
+		week_projection = int(week_rate * (week_left)) + week_cnt 
+		weekend_projection = int(week_rate * (172800)* wrm) 
+		# week_projection = week_projection + weekend_projection
+
+	else:
+		weekend_left = 172800 - weekend_current_seconds
+		weekend_rate = weekend_cnt / float(weekend_current_seconds)
+		week_projection = int(weekend_rate * (weekend_left)) + week_cnt
+
+	if prt == '50-9341' or prt == '50-1467' or prt == '50-3050':
+		# week_rate2 = week_rate / float(2)
+		# week_rate2 = week_rate2 * 172800
+		week_projection = week_projection + weekend_projection
+		if prt == '50-9341':
+			week_projection = week_projection + 4500
+	if prt == '50-0455':
+		week_projection = week_projection + 2250
+
+	current_rate = cnt / float(shift_time)
+	projection = int(current_rate * (shift_left)) + cnt
+	
+	oa = cnt / float(target)
+	oa = (int(oa * 10000)) / float(100)
+	check_area = request.session['data_area']
+	if check_area == 1:
+		request.session["oa1"] = oa
+		
+		# if asset1 == '1533':
+		#	interval1 = 900
+		#	m, b, start_count = prediction1(request,u,t,interval1,u)
+		#	projection = m*e + b
+		#	projection = projection - start_count
+
+		#	intervalst = 1610325078
+		#	interval1 = 2880
+		#	m, b, start_count = prediction1(request,intervalst,t,interval1,intervalst)
+		#	week_projection = m*ew + b
+		#	week_projection = week_projection - start_count
+			
+
+		request.session["projection1"] = int(projection)
+		request.session["count1"] = cnt
+		request.session["week_count1"] = week_cnt
+		request.session["week_projection1"] = week_projection
+		request.session["week_count1a"] = week_cnt2
+		request.session["week_count1b"] = week_cnt3
+		request.session['target1'] = int(target)
+	else:
+		request.session["oa2"] = oa
+		if asset1 == '1533':
+			interval1 = 3600
+			m, b, start_count = prediction1(request,u,t,interval1,u)
+			projection = m*e + b
+			projection = projection - start_count
+		request.session["projection2"] = int(projection)
+		request.session["count2"] = cnt
+		request.session["week_count2"] = week_cnt
+		request.session["week_projection2"] = week_projection
+		request.session["week_count2a"] = week_cnt2
+		request.session["week_count2b"] = week_cnt3
+		request.session['target2'] = int(target)
+
+	gr_list = track_data(request,t,u,prt,rate1) # Get the Graph Data
+	data1 = zip(u1,wd1,m1,day1,shift1,prev_cnt1)
+	return data1, gr_list
+
+def track_data(request,t,u,part,rate):
+	m = '1533'
+	asset1 = request.session['asset1_area']
+	asset2 = request.session['asset2_area']
+	asset3 = request.session['asset3_area']
+	asset4 = request.session['asset4_area']
+	# mrr = (337*(28800))/float(28800)
+	mrr = (rate*(28800))/float(28800)
+	db, cursor = db_set(request)
+	sql = "SELECT * FROM GFxPRoduction where TimeStamp >= '%d' and TimeStamp< '%d' and part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" %(u,t,part,asset1,asset2,asset3,asset4)
+	cursor.execute(sql)
+	tmp = cursor.fetchall()	
+	db.close()
+	gr_list, brk1, brk2, multiplier	 = Graph_Data(t,u,m,tmp,mrr)
+	return gr_list
