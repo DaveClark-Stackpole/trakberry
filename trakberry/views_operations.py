@@ -668,6 +668,8 @@ def prod_9341(request):
 	color2 = '#82BED7'  # Color for line 2
 	asset = ['1533']
 	part  = ['50-9341']
+	asset1 = '1511'
+	asset2 = '1528'
 	operation = [10]
 	# ************************************************************************************
 	shift = ['11pm-7am','7am-3pm','3pm-11pm']
@@ -710,7 +712,7 @@ def prod_9341(request):
 
 	 
 	# Select all reactions in asset list for date range
-	sql = "SELECT * FROM GFxPRoduction WHERE TimeStamp >= '%s' and TimeStamp <= '%s' and Machine = '%s'" %(week_start,week_end,asset[0])
+	sql = "SELECT * FROM GFxPRoduction WHERE TimeStamp >= '%s' and TimeStamp <= '%s' and (Machine = '%s' OR Machine ='%s')" %(week_start,week_end,asset1,asset2)
 	cur.execute(sql)
 	tmp = cur.fetchall()
 	t1 = []
