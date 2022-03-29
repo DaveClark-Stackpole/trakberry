@@ -3339,7 +3339,7 @@ def cell_track_9341(request):
 	total8_0455,op_total_0455, wip_zip_0455 = cell_track_0455(request)
 
 	t = int(time.time())
-	request.session['runrate'] = 1139
+	request.session['runrate'] = 1128
 	return render(request,'cell_track_9341.html',{'t':t,'codes':total8,'op':op_total,'wip':wip_zip,'codes_60':total8_0455,'op_60':op_total_0455,'wip_60':wip_zip_0455,'args':args})	
 
 

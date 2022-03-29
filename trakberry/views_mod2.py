@@ -384,7 +384,6 @@ def stamp_shift_start(request):
 	tm = time.localtime(stamp)
 	hour1 = tm[3]
 	t=int(time.time())
-	
 	tm = time.localtime(t)
 	shift_start = -2
 	current_shift = 3
