@@ -413,7 +413,7 @@
 <div class="mainset3">  <!-- MainLine Production-->
 
 	<table id="prodwk4"><tr><td bgcolor="#DCDCDC">
-		<br><center><font style="font-weight:bolder;font-size:120%;"><u>10R60 Run @ Rate</u></font>
+		<br><center><font style="font-weight:bolder;font-size:120%;"><u>10R60 Cell Track</u></font>
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br><br>
 	</td></tr></table>
 <br>
@@ -769,23 +769,13 @@
 
 			<div class="frame1">  <!-- MainLine Production-->
 				<center><table id="mainline"><tr> <!-- OP60 -->
-					<td bgcolor="#bdb4b3" style="font-size:12px;width:15%;"><br><center><font style="font-weight:bolder;font-size:100%;">Target <br>(1140) </font></center><br></td>
+					<td bgcolor="#bdb4b3" style="font-size:12px;width:15%;"><br><center><font style="font-weight:bolder;font-size:100%;">&nbsp;&nbsp;&nbsp;&nbsp;</font></center><br></td>
 
-					<td bgcolor="#bdb4b3"><br><center><font style="font-weight:bolder;font-size:100%;">TARGET 1140 Per OP</font></center><br></td>
+					<td bgcolor="#bdb4b3"><br><center><font style="font-weight:bolder;font-size:100%;">Mainline</font></center><br></td>
 				</tr></table></center>
 				<center><table id="mainline"><tr> <!-- OP10 -->
-
-
-
-
-						{% if op_60.10 > request.session.runrate %}
-						<td bgcolor="#009700" style="font-size:12px;width:15%;"><br><center><font style="font-weight:bolder;font-size:100%;color:#f5faf5;">OP 10</font>
-							<font style="font-weight:bolder;font-size:100%;color:#f5faf5;"><br>({{op_60.10}})</font></center></td>
-						{% else %}
-						<td bgcolor="#FF0400" style="font-size:12px;width:15%;"><br><center><font style="font-weight:bolder;font-size:100%;color:#f5faf5;">OP 10</font>
-							<font style="font-weight:bolder;font-size:100%;color:#f5faf5;"><br>({{op_60.10}})</font></center></td>
-						{% endif %}
-
+						<td bgcolor="#b0aea9" style="font-size:12px;width:15%;"><br><center><font style="font-weight:bolder;font-size:100%;">OP 10</font>
+							<font style="font-weight:bolder;font-size:85%;"><br>({{op_60.10}})</font></center></td>
 						<td bgcolor={{codes_60.0.2}}><br><center><font style="font-weight:bolder;font-size:100%;">
 							<a href="{{request.session.local_toggle}}/track_graph_track/get/{{codes_60.0.0}}" onclick="window.open('{{request.session.local_toggle}}/track_graph_track/get/{{codes_60.0.0}}', 'newwindow', 'width=1400, height=600'); return false;">
 								{{codes_60.0.0}}</a></font>
@@ -802,14 +792,9 @@
 				</tr></table></center>
 				
 				<center><table id="mainline"><tr> <!-- OP30 -->
-					{% if op_60.30 > request.session.runrate %}
-					<td bgcolor="#009700" style="font-size:12px;width:15%;"><br><center><font style="font-weight:bolder;font-size:100%;color:#f5faf5;">OP 30</font>
-						<font style="font-weight:bolder;font-size:100%;color:#f5faf5;"><br>({{op_60.30}})</font></center></td>
-					{% else %}
-					<td bgcolor="#FF0400" style="font-size:12px;width:15%;"><br><center><font style="font-weight:bolder;font-size:100%;color:#f5faf5;">OP 30</font>
-						<font style="font-weight:bolder;font-size:100%;color:#f5faf5;"><br>({{op_60.30}})</font></center></td>
-					{% endif %}
-
+					<td bgcolor="#b0aea9" style="font-size:12px;width:15%;"><br><center><font style="font-weight:bolder;font-size:100%;">OP 30</font>
+						<font style="font-weight:bolder;font-size:85%;"><br>({{op_60.30}})</font></center></td>
+						
 					<td bgcolor={{codes_60.3.2}}><br><center><font style="font-weight:bolder;font-size:100%;">
 						<a href="{{request.session.local_toggle}}/track_graph_track/get/{{codes_60.3.0}}" onclick="window.open('{{request.session.local_toggle}}/track_graph_track/get/{{codes_60.3.0}}', 'newwindow', 'width=1400, height=600'); return false;">
 						{{codes_60.3.0}}</a></font>
@@ -832,19 +817,8 @@
 
 				</tr></table></center>
 				<center><table id="mainline"><tr> <!-- OP40 -->
-
-					{% if op_60.40 > request.session.runrate %}
-					<td bgcolor="#009700" style="font-size:12px;width:15%;"><br><center><font style="font-weight:bolder;font-size:100%;color:#f5faf5;">OP 40</font>
-						<font style="font-weight:bolder;font-size:100%;color:#f5faf5;"><br>({{op_60.40}})</font></center></td>
-					{% else %}
-					<td bgcolor="#FF0400" style="font-size:12px;width:15%;"><br><center><font style="font-weight:bolder;font-size:100%;color:#f5faf5;">OP 40</font>
-						<font style="font-weight:bolder;font-size:100%;color:#f5faf5;"><br>({{op_60.40}})</font></center></td>
-					{% endif %}
-
-
-					
-
-
+					<td bgcolor="#b0aea9" style="font-size:12px;width:15%;"><br><center><font style="font-weight:bolder;font-size:100%;">OP 40</font>
+						<font style="font-weight:bolder;font-size:85%;"><br>({{op_60.40}})</font></center></td>
 					<td bgcolor={{codes_60.7.2}}><br><center><font style="font-weight:bolder;font-size:100%;">
 						<a href="{{request.session.local_toggle}}/track_graph_track/get/{{codes_60.7.0}}" onclick="window.open('{{request.session.local_toggle}}/track_graph_track/get/{{codes_60.7.0}}', 'newwindow', 'width=1400, height=600'); return false;">
 							{{codes_60.7.0}}</a></font>
@@ -855,14 +829,8 @@
 						<font style="font-weight:bolder;font-size:70%;">({{codes_60.8.3}})</font></center><br></td>
 				</tr></table></center>
 				<center><table id="mainline"><tr> <!-- OP50 -->
-					{% if op_60.50 > request.session.runrate %}
-					<td bgcolor="#009700" style="font-size:12px;width:15%;"><br><center><font style="font-weight:bolder;font-size:100%;color:#f5faf5;">OP 50</font>
-						<font style="font-weight:bolder;font-size:100%;color:#f5faf5;"><br>({{op_60.50}})</font></center></td>
-					{% else %}
-					<td bgcolor="#FF0400" style="font-size:12px;width:15%;"><br><center><font style="font-weight:bolder;font-size:100%;color:#f5faf5;">OP 50</font>
-						<font style="font-weight:bolder;font-size:100%;color:#f5faf5;"><br>({{op_60.50}})</font></center></td>
-					{% endif %}
-
+					<td bgcolor="#b0aea9" style="font-size:12px;width:15%;"><br><center><font style="font-weight:bolder;font-size:100%;">OP 50</font>
+						<font style="font-weight:bolder;font-size:85%;"><br>({{op_60.50}})</font></center></td>
 					<td bgcolor={{codes_60.9.2}}><br><center><font style="font-weight:bolder;font-size:100%;">
 						<a href="{{request.session.local_toggle}}/track_graph_track/get/{{codes_60.9.0}}" onclick="window.open('{{request.session.local_toggle}}/track_graph_track/get/{{codes_60.9.0}}', 'newwindow', 'width=1400, height=600'); return false;">
 							{{codes_60.9.0}}</a></font>
@@ -870,107 +838,56 @@
 
 				</tr></table></center>
 				<center><table id="mainline"><tr> <!-- OP60 -->
-
-					{% if op_60.60 > request.session.runrate %}
-					<td bgcolor="#009700" style="font-size:12px;width:15%;"><br><center><font style="font-weight:bolder;font-size:100%;color:#f5faf5;">OP 60</font>
-						<font style="font-weight:bolder;font-size:100%;color:#f5faf5;"><br>({{op_60.60}})</font></center></td>
-					{% else %}
-					<td bgcolor="#FF0400" style="font-size:12px;width:15%;"><br><center><font style="font-weight:bolder;font-size:100%;color:#f5faf5;">OP 60</font>
-						<font style="font-weight:bolder;font-size:100%;color:#f5faf5;"><br>({{op_60.60}})</font></center></td>
-					{% endif %}
-
-
-					
+					<td bgcolor="#b0aea9" style="font-size:12px;width:15%;"><br><center><font style="font-weight:bolder;font-size:100%;">OP 60</font>
+						<font style="font-weight:bolder;font-size:85%;"><br>({{op_60.60}})</font></center></td>
 					<td bgcolor={{codes_60.10.2}}><br><center><font style="font-weight:bolder;font-size:100%;">
 						<a href="{{request.session.local_toggle}}/track_graph_track/get/{{codes_60.10.0}}" onclick="window.open('{{request.session.local_toggle}}/track_graph_track/get/{{codes_60.10.0}}', 'newwindow', 'width=1400, height=600'); return false;">
 							{{codes_60.10.0}}</a></font>
 						<font style="font-weight:bolder;font-size:70%;">({{codes_60.10.3}})</font></center><br></td>
 				</tr></table></center>
 				<center><table id="mainline"><tr> <!-- OP70 -->
-					{% if op_60.70 > request.session.runrate %}
-					<td bgcolor="#009700" style="font-size:12px;width:15%;"><br><center><font style="font-weight:bolder;font-size:100%;color:#f5faf5;">OP 70</font>
-						<font style="font-weight:bolder;font-size:100%;color:#f5faf5;"><br>({{op_60.70}})</font></center></td>
-					{% else %}
-					<td bgcolor="#FF0400" style="font-size:12px;width:15%;"><br><center><font style="font-weight:bolder;font-size:100%;color:#f5faf5;">OP 70</font>
-						<font style="font-weight:bolder;font-size:100%;color:#f5faf5;"><br>({{op_60.70}})</font></center></td>
-					{% endif %}
-
-					
+					<td bgcolor="#b0aea9" style="font-size:12px;width:15%;"><br><center><font style="font-weight:bolder;font-size:100%;">OP 70</font>
+						<font style="font-weight:bolder;font-size:85%;"><br>({{op_60.70}})</font></center></td>
 					<td bgcolor={{codes_60.11.2}}><br><center><font style="font-weight:bolder;font-size:100%;">
 						<a href="{{request.session.local_toggle}}/track_graph_track/get/{{codes_60.11.0}}" onclick="window.open('{{request.session.local_toggle}}/track_graph_track/get/{{codes_60.11.0}}', 'newwindow', 'width=1400, height=600'); return false;">
 							{{codes_60.11.0}}</a></font>
 						<font style="font-weight:bolder;font-size:70%;">({{codes_60.11.3}})</font></center><br></td>
 				</tr></table></center>
 				<center><table id="mainline"><tr> <!-- OP80 -->
-					{% if op_60.80 > request.session.runrate %}
-					<td bgcolor="#009700" style="font-size:12px;width:15%;"><br><center><font style="font-weight:bolder;font-size:100%;color:#f5faf5;">OP 80</font>
-						<font style="font-weight:bolder;font-size:100%;color:#f5faf5;"><br>({{op_60.80}})</font></center></td>
-					{% else %}
-					<td bgcolor="#FF0400" style="font-size:12px;width:15%;"><br><center><font style="font-weight:bolder;font-size:100%;color:#f5faf5;">OP 80</font>
-						<font style="font-weight:bolder;font-size:100%;color:#f5faf5;"><br>({{op_60.80}})</font></center></td>
-					{% endif %}
-
-					
+					<td bgcolor="#b0aea9" style="font-size:12px;width:15%;"><br><center><font style="font-weight:bolder;font-size:100%;">OP 80</font>
+						<font style="font-weight:bolder;font-size:85%;"><br>({{op_60.80}})</font></center></td>
 					<td bgcolor={{codes_60.12.2}}><br><center><font style="font-weight:bolder;font-size:100%;">
 						<a href="{{request.session.local_toggle}}/track_graph_track/get/{{codes_60.12.0}}" onclick="window.open('{{request.session.local_toggle}}/track_graph_track/get/{{codes_60.12.0}}', 'newwindow', 'width=1400, height=600'); return false;">
 							{{codes_60.12.0}}</a></font>
 						<font style="font-weight:bolder;font-size:70%;">({{codes_60.12.3}})</font></center><br></td>
 				</tr></table></center>
 				<center><table id="mainline"><tr> <!-- OP80 -->
-					{% if op_60.80 > request.session.runrate %}
-					<td bgcolor="#009700" style="font-size:12px;width:15%;"><br><center><font style="font-weight:bolder;font-size:100%;color:#f5faf5;">OP 90</font>
-						<font style="font-weight:bolder;font-size:100%;color:#f5faf5;"><br>({{op_60.80}})</font></center></td>
-					{% else %}
-					<td bgcolor="#FF0400" style="font-size:12px;width:15%;"><br><center><font style="font-weight:bolder;font-size:100%;color:#f5faf5;">OP 90</font>
-						<font style="font-weight:bolder;font-size:100%;color:#f5faf5;"><br>({{op_60.80}})</font></center></td>
-					{% endif %}
-
-					
+					<td bgcolor="#b0aea9" style="font-size:12px;width:15%;"><br><center><font style="font-weight:bolder;font-size:100%;">OP 90</font>
+						<font style="font-weight:bolder;font-size:85%;"><br>({{op_60.80}})</font></center></td>
 					<td bgcolor={{codes_60.12.2}}><br><center><font style="font-weight:bolder;font-size:100%;">
 						<a href="{{request.session.local_toggle}}/track_graph_track/get/{{codes_60.12.0}}" onclick="window.open('{{request.session.local_toggle}}/track_graph_track/get/{{codes_60.12.0}}', 'newwindow', 'width=1400, height=600'); return false;">
 							1542</a></font>
 						<font style="font-weight:bolder;font-size:70%;">({{codes_60.12.3}})</font></center><br></td>
 				</tr></table></center>
 				<center><table id="mainline"><tr> <!-- OP100 -->
-					{% if op_60.100 > request.session.runrate %}
-					<td bgcolor="#009700" style="font-size:12px;width:15%;"><br><center><font style="font-weight:bolder;font-size:100%;color:#f5faf5;">OP 100</font>
-						<font style="font-weight:bolder;font-size:100%;"><br>({{op_60.100}})</font></center></td>
-					{% else %}
-					<td bgcolor="#FF0400" style="font-size:12px;width:15%;color:#f5faf5;"><br><center><font style="font-weight:bolder;font-size:100%;color:#f5faf5;">OP 100</font>
-						<font style="font-weight:bolder;font-size:100%;color:#f5faf5;"><br>({{op_60.100}})</font></center></td>
-					{% endif %}
-
-					
+					<td bgcolor="#b0aea9" style="font-size:12px;width:15%;"><br><center><font style="font-weight:bolder;font-size:100%;">OP 100</font>
+						<font style="font-weight:bolder;font-size:85%;"><br>({{op_60.100}})</font></center></td>
 					<td bgcolor={{codes_60.13.2}}><br><center><font style="font-weight:bolder;font-size:100%;">
 						<a href="{{request.session.local_toggle}}/track_graph_track/get/{{codes_60.13.0}}" onclick="window.open('{{request.session.local_toggle}}/track_graph_track/get/{{codes_60.13.0}}', 'newwindow', 'width=1400, height=600'); return false;">
 							{{codes_60.13.0}}</a></font>
 						<font style="font-weight:bolder;font-size:70%;">({{codes_60.13.3}})</font></center><br></td>
 				</tr></table></center>
 				<center><table id="mainline"><tr> <!-- OP110 -->
-					{% if op_60.100 > request.session.runrate %}
-					<td bgcolor="#009700" style="font-size:12px;width:15%;"><br><center><font style="font-weight:bolder;font-size:100%;color:#f5faf5;">OP 110</font>
-						<font style="font-weight:bolder;font-size:100%;color:#f5faf5;"><br>({{op_60.100}})</font></center></td>
-					{% else %}
-					<td bgcolor="#FF0400" style="font-size:12px;width:15%;"><br><center><font style="font-weight:bolder;font-size:100%;color:#f5faf5;">OP 110</font>
-						<font style="font-weight:bolder;font-size:100%;color:#f5faf5;"><br>({{op_60.100}})</font></center></td>
-					{% endif %}
-
-					
+					<td bgcolor="#b0aea9" style="font-size:12px;width:15%;"><br><center><font style="font-weight:bolder;font-size:100%;">OP 110</font>
+						<font style="font-weight:bolder;font-size:85%;"><br>({{op_60.100}})</font></center></td>
 					<td bgcolor={{codes_60.13.2}}><br><center><font style="font-weight:bolder;font-size:100%;">
 						<a href="{{request.session.local_toggle}}/track_graph_track/get/{{codes_60.13.0}}" onclick="window.open('{{request.session.local_toggle}}/track_graph_track/get/{{codes_60.13.0}}', 'newwindow', 'width=1400, height=600'); return false;">
 							1813</a></font>
 						<font style="font-weight:bolder;font-size:70%;">({{codes_60.13.3}})</font></center><br></td>
 				</tr></table></center>
 				<center><table id="mainline"><tr> <!-- OP120 -->
-					{% if op_60.120 > request.session.runrate %}
-					<td bgcolor="#009700" style="font-size:12px;width:15%;"><br><center><font style="font-weight:bolder;font-size:100%;color:#f5faf5;">Final</font>
-						<font style="font-weight:bolder;font-size:100%;color:#f5faf5;"><br>({{op_60.120}})</font></center></td>
-					{% else %}
-					<td bgcolor="#FF0400" style="font-size:12px;width:15%;"><br><center><font style="font-weight:bolder;font-size:100%;color:#f5faf5;">Final</font>
-						<font style="font-weight:bolder;font-size:100%;color:#f5faf5;"><br>({{op_60.120}})</font></center></td>
-					{% endif %}
-
-					
+					<td bgcolor="#b0aea9" style="font-size:12px;width:15%;"><br><center><font style="font-weight:bolder;font-size:100%;">Final</font>
+						<font style="font-weight:bolder;font-size:85%;"><br>({{op_60.120}})</font></center></td>
 					<td bgcolor={{codes_60.14.2}}><br><center><font style="font-weight:bolder;font-size:100%;">
 						<a href="{{request.session.local_toggle}}/track_graph_track/get/{{codes_60.14.0}}" onclick="window.open('{{request.session.local_toggle}}/track_graph_track/get/{{codes_60.14.0}}', 'newwindow', 'width=1400, height=600'); return false;">
 							{{codes_60.14.0}}</a></font>
