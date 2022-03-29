@@ -1452,7 +1452,7 @@ def track_area_single(request):
 	target = rate1
 
 	t=int(time.time())
-	t = 1624725088  # Temporary time
+	# t = 1624725088  # Temporary time
 	x = int(t - 489600)
 	tm = time.localtime(t)
 	request.session["time"] = t
