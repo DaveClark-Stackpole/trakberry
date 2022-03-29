@@ -3339,12 +3339,13 @@ def cell_track_9341(request):
 	total8_0455,op_total_0455, wip_zip_0455 = cell_track_0455(request)
 
 	t = int(time.time())
-	
+	request.session['runrate'] = 1139
 	return render(request,'cell_track_9341.html',{'t':t,'codes':total8,'op':op_total,'wip':wip_zip,'codes_60':total8_0455,'op_60':op_total_0455,'wip_60':wip_zip_0455,'args':args})	
 
 
 # Same tracking for 0455
 def cell_track_0455(request):
+	
 	shift_start, shift_time, shift_left, shift_end = stamp_shift_start(request)	 # Get the Time Stamp info
 	machines1 = ['1800','1801','1802','1529','1543','776','1824','1804','1805','1806','1808','1810','1815','1812','1816']
 	rate = [2,2,2,4,4,4,4,2,2,1,1,1,1,1,1]
