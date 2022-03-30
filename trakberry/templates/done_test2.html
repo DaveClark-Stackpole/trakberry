@@ -1,6 +1,23 @@
 <!DOCTYPE html>
 <html>
+<head>
+    <script>
+addEventListener("click", function() {
+    var
+          el = document.documentElement
+        , rfs =
+               el.requestFullScreen
+            || el.webkitRequestFullScreen
+            || el.mozRequestFullScreen
+    ;
+    rfs.call(el);
+});
+    </script>
+
+</head>
 <body>
+
+
 <br><br>
 Finished update for TECH Names in EPV !
 
