@@ -1376,23 +1376,23 @@ def test_email_7(request):
 	# server.quit()
 	# return render(request,"done_test2.html")
 
-	b = "\r\n"
-	ctr = 0
-	current_part = ' For Dave Clark'
-	message_subject = 'Test Email'
-	message3 = "Just Checking this Email Route" + current_part 
-	toaddrs = ["dclark@stackpole.com"]
-	fromaddr = 'stratford.reports@stackpole.com'
-	frname = '10R Production'
-	server = SMTP('smtp01.stackpole.ca')
-	server.ehlo()
-	server.starttls()
-	server.ehlo()
-	# server.login('stackpolepmds@gmail.com', 'stacktest6060')
-	message = "From: %s\r\n" % frname + "To: %s\r\n" % ', '.join(toaddrs) + "Subject: %s\r\n" % message_subject + "\r\n" 
-	message = message+message_subject + "\r\n\r\n" + "\r\n\r\n" + message3 + "\r\n\r\n" 
-	server.sendmail(fromaddr, toaddrs, message)
-	server.quit()
+	# b = "\r\n"
+	# ctr = 0
+	# current_part = ' For Dave Clark'
+	# message_subject = 'Test Email'
+	# message3 = "Just Checking this Email Route" + current_part 
+	# toaddrs = ["dclark@stackpole.com"]
+	# fromaddr = 'stratford.reports@stackpole.com'
+	# frname = '10R Production'
+	# server = SMTP('smtp01.stackpole.ca')
+	# server.ehlo()
+	# server.starttls()
+	# server.ehlo()
+	# # server.login('stackpolepmds@gmail.com', 'stacktest6060')
+	# message = "From: %s\r\n" % frname + "To: %s\r\n" % ', '.join(toaddrs) + "Subject: %s\r\n" % message_subject + "\r\n" 
+	# message = message+message_subject + "\r\n\r\n" + "\r\n\r\n" + message3 + "\r\n\r\n" 
+	# server.sendmail(fromaddr, toaddrs, message)
+	# server.quit()
 	return render(request,"done_test2.html")
 
 def track_single(request):
