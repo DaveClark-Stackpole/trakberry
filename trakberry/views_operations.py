@@ -98,6 +98,7 @@ def pdate_stamp(pdate):
 	return timestamp
 
 def stamp_pdate(stamp):
+	stamp=stamp+86400
 	tm = time.localtime(stamp)
 	ma = ''
 	da = ''
@@ -670,6 +671,10 @@ def prod_9341(request):
 	part  = ['50-9341']
 	asset1 = '1511'
 	asset2 = '1528'
+	if request.session['prev_10r'] == 1:
+		asset1 = '1533'
+		asset2 = '1533'
+
 	operation = [10]
 	# ************************************************************************************
 	shift = ['11pm-7am','7am-3pm','3pm-11pm']
@@ -710,9 +715,9 @@ def prod_9341(request):
 
 
 
-	 
 	# Select all reactions in asset list for date range
-	sql = "SELECT * FROM GFxPRoduction WHERE TimeStamp >= '%s' and TimeStamp <= '%s' and (Machine = '%s' OR Machine ='%s')" %(week_start,week_end,asset1,asset2)
+
+	sql = "SELECT * FROM GFxPRoduction WHERE TimeStamp >= '%s' and TimeStamp <= '%s' and (Machine = '%s' OR Machine ='%s') ORDER BY  %s %s" %(week_start,week_end,asset1,asset2,'TimeStamp','ASC')
 	cur.execute(sql)
 	tmp = cur.fetchall()
 	t1 = []
@@ -728,6 +733,7 @@ def prod_9341(request):
 	tot2 = []
 	tot3 = []
 
+	
 	for i in asset:
 		op4 = filter(lambda c:c[0]==i,operation_totals)
 		op5 = op4[0][1]  # Current operation
@@ -750,8 +756,9 @@ def prod_9341(request):
 				a33 = sum1
 				op[op5] = op[op5] + sum1
 
-
 				tot.append(a33)
+
+
 				tot2.append(tot)
 				# if ctr > 2:
 				# 	r=3/0
@@ -761,7 +768,6 @@ def prod_9341(request):
 
 
 	color_used = color2
-
 
 	for i in operation_totals:
 		i.append(op[i[1]])
@@ -785,7 +791,9 @@ def prod_9341(request):
 	inv_change =  int(operation_totals[0][3]) - int(goal_todate)
 	request.session['inv_change_9341'] = inv_change
 
-	return
+
+
+	return 
 
 def prod_0455(request):
 	prt7 = '50-0455'
@@ -1192,6 +1200,7 @@ def prod_1467(request):
 
 	return
 def prod_10R(request):
+	request.session['prev_10r'] = 0
 	t=int(time.time())
 	week_start_10r(request,t)
 	prod_9341(request)
@@ -1203,6 +1212,7 @@ def prod_10R(request):
 def prod_10R_prev(request):
 	t=request.session['week_end7']
 	t=t-604800
+	request.session['prev_10r'] = 1
 	week_start_10r(request,t)
 	prod_9341(request)
 	prod_0455(request)
