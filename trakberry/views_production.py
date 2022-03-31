@@ -1364,18 +1364,18 @@ def chart1_1467br(request):
 		request.session['part_area1'] = '50-1467'
 		request.session['rate_area1'] = 187
 		request.session['asset1_area1'] = '728'
-		request.session['asset2_area1'] = '728'
-		request.session['asset3_area1'] = '728'
-		request.session['asset4_area1'] = '728'
+		request.session['asset2_area1'] = '728O'
+		request.session['asset3_area1'] = '770'
+		request.session['asset4_area1'] = '770'
 		return render(request, "redirect_tracking.html")
 def chart2_1467br(request):
 		request.session['area2'] = '1467 Hardened'
 		request.session['part_area2'] = '50-1467'
 		request.session['rate_area2'] = 187
 		request.session['asset1_area2'] = '728'
-		request.session['asset2_area2'] = '728'
-		request.session['asset3_area2'] = '728'
-		request.session['asset4_area2'] = '728'
+		request.session['asset2_area2'] = '728O'
+		request.session['asset3_area2'] = '770'
+		request.session['asset4_area2'] = '770'
 		return render(request, "redirect_tracking.html")
 def chart1_3050(request):
 		request.session['area1'] = '50-3050 Inspection'
