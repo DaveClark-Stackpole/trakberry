@@ -184,7 +184,7 @@ def week_start_10r(request,t):
 
 def gf6_1713(request):
 	# ******************  Below data entered for each part  ******************************
-	goal = 3000   # Weekly6 Goal
+	goal = 1500   # Weekly6 Goal
 	color1 = '#96dbf8'  # Color for line 1
 	color2 = '#82BED7'  # Color for line 2
 	asset = ['576','595','635','628','672','667','900']
@@ -323,7 +323,7 @@ def gf6_1713(request):
   
 def gf6_3627(request):
 	# ******************  Below data entered for each part  ******************************
-	goal = 7500   # Weekly6 Goal
+	goal = 6000   # Weekly6 Goal
 	color1 = '#93E08D'  # Color for line 1
 	color2 = '#80C47B'  # Color for line 2
 	asset = ['732','583','582','580','616','617','731','682','674','673','675','676','566','745','900']
@@ -372,7 +372,7 @@ def gf6_3627(request):
 
 	for i in range(1,7):
 		stamp1 = week_start + (86400 * i)
-		pdate1 = stamp_pdate(stamp1)
+		pdate1 = stamp_pdate2(stamp1)
 		pdate_week.append(pdate1) # This is the tuple of days in the week to cycle through
 
 	db, cur = db_set(request)   
@@ -449,7 +449,7 @@ def gf6_3627(request):
 
 def gf6_1731(request):
 	# ******************  Below data entered for each part  ******************************
-	goal = 3000   # Weekly6 Goal
+	goal = 1500   # Weekly6 Goal
 	color1 = '#96dbf8'  # Color for line 1
 	color2 = '#82BED7'  # Color for line 2
 	asset = ['627','564','615','781','900']
@@ -491,7 +491,7 @@ def gf6_1731(request):
 	pdate_week.append(pdate_start)
 	for i in range(1,7):
 		stamp1 = week_start + (86400 * i)
-		pdate1 = stamp_pdate(stamp1)
+		pdate1 = stamp_pdate2(stamp1)
 		pdate_week.append(pdate1) # This is the tuple of days in the week to cycle through
 	db, cur = db_set(request)   
 	# Select all reactions in asset list for date range
@@ -560,7 +560,7 @@ def gf6_1731(request):
   
 def gf6_3632(request):
 	# ******************  Below data entered for each part  ******************************
-	goal = 7500   # Weekly6 Goal
+	goal = 6000   # Weekly6 Goal
 	color1 = '#93E08D'  # Color for line 1
 	color2 = '#80C47B'  # Color for line 2
 	asset = ['686','574','614','620','564','750','749','781','900']
