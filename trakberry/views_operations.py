@@ -110,6 +110,19 @@ def stamp_pdate(stamp):
 	pdate = y1 + '-' + (ma + m1) + '-' + (da + d1)
 	return pdate
 
+def stamp_pdate2(stamp):
+
+	tm = time.localtime(stamp)
+	ma = ''
+	da = ''
+	if tm[1] < 10: ma = '0'
+	if tm[2] < 10: da = '0'
+	y1 = str(tm[0])
+	m1 = str(tm[1])
+	d1 = str(tm[2])
+	pdate = y1 + '-' + (ma + m1) + '-' + (da + d1)
+	return pdate
+
 def gf6_reaction(request):
 	t=int(time.time())
 	week_start_gf6(request,t)
@@ -225,14 +238,14 @@ def gf6_1713(request):
 	week_time_todate = t - week_start
 	goal_todate = int((goal / float(432000)) * week_time_todate)  # Current Goal to date
 	if goal_todate > goal: goal_todate = goal
-	pdate_start = stamp_pdate(week_start)
+	pdate_start = stamp_pdate2(week_start)
 	pdate_week.append(pdate_start)
 
 
 
 	for i in range(1,7):
 		stamp1 = week_start + (86400 * i)
-		pdate1 = stamp_pdate(stamp1)
+		pdate1 = stamp_pdate2(stamp1)
 		pdate_week.append(pdate1) # This is the tuple of days in the week to cycle through
 
 	db, cur = db_set(request)   
@@ -354,7 +367,7 @@ def gf6_3627(request):
 	goal_todate = int((goal / float(432000)) * week_time_todate)  # Current Goal to date
 	if goal_todate > goal: goal_todate = goal
 
-	pdate_start = stamp_pdate(week_start)
+	pdate_start = stamp_pdate2(week_start)
 	pdate_week.append(pdate_start)
 
 	for i in range(1,7):
@@ -474,7 +487,7 @@ def gf6_1731(request):
 	week_time_todate = t - week_start
 	goal_todate = int((goal / float(432000)) * week_time_todate)  # Current Goal to date
 	if goal_todate > goal: goal_todate = goal
-	pdate_start = stamp_pdate(week_start)
+	pdate_start = stamp_pdate2(week_start)
 	pdate_week.append(pdate_start)
 	for i in range(1,7):
 		stamp1 = week_start + (86400 * i)
@@ -584,11 +597,11 @@ def gf6_3632(request):
 	week_time_todate = t - week_start
 	goal_todate = int((goal / float(432000)) * week_time_todate)  # Current Goal to date
 	if goal_todate > goal: goal_todate = goal
-	pdate_start = stamp_pdate(week_start)
+	pdate_start = stamp_pdate2(week_start)
 	pdate_week.append(pdate_start)
 	for i in range(1,7):
 		stamp1 = week_start + (86400 * i)
-		pdate1 = stamp_pdate(stamp1)
+		pdate1 = stamp_pdate2(stamp1)
 		pdate_week.append(pdate1) # This is the tuple of days in the week to cycle through
 	db, cur = db_set(request)   
 	# Select all reactions in asset list for date range
