@@ -322,7 +322,7 @@ def barcode_check(request):
 				return direction(request)
 			
 			request.session["last_part"] = short1
-			ctr = request.session["barcode_part"]
+			ctr = int(request.session["barcode_part"])
 			ctr = ctr + 1
 			request.session["barcode_part"] = ctr
 			if short1 == 'BB':
