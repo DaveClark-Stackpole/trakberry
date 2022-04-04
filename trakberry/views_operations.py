@@ -710,6 +710,7 @@ def prod_9341(request):
 			if i[1] == b2[c][1]:
 				b2[c][2] = 0
 	operation_totals = b2
+	f=7/0
 	total = zip(asset,part,operation)
 	asset_tuple = tuple(asset)
 	partno1 = '50-9341'
@@ -1476,6 +1477,7 @@ def track_area_single(request):
 	target = rate1
 
 	t=int(time.time())
+	t=1624725088.58 # Temp for local use only
 	x = int(t - 489600)
 	tm = time.localtime(t)
 	request.session["time"] = t
@@ -1493,25 +1495,7 @@ def track_area_single(request):
 	a4 = tm[5]
 	week_start1 = t - a1 - a2 - a3 - a4
 	week_current_seconds = t - week_start1
-	weekend_start = week_start1 + 43200
-	weekend_current_seconds = t - weekend_start
 
-	week_start2 = week_start1 - 604800
-	week_start3 = week_start2 - 604800
-	ew = week_start1 + 604800
-
-	# var1 = 'target' + data_area
-	target = target_area / float(3600) 
-	target = shift_time * target
-
-	# request.session[var1] = int(shift_time * target)
-	
-	wd, m, day, shift = day_breakdown(u)
-	request.session['wd'] = wd
-	request.session['m'] = m
-	request.session['shift'] = shift
-	request.session['day'] = day
-	request.session['yr'] = '2021'
 	
 	u=u-(60*60*8*84)
 	db, cur = db_set(request)
