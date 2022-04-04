@@ -1076,8 +1076,8 @@ def prod_3050(request):
 	request.session['op_totals_3050'] = op
 	request.session['op_span_3050'] = operation_totals
 	request.session['goal_3050'] = goal_todate
-	request.session['total_prod_3050'] = int(operation_totals[0][3]) + 724
-	inv_change =  int(operation_totals[0][3]) - int(goal_todate)+724
+	request.session['total_prod_3050'] = int(operation_totals[0][3]) 
+	inv_change =  int(operation_totals[0][3]) - int(goal_todate)
 	request.session['inv_change_3050'] = inv_change
 
 	return
