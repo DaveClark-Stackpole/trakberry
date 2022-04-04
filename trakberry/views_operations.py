@@ -684,7 +684,7 @@ def prod_9341(request):
 	part  = ['50-9341']
 	asset1 = '1511'
 	asset2 = '1528'
-	if request.session['prev_10r'] == 1:
+	if request.session['prev_10r'] == 0:
 		asset1 = '1533'
 		asset2 = '1533'
 
