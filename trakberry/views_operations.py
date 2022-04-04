@@ -710,7 +710,7 @@ def prod_9341(request):
 			if i[1] == b2[c][1]:
 				b2[c][2] = 0
 	operation_totals = b2
-	f=7/0
+
 	total = zip(asset,part,operation)
 	asset_tuple = tuple(asset)
 	partno1 = '50-9341'
