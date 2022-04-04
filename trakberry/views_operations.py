@@ -684,7 +684,7 @@ def prod_9341(request):
 	part  = ['50-9341']
 	asset1 = '1511'
 	asset2 = '1528'
-	if request.session['prev_10r'] == 1:
+	if request.session['prev_10r'] == 0:
 		asset1 = '1533'
 		asset2 = '1533'
 
@@ -710,6 +710,7 @@ def prod_9341(request):
 			if i[1] == b2[c][1]:
 				b2[c][2] = 0
 	operation_totals = b2
+	f=7/0
 	total = zip(asset,part,operation)
 	asset_tuple = tuple(asset)
 	partno1 = '50-9341'
@@ -1431,9 +1432,10 @@ def track_single(request):
 	return render(request, "track_single.html",{'GList':gr_list1,"datax":data1})
 
 def stamp_shift_start(request):
-	t = 1624725088  # Temporary time
-	stamp = t
-	# stamp=int(time.time())
+	# t = 1624725088  # Temporary time
+	# stamp = t
+	stamp=int(time.time())
+	t=stamp
 	tm = time.localtime(stamp)
 	hour1 = tm[3]
 	# t=int(time.time())
@@ -1466,19 +1468,20 @@ def stamp_shift_start(request):
 def track_area_single(request):
 	data_area = '1'
 	target_area = int(request.session['rate_area'])
-	prt = request.session['part_area']
+	prt = '50-1467'
 	rate1 = request.session['rate_area']
-	asset1 = str(request.session['asset1_area'])
-	asset2 = str(request.session['asset2_area'])
-	asset3 = str(request.session['asset3_area'])
-	asset4 = str(request.session['asset4_area'])
+	asset1 = '769'
+	asset2 = '650L'
+	asset3 = '650R'
+	asset4 = '650R'
 	target = rate1
 
 	t=int(time.time())
-	# t = 1624725088  # Temporary time
+	t=1624725088.58 # Temp for local use only
 	x = int(t - 489600)
 	tm = time.localtime(t)
 	request.session["time"] = t
+
 
 	u,shift_time,shift_left,e = stamp_shift_start(request)
 
@@ -1492,35 +1495,27 @@ def track_area_single(request):
 	a4 = tm[5]
 	week_start1 = t - a1 - a2 - a3 - a4
 	week_current_seconds = t - week_start1
-	weekend_start = week_start1 + 43200
-	weekend_current_seconds = t - weekend_start
 
-	week_start2 = week_start1 - 604800
-	week_start3 = week_start2 - 604800
-	ew = week_start1 + 604800
-
-	# var1 = 'target' + data_area
-	target = target_area / float(3600) 
-	target = shift_time * target
-
-	# request.session[var1] = int(shift_time * target)
 	
-	wd, m, day, shift = day_breakdown(u)
-	request.session['wd'] = wd
-	request.session['m'] = m
-	request.session['shift'] = shift
-	request.session['day'] = day
-	request.session['yr'] = '2021'
-	
-	
+	u=u-(60*60*8*84)
 	db, cur = db_set(request)
-	aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (u,t,prt,asset1,asset2,asset3,asset4)
-
+	aql = "SELECT * FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (u,t,prt,asset1,asset2,asset3,asset4)
 	cur.execute(aql)
 	tmp2 = cur.fetchall()
-	tmp3 = tmp2[0]
-	cnt = tmp3[0]
+
+
+
+
+	# tmp3 = tmp2[0]
+	# cnt = tmp3[0]
+	x=3/0
+
+	t2=int(time.time())
+
 	var1 = 'count' + data_area
+
+
+
 	request.session[var1] = cnt
 	if week_current_seconds > 43200:
 		weekend_cnt = 0
@@ -1581,7 +1576,7 @@ def track_area_single(request):
 		tmp3 = tmp2[0]
 
 
-		
+
 		prev_cnt1.append(str(tmp3[0]))
 
 		# prev_cnt1.append('0')
