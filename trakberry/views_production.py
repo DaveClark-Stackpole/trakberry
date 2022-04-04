@@ -3535,6 +3535,93 @@ def cell_track_0455(request):
 
 	return total8, op_total, wip_zip
 
+def cell_track_0455_history(request):
+	track_date = str(request.session['track_date'])
+	track_shift = str(request.session['track_shift'])
+	track_stamp = pdate_stamp(track_date)
+	if track_shift=='Mid':
+		track_stamp = track_stamp - 7200
+	elif track_shift=='Day':
+		track_stamp = track_stamp + 21600
+	elif track_shift=='Aft':
+		track_stamp=track_stamp + 50400
+	track_stamp_end = track_stamp + 28800
+
+	shift_start, shift_time, shift_left, shift_end = stamp_shift_start(request)	 # Get the Time Stamp info
+	machines1 = ['1800','1801','1802','1529','1543','776','1824','1804','1805','1806','1808','1810','1815','1812','1816']
+	rate = [2,2,2,4,4,4,4,2,2,1,1,1,1,1,1]
+	line1 = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+	operation1 = [10,10,10,30,30,30,30,40,40,50,60,70,80,100,120]
+	prt = '50-0455'
+	machine_rate = zip(machines1,rate,operation1)
+	machine_color =[]
+	db, cur = db_set(request)
+
+	color8=[]
+	rate8=[]
+	machine8=[]
+	pred8 = []
+	av55=[]
+	cnt55=[]
+	sh55=[]
+	shl55=[]
+	op8=[]
+	for i in machine_rate:
+		machine2 = i[0]
+		rate2 = 1000 / float(i[1])
+
+		try:
+			sql = "SELECT SUM(Count) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and Machine = '%s'" % (track_stamp,track_stamp_end,prt,machine2)
+			cur.execute(sql)
+			tmp2 = cur.fetchall()
+			tmp3 = tmp2[0]
+			cnt = int(tmp3[0])
+		except:
+			cnt = 0
+		if cnt is None: cnt = 0
+
+		rate3 = cnt / float(rate2)
+		rate3 = int(rate3 * 100) # This will be the percentage we use to determine colour
+
+		pred1 = int(cnt)
+		op8.append(i[2])
+		pred8.append(pred1)
+		if rate3>=100:
+			cc='#009700'
+		elif rate3>=90:
+			cc='#4FC34F'
+		elif rate3>=80:
+			cc='#A4F6A4'
+		elif rate3>=70:
+			cc='#C3C300'
+		elif rate3>=50:
+			cc='#DADA3F'
+		elif rate3>=25:
+			cc='#F6F687'
+		elif rate3>=10:
+			cc='#F7BA84'
+		elif rate3>0:
+			cc='#EC7371'
+		else:
+			cc='#FF0400'
+		color8.append(cc)
+		rate8.append(rate3)
+		machine8.append(machine2)
+	total8=zip(machine8,rate8,color8,pred8,op8)
+
+	total99=0
+	last_op=10
+	op99=[]
+	opt99=[]
+
+	op_total = [0 for x in range(200)]	
+	for i in total8:
+		op_total[i[4]]=op_total[i[4]] + i[3]
+	db.close()
+	jobs1 = zip(machines1,line1,operation1)
+	wip_zip=[]
+	return total8, op_total, wip_zip
+
 def cell_track_9341_mobile(request):
 
 	
@@ -3616,7 +3703,6 @@ def cell_track_9341_history(request):
 
 	track_date = str(request.session['track_date'])
 	track_shift = str(request.session['track_shift'])
-
 	track_stamp = pdate_stamp(track_date)
 	if track_shift=='Mid':
 		track_stamp = track_stamp - 7200
@@ -3625,8 +3711,6 @@ def cell_track_9341_history(request):
 	elif track_shift=='Aft':
 		track_stamp=track_stamp + 50400
 	track_stamp_end = track_stamp + 28800
-
-
 
 	shift_start, shift_time, shift_left, shift_end = stamp_shift_start(request)	 # Get the Time Stamp info
 	machines1 = ['1504','1506','1519','1520','1502','1507','1501','1515','1508','1532','1509','1514','1510','1503','1511','1518','1521','1522','1523','1539','1540','1524','1525','1538','1541','1531','1527','1530','1528','1513','1533']
@@ -3658,45 +3742,14 @@ def cell_track_9341_history(request):
 			cnt = int(tmp3[0])
 		except:
 			cnt = 0
-
-
-		# try:
-		# 	sql = "SELECT SUM(Count) FROM GFxPRoduction WHERE TimeStamp >= '%d' and Part = '%s' and Machine = '%s'" % (start1,prt,machine2)
-		# 	cur.execute(sql)
-		# 	tmp22 = cur.fetchall()
-		# 	tmp33 = tmp22[0]
-		# 	cnt33 = int(tmp33[0])
-		# except:
-		# 	cnt33 = 0
-
-
 		if cnt is None: cnt = 0
 
 		rate3 = cnt / float(rate2)
 		rate3 = int(rate3 * 100) # This will be the percentage we use to determine colour
 
-		# Pediction
-		# avg8 = cnt33 / float(shift_time)
-		# avg9 = avg8 * shift_left
 		pred1 = int(cnt)
-
 		op8.append(i[2])
-		# av55.append(avg8)
-		# cnt55.append(cnt33)
-		# sh55.append(shift_time)
-		# shl55.append(shift_left)
-
 		pred8.append(pred1)
-	
-		# Below is the Color Codes
-		#009700 100%
-		#4FC34F 90%
-		#A4F6A4 80%
-		#C3C300 70%
-		#DADA3F 50%
-		#F6F687 25%
-		#EC7371 0%
-
 		if rate3>=100:
 			cc='#009700'
 		elif rate3>=90:
@@ -3715,12 +3768,9 @@ def cell_track_9341_history(request):
 			cc='#EC7371'
 		else:
 			cc='#FF0400'
-			#cc='#EC7371'	Change to red when ready to go
 		color8.append(cc)
 		rate8.append(rate3)
 		machine8.append(machine2)
-
-
 	total8=zip(machine8,rate8,color8,pred8,op8)
 
 	total99=0
@@ -3729,14 +3779,8 @@ def cell_track_9341_history(request):
 	opt99=[]
 
 	op_total = [0 for x in range(200)]	
-
-
 	for i in total8:
-
 		op_total[i[4]]=op_total[i[4]] + i[3]
-
-
-
 	db.close()
 	jobs1 = zip(machines1,line1,operation1)
 
@@ -3751,12 +3795,11 @@ def cell_track_9341_history(request):
 	args.update(csrf(request))
 	args['form'] = form
 
-	total8_0455,op_total_0455, wip_zip_0455 = cell_track_0455(request)
+	total8_0455,op_total_0455, wip_zip_0455 = cell_track_0455_history(request)
+
+
 
 	return render(request,'cell_track_9341.html',{'codes':total8,'op':op_total,'codes_60':total8_0455,'op_60':op_total_0455,'args':args})	
-	
-
-	return render(request,'cell_track_9341.html',{'codes':total8,'op':op_total,'args':args})	
 
 # This will update the WIP_TRACK to current wip and reset time to current time.
 def wip_update(request):
