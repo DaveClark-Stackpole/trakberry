@@ -231,7 +231,7 @@ def tech(request):
 
 
 
-	net1(request)
+
 	#Do the Hour Check to see if email needs sending
 
 	#return email_hour_check(request)
@@ -296,9 +296,8 @@ def tech(request):
 	smp2=[]
 	mach_cnt = []
 	tch = []
-
 	# Update CNC TEch PM Lists
-	tech_pm_update(request)
+	# tech_pm_update(request)
 	# *******************************
 
 	# Will update Weekly Tech EPV List once if it doesn't exist 
@@ -307,10 +306,9 @@ def tech(request):
 	clock4 = 'Gauge Tech'
 	clock_len = '9999'
 	db, cursor = db_set(request)   
-	cursor.execute("""CREATE TABLE IF NOT EXISTS quality_epv_checks(Id INT PRIMARY KEY AUTO_INCREMENT,date1 CHAR(80),shift1 CHAR(80), check1 Char(80), description1 Char(80), asset1 Char(80), master1 Char(80), comment Char(255), clock_num Char(80))""")
-	cursor.execute("""CREATE TABLE IF NOT EXISTS quality_epv_week(Id INT PRIMARY KEY AUTO_INCREMENT,date1 CHAR(80),QC1 Char(255), OP1 Char(255), Check1 Char(255), Desc1 Char(255), Method1 Char(255), Asset Char(80), Person Char(100))""")
+	# cursor.execute("""CREATE TABLE IF NOT EXISTS quality_epv_checks(Id INT PRIMARY KEY AUTO_INCREMENT,date1 CHAR(80),shift1 CHAR(80), check1 Char(80), description1 Char(80), asset1 Char(80), master1 Char(80), comment Char(255), clock_num Char(80))""")
+	# cursor.execute("""CREATE TABLE IF NOT EXISTS quality_epv_week(Id INT PRIMARY KEY AUTO_INCREMENT,date1 CHAR(80),QC1 Char(255), OP1 Char(255), Check1 Char(255), Desc1 Char(255), Method1 Char(255), Asset Char(80), Person Char(100))""")
 	date_start = week_start_finder(request)
-
 	xql = "SELECT * FROM quality_epv_checks where (clock_num > '%s')" %(clock_len)
 	cursor.execute(xql)
 	xmp = cursor.fetchall()

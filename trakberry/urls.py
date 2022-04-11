@@ -57,6 +57,7 @@ from mod_test import wildcard_test
 from views_test2 import machine1, prediction1
 
 from views_manpower import manpower_allocation
+from views_test1 import balancer_1508
 # ***********************************************************************************************************************************************************
 
 
@@ -465,6 +466,8 @@ urlpatterns = [
 	url(r'^prediction1/', prediction1),
 
 	url(r'^manpower_allocation/', manpower_allocation),
+
+	url(r'^balancer_1508/', balancer_1508),
 
 	# ************************************************************************
 	
