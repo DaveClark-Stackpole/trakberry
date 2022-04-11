@@ -1,0 +1,365 @@
+
+<html>
+<head>
+<!-- Test  -->
+ <!-- Format for Background image -->
+<style type="text/css">
+
+
+
+
+
+.multiple-borders {
+  -webkit-box-shadow:
+            0px 0px 0px 2px rgba(0,0,0,0.6),
+                0px 0px 0px 14px #fff,
+                0px 0px 0px 18px rgba(0,0,0,0.2),
+                6px 6px 8px 17px #555;
+   
+     -moz-box-shadow:
+            0px 0px 0px 2px rgba(0,0,0,0.6),
+                0px 0px 0px 14px #fff,
+                0px 0px 0px 18px rgba(0,0,0,0.2),
+                6px 6px 8px 17px #555;
+   
+          box-shadow:
+            0px 0px 0px 2px rgba(0,0,0,0.6),
+                0px 0px 0px 14px #fff,
+                0px 0px 0px 18px rgba(0,0,0,0.2),
+                6px 6px 8px 17px #555;
+}   
+
+
+</style>
+
+<script>
+	function prod_10R_prev(){location.replace("{{request.session.local_toggle}}/prod_10R_prev")}
+	function prod_10R(){location.replace("{{request.session.local_toggle}}/prod_10R")}
+</script>
+
+  <title>10R Production</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+	
+  <script src="/static/bootstrap/js/1.11.3/jquery.min.js"></script>
+  <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
+  
+
+
+  <!-- <link rel="stylesheet" href="/static/style_1/grid_kiosk_job_production2.css?{{TCUR}}">    -->
+
+	<style type="text/css">
+		.mainset{color:black;text-align:center;float:left;width:100%}
+		.wrapper_main {background:chartreuse;width:90%;margin-left: 10px;}
+		
+		.frame1 {color:black;text-align:center;float:left;width:32%;margin-bottom: 5px;}
+		.frame2a{color:black;text-align:center;background:rgb(202, 188, 83);float:left;width:32%;position:relative;left:5px;border-radius: 15px;margin-bottom: 5px;}
+
+		.frame2{color:black;text-align:center;background:rgb(83, 134, 202);float:left;width:32%;position:relative;left:5px;margin-bottom: 5px;}
+		.frame3 {color:black;text-align:center;background:rgb(61, 138, 64);float:left;width:32%;position:relative;left:10px;margin-bottom: 5px;}
+		.frame4 {color:black;text-align:center;float:left;width:98%;position:relative;left:5px;margin-bottom: 5px;margin-top: 15px;}
+
+		.frame5{color:black;text-align:center;background:rgb(168, 168, 168);float:right;width:40%}
+		.head1{color:black;text-align:center;border: .4px solid rgb(0, 0, 0);background:rgb(114, 159, 243);width:85%}
+		.head1_u{color:black;text-align:center;border: .4px solid rgb(0, 0, 0);background:rgb(226, 226, 226);width:100%}
+		.head2_u{color:black;text-align:center;float:left;font-size: 60%;border: .4px solid rgb(0, 0, 0);background: rgb(184, 167, 142);width:25%}
+		.body1_u{color:black;text-align:left;float: left;border: 1px solid rgb(0, 0, 0);width:25%}
+		.head2{color:black;text-align:center;float:left;font-size: 60%;border: .4px solid rgb(222, 231, 95);background: rgb(184, 167, 142);width:65%}
+		.body1{color:black;text-align:left;float: left;border: 1px solid rgb(0, 0, 0);width:85%}
+		.body2{color:black;text-align:left;float: left;border: 1px solid rgb(0, 0, 0);width:65%}
+		.body3{color:black;text-align:center;background:rgb(199, 187, 166);float:left;width:33%;border: .4px solid rgb(0, 0, 0)}
+		.body3h{color:black;text-align:center;background:rgb(187, 186, 184);float:left;width:33%;border: .4px solid rgb(0, 0, 0)}
+		.body3t{color:black;text-align:center;background:rgb(187, 186, 184);float:left;font-size:medium;width:99%;border: .4px solid rgb(0, 0, 0)}
+
+		.frameA {color:black;text-align:center;float:left;width:95%;margin-bottom: 5px;}
+		
+	</style>
+
+
+
+<!-- Style for Production Summaries -->
+<style>   
+	#prodsum {
+		font-family: Arial, Helvetica, sans-serif;
+		border-collapse: collapse;
+		width: 100%;
+	}
+	#prodsum td, #prodsum th {
+		border: 1px solid rgb(136, 134, 134);
+		padding: 3px;
+	}
+	/* #prodsum tr:nth-child(even){background-color: #96dbf8;}
+	#prodsum tr:nth-child(odd){background-color: #45b4c6;} */
+	#prodsum tr:hover {background-color: #ddd;}
+	#prodsum th {
+		padding-top: 10px;
+		padding-bottom: 10px;
+		text-align: left;
+		background-color: rgb(68, 82, 91);
+		color: white;
+	}
+</style>
+<style>   
+	#prodso {
+		font-family: Arial, Helvetica, sans-serif;
+		border-collapse: collapse;
+		width: 100%;
+	}
+	#prodso td, #prodso th {
+		border: 1px solid rgb(30,148,20);
+		padding: 3px;
+	}
+	/* #prodsum tr:nth-child(even){background-color: #96dbf8;}
+	#prodsum tr:nth-child(odd){background-color: #45b4c6;} */
+	#prodso tr:hover {background-color: #ddd;}
+	#prodso th {
+		padding-top: 10px;
+		padding-bottom: 10px;
+		text-align: left;
+		background-color: rgb(13,76,8);
+		color: white;
+	}
+</style>
+<style>   
+	#prodto {
+		font-family: Arial, Helvetica, sans-serif;
+		border-collapse: collapse;
+		width: 100%;
+	}
+	#prodto td, #prodto th {
+		border: 1px solid rgb(179, 117, 24);
+		padding: 3px;
+	}
+	/* #prodsum tr:nth-child(even){background-color: #96dbf8;}
+	#prodsum tr:nth-child(odd){background-color: #45b4c6;} */
+	#prodto tr:hover {background-color: #ddd;}
+	#prodto th {
+		padding-top: 10px;
+		padding-bottom: 10px;
+		text-align: left;
+		background-color: rgb(184, 145, 88);
+		color: white;
+	}
+</style>
+<style>   
+	#prodtr {
+		font-family: Arial, Helvetica, sans-serif;
+		border-collapse: collapse;
+		width: 100%;
+	}
+	#prodtr td, #prodtr th {
+		border: 1px solid rgb(180, 142, 216);
+		padding: 3px;
+	}
+	/* #prodsum tr:nth-child(even){background-color: #96dbf8;}
+	#prodsum tr:nth-child(odd){background-color: #45b4c6;} */
+	#prodtr tr:hover {background-color: #ddd;}
+	#prodtr th {
+		padding-top: 10px;
+		padding-bottom: 10px;
+		text-align: left;
+		background-color: rgb(80, 54, 85);
+		color: white;
+	}
+</style>
+<style>
+	body  {
+		background-color:rgb(241, 241, 204);
+	
+	}
+	
+	</style>
+</head>
+
+<body>
+
+
+
+
+
+
+<div class="wrapper_main">
+    <div class="frame4">  <!-- Production Summary-->
+
+
+        <table id="prodsum">
+			<td colspan="25" bgcolor="#343E45"><center><font style="font-weight:bolder;font-size:x-large;color:#fff;">9341 Weekly Production</font>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<button  style="background-color: #585858;border-radius: 10px;height:70%;font-size:10px;color:#fefffa;vertical-align:middle;" onclick="prod_10R_prev()"> << PREV WEEK </button> 
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<button  style="background-color: #585858;border-radius: 10px;height:70%;font-size:10px;color:#fefffa;vertical-align:middle;" onclick="prod_10R()"> CURRENT WEEK </button> </center>
+			</td>
+            <tr><th rowspan="2"><center>Machine</center></th>
+                {% for i in request.session.pdate_9341 %}
+                    <th colspan="3"><center>{{i}}</center></th>
+                {% endfor %}
+				<th rowspan="2"><center>Week Totals</center></th>
+				<th rowspan="2"><center>Current Goal</center></th>
+				<th rowspan="2"><center>Inventory Change</center></th>
+            </tr><tr>
+                {% for i in request.session.pdate_9341 %}
+                    {% for ii in request.session.shift_9341 %}
+                        <th><center>{{ii}}</center></th>
+                    {% endfor %}
+                {% endfor %}
+            </tr>
+        {% for i in request.session.totals_9341 %}
+            <tr>
+                    <td bgcolor="{{i.0.4}}"><center>Inspection</center></td>
+           		 {% for ii in i %}
+               		<td bgcolor="{{ii.4}}"><center>{{ii.3}}</center></td>
+            	{% endfor %}
+				{% for x in request.session.op_span_9341 %}
+					{% if x.0 == i.0.0 and x.2 > 0 %} 
+						{% if x.3 < request.session.goal_9341 %}
+							<td  bgcolor="{{i.0.4}}" rowspan="{{x.2}}"><center><b><font style="color:rgb(180, 0, 0);">{{x.3}}</font></b></center></td>
+						{% else %}
+							<td  bgcolor="{{i.0.4}}" rowspan="{{x.2}}"><center><b>{{x.3}}</b></center></td>
+						{% endif %}
+							<td  bgcolor="{{i.0.4}}" rowspan="{{x.2}}"><center><b>{{request.session.goal_9341}}</b></center></td>
+							{% if request.session.inv_change_9341 < 0 %}
+								<td  bgcolor="{{i.0.4}}" rowspan="{{x.2}}"><center><b><font style="color:rgb(180, 0, 0);">{{request.session.inv_change_9341}}</font></b></center></td>
+							{% else %}
+								<td  bgcolor="{{i.0.4}}" rowspan="{{x.2}}"><center><b><font style="color:rgb(12, 12, 12);">{{request.session.inv_change_9341}}</font></b></center></td>
+							{% endif %}
+					{% endif %}
+				{% endfor %}
+			</tr>
+        {% endfor %}
+        </table>
+<br><br>
+<table id="prodso">
+	<td colspan="25" bgcolor="#0C3F08"><center><font style="font-weight:bolder;font-size:x-large;color:#fff;">0455 Weekly Production</font>
+	</td>
+	<tr><th rowspan="2"><center>Machine</center></th>
+		{% for i in request.session.pdate_0455 %}
+			<th colspan="3"><center>{{i}}</center></th>
+		{% endfor %}
+		<th rowspan="2"><center>Week Totals</center></th>
+		<th rowspan="2"><center>Current Goal</center></th>
+		<th rowspan="2"><center>Inventory Change</center></th>
+	</tr><tr>
+		{% for i in request.session.pdate_0455 %}
+			{% for ii in request.session.shift_0455 %}
+				<th><center>{{ii}}</center></th>
+			{% endfor %}
+		{% endfor %}
+	</tr>
+{% for i in request.session.totals_0455 %}
+	<tr>
+			<td bgcolor="#93E08D"><center>Inspection</center></td>
+			{% for ii in i %}
+			   <td bgcolor="#93E08D"><center>{{ii.3}}</center></td>
+		{% endfor %}
+		{% for x in request.session.op_span_0455 %}
+			{% if x.0 == i.0.0 and x.2 > 0 %} 
+				{% if x.3 < request.session.goal_0455 %}
+					<td  bgcolor="#93E08D" rowspan="{{x.2}}"><center><b><font style="color:rgb(180, 0, 0);">{{x.3}}</font></b></center></td>
+				{% else %}
+					<td  bgcolor="#93E08D" rowspan="{{x.2}}"><center><b>{{x.3}}</b></center></td>
+				{% endif %}
+					<td  bgcolor="#93E08D" rowspan="{{x.2}}"><center><b>{{request.session.goal_0455}}</b></center></td>
+					{% if request.session.inv_change_0455 < 0 %}
+							<td  bgcolor="#93E08D" rowspan="{{x.2}}"><center><b><font style="color:rgb(180, 0, 0);">{{request.session.inv_change_0455}}</font></b></center></td>
+					{% else %}
+							<td  bgcolor="#93E08D" rowspan="{{x.2}}"><center><b><font style="color:rgb(12, 12, 12);">{{request.session.inv_change_0455}}</font></b></center></td>
+					{% endif %}
+					
+			{% endif %}
+		{% endfor %}
+	</tr>
+{% endfor %}
+</table>
+
+		<br><br>
+		<table id="prodtr">
+			<th colspan="25"><center><font style="font-weight:bolder;font-size:x-large;color:#fff;">1467 Weekly Production</font>
+			</th>
+			<tr><th rowspan="2"><center>Machine</center></th>
+				{% for i in request.session.pdate_1467 %}
+					<th colspan="3"><center>{{i}}</center></th>
+				{% endfor %}
+				<th rowspan="2"><center>Week Totals</center></th>
+				<th rowspan="2"><center>Current Goal</center></th>
+				<th rowspan="2"><center>Inventory Change</center></th>
+			</tr><tr>
+				{% for i in request.session.pdate_1467 %}
+					{% for ii in request.session.shift_1467 %}
+						<th><center>{{ii}}</center></th>
+					{% endfor %}
+				{% endfor %}
+			</tr>
+		{% for i in request.session.totals_1467 %}
+			<tr>
+					<td bgcolor="#C0A8D9"><center>Inspection</center></td>
+					{% for ii in i %}
+					   <td bgcolor="#C0A8D9"><center>{{ii.3}}</center></td>
+				{% endfor %}
+				{% for x in request.session.op_span_1467 %}
+					{% if x.0 == i.0.0 and x.2 > 0 %} 
+						{% if x.3 < request.session.goal_1467 %}
+							<td  bgcolor="#C0A8D9" rowspan="{{x.2}}"><center><b><font style="color:rgb(180, 0, 0);">{{x.3}}</font></b></center></td>
+						{% else %}
+							<td  bgcolor="#C0A8D9" rowspan="{{x.2}}"><center><b>{{x.3}}</b></center></td>
+						{% endif %}
+							<td  bgcolor="#C0A8D9" rowspan="{{x.2}}"><center><b>{{request.session.goal_1467}}</b></center></td>
+							{% if request.session.inv_change_1467 < 0 %}
+									<td  bgcolor="#C0A8D9" rowspan="{{x.2}}"><center><b><font style="color:rgb(180, 0, 0);">{{request.session.inv_change_1467}}</font></b></center></td>
+							{% else %}
+									<td  bgcolor="#C0A8D9" rowspan="{{x.2}}"><center><b><font style="color:rgb(12, 12, 12);">{{request.session.inv_change_1467}}</font></b></center></td>
+							{% endif %}
+							
+					{% endif %}
+				{% endfor %}
+			</tr>
+		{% endfor %}
+		</table>
+		<br><br>
+        <table id="prodto">
+			<td colspan="25" bgcolor="#9B7A4A"><center><font style="font-weight:bolder;font-size:x-large;color:#fff;">3050 Weekly Production</font></center></td>
+		</th>
+		<tr><th rowspan="2"><center>Machine</center></th>
+			{% for i in request.session.pdate_3050 %}
+				<th colspan="3"><center>{{i}}</center></th>
+			{% endfor %}
+			<th rowspan="2"><center>Week Totals</center></th>
+			<th rowspan="2"><center>Current Goal</center></th>
+			<th rowspan="2"><center>Inventory Change</center></th>
+		</tr><tr>
+			{% for i in request.session.pdate_3050 %}
+				{% for ii in request.session.shift_3050 %}
+					<th><center>{{ii}}</center></th>
+				{% endfor %}
+			{% endfor %}
+		</tr>
+        {% for i in request.session.totals_3050 %}
+			<tr>
+					<td bgcolor="{{i.0.4}}"><center>Inspection</center></td>
+					{% for ii in i %}
+					   <td bgcolor="{{i.0.4}}"><center>{{ii.3}}</center></td>
+				{% endfor %}
+				{% for x in request.session.op_span_3050 %}
+					{% if x.0 == i.0.0 and x.2 > 0 %} 
+						{% if request.session.total_prod_3050 < request.session.goal_3050 %}
+							<td  bgcolor="{{i.0.4}}" rowspan="{{x.2}}"><center><b><font style="color:rgb(180, 0, 0);">{{request.session.total_prod_3050}}</font></b></center></td>
+						{% else %}
+							<td  bgcolor="{{i.0.4}}" rowspan="{{x.2}}"><center><b>{{request.session.total_prod_3050}}</b></center></td>
+						{% endif %}
+							<td  bgcolor="{{i.0.4}}" rowspan="{{x.2}}"><center><b>{{request.session.goal_3050}}</b></center></td>
+							{% if request.session.inv_change_3050 < 0 %}
+									<td  bgcolor="{{i.0.4}}" rowspan="{{x.2}}"><center><b><font style="color:rgb(180, 0, 0);">{{request.session.inv_change_3050}}</font></b></center></td>
+							{% else %}
+									<td  bgcolor="{{i.0.4}}" rowspan="{{x.2}}"><center><b><font style="color:rgb(12, 12, 12);">{{request.session.inv_change_3050}}</font></b></center></td>
+							{% endif %}
+							
+					{% endif %}
+				{% endfor %}
+			</tr>
+		{% endfor %}
+		</table>
+
+
+    </div>
+</div>
+</body></html>

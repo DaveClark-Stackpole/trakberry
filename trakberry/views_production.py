@@ -1902,18 +1902,91 @@ def mgmt_goals(request):
 	tmp = cur.fetchall()
 	add_factor_3050 = int(tmp[0][3])
 	goal_3050 = int(tmp[0][2])
+	p='50-3627'
+	sql = "SELECT * FROM tkb_production_goals WHERE part = '%s'" % (p)
+	cur.execute(sql)
+	tmp = cur.fetchall()
+	add_factor_3627 = int(tmp[0][3])
+	goal_3627 = int(tmp[0][2])
+	p='50-3632'
+	sql = "SELECT * FROM tkb_production_goals WHERE part = '%s'" % (p)
+	cur.execute(sql)
+	tmp = cur.fetchall()
+	add_factor_3632 = int(tmp[0][3])
+	goal_3632 = int(tmp[0][2])
+	p='50-1713'
+	sql = "SELECT * FROM tkb_production_goals WHERE part = '%s'" % (p)
+	cur.execute(sql)
+	tmp = cur.fetchall()
+	add_factor_1713 = int(tmp[0][3])
+	goal_1713 = int(tmp[0][2])
+	p='50-1731'
+	sql = "SELECT * FROM tkb_production_goals WHERE part = '%s'" % (p)
+	cur.execute(sql)
+	tmp = cur.fetchall()
+	add_factor_1731 = int(tmp[0][3])
+	goal_1731 = int(tmp[0][2])
+	p='50-8670'
+	sql = "SELECT * FROM tkb_production_goals WHERE part = '%s'" % (p)
+	cur.execute(sql)
+	tmp = cur.fetchall()
+	add_factor_8670 = int(tmp[0][3])
+	goal_8670 = int(tmp[0][2])
+	p='50-5401'
+	sql = "SELECT * FROM tkb_production_goals WHERE part = '%s'" % (p)
+	cur.execute(sql)
+	tmp = cur.fetchall()
+	add_factor_5401 = int(tmp[0][3])
+	goal_5401 = int(tmp[0][2])
+	p='50-5404'
+	sql = "SELECT * FROM tkb_production_goals WHERE part = '%s'" % (p)
+	cur.execute(sql)
+	tmp = cur.fetchall()
+	add_factor_5404 = int(tmp[0][3])
+	goal_5404 = int(tmp[0][2])
+	p='50-4748'
+	sql = "SELECT * FROM tkb_production_goals WHERE part = '%s'" % (p)
+	cur.execute(sql)
+	tmp = cur.fetchall()
+	add_factor_4748 = int(tmp[0][3])
+	goal_4748 = int(tmp[0][2])
+	p='50-4865'
+	sql = "SELECT * FROM tkb_production_goals WHERE part = '%s'" % (p)
+	cur.execute(sql)
+	tmp = cur.fetchall()
+	add_factor_4865 = int(tmp[0][3])
+	goal_4865 = int(tmp[0][2])
+	
 
-	part = ['50-0455','50-9341','50-1467','50-3050']
+	part = ['50-0455','50-9341','50-1467','50-3050','50-3627','50-3632','50-1713','50-1731','50-8670','50-5401','50-5404','50-4748','50-4865']
 	goals=[]
 	addfac=[]
 	goals.append(goal_0455)
 	goals.append(goal_9341)
 	goals.append(goal_1467)
 	goals.append(goal_3050)
+	goals.append(goal_3627)
+	goals.append(goal_3632)
+	goals.append(goal_1713)
+	goals.append(goal_1731)
+	goals.append(goal_8670)
+	goals.append(goal_5401)
+	goals.append(goal_5404)
+	goals.append(goal_4748)
+	goals.append(goal_4865)
 	addfac.append(add_factor_0455)
 	addfac.append(add_factor_9341)
 	addfac.append(add_factor_1467)
 	addfac.append(add_factor_3050)
+	addfac.append(add_factor_3627)
+	addfac.append(add_factor_3632)
+	addfac.append(add_factor_1713)
+	addfac.append(add_factor_1731)
+	addfac.append(add_factor_8670)
+	addfac.append(add_factor_5401)
+	addfac.append(add_factor_5404)
+	addfac.append(add_factor_4748)
+	addfac.append(add_factor_4865)
 
 	totals=zip(part,goals,addfac)
 	request.session['total_goals'] = totals
@@ -1946,7 +2019,7 @@ def mgmt_goals(request):
 			db.commit()
 			cur.execute('''INSERT INTO tkb_weekly_goals(part,goal,timestamp) VALUES(%s,%s,%s)''', (i[0],i[1],t))
 			db.commit()
-		return render(request, "redirect_mgmt_track_week.html")
+		return render(request, "redirect_master.html")
 	else:
 		form = sup_downForm()
 	args = {}
