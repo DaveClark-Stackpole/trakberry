@@ -795,7 +795,7 @@ def ab1v_8670(request):
 
 
 	# Select all reactions in asset list for date range
-	sql = "SELECT * FROM GFxPRoduction WHERE TimeStamp >= '%s' and TimeStamp <= '%s' and Machine = '%s' and Part = '%s'" %(week_start,week_end,asset[0],prt7)
+	sql = "SELECT * FROM GFxPRoduction WHERE TimeStamp >= '%s' and TimeStamp <= '%s' and Machine = '%s' and Part = '%s'" %(week_start,fi1,asset[0],prt7)
 	cur.execute(sql)
 	tmp = cur.fetchall()
 	t1 = []
@@ -933,7 +933,7 @@ def ab1v_5401(request):
 
 
 	# Select all reactions in asset list for date range
-	sql = "SELECT * FROM GFxPRoduction WHERE TimeStamp >= '%s' and TimeStamp <= '%s' and Machine = '%s' and Part = '%s'" %(week_start,week_end,asset[0],part[0])
+	sql = "SELECT * FROM GFxPRoduction WHERE TimeStamp >= '%s' and TimeStamp <= '%s' and Machine = '%s' and Part = '%s'" %(week_start,fi1,asset[0],part[0])
 	cur.execute(sql)
 	tmp = cur.fetchall()
 	t1 = []
@@ -1071,7 +1071,7 @@ def ab1v_5404(request):
 
 
 	# Select all reactions in asset list for date range
-	sql = "SELECT * FROM GFxPRoduction WHERE TimeStamp >= '%s' and TimeStamp <= '%s' and Machine = '%s' and Part = '%s'" %(week_start,week_end,asset[0],part[0])
+	sql = "SELECT * FROM GFxPRoduction WHERE TimeStamp >= '%s' and TimeStamp <= '%s' and Machine = '%s' and Part = '%s'" %(week_start,fi1,asset[0],part[0])
 	cur.execute(sql)
 	tmp = cur.fetchall()
 	t1 = []
