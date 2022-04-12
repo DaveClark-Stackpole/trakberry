@@ -58,6 +58,8 @@ from views_test2 import machine1, prediction1
 
 from views_manpower import manpower_allocation
 from views_test1 import balancer_1508
+
+from views_production import update7
 # ***********************************************************************************************************************************************************
 
 
@@ -758,6 +760,7 @@ urlpatterns = [
 	url(r'^hr/', hr),
 	url(r'^hr_login_form/', hr_login_form),
 
+	url(r'^update7/', update7),
 
 	# **************************************************************************
 
