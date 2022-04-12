@@ -1956,9 +1956,15 @@ def mgmt_goals(request):
 	tmp = cur.fetchall()
 	add_factor_4865 = int(tmp[0][3])
 	goal_4865 = int(tmp[0][2])
+	p='50-6729'
+	sql = "SELECT * FROM tkb_production_goals WHERE part = '%s'" % (p)
+	cur.execute(sql)
+	tmp = cur.fetchall()
+	add_factor_6729 = int(tmp[0][3])
+	goal_6729 = int(tmp[0][2])
 	
 
-	part = ['50-0455','50-9341','50-1467','50-3050','50-3627','50-3632','50-1713','50-1731','50-8670','50-5401','50-5404','50-4748','50-4865']
+	part = ['50-0455','50-9341','50-1467','50-3050','50-3627','50-3632','50-1713','50-1731','50-8670','50-5401','50-5404','50-4748','50-4865','50-6729']
 	goals=[]
 	addfac=[]
 	goals.append(goal_0455)
@@ -1974,6 +1980,7 @@ def mgmt_goals(request):
 	goals.append(goal_5404)
 	goals.append(goal_4748)
 	goals.append(goal_4865)
+	goals.append(goal_6729)
 	addfac.append(add_factor_0455)
 	addfac.append(add_factor_9341)
 	addfac.append(add_factor_1467)
@@ -1987,6 +1994,7 @@ def mgmt_goals(request):
 	addfac.append(add_factor_5404)
 	addfac.append(add_factor_4748)
 	addfac.append(add_factor_4865)
+	addfac.append(add_factor_6729)
 
 	totals=zip(part,goals,addfac)
 	request.session['total_goals'] = totals
@@ -3966,4 +3974,9 @@ def wip_update(request):
 
 
 	db.close()
+	
 	return render(request,'test7.html')	
+
+def update7(request):
+	t=int(time.time())
+	return render(request,'test_update7.html',{'TCURR':t})	
