@@ -1168,6 +1168,7 @@ def prod_4748(request):
 	color2 = '#80C47B'  # Color for line 2
 	asset = ['900']
 	part  = ['50-4748']
+	asset5 = '797'
 	operation = [90]
 	# ************************************************************************************
 
@@ -1230,15 +1231,19 @@ def prod_4748(request):
 		t1.append(i[3])
 		t1.append(i[4])
 		t2.append(t1)
-		
-	# # *************************  Filter a list *****************************************************************
-	# a1 = zip(*tmp)  # Unzip elements
-	# a2 = [list(z) for z in zip(a1[0],a1[1],a1[2],a1[3],a1[4]) ]  # Rebuilt list so it's list of list
-	# aa2 = [list(z) for z in zip(a1[4])]  # Rebuilt list so it's list of list
-	# a3 = filter(lambda c:c[0]=='672',a2)  # Filter out '672' and form list a3
-	# a22 = int(aa2[0][0])
-	# a4 = filter(lambda c:c[2] == '3pm-11pm',a3)
-	# # **********************************************************************************************************
+	sql5 = "SELECT * FROM GFxPRoduction WHERE TimeStamp >= '%s' and TimeStamp <= '%s' and Machine = '%s' and Part = '%s'" %(week_start,fi1,asset5,part[0])
+	cur.execute(sql5)
+	tmp5 = cur.fetchall()
+	t15 = []
+	t25 = []
+	for i in tmp5:
+		t15=[]
+		t15.append(i[0])
+		t15.append(str(i[1]))
+		t15.append(i[2])
+		t15.append(i[3])
+		t15.append(i[4])
+		t25.append(t15)
 
 	tot2 = []
 	tot3 = []
@@ -1246,22 +1251,36 @@ def prod_4748(request):
 		op4 = filter(lambda c:c[0]==i,operation_totals)
 		op5 = op4[0][1]  # Current operation
 		tot2 =[]
+		ctr5 = 0
+		st=week_start
 		for j in pdate_week:
 			for k in shift:
 				tot =[]
+				fi = st + 28800
 				tot.append(i)
 				tot.append(j)
 				tot.append(k)
-				a3 = filter(lambda c:c[0]==i and c[1]==j and c[2]==k,t2)  
+				ctr5 = ctr5 + 1
+				if ctr5 < 7:
+					tt5=0
+					a3 = filter(lambda c:c[0]==i and c[1]==j and c[2]==k,t2)  
+				else:
+					tt5=1
+					a3 = filter(lambda c:c[4]>st and c[4]<fi,t25) 
+					sum1 = len(a3)
 				try:
-					a33 = 0
-					for m in a3:
-						a33 = a33 + int(m[4])
-						op[op5] = op[op5] + int(m[4])
+					if ctr5>6:
+						a33=sum1
+					else:
+						a33 = 0
+						for m in a3:
+							a33 = a33 + int(m[4])
+							op[op5] = op[op5] + int(m[4])
 				except:
 					a33 = 0
 				tot.append(a33)
 				tot2.append(tot)
+				st = st + 28800
 		tot3.append(tot2)
 
 	color_used = color2
@@ -1609,6 +1628,7 @@ def prod_6729(request):
 	asset = ['900']
 	asset8 = '900'
 	part  = ['50-6729']
+	asset5 = '936'
 	operation = [90]
 	# ************************************************************************************
 
@@ -1655,7 +1675,6 @@ def prod_6729(request):
 		stamp1 = week_start + (86400 * i)
 		pdate1 = stamp_pdate2(stamp1)
 		pdate_week.append(pdate1) # This is the tuple of days in the week to cycle through
-
 	db, cur = db_set(request)   
 	# Select all reactions in asset list for date range
 	sql = "SELECT asset_num,pdate,shift,partno,actual_produced FROM sc_production1 WHERE pdate >= '%s' and pdate <= '%s' and (partno = '%s') and (asset_num='%s' or asset_num='%s')"%(pdate_week[0],pdate_week[6],part[0],asset[0],asset8)
@@ -1671,40 +1690,56 @@ def prod_6729(request):
 		t1.append(i[3])
 		t1.append(i[4])
 		t2.append(t1)
-		
-	# # *************************  Filter a list *****************************************************************
-	# a1 = zip(*tmp)  # Unzip elements
-	# a2 = [list(z) for z in zip(a1[0],a1[1],a1[2],a1[3],a1[4]) ]  # Rebuilt list so it's list of list
-	# aa2 = [list(z) for z in zip(a1[4])]  # Rebuilt list so it's list of list
-	# a3 = filter(lambda c:c[0]=='672',a2)  # Filter out '672' and form list a3
-	# a22 = int(aa2[0][0])
-	# a4 = filter(lambda c:c[2] == '3pm-11pm',a3)
-	# # **********************************************************************************************************
-
+	sql5 = "SELECT * FROM GFxPRoduction WHERE TimeStamp >= '%s' and TimeStamp <= '%s' and Machine = '%s' and Part = '%s'" %(week_start,fi1,asset5,part[0])
+	cur.execute(sql5)
+	tmp5 = cur.fetchall()
+	t15 = []
+	t25 = []
+	for i in tmp5:
+		t15=[]
+		t15.append(i[0])
+		t15.append(str(i[1]))
+		t15.append(i[2])
+		t15.append(i[3])
+		t15.append(i[4])
+		t25.append(t15)
 	tot2 = []
 	tot3 = []
 	for i in asset:
 		op4 = filter(lambda c:c[0]==i,operation_totals)
 		op5 = op4[0][1]  # Current operation
 		tot2 =[]
+		ctr5 = 0
+		st=week_start
 		for j in pdate_week:
 			for k in shift:
 				tot =[]
+				fi = st + 28800
 				tot.append(i)
 				tot.append(j)
 				tot.append(k)
-				a3 = filter(lambda c:c[0]==i and c[1]==j and c[2]==k,t2)  
+				ctr5 = ctr5 + 1
+				if ctr5 < 7:
+					tt5=0
+					a3 = filter(lambda c:c[0]==i and c[1]==j and c[2]==k,t2)  
+				else:
+					tt5=1
+					a3 = filter(lambda c:c[4]>st and c[4]<fi,t25) 
+					sum1 = len(a3)
 				try:
-					a33 = 0
-					for m in a3:
-						a33 = a33 + int(m[4])
-						op[op5] = op[op5] + int(m[4])
+					if ctr5>6:
+						a33=sum1
+					else:
+						a33 = 0
+						for m in a3:
+							a33 = a33 + int(m[4])
+							op[op5] = op[op5] + int(m[4])
 				except:
 					a33 = 0
 				tot.append(a33)
 				tot2.append(tot)
+				st = st + 28800
 		tot3.append(tot2)
-
 	color_used = color2
 	for i in operation_totals:
 		i.append(op[i[1]])
@@ -1714,7 +1749,6 @@ def prod_6729(request):
 			else:
 				color_used = color2
 		i.append(color_used)
-
 	for i in tot3:
 		for ii in i:
 			a3 = filter(lambda c:c[0]==ii[0],operation_totals)  
@@ -1726,10 +1760,6 @@ def prod_6729(request):
 	request.session['op_totals_6729'] = op
 	request.session['op_span_6729'] = operation_totals
 	request.session['goal_6729'] = goal_todate
-
-	a = int(operation_totals[0][3])
-	b = int(goal_todate)
-
 	inv_change =  int(operation_totals[0][3]) - int(goal_todate)
 	request.session['inv_change_6729'] = inv_change
 
@@ -2281,7 +2311,11 @@ def prod_1467(request):
 	request.session['inv_change_1467'] = inv_change
 
 	return
-	
+
+def prod_10R_initial(request):
+	request.session['working_address'] = 'prod_10R'
+	return render(request, "test_update7.html")  
+
 def prod_10R(request):
 	request.session['WL'] = 345600
 	request.session['prev_10r'] = 0
