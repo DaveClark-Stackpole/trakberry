@@ -3329,19 +3329,25 @@ def cell_track_9341(request):
 			cnt = len(list2)
 			list2 = filter(lambda x:x[4]>=start1 and x[1]==machine22,tmpX)  # Filter list to get 5 min sum
 			cnt33 = len(list2)	
-		elif machine2 == '1533':
-			machine22 = '1511'
+		elif machine2 == '1511':
+			machine22 = '1503'
 			list2 = filter(lambda x:x[4]>=t and x[1]==machine22,tmpX)  # Filter list to get 5 min sum
-			cnt_A = len(list2)
+			cnt = len(list2)
 			list2 = filter(lambda x:x[4]>=start1 and x[1]==machine22,tmpX)  # Filter list to get 5 min sum
-			cnt33_A = len(list2)
-			machine22 = '1528'
-			list2 = filter(lambda x:x[4]>=t and x[1]==machine22,tmpX)  # Filter list to get 5 min sum
-			cnt_B = len(list2)
-			list2 = filter(lambda x:x[4]>=start1 and x[1]==machine22,tmpX)  # Filter list to get 5 min sum
-			cnt33_B = len(list2)
-			cnt = cnt_A + cnt_A
-			cnt33 = cnt33_A + cnt33_B
+			cnt33 = len(list2)	
+		# elif machine2 == '1533':
+		# 	machine22 = '1511'
+		# 	list2 = filter(lambda x:x[4]>=t and x[1]==machine22,tmpX)  # Filter list to get 5 min sum
+		# 	cnt_A = len(list2)
+		# 	list2 = filter(lambda x:x[4]>=start1 and x[1]==machine22,tmpX)  # Filter list to get 5 min sum
+		# 	cnt33_A = len(list2)
+		# 	machine22 = '1528'
+		# 	list2 = filter(lambda x:x[4]>=t and x[1]==machine22,tmpX)  # Filter list to get 5 min sum
+		# 	cnt_B = len(list2)
+		# 	list2 = filter(lambda x:x[4]>=start1 and x[1]==machine22,tmpX)  # Filter list to get 5 min sum
+		# 	cnt33_B = len(list2)
+		# 	cnt = cnt_A + cnt_A
+		# 	cnt33 = cnt33_A + cnt33_B
 		else:
 			# New faster method to search Data.  Doesn't bog down DB
 			list2 = filter(lambda x:x[4]>=t and x[1]==machine2,tmpX)  # Filter list to get 5 min sum
