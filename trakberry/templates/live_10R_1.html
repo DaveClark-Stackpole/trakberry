@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<div id="demo">
+
+<body onload='loadDoc()'>
+</div>
+
+<script>
+
+
+function loadDoc() {
+
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById("demo").innerHTML =
+      this.responseText;
+    }
+  };
+
+
+  xhttp.open("GET", "/static/test_run.txt", true);
+  xhttp.send();
+}
+
+
+
+
+
+
+
+</script>
+
+</body>
+</html>
