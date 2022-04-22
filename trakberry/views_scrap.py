@@ -402,6 +402,7 @@ def scrap_edit_categories_reset(request):
 	request.session["qedit2"] ='''disabled="true"'''
 	request.session["qedit3"] ='''disabled="true"'''
 	request.session["qedit4"] ='''disabled="true"'''
+
 	return scrap_edit_categories(request)
 
 def scrap_edit_categories(request):
@@ -461,6 +462,7 @@ def scrap_edit_categories(request):
 			c = zip(a,b)
 			request.session["qedit_category_selection"] = c
 			db.close()
+
 			return render(request,'scrap_edit_categories_entry.html')
 
 	else:
@@ -468,6 +470,7 @@ def scrap_edit_categories(request):
 	args = {}
 	args.update(csrf(request))
 	args['form'] = form
+
 	return render(request,'scrap_edit_categories.html',{'args':args})
 
 def scrap_edit_categories_entry(request):

@@ -3,13 +3,13 @@
 
 
 {% block content %}
-
+<br><br><br>
 <form action="" method="post">{% csrf_token %}
 
 	<div class="wrapper_main">
 		<div class="frame1x"><br></div>
 		<div class="frame1">
-			<h1><u><b>Category Edit</b></u></h1><br>
+			<h1><u><b>Category Edit</b></u></h1>Test : {{request.session.qedit_entry}}<br>
 			<select id="qedit_part" style="font-size:15px;width:40%;height:40px;" onchange="myFunction();" list="browsers" name="qedit_part"  {{request.session.qedit1}}>	
 					<option value="1" selected disabled>{{request.session.qedit_part}}</option>
 						{% for item in request.session.qedit_part_selection %}
