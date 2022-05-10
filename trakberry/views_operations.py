@@ -1296,7 +1296,7 @@ def prod_4748(request):
 
 	return
 
-def prod_4748_LIVE(request):
+def prod_4748_live(request):
 	prt7 = '50-4748'
 	db, cur = db_set(request) 
 	st1 = request.session['week_start7']
@@ -2757,7 +2757,7 @@ def prod_10R_prev(request):
 	ab1v_5401(request)
 	ab1v_5404(request)
 	prod_4748(request)
-	prod_4865(request)
+	prod_4865a(request)
 	prod_6729(request)
 	return render(request, "prod_10R.html")  
 
