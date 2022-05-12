@@ -136,7 +136,7 @@
 
 
         <table id="prodsum">
-			<td colspan="24" bgcolor="#343E45"><center><font style="font-weight:bolder;font-size:x-large;color:#fff;">728 Faults</font>
+			<td colspan="24" bgcolor="#343E45"><center><font style="font-weight:bolder;font-size:x-large;color:#fff;">728 Production</font>
 				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				<button  style="background-color: #585858;border-radius: 10px;height:70%;font-size:10px;color:#fefffa;vertical-align:middle;" onclick="prod_728fault_prev()"> << PREV WEEK </button> 
 				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -155,9 +155,49 @@
                     {% endfor %}
                 {% endfor %}
             </tr>
+
+
+			{% for i in request.session.totals_1467p %}
+            <tr>
+                    <td bgcolor="{{i.0.4}}"><center>1467 Production</center></td>
+           		 {% for ii in i %}
+               		<td bgcolor="{{ii.4}}"><center>{{ii.3}}</center></td>
+            	{% endfor %}
+				{% for x in request.session.op_span_1467p %}
+					{% if x.0 == i.0.0 and x.2 > 0 %} 
+						{% if x.3 < request.session.goal_1467p %}
+							<td  bgcolor="{{i.0.4}}" rowspan="{{x.2}}"><center><b><font style="color:rgb(180, 0, 0);">{{x.3}}</font></b></center></td>
+						{% else %}
+							<td  bgcolor="{{i.0.4}}" rowspan="{{x.2}}"><center><b>{{x.3}}</b></center></td>
+						{% endif %}
+							
+					{% endif %}
+				{% endfor %}
+			</tr>
+        {% endfor %}
+
+		{% for i in request.session.totals_1467o %}
+            <tr>
+                    <td bgcolor="{{i.0.4}}"><center>1467 Overflow</center></td>
+           		 {% for ii in i %}
+               		<td bgcolor="{{ii.4}}"><center>{{ii.3}}</center></td>
+            	{% endfor %}
+				{% for x in request.session.op_span_1467o %}
+					{% if x.0 == i.0.0 and x.2 > 0 %} 
+						{% if x.3 < request.session.goal_1467o %}
+							<td  bgcolor="{{i.0.4}}" rowspan="{{x.2}}"><center><b><font style="color:rgb(180, 0, 0);">{{x.3}}</font></b></center></td>
+						{% else %}
+							<td  bgcolor="{{i.0.4}}" rowspan="{{x.2}}"><center><b>{{x.3}}</b></center></td>
+						{% endif %}
+							
+					{% endif %}
+				{% endfor %}
+			</tr>
+        {% endfor %}
+
         {% for i in request.session.totals_1467b %}
             <tr>
-                    <td bgcolor="{{i.0.4}}"><center>Inspection</center></td>
+                    <td bgcolor="{{i.0.4}}"><center>1467 Faults</center></td>
            		 {% for ii in i %}
                		<td bgcolor="{{ii.4}}"><center>{{ii.3}}</center></td>
             	{% endfor %}
@@ -173,6 +213,34 @@
 				{% endfor %}
 			</tr>
         {% endfor %}
+
+		{% for i in request.session.totals_3050p %}
+            <tr>
+                    <td bgcolor="{{i.0.4}}"><center>3050 Production</center></td>
+           		 {% for ii in i %}
+               		<td bgcolor="{{ii.4}}"><center>{{ii.3}}</center></td>
+            	{% endfor %}
+				{% for x in request.session.op_span_3050p %}
+					{% if x.0 == i.0.0 and x.2 > 0 %} 
+						{% if x.3 < request.session.goal_3050p %}
+							<td  bgcolor="{{i.0.4}}" rowspan="{{x.2}}"><center><b><font style="color:rgb(180, 0, 0);">{{x.3}}</font></b></center></td>
+						{% else %}
+							<td  bgcolor="{{i.0.4}}" rowspan="{{x.2}}"><center><b>{{x.3}}</b></center></td>
+						{% endif %}
+							
+					{% endif %}
+				{% endfor %}
+			</tr>
+        {% endfor %}
+
+
+		
+
+
+		
+
+
+
         </table>
 <br><br>
 
