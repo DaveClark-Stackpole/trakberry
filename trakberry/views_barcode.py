@@ -298,7 +298,7 @@ def barcode_verify_check(request):
 
 
 def barcode_check(request):
-		
+
 		bar1 = request.session["barcode"]
 		
 		bar1=str(bar1)
@@ -311,6 +311,7 @@ def barcode_check(request):
 
 
 		short1 = request.session["barcode_part_short"]
+		
 		if short1 == 'BB' or short1 == 'CB':
 			try:
 				last_short = request.session["last_part"]
@@ -329,6 +330,14 @@ def barcode_check(request):
 				request.session["barcode_part_number"] = '50-5214'
 			else:
 				request.session["barcode_part_number"] = '50-3214'
+
+			bar1 = request.session["barcode_part_number"]
+			
+			db, cur = db_set(request)
+			cur.execute('''INSERT INTO barcode(asset_num,scrap) VALUES(%s,%s)''', (bar1,stamp))
+			db.commit()
+			db.close()
+
 			return render(request,"barcode_ok.html")
 
 
@@ -400,6 +409,8 @@ def barcode_check(request):
 		part_num = request.session["barcode_part_number"]
 		part_short = request.session["barcode_part_short"]
 
+
+	
 		if part_short == "BB":
 			part_num == "5214"
 			request.session["barcode_part_number"] = "5214"
