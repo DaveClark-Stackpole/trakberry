@@ -32,10 +32,10 @@
 
 </style>
 
-<!-- <script>
+<script>
 	function prod_10R_prev(){location.replace("{{request.session.local_toggle}}/update7")}
 	function prod_10R(){location.replace("{{request.session.local_toggle}}/update7")}
-</script> -->
+</script>
 
   <title>10R Production</title>
   <meta charset="utf-8">
@@ -184,7 +184,7 @@
 
 
         <table id="prodsum">
-			<td colspan="23" bgcolor="#343E45"><center><font style="font-weight:bolder;font-size:x-large;color:#fff;">Weekly Production AB1V / 10R 140 GP12</font>
+			<td colspan="24" bgcolor="#343E45"><center><font style="font-weight:bolder;font-size:x-large;color:#fff;">Weekly Production AB1V / 10R 140 GP12</font>
 				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				<button  style="background-color: #585858;border-radius: 10px;height:70%;font-size:10px;color:#fefffa;vertical-align:middle;" onclick="prod_10R_prev()"> << PREV WEEK </button> 
 				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -195,6 +195,8 @@
                     <th colspan="3"><center>{{i}}</center></th>
                 {% endfor %}
 				<th rowspan="2"><center>Week Totals</center></th>
+				<th rowspan="2"><center>Goal To Date</center></th>
+
             </tr><tr>
                 {% for i in request.session.pdate_5404a %}
                     {% for ii in request.session.shift_5404a %}
@@ -212,8 +214,16 @@
                		<td bgcolor="#ffffff"><center>{{ii.3}}</center></td>
             	{% endfor %}
 				{% for x in request.session.op_span_5401a %}
-					<td  bgcolor="#ffffff" rowspan="{{x.2}}"><center><b>{{x.3}}</b></center></td>
+					{% if x.3 < request.session.goal_5401a %}
+						<td  bgcolor="#ffffff" rowspan="{{x.2}}"><center><b><font style="color:rgb(180, 0, 0);">{{x.3}}</font></b></center></td>
+					{% else %} 
+						<td  bgcolor="#ffffff" rowspan="{{x.2}}"><center><b>{{x.3}}</b></center></td>
+					{% endif %} 
 				{% endfor %}
+					<td  bgcolor="#ffffff" rowspan="{{x.2}}"><center><b>{{request.session.goal_5401a}}</b></center></td>
+
+
+
 			</tr>
         {% endfor %}
 
@@ -224,8 +234,13 @@
                    <td bgcolor="#CDCDCD"><center>{{ii.3}}</center></td>
             {% endfor %}
             {% for x in request.session.op_span_5404a %}
-                <td  bgcolor="#CDCDCD" rowspan="{{x.2}}"><center><b>{{x.3}}</b></center></td>
+			{% if x.3 < request.session.goal_5404a %}
+			<td  bgcolor="#CDCDCD" rowspan="{{x.2}}"><center><b><font style="color:rgb(180, 0, 0);">{{x.3}}</font></b></center></td>
+		{% else %} 
+			<td  bgcolor="#CDCDCD" rowspan="{{x.2}}"><center><b>{{x.3}}</b></center></td>
+		{% endif %} 
             {% endfor %}
+			<td  bgcolor="#CDCDCD" rowspan="{{x.2}}"><center><b>{{request.session.goal_5404a}}</b></center></td>
         </tr>
     {% endfor %}
 
@@ -236,8 +251,15 @@
                		<td bgcolor="#ffffff"><center>{{ii.3}}</center></td>
             	{% endfor %}
 				{% for x in request.session.op_span_6420a %}
+				{% if x.3 < request.session.goal_6420a %}
+					<td  bgcolor="#ffffff" rowspan="{{x.2}}"><center><b><font style="color:rgb(180, 0, 0);">{{x.3}}</font></b></center></td>
+				{% else %} 
 					<td  bgcolor="#ffffff" rowspan="{{x.2}}"><center><b>{{x.3}}</b></center></td>
+				{% endif %} 
 				{% endfor %}
+
+				<td  bgcolor="#ffffff" rowspan="{{x.2}}"><center><b>{{request.session.goal_6420a}}</b></center></td>
+
 			</tr>
         {% endfor %}
 
@@ -249,8 +271,15 @@
                		<td bgcolor="#CDCDCD"><center>{{ii.3}}</center></td>
             	{% endfor %}
 				{% for x in request.session.op_span_3214a %}
+				{% if x.3 < request.session.goal_3214a %}
+					<td  bgcolor="#CDCDCD" rowspan="{{x.2}}"><center><b><font style="color:rgb(180, 0, 0);">{{x.3}}</font></b></center></td>
+				{% else %} 
 					<td  bgcolor="#CDCDCD" rowspan="{{x.2}}"><center><b>{{x.3}}</b></center></td>
+				{% endif %} 
 				{% endfor %}
+
+				<td  bgcolor="#CDCDCD" rowspan="{{x.2}}"><center><b>{{request.session.goal_3214a}}</b></center></td>
+
 			</tr>
         {% endfor %}
 
@@ -262,8 +291,16 @@
                		<td bgcolor="#ffffff"><center>{{ii.3}}</center></td>
             	{% endfor %}
 				{% for x in request.session.op_span_5214a %}
+				{% if x.3 < request.session.goal_5214a %}
+					<td  bgcolor="#ffffff" rowspan="{{x.2}}"><center><b><font style="color:rgb(180, 0, 0);">{{x.3}}</font></b></center></td>
+				{% else %} 
 					<td  bgcolor="#ffffff" rowspan="{{x.2}}"><center><b>{{x.3}}</b></center></td>
+				{% endif %} 
 				{% endfor %}
+
+				<td  bgcolor="#ffffff" rowspan="{{x.2}}"><center><b>{{request.session.goal_5214a}}</b></center></td>
+
+
 			</tr>
         {% endfor %}
 

@@ -2785,19 +2785,37 @@ def prod_ab1v(request):
 	request.session['working_address'] = 'prod_ab1v_prev'
 	return render(request, "prod_ab1v.html")   
 
+def prod_ab1v_prev(request):
+	request.session['WL'] = 432000
+	request.session['prev_10r'] = 0
+	t=request.session['week_end7']
+	t=t-604800
+	request.session['TCURR'] = t
+	week_start_10r(request,t)
+	prod_ab1v_5401(request)
+	prod_ab1v_5404(request)
+	prod_ab1v_6420(request)
+	prod_ab1v_3214(request)
+	prod_ab1v_5214(request)
+
+	request.session['working_address'] = 'prod_ab1v'
+	return render(request, "prod_ab1v.html")   
+
 def prod_ab1v_5401(request):
 	prt7 = '50-6418'
+	prt9 = '50-5401'
 	prt8 = prt7[-4:]
 	db, cur = db_set(request) 
 	try:
 		st1 = request.session['week_start7']
 		fi1 = request.session['week_end7']
-		sql = "SELECT * FROM tkb_weekly_goals WHERE part = '%s' and timeStamp >= '%s' and timeStamp <= '%s'" %(prt7,st1,fi1)
+		sql = "SELECT * FROM tkb_weekly_goals WHERE part = '%s' and timeStamp >= '%s' and timeStamp <= '%s'" %(prt9,st1,fi1)
 		cur.execute(sql)
 		tmp = cur.fetchall()
 		goal = int(tmp[0][2])
 	except:
 		goal = 150
+
 	# ******************  Below data entered for each part  ******************************
 	color1 = '#96dbf8'  # Color for line 1
 	color2 = '#82BED7'  # Color for line 2
@@ -2908,12 +2926,13 @@ def prod_ab1v_5401(request):
 
 def prod_ab1v_6420(request):
 	prt7 = '50-6420'
+	prt9 = '50-8670'
 	prt8 = prt7[-4:]
 	db, cur = db_set(request) 
 	try:
 		st1 = request.session['week_start7']
 		fi1 = request.session['week_end7']
-		sql = "SELECT * FROM tkb_weekly_goals WHERE part = '%s' and timeStamp >= '%s' and timeStamp <= '%s'" %(prt7,st1,fi1)
+		sql = "SELECT * FROM tkb_weekly_goals WHERE part = '%s' and timeStamp >= '%s' and timeStamp <= '%s'" %(prt9,st1,fi1)
 		cur.execute(sql)
 		tmp = cur.fetchall()
 		goal = int(tmp[0][2])
