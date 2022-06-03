@@ -137,8 +137,110 @@ def track_data(request,t,u,part,rate):
 	cursor.execute(sql)
 	tmp = cursor.fetchall()	
 	db.close()
+	yyy=6/0
 	gr_list, brk1, brk2, multiplier	 = Graph_Data(t,u,m,tmp,mrr)
 	return gr_list
+
+def track_1703(request):
+	st1 = 1654250400
+	fi1 = st1 + 28800
+	m1='1530'
+	id1=5
+	p1='50-9341'
+	pc1=5
+	cn1=5
+
+	db, cur = db_set(request)
+	sql = "SELECT * FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Machine = '%s'" % (st1,fi1,m1)
+	cur.execute(sql)
+	tmp = cur.fetchall()
+	tmp2 = tmp[0]
+	tt = list(tmp)
+	count1=len(tt)
+	db.close()
+
+	# diff1=[]
+	# c1=0
+	# c2=1
+	# for i in tt:
+	# 	try:
+	# 		x1=tt[c1][0]
+	# 		x2=tt[c2][0]
+	# 		c1=c1+1
+	# 		c2=c2+1
+	# 		d1 = x2-x1
+	# 		diff1.append(id1)
+	# 		diff1.append(m1)
+	# 		diff1.append(d1)
+	# 	except:
+	# 		dummy=1
+
+
+
+	# ss = 3/0
+	# gr_list = track_data(request,t,u,prt,rate1) # Get the Graph Data
+	# data1 = zip(u1,wd1,m1,day1,shift1,prev_cnt1)
+	rate=100
+
+	m = '1533'
+	rate=3000
+
+	mrr = (rate*(28800))/float(28800)
+	gr_list, brk1, brk2, multiplier	 = Graph_Data(st1,fi1,m,tmp,mrr)
+
+	rrr=4/0
+	return data1, gr_list
+
+	return render(request, "redirect_tracking.html")
+
+def Graph_Data6(t,u,machine,tmp,multiplier):
+	global tst
+	cc = 0
+	cr = 0
+	cm = 0
+	# last_by used for comparison
+	last_by = 0
+	temp_ctr = 0
+	brk1 = 0
+	brk2 = 0
+	multiplier = multiplier / float(6)
+	tm_sh = int((t-u)/600)
+	px = [0 for x in range(tm_sh)]
+	by = [0 for x in range(tm_sh)]
+	ay = [0 for x in range(tm_sh)]
+	cy = [0 for x in range(tm_sh)]
+	for ab in range(0,tm_sh):
+		px[ab] =u + (cc*600)
+		yy = px[ab]
+		cc = cc + 1
+		cr = cr + multiplier
+		cm = cr * .8
+		tst = []
+		[tup(x) for x in tmp if nup(x) < yy]
+		# [tup(x) for x in tmp if fup(x) == machine and nup(x) < yy]
+		by[ab] = sum(int(i) for i in tst)
+		ay[ab] = int(cr)
+		cy[ab] = int(cm)
+		# *** Calculate the longest break time in minutes
+		# *** and assign to brk_ctr
+		if by[ab] == last_by:
+			temp_ctr = temp_ctr + 1
+		else:
+			if temp_ctr > brk1:
+				brk1 = temp_ctr
+			elif temp_ctr > brk2:
+				brk2 = temp_ctr
+			temp_ctr = 0
+			last_by = by[ab]
+		# ************************************************
+	tm_sh = tm_sh - 1
+	lby = by[tm_sh]
+	lay = ay[tm_sh]
+	lpx = px[tm_sh]
+	gr_list = zip(px,by,ay,cy)	
+	return gr_list, brk1, brk2, multiplier
+	
+
 
 def track_10R80data(request,t,u,part,rate):
 	m = '1533'
@@ -368,6 +470,7 @@ def track_email(request):
 
 
 
+
 def track_area(request):
 	data_area = request.session['data_area'] # Data for 1 or 2 chart
 	target_area = int(request.session['rate_area'])
@@ -442,6 +545,8 @@ def track_area(request):
 	tmp2 = cur.fetchall()
 	tmp3 = tmp2[0]
 	cnt = tmp3[0]
+
+
 
 	# var1 = 'count' + data_area
 	# request.session[var1] = cnt
@@ -1040,6 +1145,7 @@ def tracking(request):
 
 
 
+
 	# These are the reset values for refreshing tracking .  increment each by one if you 
 	# want to refresh tracking to new rates
 	rt1 = 3
@@ -1082,64 +1188,69 @@ def tracking(request):
 
 	# net1(request)	  # Sets the app to server or local
 	# # force changes
+
+
+	# try:
 	try:
-		try:
-			request.session['data_area'] = 1
-			request.session['target_area'] = 1
-			request.session['part_area'] = request.session['part_area1']
-			request.session['rate_area'] = request.session['rate_area1']
-			request.session['asset1_area'] = request.session['asset1_area1']
-			request.session['asset2_area'] = request.session['asset2_area1']
-			request.session['asset3_area'] = request.session['asset3_area1']
-			request.session['asset4_area'] = request.session['asset4_area1']
-			data1, gr_list1 = track_area(request)
-			request.session['data_area'] = 2
-			request.session['target_area'] = 2
-			request.session['part_area'] = request.session['part_area2']
-			request.session['rate_area'] = request.session['rate_area2']
-			request.session['asset1_area'] = request.session['asset1_area2']
-			request.session['asset2_area'] = request.session['asset2_area2']
-			request.session['asset3_area'] = request.session['asset3_area2']
-			request.session['asset4_area'] = request.session['asset4_area2']
-			data2, gr_list2 = track_area(request)
-		except:
-			request.session['area1'] = '50-1467 Inspection'
-			request.session['data_area'] =1 # Data for 1 or 2 chart
-			request.session['target_area'] = 1
-			request.session['part_area'] = '50-1467'
-			request.session['part_area1'] = '50-1467'
-			request.session['rate_area'] = 216
-			request.session['rate_area1'] = 216
-			request.session['asset1_area'] = '650L'
-			request.session['asset2_area'] = '650R'
-			request.session['asset3_area'] = '769'
-			request.session['asset4_area'] = '769'
-			request.session['asset1_area1'] = '650L'
-			request.session['asset2_area1'] = '650R'
-			request.session['asset3_area1'] = '769'
-			request.session['asset4_area1'] = '769'
-			data1, gr_list1 = track_area(request)
-			request.session['area2'] = '50-3050 Inspection'
-			request.session['data_area'] =2 # Data for 1 or 2 chart
-			request.session['target_area'] = 2
-			request.session['part_area'] = '50-3050'
-			request.session['part_area2'] = '50-3050'
-			request.session['rate_area'] = 65
-			request.session['rate_area2'] = 65
-			request.session['asset1_area'] = '769'
-			request.session['asset2_area'] = '769'
-			request.session['asset3_area'] = '769'
-			request.session['asset4_area'] = '769'
-			request.session['asset1_area2'] = '769'
-			request.session['asset2_area2'] = '769'
-			request.session['asset3_area2'] = '769'
-			request.session['asset4_area2'] = '769'
-			data2, gr_list2 = track_area(request)
-
-
-		return render(request, "track.html",{'GList':gr_list1,"datax":data1,'GList2':gr_list2, "datax2":data2})
+		request.session['data_area'] = 1
+		request.session['target_area'] = 1
+		request.session['part_area'] = request.session['part_area1']
+		request.session['rate_area'] = request.session['rate_area1']
+		request.session['asset1_area'] = request.session['asset1_area1']
+		request.session['asset2_area'] = request.session['asset2_area1']
+		request.session['asset3_area'] = request.session['asset3_area1']
+		request.session['asset4_area'] = request.session['asset4_area1']
+		data1, gr_list1 = track_area(request)
+		request.session['data_area'] = 2
+		request.session['target_area'] = 2
+		request.session['part_area'] = request.session['part_area2']
+		request.session['rate_area'] = request.session['rate_area2']
+		request.session['asset1_area'] = request.session['asset1_area2']
+		request.session['asset2_area'] = request.session['asset2_area2']
+		request.session['asset3_area'] = request.session['asset3_area2']
+		request.session['asset4_area'] = request.session['asset4_area2']
+		data2, gr_list2 = track_area(request)
 	except:
-		return render(request, "track_error.html")
+		request.session['area1'] = '50-1467 Inspection'
+		request.session['data_area'] =1 # Data for 1 or 2 chart
+		request.session['target_area'] = 1
+		request.session['part_area'] = '50-1467'
+		request.session['part_area1'] = '50-1467'
+		request.session['rate_area'] = 216
+		request.session['rate_area1'] = 216
+		request.session['asset1_area'] = '650L'
+		request.session['asset2_area'] = '650R'
+		request.session['asset3_area'] = '769'
+		request.session['asset4_area'] = '769'
+		request.session['asset1_area1'] = '650L'
+		request.session['asset2_area1'] = '650R'
+		request.session['asset3_area1'] = '769'
+		request.session['asset4_area1'] = '769'
+		data1, gr_list1 = track_area(request)
+		request.session['area2'] = '50-3050 Inspection'
+		request.session['data_area'] =2 # Data for 1 or 2 chart
+		request.session['target_area'] = 2
+		request.session['part_area'] = '50-3050'
+		request.session['part_area2'] = '50-3050'
+		request.session['rate_area'] = 65
+		request.session['rate_area2'] = 65
+		request.session['asset1_area'] = '769'
+		request.session['asset2_area'] = '769'
+		request.session['asset3_area'] = '769'
+		request.session['asset4_area'] = '769'
+		request.session['asset1_area2'] = '769'
+		request.session['asset2_area2'] = '769'
+		request.session['asset3_area2'] = '769'
+		request.session['asset4_area2'] = '769'
+		data2, gr_list2 = track_area(request)
+
+
+	return render(request, "track.html",{'GList':gr_list1,"datax":data1,'GList2':gr_list2, "datax2":data2})
+	# except:
+	# 	return render(request, "track_error.html")
+
+
+
 
 def tracking_10R80_screen(request):
 

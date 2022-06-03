@@ -4294,7 +4294,6 @@ def track_area_single(request):
 	var1 = 'count' + data_area
 
 
-
 	request.session[var1] = cnt
 	if week_current_seconds > 43200:
 		weekend_cnt = 0

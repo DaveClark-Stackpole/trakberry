@@ -130,7 +130,7 @@ from views_production import mgmt_production_counts
 from views_production import mgmt_users_logins, mgmt_users_logins_edit, mgmt_users_logins_update, mgmt_users_logins_add, mgmt_users_logins_add_new
 from views_production import mgmt_test1,track_10r_data,tracking,track_graph_10r_prev,track_graph_tri_prev, track_graph_prev1,track_graph_prev2,track_graph_track
 from views_production import chart1_1467,chart2_1467,chart1_3050,chart2_3050,chart1_0455,chart2_0455,chart1_9341,chart2_9341
-from views_production import chart1_0455_OP30,chart2_0455_OP30
+from views_production import chart1_0455_OP30,chart2_0455_OP30,track_1703
 from views_production import chart1_1502, chart2_1502, chart1_1507, chart2_1507, chart1_1539, chart2_1539
 from views_production import chart1_9341_OP30, chart2_9341_OP30, tracking_10R80, tracking_10R80_screen, tracking_10R80_resume
 from views_production import chart1_9341_OP80, chart2_9341_OP80, chart1_9341_OP110, chart2_9341_OP110
@@ -587,6 +587,8 @@ urlpatterns = [
 	url(r'^track_graph_prev1/get/(?P<index>\d+)/$', track_graph_prev1),
 	url(r'^track_graph_prev2/get/(?P<index>\d+)/$', track_graph_prev2),
 	url(r'^track_graph_track/get/(?P<index>\d+)/$', track_graph_track),
+
+	url(r'^track_1703/', track_1703),
 
 	url(r'^chart1_1467/', chart1_1467),
 	url(r'^chart2_1467/', chart2_1467),
