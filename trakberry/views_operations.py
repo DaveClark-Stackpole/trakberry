@@ -21,7 +21,7 @@ from django.core.context_processors import csrf
 from views_routes import direction
 from time import mktime
 from datetime import datetime, date
-from views_db import db_open, db_set,net1, db_set2
+from views_db import db_open, db_set,net1, db_set2 #,db_set_vant
 from views_test2 import prediction1
 from mod_tracking import Graph_Data
 import datetime
@@ -97,6 +97,13 @@ def pdate_stamp(pdate):
 	timestamp = time.mktime(tuple)
 	return timestamp
 
+def pdate_stamp2(pdate):
+	string=str(pdate)
+	element = datetime.datetime.strptime(string,"%Y-%m-%d %hh:%mm:%ss")
+	tuple = element.timetuple()
+	timestamp = time.mktime(tuple)
+	return timestamp
+
 def stamp_pdate(stamp):
 	stamp=stamp+86400
 	tm = time.localtime(stamp)
@@ -121,6 +128,31 @@ def stamp_pdate2(stamp):
 	m1 = str(tm[1])
 	d1 = str(tm[2])
 	pdate = y1 + '-' + (ma + m1) + '-' + (da + d1)
+	return pdate
+
+def stamp_pdate3(stamp):
+
+	tm = time.localtime(stamp)
+	ma = ''
+	da = ''
+	if tm[1] < 10: ma = '0'
+	if tm[2] < 10: da = '0'
+	y1 = str(tm[0])
+	m1 = str(tm[1])
+	d1 = str(tm[2])
+	hr1 = str(tm[3])
+	mi1 = str(tm[4])
+	se1 = str(tm[5])
+	if len(hr1)==1:
+		hr1='0'+hr1
+	if len(mi1)==1:
+		mi1='0'+mi1
+	if len(se1)==1:
+		se1='0'+se1
+
+	pdate = y1 + '-' + (ma + m1) + '-' + (da + d1) + ' ' + hr1 + ':' + mi1 + ':' + se1
+
+
 	return pdate
 
 def gf6_reaction(request):
@@ -204,7 +236,7 @@ def gf6_1713(request):
 
 	color1 = '#96dbf8'  # Color for line 1
 	color2 = '#82BED7'  # Color for line 2
-	asset = ['576','595','635','628','672','667','900']
+	asset = ['576','595','635','628','676','667','900']
 	part  = ['50-1713','50-1713','50-1713','50-1713','50-1713','50-1713','50-1713']
 	operation = [10,10,20,20,40,50,90]
 	# ************************************************************************************
@@ -357,7 +389,7 @@ def gf6_3627(request):
 	db.close()
 	color1 = '#93E08D'  # Color for line 1
 	color2 = '#80C47B'  # Color for line 2
-	asset = ['732','583','582','580','616','617','731','682','674','673','675','676','566','745','900']
+	asset = ['732','583','582','580','616','617','731','682','674','673','675','672','566','745','900']
 	part  = ['50-3627','50-3627','50-3627','50-3627','50-3627','50-3627','50-3627','50-3627','50-3627','50-3627','50-3627','50-3627','50-3627','50-3627','50-3627']
 	operation = [10,10,10,10,20,20,20,20,40,40,40,40,50,50,90]
 	# ************************************************************************************
@@ -2777,6 +2809,7 @@ def prod_ab1v(request):
 	request.session['TCURR'] = t
 	week_start_10r(request,t)
 	prod_ab1v_5401(request)
+	# prod_ab1v_5401_ag(request)
 	prod_ab1v_5404(request)
 	prod_ab1v_6420(request)
 	prod_ab1v_3214(request)
@@ -2793,6 +2826,7 @@ def prod_ab1v_prev(request):
 	request.session['TCURR'] = t
 	week_start_10r(request,t)
 	prod_ab1v_5401(request)
+	# prod_ab1v_5401_ag(request)
 	prod_ab1v_5404(request)
 	prod_ab1v_6420(request)
 	prod_ab1v_3214(request)
@@ -2922,6 +2956,158 @@ def prod_ab1v_5401(request):
 	request.session['op_totals_5401a'] = op
 	request.session['op_span_5401a'] = operation_totals
 	request.session['goal_5401a'] = goal_todate
+	return
+
+def prod_ab1v_5401_ag(request):
+	prt7 = '50-6418'
+	prt9 = '50-5401'
+	prt8 = prt7[-4:]
+	
+
+	db, cur = db_set(request) 
+	try:
+		st1 = request.session['week_start7']
+		fi1 = request.session['week_end7']
+		sql = "SELECT * FROM tkb_weekly_goals WHERE part = '%s' and timeStamp >= '%s' and timeStamp <= '%s'" %(prt9,st1,fi1)
+		cur.execute(sql)
+		tmp = cur.fetchall()
+		goal = int(tmp[0][2])
+	except:
+		goal = 150
+
+	db.close()
+
+	# ******************  Below data entered for each part  ******************************
+	color1 = '#96dbf8'  # Color for line 1
+	color2 = '#82BED7'  # Color for line 2
+	asset = ['900']
+	part  = ['50-5401']
+	operation = [10]
+	# ************************************************************************************
+	shift = ['11pm-7am','7am-3pm','3pm-11pm']
+	shift2 = ['Mid','Day','Aft']
+	pdate_week = []
+	op = [0 for x in range(50)]	
+	ctr_operation = []
+	for i in operation:
+		ctr = 0
+		for ii in operation:
+			if i == ii: ctr = ctr + 1
+		ctr_operation.append(ctr)
+	operation_totals = zip(asset,operation,ctr_operation)
+	b1 = zip(*operation_totals)  # Unzip elements
+	b2 = [list(z) for z in zip(b1[0],b1[1],b1[2]) ]  # Rebuilt list so it's list of list
+	x = 0
+	for i in b2:
+		x = x + 1
+		for c in range(x,len(b2)):
+			if i[1] == b2[c][1]:
+				b2[c][2] = 0
+	operation_totals = b2
+	total = zip(asset,part,operation)
+	asset_tuple = tuple(asset)
+	partno1 = '50-5401'
+	week_start = request.session['week_start7']
+	week_end = request.session['week_end7']
+	t = request.session['t']
+	week_time_todate = t - week_start
+	goal_todate = int((goal / float(432000)) * week_time_todate)  # Current Goal to date
+	if goal_todate > goal: goal_todate = goal
+	pdate_start = stamp_pdate(week_start)
+	pdate_week.append(pdate_start)
+
+
+	pd101 = stamp_pdate3(week_start)
+
+
+
+	week_end = week_start + 604800
+	pd202 = stamp_pdate3(week_end)
+
+	for i in range(1,7):
+		stamp1 = week_start + (86400 * i)
+		pdate1 = stamp_pdate(stamp1)
+		pdate_week.append(pdate1) # This is the tuple of days in the week to cycle through
+	# Select all reactions in asset list for date range
+	pf = 1
+
+
+	#db, cur = db_set_vant(request) 
+
+	db, cur = db_set(request) 
+
+	sql = "SELECT * from 1730_Vantage where created_at >= '%s' and created_at <= '%s' and part_number = '%s' and part_fail = '%s'" % (pd101,pd202,prt9,pf)
+	# sql = "SELECT * FROM GFxPRoduction WHERE TimeStamp >= '%s' and TimeStamp <= '%s' and Machine = '%s'" %(week_start,week_end,asset[0])
+	cur.execute(sql)
+	tmp = cur.fetchall()
+
+	db.close()
+
+
+	t1 = []
+	t2 = []
+
+	for i in tmp:
+		t1=[]
+		t1.append(i[0])
+		t1.append('100P')
+		
+		t1.append(prt8)
+
+
+		t1.append(i[5])
+		t1.append(i[2])
+		t2.append(t1)
+	tot2 = []
+	tot3 = []
+	rrr=4/0
+	for i in asset:
+		op4 = filter(lambda c:c[0]==i,operation_totals)
+		op5 = op4[0][1]  # Current operation
+		tot2 =[]
+		st = week_start
+		ctr = 0
+
+		for j in pdate_week:
+			for k in shift:
+				ctr = ctr + 1
+				fi = st + 28800
+				tot =[]
+				tot.append(i)
+				tot.append(j)
+				tot.append(k)
+				a3 = filter(lambda c:c[4]>st and c[4]<fi,t2)  
+				sum1 = len(a3)
+				a33 = sum1
+
+				op[op5] = op[op5] + a33
+
+				tot.append(a33)
+				tot2.append(tot)
+				# if ctr > 2:
+				# 	r=3/0
+				st = st + 28800
+		tot3.append(tot2)
+	color_used = color2
+	for i in operation_totals:
+		i.append(op[i[1]])
+		if i[2] != 0:
+			if color_used == color2 :
+				color_used = color1
+			else:
+				color_used = color2
+		i.append(color_used)
+	for i in tot3:
+		for ii in i:
+			a3 = filter(lambda c:c[0]==ii[0],operation_totals)  
+			a4=a3[0][4]
+			ii.append(a4)
+	request.session['totals_5401ag'] = tot3
+	request.session['shift_5401ag'] = shift2  #Need 
+	request.session['pdate_5401ag'] = pdate_week  #Need
+	request.session['op_totals_5401ag'] = op
+	request.session['op_span_5401ag'] = operation_totals
+	request.session['goal_5401ag'] = goal_todate
 	return
 
 def prod_ab1v_6420(request):

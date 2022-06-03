@@ -209,7 +209,7 @@
 
             {% for i in request.session.totals_5401a %}
             <tr>
-                    <td bgcolor="#ffffff"><center><b>50-5401</b></center></td>
+                    <td bgcolor="#ffffff"><center><b>50-5401 GP12</b></center></td>
            		 {% for ii in i %}
                		<td bgcolor="#ffffff"><center>{{ii.3}}</center></td>
             	{% endfor %}
@@ -221,15 +221,30 @@
 					{% endif %} 
 				{% endfor %}
 					<td  bgcolor="#ffffff" rowspan="{{x.2}}"><center><b>{{request.session.goal_5401a}}</b></center></td>
-
-
-
 			</tr>
         {% endfor %}
 
+		{% for i in request.session.totals_5401ag %}
+		<tr>
+				<td bgcolor="#ffffff"><center><b>50-5401 100%</b></center></td>
+				{% for ii in i %}
+				   <td bgcolor="#ffffff"><center>{{ii.3}}</center></td>
+			{% endfor %}
+			{% for x in request.session.op_span_5401ag %}
+				{% if x.3 < request.session.goal_5401ag %}
+					<td  bgcolor="#ffffff" rowspan="{{x.2}}"><center><b><font style="color:rgb(180, 0, 0);">{{x.3}}</font></b></center></td>
+				{% else %} 
+					<td  bgcolor="#ffffff" rowspan="{{x.2}}"><center><b>{{x.3}}</b></center></td>
+				{% endif %} 
+			{% endfor %}
+				<td  bgcolor="#ffffff" rowspan="{{x.2}}"><center><b>{{request.session.goal_5401ag}}</b></center></td>
+		</tr>
+	{% endfor %}
+
+
         {% for i in request.session.totals_5404a %}
         <tr>
-                <td bgcolor="#CDCDCD"><center><b>50-5404</b></center></td>
+                <td bgcolor="#CDCDCD"><center><b>50-5404 GP12</b></center></td>
                 {% for ii in i %}
                    <td bgcolor="#CDCDCD"><center>{{ii.3}}</center></td>
             {% endfor %}
@@ -246,7 +261,7 @@
 
         {% for i in request.session.totals_6420a %}
             <tr>
-                    <td bgcolor="#ffffff"><center><b>50-6420</b></center></td>
+                    <td bgcolor="#ffffff"><center><b>50-6420 GP12</b></center></td>
            		 {% for ii in i %}
                		<td bgcolor="#ffffff"><center>{{ii.3}}</center></td>
             	{% endfor %}
@@ -266,7 +281,7 @@
 
         {% for i in request.session.totals_3214a %}
             <tr>
-                    <td bgcolor="#CDCDCD"><center><b>50-3214</b></center></td>
+                    <td bgcolor="#CDCDCD"><center><b>50-3214 GP12</b></center></td>
            		 {% for ii in i %}
                		<td bgcolor="#CDCDCD"><center>{{ii.3}}</center></td>
             	{% endfor %}
@@ -286,7 +301,7 @@
 
         {% for i in request.session.totals_5214a %}
             <tr>
-                    <td bgcolor="#ffffff"><center><b>50-5214</b></center></td>
+                    <td bgcolor="#ffffff"><center><b>50-5214 GP12</b></center></td>
            		 {% for ii in i %}
                		<td bgcolor="#ffffff"><center>{{ii.3}}</center></td>
             	{% endfor %}

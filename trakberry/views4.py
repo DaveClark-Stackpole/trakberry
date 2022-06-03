@@ -191,7 +191,9 @@ def medium_production(request):
 	cur.execute("Alter Table tkb_couldbe ADD percent decimal(10)")
 	db.commit()
 
-	sql = "Select * From tkb_couldbe"
+
+	p = ['50-5401','50-5404','50-8670','50-5214','50-3214']
+	sql = "Select * From tkb_couldbe where part ='%s' or part='%s' or part='%s' or part='%s' or part='%s'"% (p[0],p[1],p[2],p[3],p[4])
 	cur.execute(sql)
 	tmp4 = cur.fetchall()
 	for ii in tmp4:
@@ -204,7 +206,7 @@ def medium_production(request):
 			tuple1 = ['' for x in range(0)]
 			shifthrs1=8
 			iid = 837165
-			pd1 = '2021-12-01'
+			pd1 = '2022-05-16'
 
 			try:
 				cql = "Select cycletime from tkb_cycletime where asset = '%s' and part = '%s'" % (asset1,part)
