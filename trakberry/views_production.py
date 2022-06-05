@@ -31,7 +31,19 @@ import datetime
 from time import strftime
 import time
 
-
+def fup(x):
+	return x[1]
+	
+def tup(x):
+	global tst, down_time
+	tst.append(str(1))
+	
+def nup(x):
+	return x[4]
+	
+def mup(x):
+	global dt
+	dt.append(str(x[7]))	
 # *********************************************************************************************************
 # MAIN Production View
 # This is the main Administrator View to tackle things like cycle times, view production etc.
@@ -142,9 +154,9 @@ def track_data(request,t,u,part,rate):
 	return gr_list
 
 def track_1703(request):
-	st1 = 1654250400
-	fi1 = st1 + 28800
-	m1='1530'
+	st1 = 1654282800
+	fi1 = st1 + 86400
+	m1='1703L'
 	id1=5
 	p1='50-9341'
 	pc1=5
@@ -158,6 +170,8 @@ def track_1703(request):
 	tt = list(tmp)
 	count1=len(tt)
 	db.close()
+
+	
 
 	# diff1=[]
 	# c1=0
@@ -186,7 +200,7 @@ def track_1703(request):
 	rate=3000
 
 	mrr = (rate*(28800))/float(28800)
-	gr_list, brk1, brk2, multiplier	 = Graph_Data(st1,fi1,m,tmp,mrr)
+	gr_list, brk1, brk2, multiplier	 = Graph_Data6(st1,fi1,m,tmp,mrr)
 
 	rrr=4/0
 	return data1, gr_list
