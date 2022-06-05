@@ -149,14 +149,13 @@ def track_data(request,t,u,part,rate):
 	cursor.execute(sql)
 	tmp = cursor.fetchall()	
 	db.close()
-	yyy=6/0
 	gr_list, brk1, brk2, multiplier	 = Graph_Data(t,u,m,tmp,mrr)
 	return gr_list
 
 def track_1703(request):
-	st1 = 1654282800
-	fi1 = st1 + 86400
-	m1='1703L'
+	st1 = 1609484056
+	fi1 = st1 + (60*60*3)
+	m1='769'
 	id1=5
 	p1='50-9341'
 	pc1=5
@@ -200,12 +199,12 @@ def track_1703(request):
 	rate=3000
 
 	mrr = (rate*(28800))/float(28800)
-	gr_list, brk1, brk2, multiplier	 = Graph_Data6(st1,fi1,m,tmp,mrr)
+	mrr=0
+	gr_list, brk1, brk2, multiplier	 = Graph_Data6(fi1,st1,m,tmp,mrr)
 
-	rrr=4/0
-	return data1, gr_list
-
-	return render(request, "redirect_tracking.html")
+	
+	# return render(request, "track_5399.html",{'GList':gr_list,"datax":data1,'GList2':gr_list2, "datax2":data2})
+	return render(request, "track_5399.html",{'GList':gr_list})
 
 def Graph_Data6(t,u,machine,tmp,multiplier):
 	global tst
@@ -252,6 +251,21 @@ def Graph_Data6(t,u,machine,tmp,multiplier):
 	lay = ay[tm_sh]
 	lpx = px[tm_sh]
 	gr_list = zip(px,by,ay,cy)	
+
+	td=[]
+	ctr=0
+	old =0
+	diff1=0
+	for i in gr_list:
+		if ctr>0:
+			diff1 = i[0] - old
+		old = i[0]
+		ctr=ctr+1
+		td.append(diff1)
+
+
+
+	rrr=3/0
 	return gr_list, brk1, brk2, multiplier
 	
 
