@@ -143,7 +143,7 @@ from views_production import cell_track_9341_history_off,mgmt_track_week,mgmt_go
 from views_production import plus_0455,minus_0455,plus_9341,minus_9341,plus_3050,minus_3050,plus_1467,minus_1467, wip_update,runrate_10R80
 
 from views_operations import gf6_reaction,gf6_input,gf6_reaction_prev,gf6_input_prev,prod_9341,prod_10R,prod_10R_prev, prod_728,prod_728fault,prod_728fault_prev
-from views_operations import test_email_7,prod_10R_initial, prod_ab1v, prod_ab1v_initial, prod_ab1v_prev
+from views_operations import test_email_7,prod_10R_initial, prod_ab1v, prod_ab1v_initial, prod_ab1v_prev, prod_ab1v_reaction
 from views_operations import track_single, live_10R,live_update1
 
 
@@ -660,6 +660,7 @@ urlpatterns = [
 	url(r'^prod_9341/', prod_9341),
 	url(r'^prod_10R/', prod_10R),
 	url(r'^prod_ab1v/', prod_ab1v),
+	url(r'^prod_ab1v_reaction/', prod_ab1v_reaction),
 	url(r'^prod_ab1v_prev/', prod_ab1v_prev),
 	url(r'^prod_ab1v_initial/', prod_ab1v_initial),
 	url(r'^prod_10R_initial/', prod_10R_initial),

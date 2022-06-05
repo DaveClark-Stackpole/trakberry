@@ -148,14 +148,15 @@ def track_data(request,t,u,part,rate):
 	sql = "SELECT * FROM GFxPRoduction where TimeStamp >= '%d' and TimeStamp< '%d' and part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" %(u,t,part,asset1,asset2,asset3,asset4)
 	cursor.execute(sql)
 	tmp = cursor.fetchall()	
+
 	db.close()
 	gr_list, brk1, brk2, multiplier	 = Graph_Data(t,u,m,tmp,mrr)
 	return gr_list
 
 def track_1703(request):
-	st1 = 1609484056
-	fi1 = st1 + (60*60*3)
-	m1='769'
+	st1 = 1654398000
+	fi1 = st1 + (60*60*8)
+	m1='1703R'
 	id1=5
 	p1='50-9341'
 	pc1=5
@@ -170,27 +171,34 @@ def track_1703(request):
 	count1=len(tt)
 	db.close()
 
-	
+	e=[]
+	c1=0
+	c2=1
+	for i in tt:
+		d=[]
+		try:
+			x1=tt[c1][4]
+			x2=tt[c2][4]
+			c1=c1+1
+			c2=c2+1
+			d1 = x2-x1
+			if d1 > 100:
+				d.append(i[0])
+				d.append(i[1])
+				d.append(i[2])
+				d.append(i[3])
+				d.append(i[4])
+				d.append(i[5])
+				d.append(d1)
+		except:
+			dummy=1
+		if d1 > 100:
+			d=tuple(d)
+			e.append(d)
 
-	# diff1=[]
-	# c1=0
-	# c2=1
-	# for i in tt:
-	# 	try:
-	# 		x1=tt[c1][0]
-	# 		x2=tt[c2][0]
-	# 		c1=c1+1
-	# 		c2=c2+1
-	# 		d1 = x2-x1
-	# 		diff1.append(id1)
-	# 		diff1.append(m1)
-	# 		diff1.append(d1)
-	# 	except:
-	# 		dummy=1
 
+	e=tuple(e)
 
-
-	# ss = 3/0
 	# gr_list = track_data(request,t,u,prt,rate1) # Get the Graph Data
 	# data1 = zip(u1,wd1,m1,day1,shift1,prev_cnt1)
 	rate=100
@@ -200,13 +208,59 @@ def track_1703(request):
 
 	mrr = (rate*(28800))/float(28800)
 	mrr=0
-	gr_list, brk1, brk2, multiplier	 = Graph_Data6(fi1,st1,m,tmp,mrr)
 
-	
+
+	gr_list, brk1, brk2, multiplier	 = Graph_Data6(fi1,st1,m,e,mrr)
+	gr_list2, brk3, brk4, multiplier2	 = Graph_Data(fi1,st1,m,e,mrr)
+
+
 	# return render(request, "track_5399.html",{'GList':gr_list,"datax":data1,'GList2':gr_list2, "datax2":data2})
-	return render(request, "track_5399.html",{'GList':gr_list})
+	return render(request, "track_5399.html",{'GList':gr_list,'GList2':gr_list2})
 
 def Graph_Data6(t,u,machine,tmp,multiplier):
+	global tst
+	brk1 = 0
+	brk2 = 0
+	multiplier = multiplier / float(6)
+	tm_sh = int((t-u)/600)
+	tm_sh = len(tmp) -1
+	px = [0 for x in range(tm_sh)]
+	by = [0 for x in range(tm_sh)]
+	ay = [0 for x in range(tm_sh)]
+	cy = [0 for x in range(tm_sh)]
+	tt=list(tmp)
+	for ab in range(0,tm_sh):
+		px[ab] =ab
+		yy = px[ab]
+		by[ab] = tt[ab][6]
+		ay[ab] = 0
+		cy[ab] = 0
+	gr_list = zip(px,by,ay,cy)	
+	return gr_list, brk1, brk2, multiplier
+
+def stamp_pdate4(stamp):
+	tm = time.localtime(stamp)
+	ma = ''
+	da = ''
+	ha= ''
+	mia = ''
+	if tm[1] < 10: ma = '0'
+	if tm[2] < 10: da = '0'
+	if tm[3] < 10: ha = '0'
+	if tm[4] < 10: mia = '0'
+	y1 = str(tm[0])
+	m1 = str(tm[1])
+	d1 = str(tm[2])
+	h1 = str(tm[3])
+	mi1 = str(tm[4])
+
+	pdate = y1 + '-' + (ma + m1) + '-' + (da + d1) + ' ' + (ha + h1) + ':' + (mia + mi1)
+	pdate = (ha + h1) + ':' + (mia + mi1)
+
+
+	return pdate
+
+def Graph_Data(t,u,machine,tmp,multiplier):
 	global tst
 	cc = 0
 	cr = 0
@@ -219,11 +273,21 @@ def Graph_Data6(t,u,machine,tmp,multiplier):
 	multiplier = multiplier / float(6)
 	tm_sh = int((t-u)/600)
 	px = [0 for x in range(tm_sh)]
+	pp = [0 for x in range(tm_sh)]
 	by = [0 for x in range(tm_sh)]
 	ay = [0 for x in range(tm_sh)]
 	cy = [0 for x in range(tm_sh)]
 	for ab in range(0,tm_sh):
-		px[ab] =u + (cc*600)
+		temp_u = u + (cc*600)
+		u_time = stamp_pdate4(temp_u)
+
+
+
+		pp[ab] = u_time
+		pp[ab] = u
+		px[ab] = u + (cc*600)
+
+		
 		yy = px[ab]
 		cc = cc + 1
 		cr = cr + multiplier
@@ -250,25 +314,9 @@ def Graph_Data6(t,u,machine,tmp,multiplier):
 	lby = by[tm_sh]
 	lay = ay[tm_sh]
 	lpx = px[tm_sh]
-	gr_list = zip(px,by,ay,cy)	
+	gr_list = zip(px,by,ay,cy,pp)	
 
-	td=[]
-	ctr=0
-	old =0
-	diff1=0
-	for i in gr_list:
-		if ctr>0:
-			diff1 = i[0] - old
-		old = i[0]
-		ctr=ctr+1
-		td.append(diff1)
-
-
-
-	rrr=3/0
 	return gr_list, brk1, brk2, multiplier
-	
-
 
 def track_10R80data(request,t,u,part,rate):
 	m = '1533'
@@ -1271,6 +1319,7 @@ def tracking(request):
 		request.session['asset3_area2'] = '769'
 		request.session['asset4_area2'] = '769'
 		data2, gr_list2 = track_area(request)
+
 
 
 	return render(request, "track.html",{'GList':gr_list1,"datax":data1,'GList2':gr_list2, "datax2":data2})

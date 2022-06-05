@@ -10,9 +10,7 @@
 	} 
 	</script>
 	
-<script>
-	src="https://www.gstatic.com/charts/loader.js">
-</script>
+
 	
 	<style type="text/css">
 		.mainset{color:black;text-align:center;float:left;width:100%}
@@ -58,102 +56,55 @@
 	
 	
 	<script type="text/javascript">
-		google.charts.load('current',{packages:['corechart']});
-		google.charts.setOnLoadCallback(drawChart);
-		function drawChart() {
-	// Set Data
-			var data = google.visualization.arrayToDataTable([
-  			['Parts', 'Cycle Time'],
-			{% for i in GList %}
-				[{{i.0}},{{i.1}}/60],
-			{% endfor %}
-  			]);
-			// Set Options
+	<!-- **************************************** -->
+	google.load('visualization', '1', {
+			packages: ['corechart', 'line']
+	});
+	google.setOnLoadCallback(drawCurveTypes);
+	function drawCurveTypes() {
+		var obj = [
+				{% for item in GList %}
+							[new Date({{item.0}}),{{item.1}}],
+							{% endfor %}
+					];
+	
+			var data = new google.visualization.DataTable();
+			data.addColumn('datetime', 'Date');
+			data.addColumn('number', 'Cycle Time');
+
+		data.addRows(obj)
+	
 			var options = {
-  				title: 'Cycle Time Study',
-  				hAxis: {title: 'Parts'},
-  				vAxis: {title: 'Cycle Time (Minutes)'},
-  				legend: 'none'
-			};
-			// Draw Chart
-			var chart = new google.visualization.LineChart(document.getElementById('myChart'));
-			chart.draw(data, options);
-			}
-	</script>	
-
-<script type="text/javascript">
-	google.charts.load('current',{packages:['corechart']});
-	google.charts.setOnLoadCallback(drawChart);
-	function drawChart() {
-// Set Data
-		var data = google.visualization.arrayToDataTable([
-		  ['Time', 'Production'],
-		{% for i in GList2 %}
-			[({{i.0}}-{{i.4}})/3600,{{i.1}}],
-		{% endfor %}
-		  ]);
-		
-		// Set Options
-		var options = {
-			  title: 'Production',
-			  hAxis: {title: 'Time (Shift Hr)'},
-			  vAxis: {title: 'Production'},
-			  legend: 'none'
-		};
-		// Draw Chart
-		var chart = new google.visualization.LineChart(document.getElementById('myChart2'));
-		chart.draw(data, options);
-		}
-</script>	
-
-	<script type="text/javascript">
-		<!-- **************************************** -->
-		google.load('visualization', '1', {
-				packages: ['corechart', 'line']
-		});
-		google.setOnLoadCallback(drawCurveTypes);
-		function drawCurveTypes() {
-			var obj = [
-					{% for item in GList2 %}
-								[new Date({{item.0}}*1000),{{item.1}}],
-								{% endfor %}
-						];
-		
-				var data = new google.visualization.DataTable();
-				data.addColumn('datetime', 'Date');
-				data.addColumn('number', 'Production');
-
-			data.addRows(obj)
-		
-				var options = {
-				title: "Production",
-				chartArea: {
-					backgroundColor: {
-						stroke: '#4322c0',
-						strokeWidth: 3
-					}
-				},
-				//backgroundColor: '#F5EBE1',
-						hAxis: {
-								title: 'Time',
-					format: "HH:mm",
-					gridlines: { count: 20 }
-					
-						},
+			title: "",
+			chartArea: {
+				backgroundColor: {
+					stroke: '#4322c0',
+					strokeWidth: 3
+				}
+			},
+			//backgroundColor: '#F5EBE1',
+					hAxis: {
+							title: 'Parts',
+				// format: "HH:mm",
+				gridlines: { count: 20 }
 				
-						vAxis: {
-								title: 'Quantity',
-					gridlines: { count: 15 }
-						},
-						series: {
-								0: { curveType: 'function', color: '#08d40c'},
+					},
+			
+					vAxis: {
+							title: 'Cycle Time',
+				gridlines: { count: 30 }
+					},
+					series: {
+							0: { curveType: 'function', color: '#08d40c'},
 
-						}
-				};
-				var chart = new google.visualization.LineChart(document.getElementById('chart2_div'));
-				chart.draw(data, options);
-		}
-				</script>
+					}
+			};
+			var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+			chart.draw(data, options);
+	}
+			</script>	
+	
+		
 
 	
 	
@@ -162,14 +113,19 @@
 		<font size="6"><b><u>1703</u></b></font>
 
 	</div>
+	
+	
+	
 	<div class="frame1">  
 	<br> <center>
-
+		<font style="font-size: 35px; color:rgb(141, 179, 236); text-shadow: 1px 1px 2px black, 0 0 25px rgb(0, 0, 0), 0 0 5px rgb(255, 255, 255);">
+			{{request.session.area1}} 
+	</font>
 	</center>
-	<div id="myChart" style="width:1900px; height:400px"></div>
+	<div id="chart_div" style="width: 100%; height: 600px; "></div>
 	<br>
-	<div id="myChart2" style="width:1900px; height:400px"></div>
-	<!-- <div id="chart2_div" style="width:1900px; height:600px"></div> -->
+	
+	
 
 
 	</div>
