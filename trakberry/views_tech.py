@@ -850,7 +850,28 @@ def tech_pm_complete(request, index):
 	db.close()
 	return render(request,"redirect_tech.html")
 
+
 def tech_pm_complete_asset(request,index):
+
+	db, cursor = db_set(request) 
+
+	cursor.execute("""DROP TABLE IF EXISTS tkb_layered_temp""")
+	cursor.execute("""CREATE TABLE IF NOT EXISTS tkb_layered_temp LIKE tkb_layered""")
+	cursor.execute('''INSERT tkb_layered_temp Select * From tkb_layered''')
+	db.commit()
+	cursor.execute("""ALTER TABLE tkb_layered_temp DROP COLUMN Id""")
+  	db.commit() 
+	cursor.execute('''INSERT tkb_layered Select * From tkb_layered_temp''')
+	db.commit()
+
+	db.close()
+
+
+
+
+	return render(request,"test_temp.html")
+
+
 	request.session['tech_pm_asset'] = index
 	if request.POST:
 		try:
@@ -860,10 +881,13 @@ def tech_pm_complete_asset(request,index):
 				return direction(request)
 		except:
 			date1 = request.POST.get("date_en")
+
+		db, cur = db_set(request) 
+
 		t = pdate_stamp(date1)
 		t=str(t)
 		t=t[:-2]
-		db, cur = db_set(request) 
+		
 		cur.execute('''INSERT PM_CNC_Tech_checks Select * From PM_CNC_Tech_due where Equipment = "%s"''' % (index))
 		db.commit()
 		rql =( 'update PM_CNC_Tech_checks SET Last_Checked="%s" WHERE Equipment="%s"' % (t,index))
@@ -1522,13 +1546,6 @@ def tech_pm_update(request):
 				cursor.execute('''INSERT PM_CNC_Tech_due Select * From PM_CNC_Tech where Equipment = "%s"''' % (i[0]))
 				db.commit()
 	db.close()
-
-
-
-
-
-
-
 
 	return
 
