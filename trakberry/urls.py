@@ -130,7 +130,7 @@ from views_production import mgmt_production_counts
 from views_production import mgmt_users_logins, mgmt_users_logins_edit, mgmt_users_logins_update, mgmt_users_logins_add, mgmt_users_logins_add_new
 from views_production import mgmt_test1,track_10r_data,tracking,track_graph_10r_prev,track_graph_tri_prev, track_graph_prev1,track_graph_prev2,track_graph_track
 from views_production import chart1_1467,chart2_1467,chart1_3050,chart2_3050,chart1_0455,chart2_0455,chart1_9341,chart2_9341
-from views_production import chart1_0455_OP30,chart2_0455_OP30
+from views_production import chart1_0455_OP30,chart2_0455_OP30,track_1703
 from views_production import chart1_1502, chart2_1502, chart1_1507, chart2_1507, chart1_1539, chart2_1539
 from views_production import chart1_9341_OP30, chart2_9341_OP30, tracking_10R80, tracking_10R80_screen, tracking_10R80_resume
 from views_production import chart1_9341_OP80, chart2_9341_OP80, chart1_9341_OP110, chart2_9341_OP110
@@ -139,11 +139,11 @@ from views_production import chart1_5401_OP80, chart2_5401_OP80, chart1_3214_OP3
 from views_production import chart1_1467b,chart2_1467b,chart1_3050b,chart2_3050b,chart1_5710b,chart2_5710b
 from views_production import chart1_1467o,chart2_1467o,chart1_1467br,chart2_1467br,chart1_0455_OP50,chart2_0455_OP50,chart1_0455_OP40,chart2_0455_OP40
 from views_production import mgmt_priorities,auto_updater,cell_track_9341,track_email,cell_track_9341_mobile,cell_track_9341_history_on,cell_track_9341_history
-from views_production import cell_track_9341_history_off,mgmt_track_week,mgmt_goals,cell_track_9341_TV
+from views_production import cell_track_9341_history_off,mgmt_track_week,mgmt_goals,cell_track_9341_TV,track_1703_initial,track_1704_initial
 from views_production import plus_0455,minus_0455,plus_9341,minus_9341,plus_3050,minus_3050,plus_1467,minus_1467, wip_update,runrate_10R80
 
 from views_operations import gf6_reaction,gf6_input,gf6_reaction_prev,gf6_input_prev,prod_9341,prod_10R,prod_10R_prev, prod_728,prod_728fault,prod_728fault_prev
-from views_operations import test_email_7,prod_10R_initial, prod_ab1v, prod_ab1v_initial, prod_ab1v_prev
+from views_operations import test_email_7,prod_10R_initial, prod_ab1v, prod_ab1v_initial, prod_ab1v_prev, prod_ab1v_reaction, prod_ab1v_reaction_prev
 from views_operations import track_single, live_10R,live_update1
 
 
@@ -588,6 +588,10 @@ urlpatterns = [
 	url(r'^track_graph_prev2/get/(?P<index>\d+)/$', track_graph_prev2),
 	url(r'^track_graph_track/get/(?P<index>\d+)/$', track_graph_track),
 
+	url(r'^track_1703/', track_1703),
+	url(r'^track_1703_initial/get/(?P<index>\d+)/$', track_1703_initial),
+	url(r'^track_1704_initial/get/(?P<index>\d+)/$', track_1704_initial),
+
 	url(r'^chart1_1467/', chart1_1467),
 	url(r'^chart2_1467/', chart2_1467),
 	url(r'^chart1_3050/', chart1_3050),
@@ -658,6 +662,8 @@ urlpatterns = [
 	url(r'^prod_9341/', prod_9341),
 	url(r'^prod_10R/', prod_10R),
 	url(r'^prod_ab1v/', prod_ab1v),
+	url(r'^prod_ab1v_reaction/', prod_ab1v_reaction),
+	url(r'^prod_ab1v_reaction_prev/', prod_ab1v_reaction_prev),
 	url(r'^prod_ab1v_prev/', prod_ab1v_prev),
 	url(r'^prod_ab1v_initial/', prod_ab1v_initial),
 	url(r'^prod_10R_initial/', prod_10R_initial),
