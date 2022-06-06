@@ -184,7 +184,7 @@
 
 
         <table id="prodsum">
-			<td colspan="24" bgcolor="#343E45"><center><font style="font-weight:bolder;font-size:x-large;color:#fff;">Weekly Production AB1V / 10R 140 GP12</font>
+			<td colspan="24" bgcolor="#343E45"><center><font style="font-weight:bolder;font-size:x-large;color:#fff;">1703 / 1704 Production</font>
 				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				<button  style="background-color: #585858;border-radius: 10px;height:70%;font-size:10px;color:#fefffa;vertical-align:middle;" onclick="prod_10R_prev()"> << PREV WEEK </button> 
 				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -209,14 +209,12 @@
 
             {% for i in request.session.totals_5399x %}
             <tr>
-                    <td bgcolor="#ffffff"><center><b>50-8610 (1703)</b></center></td>
+                    <td bgcolor="#ffffff"><center><b>50-8670 (1703)</b></center></td>
            		 {% for ii in i %}
-
-                    <!-- Use {{i.4}} as link as it's the timestamp for start of day-->
-               		<td bgcolor="#ffffff"><center>{{ii.3}}</center></td>
-
-                    <!-- End of the link section-->
-                    
+                    <td bgcolor="#ffffff"><center>
+                    <a href="{{request.session.local_toggle}}/track_1703_initial/get/{{ii.4}}" onclick="window.open('{{request.session.local_toggle}}/track_1703_initial/get/{{ii.4}}', 'newwindow', 'width=1400, height=600'); return false;">
+                        {{ii.3}}</a></font>
+               		</center></td>
             	{% endfor %}
 				{% for x in request.session.op_span_5399x %}
 					{% if x.3 < request.session.goal_5399x %}
@@ -227,7 +225,28 @@
 				{% endfor %}
 					<td  bgcolor="#ffffff" rowspan="{{x.2}}"><center><b>{{request.session.goal_5399x}}</b></center></td>
 			</tr>
+          {% endfor %}
+
+          {% for i in request.session.totals_5399y %}
+          <tr>
+                  <td bgcolor="#ffffff"><center><b>50-8670 (1704)</b></center></td>
+                  {% for ii in i %}
+                  <td bgcolor="#ffffff"><center>
+                  <a href="{{request.session.local_toggle}}/track_1704_initial/get/{{ii.4}}" onclick="window.open('{{request.session.local_toggle}}/track_1704_initial/get/{{ii.4}}', 'newwindow', 'width=1400, height=600'); return false;">
+                      {{ii.3}}</a></font>
+                     </center></td>
+              {% endfor %}
+              {% for x in request.session.op_span_5399y %}
+                  {% if x.3 < request.session.goal_5399y %}
+                      <td  bgcolor="#ffffff" rowspan="{{x.2}}"><center><b><font style="color:rgb(180, 0, 0);">{{x.3}}</font></b></center></td>
+                  {% else %} 
+                      <td  bgcolor="#ffffff" rowspan="{{x.2}}"><center><b>{{x.3}}</b></center></td>
+                  {% endif %} 
+              {% endfor %}
+                  <td  bgcolor="#ffffff" rowspan="{{x.2}}"><center><b>{{request.session.goal_5399y}}</b></center></td>
+          </tr>
         {% endfor %}
+
 
 
 
