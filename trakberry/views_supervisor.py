@@ -2291,13 +2291,13 @@ def tech_report_email():
 
 		toaddrs = ["ttobey@stackpole.com","dmilne@stackpole.com","jbarker@stackpole.com","tkuepfer@stackpole.com","lvaters@stackpole.com","pwilson@stackpole.com","mle@stackpole.com","ssmith@stackpole.com","nkleingeltink@stackpole.com","kbaker@stackpole.com","jpankratz@stackpole.com","kfaubert@stackpole.com","kfrey@stackpole.com","ekuepfer@stackpole.com","mgehlot@stackpole.com","dmclaren@stackpole.com"]
 		#toaddrs = ["dclark@stackpole.com"]
-		fromaddr = 'stackpole@stackpole.com'
-		frname = 'Dave'
-		server = SMTP('smtp.gmail.com', 587)
+		fromaddr = 'stratford.reports@stackpole.com'
+		frname = '10R Production'
+		server = SMTP('mesg06.stackpole.ca')
 		server.ehlo()
 		server.starttls()
 		server.ehlo()
-		server.login('StackpolePMDS@gmail.com', 'stacktest6060')
+		# server.login('StackpolePMDS@gmail.com', 'stacktest6060')
 	
 	
 	
