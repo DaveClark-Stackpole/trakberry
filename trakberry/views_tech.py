@@ -853,23 +853,48 @@ def tech_pm_complete(request, index):
 
 def tech_pm_complete_asset(request,index):
 
-	db, cursor = db_set(request) 
+	index = str(index)
+	db, cur = db_set(request) 
+	
+	cur.execute("""DROP TABLE IF EXISTS PM_CNC_Tech_Temp""")
+	cur.execute("""CREATE TABLE IF NOT EXISTS PM_CNC_Tech_Temp LIKE PM_CNC_Tech_checks""")
 
-	cursor.execute("""DROP TABLE IF EXISTS tkb_layered_temp""")
-	cursor.execute("""CREATE TABLE IF NOT EXISTS tkb_layered_temp LIKE tkb_layered""")
-	cursor.execute('''INSERT tkb_layered_temp Select * From tkb_layered''')
+	sql = "Insert PM_CNC_Tech_Temp Select * From PM_CNC_Tech_due WHERE Equipment='%s'" % (index)
+	cur.execute(sql)
+	# cur.execute('''INSERT PM_CNC_Tech_Temp Select * From PM_CNC_Tech_due WHERE Equipment = "%s"''') % (index)
 	db.commit()
-	cursor.execute("""ALTER TABLE tkb_layered_temp DROP COLUMN Id""")
-  	db.commit() 
-	cursor.execute('''INSERT tkb_layered Select * From tkb_layered_temp''')
+	# cursor.execute("""ALTER TABLE tkb_layered_temp DROP COLUMN Id""")
+	# db.commit() 
+	sql="SELECT MAX(Id) FROM PM_CNC_Tech_checks"
+	cur.execute(sql)
+	tmp=cur.fetchall()
+	id_ctr=int(tmp[0][0])
+	id_ctr = id_ctr + 1
+
+	sql = "SELECT * FROM PM_CNC_Tech_Temp"
+	cur.execute(sql)
+	tmp = cur.fetchall()
+
+	for i in tmp:
+		id1 = i[0]
+		rql =( 'update PM_CNC_Tech_Temp SET Id="%s" WHERE Id="%s"' % (id_ctr,id1))
+		cur.execute(rql)
+		db.commit()
+		id_ctr = id_ctr + 1
+
+	iql = "INSERT PM_CNC_Tech_checks Select * From PM_CNC_Tech_Temp"
+	cur.execute(iql)
 	db.commit()
 
+	dql = ('DELETE FROM PM_CNC_Tech_due WHERE Equipment="%s"' % (index))
+	cur.execute(dql)
+	db.commit()
 	db.close()
 
 
 
 
-	return render(request,"test_temp.html")
+	return render(request,"redirect_master.html")
 
 
 	request.session['tech_pm_asset'] = index
@@ -1070,7 +1095,7 @@ def tech_message_reply1(request):
 	
 	
 def job_call(request, index):	
-    
+	
 	tec = request.session["login_tech"]
 
 	# Select prodrptdb db located in views_db
@@ -1157,7 +1182,7 @@ def job_close(request, index):
 def tech_logout(request):	
 
 	if request.POST:
-        			
+					
 		tec = request.POST.get("user")
 		pwd = request.POST.get("pwd")
 
@@ -1253,7 +1278,7 @@ def tech_map(request):
 def tech_history(request):	
 
 	if request.POST:
-        			
+					
 		machine = request.POST.get("machine")
 		request.session["machine_search"] = machine
 		db, cur = db_set(request) 
@@ -1319,7 +1344,7 @@ def tech_message(request):
 	db.close()
 
 	if request.POST:
-        			
+					
 		a = request.session["login_tech"]
 		b = request.POST.get("name")
 		c = request.POST.get("message")
@@ -1355,7 +1380,7 @@ def tech_message_reply2(request):
 	db.close()
 
 	if request.POST:
-        			
+					
 		a = request.session["login_tech"]
 		b = request.POST.get("name")
 		b = request.session["sender_name_last"]
@@ -1519,16 +1544,6 @@ def tech_report_email(name):
 
 def tech_pm_update(request):
 	db, cursor = db_set(request)  
-	# Use below to force values into PM_CNC_Tech   ###################################
-	# a='1630507076' 
-	# b='776'
-	# # tql =( 'update PM_CNC_Tech SET Last_Checked="%s" WHERE Equipment="%s"' % (a,b))
-	# tql =( 'update PM_CNC_Tech SET Last_Checked="%s"' % (a))
-	# cursor.execute(tql)
-	# db.commit()
-	# ################################################################################
-
-
 	sql = "SELECT DISTINCT Equipment,Last_Checked,Frequency FROM PM_CNC_Tech"
 	cursor.execute(sql)
 	tmp = cursor.fetchall()
@@ -1546,7 +1561,6 @@ def tech_pm_update(request):
 				cursor.execute('''INSERT PM_CNC_Tech_due Select * From PM_CNC_Tech where Equipment = "%s"''' % (i[0]))
 				db.commit()
 	db.close()
-
 	return
 
 def tech_PM_assign(request):
