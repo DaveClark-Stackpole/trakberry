@@ -190,7 +190,7 @@ def track_1704_initial(request,index):
 			c1=c1+1
 			c2=c2+1
 			d1 = x2-x1
-			if d1 > 100:
+			if d1 > 149:
 				d.append(i[0])
 				d.append(i[1])
 				d.append(i[2])
@@ -200,7 +200,7 @@ def track_1704_initial(request,index):
 				d.append(d1)
 		except:
 			dummy=1
-		if d1 > 100:
+		if d1 > 149:
 			d=tuple(d)
 			if len(d)>0:
 				e.append(d)
@@ -264,7 +264,7 @@ def track_1703_initial(request,index):
 			c1=c1+1
 			c2=c2+1
 			d1 = x2-x1
-			if d1 > 100:
+			if d1 > 149:
 				d.append(i[0])
 				d.append(i[1])
 				d.append(i[2])
@@ -274,7 +274,7 @@ def track_1703_initial(request,index):
 				d.append(d1)
 		except:
 			dummy=1
-		if d1 > 100:
+		if d1 > 149:
 			d=tuple(d)
 			if len(d)>0:
 				e.append(d)
