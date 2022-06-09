@@ -588,6 +588,177 @@ def tech_email_test(request):
 
 	return render(request, "email_downtime_cycle.html")
 
+
+def maint_TV(request):
+	net1(request)	# Sets the app to server or local
+	# Initialize Request Sessions if they don't exist
+
+
+
+
+
+	request.session["refresh_maint"] = 0
+  # initialize current time and set 'u' to shift start time
+	t=int(time.time())
+	tm = time.localtime(t)
+	c = []
+	date = []
+	prob = []
+	job = []
+	priority = []
+	id = []
+	machine = []
+	count = []
+	tmp2=[]
+	smp2=[]
+	mach_cnt = []
+	tch = []
+	nm = []
+	maint = []
+
+
+	# Select prodrptdb db located in views_db
+	db, cursor = db_set(request)
+	dep = "Maintenance"
+
+
+
+	sql = "SELECT user_name FROM tkb_logins WHERE department = '%s' ORDER BY user_name ASC" %(dep)	# Select only those in the department  (dep)
+	cursor.execute(sql)
+	tmp = cursor.fetchall()
+	
+	sql = "SELECT tech FROM tkb_techs"
+	cursor.execute(sql)
+	ttmp = cursor.fetchall()
+	tt = []
+	for i in ttmp:
+		tt.append(i[0])
+	tech_tmp = tt
+	# tech_tmp = list(ttmp)
+	
+
+	for i in tmp:
+		maint.append(i[0])
+
+	sqlT = "Select * From pr_downtime1 where closed IS NULL"
+	cursor.execute(sqlT)
+	tmp = cursor.fetchall()
+
+
+	ctr = 0
+	ctr2 = 0
+	for x in tmp:
+
+		add_job = 0	  # Determines if we add this job to list to display
+		tmp2 = (tmp[ctr2])
+		temp_pr = tmp2[3]
+
+
+		tmp3 = tmp2[4]
+
+		if tmp3 == "Electrician":
+
+			tmp3 = "Maintenance"
+			# kkkk = request.session["opopop"]
+			add_job = 1
+		if tmp3 == "Millwright":
+			tmp3 = "Maintenance"
+			# kkkk = request.session["opopop"]
+			add_job = 1
+
+		nm = seperate_string(tmp2[4])
+
+		for h1 in nm:
+			for h2 in maint:
+				if h1[0] == h2[0]:
+					add_job = 1
+					break
+			if add_job == 1:
+				break
+		# Do this if we need to assign to display tuple
+		if add_job == 1:
+			job.append(tmp2[0])	 # Assign machine to job
+			prob.append(tmp2[1]) # Assign problem to prob
+			priority.append(int(tmp2[3]))  #Assign priority number to priority
+			id.append(tmp2[11])	 # Assign idnumber to id
+			tch.append(tmp3)   # Assign Name to tch
+			ctr = ctr + 1
+		ctr2 = ctr2 + 1
+
+
+	for i in range(0, ctr-1):
+		for ii in range(i+1, ctr):
+			if int(priority[ii]) < int(priority[i]):
+				jjob = job[i]
+				job[i] = job[ii]
+				job[ii] = jjob
+				pprob = prob[i]
+				prob[i] = prob[ii]
+				prob[ii] = pprob
+				pprior = priority[i]
+				priority[i] = priority[ii]
+				priority[ii] = pprior
+				iid = id[i]
+				id[i] = id[ii]
+				id[ii]= iid
+				ttch = tch[i]
+				tch[i] = tch[ii]
+				tch[ii] = ttch
+	if request.session["maint_ctr"] == ctr:
+		request.session["maint_alarm"] = "/media/clock2.wav"
+	else:
+		request.session["maint_alarm"] = "/media/clock.wav"
+		request.session["maint_ctr"] = ctr
+	LList = zip(job,prob,id,tch,priority)
+
+	db.close()
+	n = "none"
+
+
+
+	request.session["login_back"] = "/static/media/back_maint.jpg"
+	request.session["login_image"] = "/static/media/maint.jpg"
+
+
+	M = 'Need Millwright'
+	E = 'Maintenance'
+	wfp = 'WFP'
+	project = 'Project'
+	temp1 = []
+	for i in LList:
+		ab = i[1][-3:]
+		if ab !='WFP':
+			temp1.append(i)
+	LList = temp1
+	L1 = len(LList)
+
+
+
+	P1 = int(L1 / float(4)) + 1
+
+	P2 = P1 + P1
+	P3 = P2 + P1
+	P4 = P3 + P1
+
+	data1=[]
+	data2=[]
+	data3=[]
+	data4=[]
+	for i in range(0,P1):
+		data1.append(LList[i])
+	for i in range(P1,P2):
+		data2.append(LList[i])
+	for i in range(P2,P3):
+		data3.append(LList[i])
+	for i in range(P3,P4):
+		try:
+			data4.append(LList[i])
+		except:
+			dummy=1
+
+
+	return render(request,"maint_TV.html",{'L1':data1,'L2':data2,'L3':data3,'L4':data4,'N':n,'M':M,'E':E,'wfp':wfp,'project':project,'techs':tech_tmp})
+
 def maint(request):
 	net1(request)	# Sets the app to server or local
 	# Initialize Request Sessions if they don't exist
