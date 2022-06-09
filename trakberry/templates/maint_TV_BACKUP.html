@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<style type="text/css">
+#full-screen-background-image {z-index: -999;min-height: 110%; min-width: 100%;width: 100%;height: 110%;position: fixed;top: ;	left: 0;}
+</style>
+<style type="text/css">
+    .mainset{color:black;text-align:center;float:left;width:100%}
+    .wrapper_main {background:chartreuse;width:90%;margin-left: 10px;}
+    .frame1 {color:black;text-align:center;float:left;width:25%;margin-bottom: 5px;}
+    .frame2a{color:black;text-align:center;background:rgb(202, 188, 83);float:left;width:32%;position:relative;left:5px;border-radius: 15px;margin-bottom: 5px;}
+    .frame2{color:black;text-align:center;background:rgb(83, 134, 202);float:left;width:32%;position:relative;left:5px;margin-bottom: 5px;}
+    .frame3 {color:black;text-align:center;background:rgb(61, 138, 64);float:left;width:32%;position:relative;left:10px;margin-bottom: 5px;}
+    .frame4 {color:black;text-align:center;float:left;width:98%;position:relative;left:5px;margin-bottom: 5px;margin-top: 15px;}
+    .frame5{color:black;text-align:center;background:rgb(168, 168, 168);float:right;width:40%}
+    .head1{color:black;text-align:center;border: .4px solid rgb(0, 0, 0);background:rgb(114, 159, 243);width:85%}
+    .head1_u{color:black;text-align:center;border: .4px solid rgb(0, 0, 0);background:rgb(226, 226, 226);width:100%}
+    .head2_u{color:black;text-align:center;float:left;font-size: 60%;border: .4px solid rgb(0, 0, 0);background: rgb(184, 167, 142);width:25%}
+    .body1_u{color:black;text-align:left;float: left;border: 1px solid rgb(0, 0, 0);width:25%}
+    .head2{color:black;text-align:center;float:left;font-size: 60%;border: .4px solid rgb(222, 231, 95);background: rgb(184, 167, 142);width:65%}
+    .body1{color:black;text-align:left;float: left;border: 1px solid rgb(0, 0, 0);width:85%}
+    .body2{color:black;text-align:left;float: left;border: 1px solid rgb(0, 0, 0);width:65%}
+    .body3{color:black;text-align:center;background:rgb(199, 187, 166);float:left;width:33%;border: .4px solid rgb(0, 0, 0)}
+    .body3h{color:black;text-align:center;background:rgb(187, 186, 184);float:left;width:33%;border: .4px solid rgb(0, 0, 0)}
+    .body3t{color:black;text-align:center;background:rgb(187, 186, 184);float:left;font-size:medium;width:99%;border: .4px solid rgb(0, 0, 0)}
+
+    .frameA {color:black;text-align:center;float:left;width:95%;margin-bottom: 5px;}
+    
+</style>
+<style>   
+	#prodsum {
+		font-family: Arial, Helvetica, sans-serif;
+		border-collapse: collapse;
+		width: 100%;
+	}
+	#prodsum td, #prodsum th {
+		border: 1px solid rgb(136, 134, 134);
+		padding: 3px;
+	}
+	/* #prodsum tr:nth-child(even){background-color: #96dbf8;}
+	#prodsum tr:nth-child(odd){background-color: #45b4c6;} */
+	#prodsum tr:hover {background-color: #ddd;}
+	#prodsum th {
+		padding-top: 10px;
+		padding-bottom: 10px;
+		text-align: left;
+		background-color: rgb(68, 82, 91);
+		color: white;
+	}
+</style>
+
+  <title>Maint Jobs</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+	<script src="/static/bootstrap/js/1.11.3/jquery.min.js"></script>
+	<script src="/static/bootstrap/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
+</head>
+
+
+<body>
+<img alt="full screen background image" src="/static/media/back_maint.jpg" id="full-screen-background-image"/>
+
+<meta http-equiv="refresh" content="5; url={{request.session.local_toggle}}/maint_TV"/>
+
+
+
+<div class="wrapper_main">
+<div class="frame1">
+
+<div class="container"><br>
+
+{% for i in L %}
+    {% if i.3 == E %}
+	    {% if i.1|slice:"-3:" != wfp %}
+		    {% if i.1|slice:"-7:" != project %}
+			    <div class="row">
+				    <div class="col-sm-8" style="background-color: rgb(252, 244, 136);border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;"><font color="#000000" size ="4" border="1">
+					{{i.0}} : {{ i.1 }}
+				    </div> 
+			    </div>	
+			    <div class="row">
+				    <div class="col-sm-8" style="background-color: rgb(216, 213, 173);border-radius: 25px;border-style: solid;border-width: 1px;border-color: #000000;height:30px;"><font color="#000000" size ="3" border="1"><b>
+					<center><a href="{{request.session.local_toggle}}/mcall/get/{{ i.2 }}" style="color: black">{{i.3}}</b></center></a>
+				    </div>
+			    </div>
+		    {% else %}
+			    <div class="row">
+				    <div class="col-sm-8" style="background-color: rgb(255, 184, 98);border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;"><font color="#000000" size ="4" border="1">
+					{{i.0}} : {{ i.1 }}
+				    </div> 
+			    </div>	
+			    <div class="row">
+				    <div class="col-sm-8" style="background-color: rgb(192, 138, 74);border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;height:30px;"><font color="#000000" size ="3" border="1"><b>
+					<center><a href="{{request.session.local_toggle}}/mcall/get/{{ i.2 }}" style="color: black">{{i.3}}</b></center></a>
+				    </div>
+			    </div>
+		    {% endif %}	 <!-- end if for Project If Statement -->
+	    {% endif %}	  <!-- end if for wfp If Statement -->
+
+    {% else %}
+	    <div class="row">
+			{% if i.1|slice:"-3:" != wfp %}
+			    {% if i.3 not in techs %}
+		            <div class="col-sm-8" style="background-color: #999999;border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;"><font color="#000000" size ="4" border="1">{{i.0}} : {{ i.1}}     
+                    </div>
+		            <div class="col-sm-8" style="background-color: #c7c7c7;border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;"><font color="#000000" size ="3" border="1"><b>
+		            <center><a href="{{request.session.local_toggle}}/mcall/get/{{ i.2 }}" style="color: black">{{i.3}}</b></center></a>
+		            </div>
+		        {% endif %}
+		    {% endif %}
+	    </div>
+    {% endif %}
+
+    <br>
+{% endfor %}
+</div>
+
+
+</div> <!-- Frame 1 End-->
+</div> <!-- Wrapper End-->
+
+
+
+</body></html>

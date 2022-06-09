@@ -3858,7 +3858,7 @@ def cell_track_9341(request):
 
 		# If 1510 going take out below conditional statement
 		if machine2 == '1541':
-			machine22 = '1538'
+			machine22 = '1531'
 			list2 = filter(lambda x:x[4]>=t and x[1]==machine22,tmpX)  # Filter list to get 5 min sum
 			cnt = len(list2)
 			list2 = filter(lambda x:x[4]>=start1 and x[1]==machine22,tmpX)  # Filter list to get 5 min sum
