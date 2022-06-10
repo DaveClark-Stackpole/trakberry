@@ -704,11 +704,16 @@ def maint_TV(request):
 				ttch = tch[i]
 				tch[i] = tch[ii]
 				tch[ii] = ttch
-	if request.session["maint_ctr"] == ctr:
-		request.session["maint_alarm"] = "/media/clock2.wav"
-	else:
+	try:
+		if request.session["maint_ctr"] == ctr:
+			request.session["maint_alarm"] = "/media/clock2.wav"
+		else:
+			request.session["maint_alarm"] = "/media/clock.wav"
+			request.session["maint_ctr"] = ctr
+	except:
 		request.session["maint_alarm"] = "/media/clock.wav"
 		request.session["maint_ctr"] = ctr
+
 	LList = zip(job,prob,id,tch,priority)
 
 	db.close()
