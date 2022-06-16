@@ -740,8 +740,8 @@ def maint_TV(request):
 
 
 	P1 = int(L1 / float(4)) + 1
-
-	P2 = P1 + P1
+	P1 = 6
+	P2 = P1 + 6
 	P3 = P2 + P1
 	P4 = P3 + P1
 
@@ -749,13 +749,22 @@ def maint_TV(request):
 	data2=[]
 	data3=[]
 	data4=[]
-	for i in range(0,P1):
-		data1.append(LList[i])
-	for i in range(P1,P2):
-		data2.append(LList[i])
-	for i in range(P2,P3):
-		data3.append(LList[i])
-	for i in range(P3,P4):
+	for i in range(0,6):
+		try:
+			data1.append(LList[i])
+		except:
+			dummy=1
+	for i in range(6,13):
+		try:
+			data2.append(LList[i])
+		except:
+			dummy=1
+	for i in range(13,20):
+		try:
+			data3.append(LList[i])
+		except:
+			dummy=1
+	for i in range(20,27):
 		try:
 			data4.append(LList[i])
 		except:
