@@ -9,6 +9,7 @@ from mod1 import hyphon_fix
 from views_production import prioritize, wfp
 from trakberry.views2 import login_initial
 from trakberry.views_testing import machine_list_display
+from mod1 import hyphon_fix, multi_name_breakdown
 from trakberry.views_vacation import vacation_temp, vacation_set_current, vacation_set_current2
 from django.http import QueryDict
 import MySQLdb
@@ -319,14 +320,50 @@ def supervisor_display(request):
 		request.session['refresh_sup'] = 0
 		help_message_length = 0
 
+		
+
+	# Determine Maintenance Staff
+	active1 = 0
+	whoisonit1 = 'tech'
+	whoisonit2 = 'Engineering'
+	SQ_Sup = "SELECT * FROM pr_downtime1 where closed IS NULL and whoisonit != '%s' and whoisonit != '%s' ORDER By (priority) ASC" % (whoisonit1,whoisonit2)
+	cur.execute(SQ_Sup)
+	tmp = cur.fetchall()
+	SQ2 = "SELECT user_name FROM tkb_logins where active1 != '%d'" % (active1)
+	cur.execute(SQ2)
+	tmp4 = cur.fetchall()
+	# tmp4 = list(tmp4)
+#	Determing a list of names currently assigned to jobs
+	tmp2 = []
+	tmp3 = []
+	on1 = []
+	off1 = []
+	union1 = []
+	t4 = []
+	for i in tmp:
+		nm = multi_name_breakdown(i[4])
+		if len(nm) == 0:
+			tmp3.append(i[4])
+		else:
+			for ii in nm:
+				tmp3.append(ii)
+	# need to compare tmp4 and tmp3 and put into two different appends.	  on1 and off1
+	for i in tmp4:
+		t4.append(i[0])
+		found1 = 0
+		for ii in tmp3:
+			if i[0] == ii:
+				found1 = 1
+				break
+		if found1 == 1:
+			on1.append(i[0])
+		else:
+			off1.append(i[0])
+	request.session["assigned"] = on1
+	request.session["not_assigned"] = off1
+	# End of Maintnenace Staff	
 	db.close()
 
-
-
-  # call up 'display.html' template and transfer appropriate variables.  
-	#return render(request,"test3.html",{'total':tmp4,'Z':Z_Value,'})
-
-	
 	return render(request,"supervisor.html",{'L':list,'N':n,'cnt':cnt,'help_message_length':help_message_length,'M':tmp4,'Z':Z_Value,'TCUR':tcur,'args':args})
 
 def sup_message(request):	
