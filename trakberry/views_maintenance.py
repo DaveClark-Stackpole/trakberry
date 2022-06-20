@@ -749,22 +749,22 @@ def maint_TV(request):
 	data2=[]
 	data3=[]
 	data4=[]
-	for i in range(0,6):
+	for i in range(0,5):
 		try:
 			data1.append(LList[i])
 		except:
 			dummy=1
-	for i in range(6,13):
+	for i in range(5,10):
 		try:
 			data2.append(LList[i])
 		except:
 			dummy=1
-	for i in range(13,20):
+	for i in range(10,15):
 		try:
 			data3.append(LList[i])
 		except:
 			dummy=1
-	for i in range(20,27):
+	for i in range(15,27):
 		try:
 			data4.append(LList[i])
 		except:
