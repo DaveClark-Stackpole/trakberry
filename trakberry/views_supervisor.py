@@ -336,7 +336,12 @@ def supervisor_display(request):
 #	Determing a list of names currently assigned to jobs
 	tmp2 = []
 	tmp3 = []
+	tmp3_machine=[]
+	tmp3_priority=[]
+
 	on1 = []
+	on1_job = []
+	on1_priority = []
 	off1 = []
 	union1 = []
 	t4 = []
@@ -344,22 +349,36 @@ def supervisor_display(request):
 		nm = multi_name_breakdown(i[4])
 		if len(nm) == 0:
 			tmp3.append(i[4])
+			tmp3_machine.append(i[0])
+			tmp3_priority.append(i[3])
 		else:
 			for ii in nm:
 				tmp3.append(ii)
+				tmp3_machine.append(i[0])
+				tmp3_priority.append(i[3])
 	# need to compare tmp4 and tmp3 and put into two different appends.	  on1 and off1
+	tmp3_B = zip(tmp3,tmp3_machine,tmp3_priority)
+
 	for i in tmp4:
 		t4.append(i[0])
 		found1 = 0
-		for ii in tmp3:
-			if i[0] == ii:
+		asset1 = ''
+		priority = 0
+		for ii in tmp3_B:
+			if i[0] == ii[0]:
 				found1 = 1
+				asset1 = ii[1][:4]
+				priority1 = ii[2]
 				break
 		if found1 == 1:
 			on1.append(i[0])
+			on1_job.append(asset1)
+			on1_priority.append(priority1)
+
 		else:
 			off1.append(i[0])
-	request.session["assigned"] = on1
+	on2 = zip(on1,on1_job,on1_priority)
+	request.session["assigned"] = on2
 	request.session["not_assigned"] = off1
 	# End of Maintnenace Staff	
 	db.close()

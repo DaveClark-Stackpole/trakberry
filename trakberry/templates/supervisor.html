@@ -177,24 +177,31 @@ E3E2C3
 
 <div class="frame2">
 	<table style="width:100%;">
-		<tr><th colspan="2" bgcolor="#B6D6E0" style="font-size: 160%;">
-			<center><u><font color="#000000">Maintenance</u></center>
+		<tr><th colspan="4" bgcolor="#408c9a" style="font-size: 160%;">
+			<center><u><font color="#ffffff">Maintenance</u></center>
 		</th></tr>
 
-		<tr><th>Maintenance</th><th>On Job</th><th>Job</th><th>Priority</th></tr>
+		<tr><th bgcolor="#7bc4d1"><center>Maintenance</th><th bgcolor="#7bc4d1"><center>On Job</th><th bgcolor="#7bc4d1">
+			<center>Job</th><th bgcolor="#7bc4d1"><center>Priority</th></tr>
 
 
 		{% for x in request.session.assigned %}
-		<tr><td><b><font color="#000000" style="font-size:90%;">{{x}}</font></td>
-			<td><b><font color="#000000" style="font-size: 90%;">yes</font></b></td></tr>
+
+		<!-- <button style="border-color:#a7e4ef;" -->
+		<tr><td bgcolor="#374245"><b><font color="#cfd9db" style="font-size:90%;">{{x.0}}</font></td>
+			<td bgcolor="#374245"><b><font color="#cfd9db" style="font-size: 90%;">yes</font></b></td>
+			<td bgcolor="#374245"><b><font color="#cfd9db" style="font-size:90%;">{{x.1}}</font></td>
+				<td bgcolor="#374245"><b><font color="#cfd9db" style="font-size:90%;">{{x.2}}</font></td></tr>
 		{% endfor %}
 
 
 
 
 		{% for x in request.session.not_assigned %}
-		<tr><td><b><font color="#000000" style="font-size: 90%;">{{x}}</font></td>
-			<td><font color="#000000" style="font-size: 90%;">no</font></b></td></tr>
+		<tr><td bgcolor="#a7e4ef"><b><font color="#000000" style="font-size: 90%;">{{x}}</font></td>
+			<td bgcolor="#a7e4ef"><font color="#000000" style="font-size: 90%;">no</font></b></td>
+			<td bgcolor="#a7e4ef"><font color="#000000" style="font-size: 90%;">---</font></b></td>
+				<td bgcolor="#a7e4ef"><font color="#000000" style="font-size: 90%;">---</font></b></td</tr>
 		{% endfor %}
 
 
