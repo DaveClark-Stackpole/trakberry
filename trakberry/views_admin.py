@@ -65,6 +65,35 @@ def retrieve(request):
 def master(request):
 	return render(request, "master.html")
 
+def tech_pm_add(request):
+	db, cursor = db_set(request)
+	q = '1705'
+	p = '1746'
+	cursor.execute("""DROP TABLE IF EXISTS pm_cnc_tech3""")
+	cursor.execute("""CREATE TABLE IF NOT EXISTS pm_cnc_tech3 LIKE PM_CNC_Tech""")
+	sql2 = '''INSERT pm_cnc_tech3 SELECT * From PM_CNC_Tech where Equipment = "%s"'''%(q)
+	cursor.execute(sql2)
+	db.commit()
+	tql = "SELECT MAX(Id) FROM PM_CNC_Tech"
+	cursor.execute(tql)
+	xmp = cursor.fetchall()
+	mx = int(xmp[0][0])
+	mx=mx+1
+	sql = "SELECT * FROM pm_cnc_tech3"
+	cursor.execute(sql)
+	tmp = cursor.fetchall()
+	for i in tmp:
+		ii = i[0]
+		cursor.execute("UPDATE pm_cnc_tech3 SET Equipment = '%s' WHERE Id = '%s'"% (p,ii))
+		cursor.execute("UPDATE pm_cnc_tech3 SET Id = '%s' WHERE Id = '%s'"% (mx,ii))
+		db.commit()
+		mx=mx+1
+	sql2 = '''INSERT PM_CNC_Tech SELECT * From pm_cnc_tech3'''
+	cursor.execute(sql2)
+	db.commit()
+	db.close()
+	return render(request, "master.html")
+
 
 
 

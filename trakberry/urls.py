@@ -59,7 +59,7 @@ from views_test2 import machine1, prediction1
 from views_manpower import manpower_allocation
 from views_test1 import balancer_1508
 
-from views_production import update7
+from views_production import update7,update7_prev
 # ***********************************************************************************************************************************************************
 
 
@@ -164,6 +164,7 @@ from views_barcode import barcode_check_10R,barcode_input_10R,barcode_initial_10
 from views_admin import master
 from views3 import excel_dump, excel_scrap_dump,training_matrix2,training_matrix_find,training_matrix_update_all
 from views3 import bounce_matrix,update_matrix_cancel,matrix_cache_matrix, full_update
+from views_admin import tech_pm_add
 # ***********************************************************************************************************************************************************
 
 # *******************************************  Scrap Section ********************************************************************************************
@@ -694,6 +695,7 @@ urlpatterns = [
 	url(r'^excel_scrap_dump/', excel_scrap_dump),
 	url(r'^auto_updater/', auto_updater),
 	url(r'^password_edit_form/', password_edit_form),
+	url(r'^tech_pm_add/', tech_pm_add),
 
 	# ************************************************************************
 
@@ -782,6 +784,7 @@ urlpatterns = [
 	url(r'^hr_login_form/', hr_login_form),
 
 	url(r'^update7/', update7),
+	url(r'^update7_prev/', update7_prev),
 
 	# **************************************************************************
 
