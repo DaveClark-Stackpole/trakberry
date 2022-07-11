@@ -3952,7 +3952,10 @@ def cell_track_9341(request):
 		elif rate3>0:
 			cc='#EC7371'
 		else:
-			cc='#FF0400'
+			if pred1 == 0:
+				cc='#D5D5D5'
+			else:
+				cc='#FF0400'
 		color8.append(cc)
 		rate8.append(rate3)
 		machine8.append(machine2)
@@ -4140,7 +4143,10 @@ def cell_track_0455(request):
 		elif rate3>0:
 			cc='#EC7371'
 		else:
-			cc='#FF0400'
+			if pred1 == 0:
+				cc='#D5D5D5'
+			else:
+				cc='#FF0400'
 
 		# if machine2=='1800' or machine2=='1801' or machine2 =='1802': cc='#C8C8C8'
 		color8.append(cc)
@@ -4525,4 +4531,12 @@ def wip_update(request):
 
 def update7(request):
 	t=int(time.time())
+	return render(request,'test_update7.html',{'TCURR':t})	
+
+def update7_prev(request):
+	t=int(time.time())
+	addy1 = request.session['working_address']
+	addy1 = addy1 + '_prev'
+	request.session['working_address'] = addy1
+
 	return render(request,'test_update7.html',{'TCURR':t})	

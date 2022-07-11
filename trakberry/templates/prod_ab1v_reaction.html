@@ -33,7 +33,7 @@
 </style>
 
 <script>
-	function prod_10R_prev(){location.replace("{{request.session.local_toggle}}/update7")}
+	function prod_10R_prev(){location.replace("{{request.session.local_toggle}}/update7_prev")}
 	function prod_10R(){location.replace("{{request.session.local_toggle}}/update7")}
 </script>
 
@@ -247,17 +247,24 @@
           </tr>
         {% endfor %}
 
-
-
-
-
-
-
-
-
-
-
-
+		{% for i in request.session.totals_1529 %}
+          <tr>
+                  <td bgcolor="#ffffff"><center><b>50-0455(1529)</b></center></td>
+                  {% for ii in i %}
+                  <td bgcolor="#ffffff"><center>
+                      {{ii.3}}</font>
+                     </center></td>
+              {% endfor %}
+              {% for x in request.session.op_span_1529 %}
+                  {% if x.3 < request.session.goal_1529 %}
+                      <td  bgcolor="#ffffff" rowspan="{{x.2}}"><center><b><font style="color:rgb(180, 0, 0);">{{x.3}}</font></b></center></td>
+                  {% else %} 
+                      <td  bgcolor="#ffffff" rowspan="{{x.2}}"><center><b>{{x.3}}</b></center></td>
+                  {% endif %} 
+              {% endfor %}
+                  <td  bgcolor="#ffffff" rowspan="{{x.2}}"><center><b>{{request.session.goal_1529}}</b></center></td>
+          </tr>
+        {% endfor %}
 
 
 </table>

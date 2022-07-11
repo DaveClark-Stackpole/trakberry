@@ -192,7 +192,7 @@ def medium_production(request):
 	db.commit()
 
 
-	p = ['50-5401','50-5404','50-8670','50-5214','50-3214']
+	p = ['50-3632','50-1713','50-6729','50-6686','50-4900']
 	sql = "Select * From tkb_couldbe where part ='%s' or part='%s' or part='%s' or part='%s' or part='%s'"% (p[0],p[1],p[2],p[3],p[4])
 	cur.execute(sql)
 	tmp4 = cur.fetchall()
