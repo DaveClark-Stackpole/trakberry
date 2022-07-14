@@ -771,7 +771,7 @@ def maint_TV(request):
 			dummy=1
 
 
-	return render(request,"maint_TV.html",{'L1':data1,'L2':data2,'L3':data3,'L4':data4,'N':n,'M':M,'E':E,'wfp':wfp,'project':project,'techs':tech_tmp})
+	return render(request,"maint_TV.html",{'LList':LList,'L1':data1,'L2':data2,'L3':data3,'L4':data4,'N':n,'M':M,'E':E,'wfp':wfp,'project':project,'techs':tech_tmp})
 
 def maint(request):
 	net1(request)	# Sets the app to server or local

@@ -1,280 +1,193 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" >
 <head>
+  <meta charset="UTF-8">
+  <title>CodePen - Pure CSS Ticker (Horizontal)</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+<link rel="stylesheet" href="./style.css">
 
-<style type="text/css">
+<style>
+
 #full-screen-background-image {z-index: -999;min-height: 110%; min-width: 100%;width: 100%;height: 110%;position: fixed;top: ;	left: 0;}
-</style>
-<style type="text/css">
-    .mainset{color:black;text-align:center;float:left;width:100%}
-    .wrapper_main {background:chartreuse;width:90%;margin-left: 10px;}
-    .frame1 {color:black;text-align:center;float:left;width:24%;margin-left: 10px;}
-    .frame2a{color:black;text-align:center;background:rgb(202, 188, 83);float:left;width:32%;position:relative;left:5px;border-radius: 15px;margin-bottom: 5px;}
-    .frame2{color:black;text-align:center;background:rgb(83, 134, 202);float:left;width:32%;position:relative;left:5px;margin-bottom: 5px;}
-    .frame3 {color:black;text-align:center;background:rgb(61, 138, 64);float:left;width:32%;position:relative;left:10px;margin-bottom: 5px;}
-    .frame4 {color:black;text-align:center;float:left;width:98%;position:relative;left:5px;margin-bottom: 5px;margin-top: 15px;}
-    .frame5{color:black;text-align:center;background:rgb(168, 168, 168);float:right;width:40%}
-    .head1{color:black;text-align:center;border: .4px solid rgb(0, 0, 0);background:rgb(114, 159, 243);width:85%}
-    .head1_u{color:black;text-align:center;border: .4px solid rgb(0, 0, 0);background:rgb(226, 226, 226);width:100%}
-    .head2_u{color:black;text-align:center;float:left;font-size: 60%;border: .4px solid rgb(0, 0, 0);background: rgb(184, 167, 142);width:25%}
-    .body1_u{color:black;text-align:left;float: left;border: 1px solid rgb(0, 0, 0);width:25%}
-    .head2{color:black;text-align:center;float:left;font-size: 60%;border: .4px solid rgb(222, 231, 95);background: rgb(184, 167, 142);width:65%}
-    .body1{color:black;text-align:left;float: left;border: 1px solid rgb(0, 0, 0);width:85%}
-    .body2{color:black;text-align:left;float: left;border: 1px solid rgb(0, 0, 0);width:65%}
-    .body3{color:black;text-align:center;background:rgb(199, 187, 166);float:left;width:33%;border: .4px solid rgb(0, 0, 0)}
-    .body3h{color:black;text-align:center;background:rgb(187, 186, 184);float:left;width:33%;border: .4px solid rgb(0, 0, 0)}
-    .body3t{color:black;text-align:center;background:rgb(187, 186, 184);float:left;font-size:medium;width:99%;border: .4px solid rgb(0, 0, 0)}
 
-    .frameA {color:black;text-align:center;float:left;width:95%;margin-bottom: 5px;}
-    
-	body {
+
+	* {
+  box-sizing: border-box;
+}
+
+@-webkit-keyframes ticker {
+  0% {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    visibility: visible;
+  }
+  100% {
+    -webkit-transform: translate3d(-100%, 0, 0);
+    transform: translate3d(-100%, 0, 0);
+  }
+}
+@keyframes ticker {
+  0% {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    visibility: visible;
+  }
+  100% {
+    -webkit-transform: translate3d(-100%, 0, 0);
+    transform: translate3d(-100%, 0, 0);
+  }
+}
+.ticker-wrap {
+  position: fixed;
+  top: 23%;
+  width: 100%;
+  overflow: hidden;
+  height: 14rem;
+  padding-left: 100%;
+  box-sizing: content-box;
+}
+
+.ticker-wrap2 {
+  position: fixed;
+  top: 51%;
+  width: 100%;
+  overflow: hidden;
+  height: 14rem;
+  padding-left: 100%;
+  box-sizing: content-box;
+}
+
+
+
+.ticker-wrap .ticker {
+  display: inline-block;
+  height: 4rem;
+  line-height: 4rem;
+  white-space: nowrap;
+  padding-right: 100%;
+  box-sizing: content-box;
+  -webkit-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
+  -webkit-animation-timing-function: linear;
+  animation-timing-function: linear;
+  -webkit-animation-name: ticker;
+  animation-name: ticker;
+  -webkit-animation-duration: 35s;
+  animation-duration: 35s;
+}
+.ticker-wrap .ticker__item {
+  display: inline-block;
+  padding: 0 2rem;
+  padding-top: 4rem;
+  font-size: 6rem;
+  color: rgb(0, 0, 0);
+}
+
+.ticker-wrap2 .ticker {
+  display: inline-block;
+  height: 4rem;
+  line-height: 4rem;
+  white-space: nowrap;
+  padding-right: 100%;
+  box-sizing: content-box;
+  -webkit-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
+  -webkit-animation-timing-function: linear;
+  animation-timing-function: linear;
+  -webkit-animation-name: ticker;
+  animation-name: ticker;
+  -webkit-animation-duration: 140s;
+  animation-duration: 140s;
+}
+.ticker-wrap2 .ticker__item {
+  display: inline-block;
+  padding: 0 2rem;
+  padding-top: 4rem;
+  font-size: 6rem;
+  color: rgb(0, 0, 0);
+}
+
+
+
+body {
     -moz-transform: scale(0.8, 0.8); /* Moz-browsers */
     zoom: 0.8; /* Other non-webkit browsers */
     zoom: 80%; /* Webkit browsers */
 }
-
 </style>
-<style>   
-	#prodsum {
-		font-family: Arial, Helvetica, sans-serif;
-		border-collapse: collapse;
-		width: 100%;
-	}
-	#prodsum td, #prodsum th {
-		border: 1px solid rgb(136, 134, 134);
-		padding: 3px;
-	}
-	/* #prodsum tr:nth-child(even){background-color: #96dbf8;}
-	#prodsum tr:nth-child(odd){background-color: #45b4c6;} */
-	#prodsum tr:hover {background-color: #ddd;}
-	#prodsum th {
-		padding-top: 10px;
-		padding-bottom: 10px;
-		text-align: left;
-		background-color: rgb(68, 82, 91);
-		color: white;
-
-
-
-</style>
-
-  <title>Maint Jobs</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-	<script src="/static/bootstrap/js/1.11.3/jquery.min.js"></script>
-	<script src="/static/bootstrap/js/bootstrap.min.js"></script>
-	<link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
 </head>
-
-
 <body>
+
 <img alt="full screen background image" src="/static/media/back_maint.jpg" id="full-screen-background-image"/>
 
-<meta http-equiv="refresh" content="5; url={{request.session.local_toggle}}/maint_TV"/>
-
-<center>
-<font style="font-size: 75px; color:rgb(248, 246, 121); text-shadow: 1px 1px 2px rgb(100, 90, 90), 0 0 25px rgb(0, 0, 0), 0 0 5px rgb(253, 253, 253);">
-	MAINTENANCE
-</font>
-</center>
-
-<div class="wrapper_main">
-
-<div class="frame1">
-<br><br>
-<table id="prodsum">
-	{% for i in L1 %}
-    {% if i.3 == E %}
-	    {% if i.1|slice:"-3:" != wfp %}
-		    {% if i.1|slice:"-7:" != project %}
-			    <tr>
-				    <td style="background-color: rgb(252, 244, 136);border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;"><font color="#000000" size ="4" border="1">
-					{{i.0}} : {{ i.1 }}
-					</td> 
-			    </tr>	
-			    <tr>
-				    <td style="background-color: rgb(216, 213, 173);border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;height:30px;"><font color="#000000" size ="3" border="1"><b>
-					<center><a href="{{request.session.local_toggle}}/mcall/get/{{ i.2 }}" style="color: black">{{i.3}}</b></center></a>
-					</td>
-			    </tr><tr><td> <br></td></tr>
-		    {% else %}
-			    <tr>
-				    <td style="background-color: rgb(255, 184, 98);border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;"><font color="#000000" size ="4" border="1">
-					{{i.0}} : {{ i.1 }}
-					</td> 
-			    </tr>	
-			    <tr>
-				    <td style="background-color: rgb(192, 138, 74);border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;height:30px;"><font color="#000000" size ="3" border="1"><b>
-					<center><a href="{{request.session.local_toggle}}/mcall/get/{{ i.2 }}" style="color: black">{{i.3}}</b></center></a>
-					</td>
-			    </tr><tr><td><br> </td></tr>
-		    {% endif %}	 <!-- end if for Project If Statement -->
-	    {% endif %}	  <!-- end if for wfp If Statement -->
-
-    {% else %}
-	    <tr>
-			{% if i.1|slice:"-3:" != wfp %}
-			    {% if i.3 not in techs %}
-		            <td style="background-color: #999999;border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;"><font color="#000000" size ="4" border="1">{{i.0}} : {{ i.1}}     
-					</td></tr><tr>
-		            <td style="background-color: #c7c7c7;border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;"><font color="#000000" size ="3" border="1"><b>
-		            <center><a href="{{request.session.local_toggle}}/mcall/get/{{ i.2 }}" style="color: black">{{i.3}}</b></center></a>
-					</td><tr><td><br> </td></tr>
-		        {% endif %}
-		    {% endif %}
-				</tr>
-    {% endif %}
-{% endfor %}
-</table>
-</div> <!-- Frame 1 End-->
+<center><br><br><br>
+	<font style="font-size: 75px; color:rgb(255, 255, 255); text-shadow: 1px 1px 2px rgb(100, 90, 90), 0 0 25px rgb(0, 0, 0), 0 0 5px rgb(253, 253, 253);">
+		   
+	</font>
 
 
-<div class="frame1">
-	<br><br>
-	<table id="prodsum">
-		{% for i in L2 %}
-		{% if i.3 == E %}
-			{% if i.1|slice:"-3:" != wfp %}
-				{% if i.1|slice:"-7:" != project %}
-					<tr>
-						<td style="background-color: rgb(252, 244, 136);border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;"><font color="#000000" size ="4" border="1">
-						{{i.0}} : {{ i.1 }}
-						</td> 
-					</tr>	
-					<tr>
-						<td style="background-color: rgb(216, 213, 173);border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;height:30px;"><font color="#000000" size ="3" border="1"><b>
-						<center><a href="{{request.session.local_toggle}}/mcall/get/{{ i.2 }}" style="color: black">{{i.3}}</b></center></a>
-						</td>
-					</tr><tr><td> <br></td></tr>
-				{% else %}
-					<tr>
-						<td style="background-color: rgb(255, 184, 98);border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;"><font color="#000000" size ="4" border="1">
-						{{i.0}} : {{ i.1 }}
-						</td> 
-					</tr>	
-					<tr>
-						<td style="background-color: rgb(192, 138, 74);border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;height:30px;"><font color="#000000" size ="3" border="1"><b>
-						<center><a href="{{request.session.local_toggle}}/mcall/get/{{ i.2 }}" style="color: black">{{i.3}}</b></center></a>
-						</td>
-					</tr><tr><td><br> </td></tr>
-				{% endif %}	 <!-- end if for Project If Statement -->
-			{% endif %}	  <!-- end if for wfp If Statement -->
-	
-		{% else %}
-			<tr>
-				{% if i.1|slice:"-3:" != wfp %}
-					{% if i.3 not in techs %}
-						<td style="background-color: #999999;border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;"><font color="#000000" size ="4" border="1">{{i.0}} : {{ i.1}}     
-						</td></tr><tr>
-						<td style="background-color: #c7c7c7;border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;"><font color="#000000" size ="3" border="1"><b>
-						<center><a href="{{request.session.local_toggle}}/mcall/get/{{ i.2 }}" style="color: black">{{i.3}}</b></center></a>
-						</td><tr><td><br> </td></tr>
-					{% endif %}
-				{% endif %}
-					</tr>
-		{% endif %}
-	{% endfor %}
-	</table>
-	</div> <!-- Frame 1 End-->
+	<br><br><br>
+	<font style="font-size: 75px; color:rgb(229, 255, 79); text-shadow: 1px 1px 2px rgb(100, 90, 90), 0 0 25px rgb(0, 0, 0), 0 0 5px rgb(253, 253, 253);">
+		<u>Jobs</u>
+	</font>
 
-	<div class="frame1">
-		<br><br>
-		<table id="prodsum">
-			{% for i in L3 %}
-			{% if i.3 == E %}
-				{% if i.1|slice:"-3:" != wfp %}
-					{% if i.1|slice:"-7:" != project %}
-						<tr>
-							<td style="background-color: rgb(252, 244, 136);border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;"><font color="#000000" size ="4" border="1">
-							{{i.0}} : {{ i.1 }}
-							</td> 
-						</tr>	
-						<tr>
-							<td style="background-color: rgb(216, 213, 173);border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;height:30px;"><font color="#000000" size ="3" border="1"><b>
-							<center><a href="{{request.session.local_toggle}}/mcall/get/{{ i.2 }}" style="color: black">{{i.3}}</b></center></a>
-							</td>
-						</tr><tr><td> <br></td></tr>
-					{% else %}
-						<tr>
-							<td style="background-color: rgb(255, 184, 98);border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;"><font color="#000000" size ="4" border="1">
-							{{i.0}} : {{ i.1 }}
-							</td> 
-						</tr>	
-						<tr>
-							<td style="background-color: rgb(192, 138, 74);border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;height:30px;"><font color="#000000" size ="3" border="1"><b>
-							<center><a href="{{request.session.local_toggle}}/mcall/get/{{ i.2 }}" style="color: black">{{i.3}}</b></center></a>
-							</td>
-						</tr><tr><td><br> </td></tr>
-					{% endif %}	 <!-- end if for Project If Statement -->
-				{% endif %}	  <!-- end if for wfp If Statement -->
-		
-			{% else %}
-				<tr>
-					{% if i.1|slice:"-3:" != wfp %}
-						{% if i.3 not in techs %}
-							<td style="background-color: #999999;border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;"><font color="#000000" size ="4" border="1">{{i.0}} : {{ i.1}}     
-							</td></tr><tr>
-							<td style="background-color: #c7c7c7;border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;"><font color="#000000" size ="3" border="1"><b>
-							<center><a href="{{request.session.local_toggle}}/mcall/get/{{ i.2 }}" style="color: black">{{i.3}}</b></center></a>
-							</td><tr><td><br> </td></tr>
-						{% endif %}
-					{% endif %}
-						</tr>
+
+
+	<br><br><br><br><br><br><br><br><br><br><br><br><br>
+	<font style="font-size: 75px; color:rgb(255, 190, 106); text-shadow: 1px 1px 2px rgb(100, 90, 90), 0 0 25px rgb(0, 0, 0), 0 0 5px rgb(253, 253, 253);">
+		<u>Projects</u>
+	</font>
+
+<br>
+	</center>
+
+<div class="ticker-wrap">
+<div class="ticker">
+{% for i in LList %}
+{% if i.1|slice:"-7:" != project %}
+	{% if i.3 == E %}
+  		<div class="ticker__item"style="background-color: rgb(252, 244, 136);border-radius: 10px;border-style: solid;border-width: 1px;border-color: #000000;padding:15px;box-shadow: 5px 10px;"><font color="#000000" size ="14" border="1">
+		Priority: {{i.4}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Need Maintenance <br> {{i.0}} : {{ i.1 }}</div>
+  		<div class="ticker__item">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+	{% else %}
+		{% if i.1|slice:"-3:" != wfp %}
+			{% if i.3 not in techs %}
+				<div class="ticker__item"style="background-color: #999999;border-radius: 10px;border-style: solid;border-width: 1px;border-color: #000000;padding:15px;box-shadow: 5px 10px;"><font color="#000000" size ="14" border="1">
+				Priority: {{i.4}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{i.3}} <br> {{i.0}} : {{ i.1 }}</div>
+				<div class="ticker__item">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+
 			{% endif %}
-		{% endfor %}
-		</table>
-		</div> <!-- Frame 1 End-->
+		{% endif %}
+	{% endif %}
+{% endif %}
+{% endfor %} 
+</div>
+</div>
 
-		<div class="frame1">
-			<br><br>
-			<table id="prodsum">
-				{% for i in L4 %}
-				{% if i.3 == E %}
-					{% if i.1|slice:"-3:" != wfp %}
-						{% if i.1|slice:"-7:" != project %}
-							<tr>
-								<td style="background-color: rgb(252, 244, 136);border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;"><font color="#000000" size ="4" border="1">
-								{{i.0}} : {{ i.1 }}
-								</td> 
-							</tr>	
-							<tr>
-								<td style="background-color: rgb(216, 213, 173);border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;height:30px;"><font color="#000000" size ="3" border="1"><b>
-								<center><a href="{{request.session.local_toggle}}/mcall/get/{{ i.2 }}" style="color: black">{{i.3}}</b></center></a>
-								</td>
-							</tr><tr><td> <br></td></tr>
-						{% else %}
-							<tr>
-								<td style="background-color: rgb(255, 184, 98);border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;"><font color="#000000" size ="4" border="1">
-								{{i.0}} : {{ i.1 }}
-								</td> 
-							</tr>	
-							<tr>
-								<td style="background-color: rgb(192, 138, 74);border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;height:30px;"><font color="#000000" size ="3" border="1"><b>
-								<center><a href="{{request.session.local_toggle}}/mcall/get/{{ i.2 }}" style="color: black">{{i.3}}</b></center></a>
-								</td>
-							</tr><tr><td><br> </td></tr>
-						{% endif %}	 <!-- end if for Project If Statement -->
-					{% endif %}	  <!-- end if for wfp If Statement -->
-			
-				{% else %}
-					<tr>
-						{% if i.1|slice:"-3:" != wfp %}
-							{% if i.3 not in techs %}
-								<td style="background-color: #999999;border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;"><font color="#000000" size ="4" border="1">{{i.0}} : {{ i.1}}     
-								</td></tr><tr>
-								<td style="background-color: #c7c7c7;border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;"><font color="#000000" size ="3" border="1"><b>
-								<center><a href="{{request.session.local_toggle}}/mcall/get/{{ i.2 }}" style="color: black">{{i.3}}</b></center></a>
-								</td><tr><td><br> </td></tr>
-							{% endif %}
-						{% endif %}
-							</tr>
+<div class="ticker-wrap2">
+	<div class="ticker">
+		
+	{% for i in LList %}
+	{% if i.1|slice:"-7:" = project %}
+		{% if i.3 == E %}
+			  <div class="ticker__item"style="background-color:rgb(255, 184, 98);border-radius: 10px;border-style: solid;border-width: 1px;border-color: #000000;padding:15px;box-shadow: 5px 10px;"><font color="#000000" size ="14" border="1">
+			Priority: {{i.4}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Need Maintenance <br> {{i.0}} : {{ i.1 }}</div>
+			  <div class="ticker__item">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+		{% else %}
+			{% if i.1|slice:"-3:" != wfp %}
+				{% if i.3 not in techs %}
+					<div class="ticker__item"style="background-color: #999999;border-radius: 10px;border-style: solid;border-width: 1px;border-color: #000000;padding:15px;box-shadow: 5px 10px;"><font color="#000000" size ="14" border="1">
+					Priority: {{i.4}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{i.3}} <br> {{i.0}} : {{ i.1 }}</div>
+					<div class="ticker__item">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+	
 				{% endif %}
-			{% endfor %}
-			</table>
-			</div> <!-- Frame 1 End-->
+			{% endif %}
+		{% endif %}
+	{% endif %}
+	{% endfor %} 
+	</div>
+	</div>
 
-</div> <!-- Wrapper End-->
 
-
-
-</body></html>
+</body>
+</html>
