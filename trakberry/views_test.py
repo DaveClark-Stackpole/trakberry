@@ -4,6 +4,7 @@ from django.http import HttpResponseRedirect
 from views_db import db_open, db_set
 from views_vacation import vacation_set_current3
 from views_mod1 import find_current_date
+
 #from views2 import main_A
 from trakberry.forms import login_Form,layered_entry_Form
 from datetime import datetime
@@ -14,6 +15,7 @@ import smtplib
 import datetime as dt
 from smtplib import SMTP
 from django.template.loader import render_to_string  #To render html content to string
+
 
 	
 def email_test_2 (request):
@@ -98,7 +100,11 @@ def email_test_1(request):
 def place_test(request):
 	for key in request.session.keys():
 		del request.session[key]
-	return render(request,'master.html')
+	request.session["local_switch"] = 0
+	request.session["local_toggle"] = "/trakberry"
+	return render(request, "reset_done8.html")
+
+
 
 	 
 def vacation_set_current():
