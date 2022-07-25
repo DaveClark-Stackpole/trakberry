@@ -301,6 +301,7 @@ def gf6_1713(request):
 	week_time_todate = t - week_start
 	goal_todate = int((goal / float(request.session['WL'])) * week_time_todate)  # Current Goal to date
 	if goal_todate > goal: goal_todate = goal
+	if request.session['WL'] == 77: goal_todate = goal
 	pdate_start = stamp_pdate2(week_start)
 	pdate_week.append(pdate_start)
 
@@ -439,11 +440,11 @@ def gf6_3627(request):
 	week_start = request.session['week_start7']
 	week_end = request.session['week_end7']
 	t = request.session['t']
-
+	test2 = request.session['WL']
 	week_time_todate = t - week_start
 	goal_todate = int((goal / float(request.session['WL'])) * week_time_todate)  # Current Goal to date
 	if goal_todate > goal: goal_todate = goal
-
+	if request.session['WL'] == 77: goal_todate = goal
 	pdate_start = stamp_pdate2(week_start)
 	pdate_week.append(pdate_start)
 
@@ -587,6 +588,7 @@ def gf6_1731(request):
 	week_time_todate = t - week_start
 	goal_todate = int((goal / float(request.session['WL'])) * week_time_todate)  # Current Goal to date
 	if goal_todate > goal: goal_todate = goal
+	if request.session['WL'] == 77: goal_todate = goal
 	pdate_start = stamp_pdate2(week_start)
 	pdate_week.append(pdate_start)
 	for i in range(1,7):
@@ -713,6 +715,7 @@ def gf6_3632(request):
 	week_time_todate = t - week_start
 	goal_todate = int((goal / float(request.session['WL'])) * week_time_todate)  # Current Goal to date
 	if goal_todate > goal: goal_todate = goal
+	if request.session['WL'] == 77: goal_todate = goal
 	pdate_start = stamp_pdate2(week_start)
 	pdate_week.append(pdate_start)
 	for i in range(1,7):
@@ -832,6 +835,7 @@ def ab1v_8670(request):
 	week_time_todate = t - week_start
 	goal_todate = int((goal / float(request.session['WL'])) * week_time_todate)  # Current Goal to date
 	if goal_todate > goal: goal_todate = goal
+	if request.session['WL'] == 77: goal_todate = goal
 	pdate_start = stamp_pdate(week_start)
 	pdate_week.append(pdate_start)
 	for i in range(1,7):
@@ -971,6 +975,7 @@ def ab1v_5401(request):
 	week_time_todate = t - week_start
 	goal_todate = int((goal / float(request.session['WL'])) * week_time_todate)  # Current Goal to date
 	if goal_todate > goal: goal_todate = goal
+	if request.session['WL'] == 77: goal_todate = goal
 	pdate_start = stamp_pdate(week_start)
 	pdate_week.append(pdate_start)
 	for i in range(1,7):
@@ -1109,6 +1114,7 @@ def ab1v_5404(request):
 	week_time_todate = t - week_start
 	goal_todate = int((goal / float(request.session['WL'])) * week_time_todate)  # Current Goal to date
 	if goal_todate > goal: goal_todate = goal
+	if request.session['WL'] == 77: goal_todate = goal
 	pdate_start = stamp_pdate(week_start)
 	pdate_week.append(pdate_start)
 	for i in range(1,7):
@@ -1394,6 +1400,7 @@ def prod_4748_live(request):
 	week_time_todate = t - week_start
 	goal_todate = int((goal / float(request.session['WL'])) * week_time_todate)  # Current Goal to date
 	if goal_todate > goal: goal_todate = goal
+	if request.session['WL'] == 77: goal_todate = goal
 	pdate_start = stamp_pdate(week_start)
 	pdate_week.append(pdate_start)
 	for i in range(1,7):
@@ -1532,6 +1539,7 @@ def prod_4865a(request):
 	week_time_todate = t - week_start
 	goal_todate = int((goal / float(request.session['WL'])) * week_time_todate)  # Current Goal to date
 	if goal_todate > goal: goal_todate = goal
+	if request.session['WL'] == 77: goal_todate = goal
 	pdate_start = stamp_pdate(week_start)
 	pdate_week.append(pdate_start)
 	for i in range(1,7):
@@ -1688,6 +1696,7 @@ def prod_4865_LIVE(request):
 	week_time_todate = t - week_start
 	goal_todate = int((goal / float(request.session['WL'])) * week_time_todate)  # Current Goal to date
 	if goal_todate > goal: goal_todate = goal
+	if request.session['WL'] == 77: goal_todate = goal
 
 	pdate_start = stamp_pdate2(week_start)
 	pdate_week.append(pdate_start)
@@ -1972,6 +1981,7 @@ def prod_4900(request):
 	week_time_todate = t - week_start
 	goal_todate = int((goal / float(request.session['WL'])) * week_time_todate)  # Current Goal to date
 	if goal_todate > goal: goal_todate = goal
+	if request.session['WL'] == 77: goal_todate = goal
 	pdate_start = stamp_pdate(week_start)
 	pdate_week.append(pdate_start)
 	for i in range(1,7):
@@ -2109,6 +2119,7 @@ def prod_6729(request):
 	week_time_todate = t - week_start
 	goal_todate = int((goal / float(request.session['WL'])) * week_time_todate)  # Current Goal to date
 	if goal_todate > goal: goal_todate = goal
+	if request.session['WL'] == 77: goal_todate = goal
 	pdate_start = stamp_pdate(week_start)
 	pdate_week.append(pdate_start)
 	for i in range(1,7):
@@ -2408,8 +2419,12 @@ def prod_9341(request):
 	week_end = request.session['week_end7']
 	t = request.session['t']
 	week_time_todate = t - week_start
+
+	
 	goal_todate = int((goal / float(request.session['WL'])) * week_time_todate)  # Current Goal to date
+
 	if goal_todate > goal: goal_todate = goal
+	if request.session['WL'] == 77: goal_todate = goal
 	pdate_start = stamp_pdate(week_start)
 	pdate_week.append(pdate_start)
 	for i in range(1,7):
@@ -2547,6 +2562,7 @@ def prod_0455(request):
 	week_time_todate = t - week_start
 	goal_todate = int((goal / float(request.session['WL'])) * week_time_todate)  # Current Goal to date
 	if goal_todate > goal: goal_todate = goal
+	if request.session['WL'] == 77: goal_todate = goal
 	pdate_start = stamp_pdate(week_start)
 	pdate_week.append(pdate_start)
 	for i in range(1,7):
@@ -2683,6 +2699,7 @@ def prod_3050(request):
 	week_time_todate = t - week_start
 	goal_todate = int((goal / float(request.session['WL'])) * week_time_todate)  # Current Goal to date
 	if goal_todate > goal: goal_todate = goal
+	if request.session['WL'] == 77: goal_todate = goal
 	pdate_start = stamp_pdate(week_start)
 	pdate_week.append(pdate_start)
 	for i in range(1,7):
@@ -2818,6 +2835,7 @@ def prod_1467(request):
 	week_time_todate = t - week_start
 	goal_todate = int((goal / float(request.session['WL'])) * week_time_todate)  # Current Goal to date
 	if goal_todate > goal: goal_todate = goal
+	if request.session['WL'] == 77: goal_todate = goal
 	pdate_start = stamp_pdate(week_start)
 	pdate_week.append(pdate_start)
 	for i in range(1,7):
@@ -2941,6 +2959,7 @@ def prod_10R(request):
 	return render(request, "prod_10R.html")    
 
 def prod_10R_prev(request):
+	request.session['WL'] = 77
 	request.session['working_address'] = 'prod_10R'
 	t=request.session['week_start7']
 	t=t-604800
