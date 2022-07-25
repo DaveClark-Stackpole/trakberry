@@ -3790,9 +3790,9 @@ def cell_track_9341(request):
 	
 
 	# This section is temporary as no grinding *************************************
-	wip_prod[80] = wip_prod[50]
-	wip_prod[70] = wip_prod[50]
-	wip_prod[60] = wip_prod[50]
+	# wip_prod[80] = wip_prod[50]
+	# wip_prod[70] = wip_prod[50]
+	# wip_prod[60] = wip_prod[50]
 	
 	# ******************************************************************************
 
@@ -3856,8 +3856,9 @@ def cell_track_9341(request):
 		rate2 = (rate2 / float(28800)) * 300
 
 
+		
 		# If 1510 going take out below conditional statement
-		if machine2 == '1541':
+		if machine2 == '1888':
 			machine22 = '1531'
 			list2 = filter(lambda x:x[4]>=t and x[1]==machine22,tmpX)  # Filter list to get 5 min sum
 			cnt = len(list2)
