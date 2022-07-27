@@ -64,6 +64,9 @@ def retrieve(request):
 
 def master(request):
 	return render(request, "master.html")
+	
+def master2(request):
+	return render(request, "master2.html")
 
 def tech_pm_add(request):
 	db, cursor = db_set(request)
