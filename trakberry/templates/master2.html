@@ -98,10 +98,12 @@
 										<li><a href="{{request.session.local_toggle}}/maint_mgmt_auto">Maintenance Manager</a></li>
 										<li><a href="{{request.session.local_toggle}}/mgmt">Production Manager</a></li>
 										<li><a href="{{request.session.local_toggle}}/scrap_mgmt">Quality Manager</a></li>
+										<li><a href="{{request.session.local_toggle}}/hr">HR Manager</a></li>
 										<li class="divider"></li> 
 										<li><a href="{{request.session.local_toggle}}/tech_logout">Tech App</a></li>  
 										<li><a href="{{request.session.local_toggle}}/maint">Maintenance App</a></li>  
 										<li><a href="{{request.session.local_toggle}}/maint_TV">Maintenance TV</a></li>  
+										<li><a href="{{request.session.local_toggle}}/forklift">Forklift App</a></li>  
 										<li><a href="{{request.session.local_toggle}}/barcode_initial_10R">10R80 Barcode Scanner</a></li>  
 										<li><a href="{{request.session.local_toggle}}/barcode_initial">AB1V Barcode Scanner</a></li>  
 										<li class="divider"></li> 
@@ -117,6 +119,13 @@
 
 								<li><a href="#" class="dropdown-toggle" data-toggle="dropdown"><font style="color:rgb(169, 170, 119);"><span class="glyphicon glyphicon-stats"></span> Utilities<b class="caret"></font></b></a>
 									<ul class="dropdown-menu multi-level"  style="background-color:rgb(202, 230, 127);" >
+
+										<li><a href="{{request.session.local_toggle}}/tech_PM_assign">Assign Tech PM</a></li>
+										<li><a href="{{request.session.local_toggle}}/tech_PM_master_complete">Complete Tech PM</a></li>
+										<li><a href="{{request.session.local_toggle}}/tech_pm_summary">Summary of Tech PM's</a></li>
+										<li><a href="{{request.session.local_toggle}}/tech_epv_assign">Assign Tech EPV</a></li>
+										<li><a href="{{request.session.local_toggle}}/tech_epv_week_assign">Assign Tech EPV for the Week</a></li>
+
 										<li class="dropdown-submenu">
 											<a href="#" class="dropdown-toggle" data-toggle="dropdown">Production Verification</a>
 											<ul class="dropdown-menu" style="background-color:rgb(202,230,127);">
@@ -133,19 +142,26 @@
 												</li>
 											</ul>
 										</li>
-										<li><a href="{{request.session.local_toggle}}/tech_PM_assign">Assign Tech PM</a></li>
-										<li><a href="{{request.session.local_toggle}}/tech_pm_summary">Summary of Tech PM's</a></li>
-										<li><a href="{{request.session.local_toggle}}/tech_epv_assign">Assign Tech EPV</a></li>
-										<li><a href="{{request.session.local_toggle}}/tech_epv_week_assign">Assign Tech EPV for the Week</a></li>
+										<li><a href="{{request.session.local_toggle}}/mgmt_priorities">Priorities</a></li>
 										<li><a href="{{request.session.local_toggle}}/tracking_10R80">Track 10R80</a></li>
 										<li><a href="{{request.session.local_toggle}}/tracking">TRACK</a></li>
 										<li><a href="{{request.session.local_toggle}}/training_matrix3">Matrix</a></li>
+										<li><a href="{{request.session.local_toggle}}/place_test">Clear All Session Variables</a></li>
+										<li><a href="/switch_local">Switch to Local Deployment</a></li>
+										<li><a href="/trakberry/switch_net">Switch to Server Deployment</a></li>
+										<li><a href="{{request.session.local_toggle}}/medium_production">Generate Medium Production</a></li> 
+										<li><a href="{{request.session.local_toggle}}/track_email">Track Email</a></li> 
+										<li><a href="{{request.session.local_toggle}}/cell_track_9341_mobile">9341 Cell MOBILE</a></li>  
 										<li><a href="{{request.session.local_toggle}}/cell_track_9341">9341 Cell</a></li>  
+										<li><a href="{{request.session.local_toggle}}/wip_update">wip_update</a></li>  
 										<li><a href="{{request.session.local_toggle}}/gf6_reaction">gf6_reaction</a></li> 
 										<li><a href="{{request.session.local_toggle}}/gf6_input">gf6_input</a></li> 
 										<li><a href="{{request.session.local_toggle}}/prod_10R_initial">Week Production</a></li> 
 										<li><a href="{{request.session.local_toggle}}/prod_ab1v">Ab1V Production</a></li> 
+										<li><a href="{{request.session.local_toggle}}/test_email_7">test_email_7</a></li>  
+										<li><a href="{{request.session.local_toggle}}/track_single">track_single</a></li>  
 										<li><a href="{{request.session.local_toggle}}/prod_ab1v_reaction">track_1703 / 1704</a></li>  
+										<li><a href="{{request.session.local_toggle}}/tech_pm_add">Tech PM Add</a></li>  
 									</ul>  
 								</li>
 
