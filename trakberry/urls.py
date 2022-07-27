@@ -37,7 +37,7 @@ from mod_test import test_mode
 from views_global_mods import test_machine_rate
 from views_vacation import vacation_temp, vacation_backup, vacation_purge, vacation_purge_delete, vacation_rebuild,vacation_restore, message_create
 from views_vacation import scrap_backup,scrap_restore
-from views_admin import retrieve
+from views_admin import retrieve,master2
 from views_db import db_select
 from views_test import place_test, email_test_1, email_test_2
 from views_mod1 import table_copy
@@ -691,6 +691,7 @@ urlpatterns = [
 
 	# **************  Admin Section ***************************************
 	url(r'^master/', master),
+	url(r'^master2/', master2),
 	url(r'^excel_dump/', excel_dump),
 	url(r'^excel_scrap_dump/', excel_scrap_dump),
 	url(r'^auto_updater/', auto_updater),
