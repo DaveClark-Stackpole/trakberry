@@ -538,7 +538,10 @@ def supervisor_down(request):
 			nm=''
 		if len(nm)<2:
 			nm = request.session['login_tech']
+
+		# Scott Brownlee Bug Fix  nice try Scott
 		if nm == 'Dave Clark': nm ='Scott Brownlee'
+		
 		problem = problem + ' (entered by '+nm+')'
 		# ***********************************************
 

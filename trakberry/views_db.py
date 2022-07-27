@@ -10,7 +10,7 @@ import MySQLdb
 def net1(request):
 	request.session["local_switch"] = 0
 	request.session["local_toggle"] = "/trakberry"
-	# ###this
+	# ###thisdave
 	# request.session["local_switch"] = 1
 	# request.session["local_toggle"] = ""
 	return
