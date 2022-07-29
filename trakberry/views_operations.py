@@ -1066,6 +1066,8 @@ def ab1v_5401(request):
 
 def ab1v_5404(request):
 	prt7 = '50-5404'
+	prt8 = prt7[-4:]
+	
 	db, cur = db_set(request) 
 	st1 = request.session['week_start7']
 	fi1 = request.session['week_end7'] + 172800
@@ -1125,7 +1127,59 @@ def ab1v_5404(request):
 
 
 	# Select all reactions in asset list for date range
-	sql = "SELECT * FROM GFxPRoduction WHERE TimeStamp >= '%s' and TimeStamp <= '%s' and Machine = '%s' and Part = '%s'" %(week_start,fi1,asset[0],part[0])
+
+
+
+	# OLD METHOD
+	# sql = "SELECT * FROM GFxPRoduction WHERE TimeStamp >= '%s' and TimeStamp <= '%s' and Machine = '%s' and Part = '%s'" %(week_start,fi1,asset[0],part[0])
+	# cur.execute(sql)
+	# tmp = cur.fetchall()
+	# t1 = []
+	# t2 = []
+	# for i in tmp:
+	# 	t1=[]
+	# 	t1.append(i[0])
+	# 	t1.append(str(i[1]))
+	# 	t1.append(i[2])
+	# 	t1.append(i[3])
+	# 	t1.append(i[4])
+	# 	t2.append(t1)
+	# tot2 = []
+	# tot3 = []
+
+	# for i in asset:
+	# 	op4 = filter(lambda c:c[0]==i,operation_totals)
+	# 	op5 = op4[0][1]  # Current operation
+	# 	tot2 =[]
+
+	# 	st = week_start
+	# 	ctr = 0
+
+	# 	for j in pdate_week:
+	# 		for k in shift:
+	# 			ctr = ctr + 1
+	# 			fi = st + 28800
+	# 			tot =[]
+	# 			tot.append(i)
+	# 			tot.append(j)
+	# 			tot.append(k)
+	# 			a3 = filter(lambda c:c[4]>st and c[4]<fi,t2)  
+	# 			sum1 = len(a3)
+
+	# 			a33 = sum1
+	# 			op[op5] = op[op5] + sum1
+
+
+	# 			tot.append(a33)
+	# 			tot2.append(tot)
+	# 			# if ctr > 2:
+	# 			# 	r=3/0
+	# 			st = st + 28800
+	# 	tot3.append(tot2)
+	# color_used = color2
+
+	sql = "SELECT * from barcode where scrap >= '%s' and scrap <= '%s' and RIGHT(asset_num,4) = '%s'" % (week_start,week_end,prt8)
+	# sql = "SELECT * FROM GFxPRoduction WHERE TimeStamp >= '%s' and TimeStamp <= '%s' and Machine = '%s'" %(week_start,week_end,asset[0])
 	cur.execute(sql)
 	tmp = cur.fetchall()
 	t1 = []
@@ -1133,22 +1187,19 @@ def ab1v_5404(request):
 	for i in tmp:
 		t1=[]
 		t1.append(i[0])
-		t1.append(str(i[1]))
+		t1.append('GP12')
+		t1.append(prt8)
+		t1.append(i[5])
 		t1.append(i[2])
-		t1.append(i[3])
-		t1.append(i[4])
 		t2.append(t1)
 	tot2 = []
 	tot3 = []
-
 	for i in asset:
 		op4 = filter(lambda c:c[0]==i,operation_totals)
 		op5 = op4[0][1]  # Current operation
 		tot2 =[]
-
 		st = week_start
 		ctr = 0
-
 		for j in pdate_week:
 			for k in shift:
 				ctr = ctr + 1
@@ -1159,20 +1210,14 @@ def ab1v_5404(request):
 				tot.append(k)
 				a3 = filter(lambda c:c[4]>st and c[4]<fi,t2)  
 				sum1 = len(a3)
-
 				a33 = sum1
-				op[op5] = op[op5] + sum1
-
-
+				op[op5] = op[op5] + a33
 				tot.append(a33)
 				tot2.append(tot)
 				# if ctr > 2:
 				# 	r=3/0
 				st = st + 28800
-
 		tot3.append(tot2)
-
-
 	color_used = color2
 
 
@@ -3880,6 +3925,10 @@ def prod_ab1v_5404(request):
 		pdate1 = stamp_pdate(stamp1)
 		pdate_week.append(pdate1) # This is the tuple of days in the week to cycle through
 	# Select all reactions in asset list for date range
+
+
+
+
 	sql = "SELECT * from barcode where scrap >= '%s' and scrap <= '%s' and RIGHT(asset_num,4) = '%s'" % (week_start,week_end,prt8)
 	# sql = "SELECT * FROM GFxPRoduction WHERE TimeStamp >= '%s' and TimeStamp <= '%s' and Machine = '%s'" %(week_start,week_end,asset[0])
 	cur.execute(sql)
@@ -3902,7 +3951,6 @@ def prod_ab1v_5404(request):
 		tot2 =[]
 		st = week_start
 		ctr = 0
-
 		for j in pdate_week:
 			for k in shift:
 				ctr = ctr + 1
@@ -3914,9 +3962,7 @@ def prod_ab1v_5404(request):
 				a3 = filter(lambda c:c[4]>st and c[4]<fi,t2)  
 				sum1 = len(a3)
 				a33 = sum1
-
 				op[op5] = op[op5] + a33
-
 				tot.append(a33)
 				tot2.append(tot)
 				# if ctr > 2:
@@ -3924,6 +3970,12 @@ def prod_ab1v_5404(request):
 				st = st + 28800
 		tot3.append(tot2)
 	color_used = color2
+
+
+
+
+
+
 	for i in operation_totals:
 		i.append(op[i[1]])
 		if i[2] != 0:
