@@ -1190,14 +1190,12 @@ def kiosk_epv_entry(request):
 
 # Write kiosk entries using varn
 def kiosk_production_write(request):
-
 	# Change Asset
 	old_assets=['349s','344s','341s','342s','343s']  # Old Non Relavent
 	new_assets=['1516','344','341','342','343'] # Want changed to
 	varn = request.session['varn']
 	db, cur = db_set(request)
 	for i in varn:
-	
 		try:
 			asset8 = str(i[0])
 			dummy = i[1]
@@ -1208,9 +1206,6 @@ def kiosk_production_write(request):
 						asset8 = new_assets[ctr]
 						break
 					ctr = ctr + 1
-			
-
-
 			cur.execute('''INSERT INTO sc_production1(asset_num,partno,actual_produced,shift_hours_length,down_time,comments,shift,pdate,machine,scrap,More_than_2_percent,total,target,planned_downtime_min_forshift,sheet_id,Updated,low_production,manual_sent,kiosk_id,tpm) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)''', (asset8,i[1],i[2],i[3],i[4],i[5],i[6],i[7],i[8],i[9],i[10],i[11],i[12],i[13],i[14],i[15],i[16],i[17],i[18],i[19]))
 			db.commit()
 		except:
