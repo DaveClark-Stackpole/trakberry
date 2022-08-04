@@ -3864,15 +3864,15 @@ def cell_track_9341(request):
 			cnt = len(list2)
 			list2 = filter(lambda x:x[4]>=start1 and x[1]==machine22,tmpX)  # Filter list to get 5 min sum
 			cnt33 = len(list2)
-		elif machine2 == '1510':  # While running manually 
-			machine22 = '1527'
-			machine23 = '1513'
-			list2 = filter(lambda x:x[4]>=t and x[1]==machine22,tmpX)  # Filter list to get 5 min sum
-			list3 = filter(lambda x:x[4]>=t and x[1]==machine23,tmpX)  # Filter list to get 5 min sum
-			cnt = len(list3) - len(list2)
-			list2 = filter(lambda x:x[4]>=start1 and x[1]==machine22,tmpX)  # Filter list to get 5 min sum
-			list3 = filter(lambda x:x[4]>=start1 and x[1]==machine23,tmpX)  # Filter list to get 5 min sum
-			cnt33 = len(list3) - len(list2)
+		# elif machine2 == '1510':  # While running manually 
+		# 	machine22 = '1527'
+		# 	machine23 = '1513'
+		# 	list2 = filter(lambda x:x[4]>=t and x[1]==machine22,tmpX)  # Filter list to get 5 min sum
+		# 	list3 = filter(lambda x:x[4]>=t and x[1]==machine23,tmpX)  # Filter list to get 5 min sum
+		# 	cnt = len(list3) - len(list2)
+		# 	list2 = filter(lambda x:x[4]>=start1 and x[1]==machine22,tmpX)  # Filter list to get 5 min sum
+		# 	list3 = filter(lambda x:x[4]>=start1 and x[1]==machine23,tmpX)  # Filter list to get 5 min sum
+		# 	cnt33 = len(list3) - len(list2)
 
 	
 
