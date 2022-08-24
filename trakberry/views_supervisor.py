@@ -604,9 +604,9 @@ def supervisor_down(request):
 		else:
 			side1 = '0'
 
-		tpriority = ['859','263','262','333','332','992']
+		tpriority = ['271','277','273','278','277','272']
 		if asset4 in tpriority:
-			priority = 5
+			priority = 1
 			
 		try:
 			cur.execute('''INSERT INTO pr_downtime1(machinenum,problem,priority,whoisonit,called4helptime,side) VALUES(%s,%s,%s,%s,%s,%s)''', (asset5,problem,priority,whoisonit,t,side1))

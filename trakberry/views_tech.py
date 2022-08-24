@@ -1,3 +1,4 @@
+from socket import AF_APPLETALK
 from django.shortcuts import render
 from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
@@ -10,8 +11,10 @@ from views_supervisor import supervisor_tech_call
 import MySQLdb
 import time
 import datetime
+import calendar
 from views_routes import direction
 import smtplib
+
 from smtplib import SMTP
 from django.template.loader import render_to_string  #To render html content to string
 from trakberry.views_vacation import vacation_temp, vacation_set_current, vacation_set_current2,vacation_set_current55
@@ -1306,14 +1309,27 @@ def tech_history2(request):
 		request.session["machine_search"] = machine
 		db, cur = db_set(request) 
 		if len(machine) == 3:
-			sql = "SELECT * FROM pr_downtime1 where LEFT(machinenum,3) = '%s' ORDER BY called4helptime DESC limit 20" %(machine)
+			sql = "SELECT * FROM pr_downtime1 where LEFT(machinenum,3) = '%s' ORDER BY called4helptime DESC limit 60" %(machine)
 		else:
-			sql = "SELECT * FROM pr_downtime1 where LEFT(machinenum,4) = '%s' ORDER BY called4helptime DESC limit 20" %(machine)
+			sql = "SELECT * FROM pr_downtime1 where LEFT(machinenum,4) = '%s' ORDER BY called4helptime DESC limit 60" %(machine)
 		cur.execute(sql)
 		tmp = cur.fetchall()
 		db.close
+		a=[]
+		aa=[]
+		for i in tmp:
+			a=[]
+			timestamp1 = calendar.timegm(i[2].timetuple())
+			timestamp2 = calendar.timegm(i[7].timetuple())
+			b=timestamp2 - timestamp1
+			for x in i:
+				a.append(x)
+			a.append(b)
+			aa.append(a)
+
+
 		request.session["tech_display"] = 0
-		return render(request,"tech_search_display2.html",{'machine':tmp})
+		return render(request,"tech_search_display2.html",{'machine':aa})
 		
 	else:
 		
