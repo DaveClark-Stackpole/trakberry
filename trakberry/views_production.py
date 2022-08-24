@@ -708,8 +708,9 @@ def track_area(request):
 	db, cur = db_set(request)
 
 
+	aql = "SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (u,t,prt,asset1,asset2,asset3,asset4)
 
-	aql = "SELECT COUNT(*) FROM track_data WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (u,t,prt,asset1,asset2,asset3,asset4)
+	# aql = "SELECT COUNT(*) FROM track_data WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and (Machine = '%s' or Machine = '%s' or Machine = '%s' or Machine = '%s')" % (u,t,prt,asset1,asset2,asset3,asset4)
 	cur.execute(aql)
 	tmp2 = cur.fetchall()
 	tmp3 = tmp2[0]
@@ -1660,21 +1661,21 @@ def chart2_1467br(request):
 		return render(request, "redirect_tracking.html")
 def chart1_3050(request):
 		request.session['area1'] = '50-3050 Inspection'
-		request.session['part_area1'] = '50-3050'
+		request.session['part_area1'] = '50-6729'
 		request.session['rate_area1'] = 65
-		request.session['asset1_area1'] = '769'
+		request.session['asset1_area1'] = '936'
 		request.session['asset2_area1'] = '769'
 		request.session['asset3_area1'] = '769'
 		request.session['asset4_area1'] = '769'
 		return render(request, "redirect_tracking.html")
 def chart2_3050(request):
-		request.session['area2'] = '50-3050 Inspection'
-		request.session['part_area2'] = '50-3050'
-		request.session['rate_area2'] = 65
-		request.session['asset1_area2'] = '769'
-		request.session['asset2_area2'] = '769'
-		request.session['asset3_area2'] = '769'
-		request.session['asset4_area2'] = '769'
+		request.session['area2'] = '50-6729 Inspection'
+		request.session['part_area2'] = '50-6729'
+		request.session['rate_area2'] = 56
+		request.session['asset1_area2'] = '936'
+		request.session['asset2_area2'] = '936'
+		request.session['asset3_area2'] = '936'
+		request.session['asset4_area2'] = '936'
 		return render(request, "redirect_tracking.html")
 def chart1_3050b(request):
 		request.session['area1'] = '50-3050 Broach/Induction'
@@ -3790,9 +3791,12 @@ def cell_track_9341(request):
 	
 
 	# This section is temporary as no grinding *************************************
-	# wip_prod[80] = wip_prod[50]
-	# wip_prod[70] = wip_prod[50]
-	# wip_prod[60] = wip_prod[50]
+	wip_prod[80] = wip_prod[30]
+	wip_prod[70] = wip_prod[30]
+	wip_prod[60] = wip_prod[30]
+	wip_prod[50] = wip_prod[30]
+	wip_prod[40] = wip_prod[30]
+	wip_prod[90] = wip_prod[30]
 	
 	# ******************************************************************************
 
@@ -4029,6 +4033,16 @@ def cell_track_0455(request):
 		list1 = filter(lambda x:x[1]==i[0],wip_data)  # Filter list and pull out machine to make list1
 		count1=len(list1)  # Total all in list1
 		wip_prod[i[2]] = wip_prod[i[2]] + count1  # Add total to that operation variable
+	
+	
+	wip_prod[80] = wip_prod[40]
+	wip_prod[70] = wip_prod[40]
+	wip_prod[60] = wip_prod[40]
+	wip_prod[50] = wip_prod[40]
+	wip_prod[100] = wip_prod[40]
+	wip_prod[90] = wip_prod[40]
+
+
 	op5=[]
 	wip5=[]
 	prd5=[]
@@ -4354,7 +4368,7 @@ def cell_track_9341_history(request):
 	track_stamp_end = track_stamp + 28800
 
 	shift_start, shift_time, shift_left, shift_end = stamp_shift_start(request)	 # Get the Time Stamp info
-	machines1 = ['1504','1506','1519','1520','1502','1507','1501','1515','1508','1532','1509','1514','1510','1503','1511','1518','1521','1522','1523','1539','1540','1524','1525','1538','1541','1531','1527','1530','1528','1513','1533']
+	machines1 = ['1504','1506','1519','1520','1502','1507','1501','1515','1508','1532','1509','1514','1514','1503','1511','1518','1521','1522','1523','1539','1540','1524','1525','1538','1541','1531','1531','1530','1528','1513','1533']
 	rate = [8,8,8,8,4,4,4,4,3,3,2,2,2,2,2,8,8,8,8,4,4,4,4,3,2,2,2,2,2,1,1]
 	line1 = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0,0]
 	operation1 = [10,10,10,10,30,30,40,40,50,50,60,70,80,100,110,10,10,10,10,30,30,40,40,50,60,70,80,100,110,90,120]
