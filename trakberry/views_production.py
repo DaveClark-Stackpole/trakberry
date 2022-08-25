@@ -3791,12 +3791,11 @@ def cell_track_9341(request):
 	
 
 	# This section is temporary as no grinding *************************************
-	wip_prod[80] = wip_prod[30]
-	wip_prod[70] = wip_prod[30]
-	wip_prod[60] = wip_prod[30]
-	wip_prod[50] = wip_prod[30]
-	wip_prod[40] = wip_prod[30]
-	wip_prod[90] = wip_prod[30]
+	wip_prod[80] = wip_prod[40]
+	wip_prod[70] = wip_prod[40]
+	wip_prod[60] = wip_prod[40]
+	wip_prod[50] = wip_prod[40]
+
 	
 	# ******************************************************************************
 
