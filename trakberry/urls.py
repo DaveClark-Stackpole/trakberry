@@ -165,6 +165,7 @@ from views_admin import master
 from views3 import excel_dump, excel_scrap_dump,training_matrix2,training_matrix_find,training_matrix_update_all
 from views3 import bounce_matrix,update_matrix_cancel,matrix_cache_matrix, full_update
 from views_admin import tech_pm_add
+from views_healthsafety import temp_display
 # ***********************************************************************************************************************************************************
 
 # *******************************************  Scrap Section ********************************************************************************************
@@ -697,6 +698,8 @@ urlpatterns = [
 	url(r'^auto_updater/', auto_updater),
 	url(r'^password_edit_form/', password_edit_form),
 	url(r'^tech_pm_add/', tech_pm_add),
+
+	url(r'^temp_display/', temp_display),
 
 	# ************************************************************************
 
