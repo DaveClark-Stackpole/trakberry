@@ -4000,6 +4000,8 @@ def cell_track_9341(request):
 
 	t = int(time.time())
 	request.session['runrate'] = 1128
+
+
 	return render(request,'cell_track_9341.html',{'t':t,'codes':total8,'op':op_total,'wip':wip_zip,'codes_60':total8_0455,'op_60':op_total_0455,'wip_60':wip_zip_0455,'args':args})	
 
 
@@ -4108,6 +4110,8 @@ def cell_track_0455(request):
 		list2 = filter(lambda x:x[4]>=start1 and x[1]==machine2,tmpX)  # Filter list to get 5 min sum
 		cnt33 = len(list2)
 
+
+
 		# try:
 		# 	sql = "SELECT SUM(Count) FROM GFxPRoduction WHERE TimeStamp >= '%d' and Part = '%s' and Machine = '%s'" % (t,prt,machine2)
 		# 	cur.execute(sql)
@@ -4145,7 +4149,14 @@ def cell_track_0455(request):
 		cnt55.append(cnt33)
 		sh55.append(shift_time)
 		shl55.append(shift_left)
-		pred8.append(pred1)
+
+		
+		# # Use the below pred8 for normal
+		# pred8.append(pred1)
+
+		# This is temp for total so far
+		pred8.append(cnt33)
+
 
 		if rate3>=100:
 			cc='#009700'
@@ -4175,6 +4186,7 @@ def cell_track_0455(request):
 		machine8.append(machine2)
 
 	total8=zip(machine8,rate8,color8,pred8,op8,rt8)
+
 	total99=0
 	last_op=10
 	op99=[]
