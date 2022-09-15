@@ -4152,10 +4152,10 @@ def cell_track_0455(request):
 
 		
 		# # Use the below pred8 for normal
-		# pred8.append(pred1)
+		pred8.append(pred1)
 
 		# This is temp for total so far
-		pred8.append(cnt33)
+		# pred8.append(cnt33)
 
 
 		if rate3>=100:
