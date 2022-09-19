@@ -521,6 +521,7 @@ def day_breakdown(tt):
 
 # Quickly calculates p
 def track_email(request):
+
 	t=int(time.time())
 	tm = time.localtime(t)
 	request.session["time"] = t
@@ -622,7 +623,9 @@ def track_email(request):
 	message3 = message3 + b + "Machine: 769" + " Prediction: " + str(count4)
 
 
-	toaddrs = ["dclark@stackpole.com","jmcmaster@stackpole.com"]
+	# toaddrs = ["dave7995@gmail.com","jmcmaster@stackpole.com"]
+	toaddrs = ["dave7995@gmail.com","dclark@stackpole.com"]
+
 	#toaddrs = ["rrompen@stackpole.com","rbiram@stackpole.com","rzylstra@stackpole.com","lbaker@stackpole.com","dmilne@stackpole.com","sbrownlee@stackpole.com","pmurphy@stackpole.com","pstreet@stackpole.com","kfrey@stackpole.com","asmith@stackpole.com","smcmahon@stackpole.com","gharvey@stackpole.com","ashoemaker@stackpole.com","jreid@stackpole.com"]
 	fromaddr = 'stratford.reports@stackpole.com'
 	frname = '10R Production'
@@ -1320,25 +1323,25 @@ def tracking(request):
 	# want to refresh tracking to new rates
 	rt1 = 3
 
-	# This section will check every 30min and email out counts to Jim and Myself
-	try:
-		db, cur = db_set(request)
-		cur.execute("""CREATE TABLE IF NOT EXISTS tkb_email_10r(Id INT PRIMARY KEY AUTO_INCREMENT,dummy1 INT(30),stamp INT(30) )""")
-		eql = "SELECT MAX(stamp) FROM tkb_email_10r"
-		cur.execute(eql)
-		teql = cur.fetchall()
-		teql2 = int(teql[0][0])
-		ttt=int(time.time())
-		elapsed_time = ttt - teql2
-		if elapsed_time > 1800:
-			x = 1
-			dummy = 8
-			cur.execute('''INSERT INTO tkb_email_10r(dummy1,stamp) VALUES(%s,%s)''', (dummy,ttt))
-			db.commit()
-			track_email(request)  
-		db.close()
-	except:
-		dummy2 = 0
+	# # This section will check every 30min and email out counts to Jim and Myself
+	# try:
+	# 	db, cur = db_set(request)
+	# 	cur.execute("""CREATE TABLE IF NOT EXISTS tkb_email_10r(Id INT PRIMARY KEY AUTO_INCREMENT,dummy1 INT(30),stamp INT(30) )""")
+	# 	eql = "SELECT MAX(stamp) FROM tkb_email_10r"
+	# 	cur.execute(eql)
+	# 	teql = cur.fetchall()
+	# 	teql2 = int(teql[0][0])
+	# 	ttt=int(time.time())
+	# 	elapsed_time = ttt - teql2
+	# 	if elapsed_time > 1800:
+	# 		x = 1
+	# 		dummy = 8
+	# 		cur.execute('''INSERT INTO tkb_email_10r(dummy1,stamp) VALUES(%s,%s)''', (dummy,ttt))
+	# 		db.commit()
+	# 		track_email(request)  
+	# 	db.close()
+	# except:
+	# 	dummy2 = 0
 
 	# *********************************************************************************
 	# Use a Session Variable to reset tracking to new Rates.   rt1 is set at start of 
@@ -3760,6 +3763,129 @@ def cell_track_9341_TV(request):
 	request.session['runrate'] = 1128
 	return render(request,'cell_track_9341_TV.html',{'t':t,'codes':total8,'op':op_total,'wip':wip_zip,'codes_60':total8_0455,'op_60':op_total_0455,'wip_60':wip_zip_0455,'args':args})	
 
+def cell_track_1467(request):
+	shift_start, shift_time, shift_left, shift_end = stamp_shift_start(request)	 # Get the Time Stamp info
+	machines1 = ['644','645','646','647','648','649']
+	rate = [6,6,6,6,6,6]
+	line1 = [1,1,1,1,1,1]
+	operation1 = [10,10,10,10,10,10]
+	prt = '50-1467'
+	machine_rate = zip(machines1,rate,operation1)
+	machine_color =[]
+	db, cur = db_set(request)
+
+	# Filter a List
+	color8=[]
+	rate8=[]
+	machine8=[]
+	pred8 = []
+	av55=[]
+	cnt55=[]
+	sh55=[]
+	shl55=[]
+	op8=[]
+	rt8=[]
+	request.session['shift_start'] = shift_start
+
+
+	# Preliminary testing variables for new methord
+	tt = int(time.time())
+	t=tt-300
+	start1 = tt-shift_time
+	sql="SELECT * FROM GFxPRoduction WHERE TimeStamp >='%s' and Part='%s'"%(start1,prt)
+	cur.execute(sql)
+	tmpX=cur.fetchall()
+	db.close()
+	# *********************************************
+
+
+
+	for i in machine_rate:
+		machine2 = i[0]
+		rate2 = 1400 / float(i[1])
+		rate2 = (rate2 / float(28800)) * 300
+
+		list2 = filter(lambda x:x[4]>=t and x[1]==machine2,tmpX)  # Filter list to get 5 min sum
+		cnt = len(list2)
+		list2 = filter(lambda x:x[4]>=start1 and x[1]==machine2,tmpX)  # Filter list to get 5 min sum
+		cnt33 = len(list2)
+
+
+		rate3 = cnt / float(rate2)
+		rate3 = int(rate3 * 100) # This will be the percentage we use to determine colour
+		# Pediction
+		try:
+			avg8 = cnt33 / float(shift_time)
+		except:
+			shift_time = 100
+			avg8 = cnt33 / float(shift_time)
+			
+		avg9 = avg8 * shift_left
+		pred1 = int(cnt33 + avg9)
+
+		op8.append(i[2])
+		rt8.append(i[1])
+		av55.append(avg8)
+		cnt55.append(cnt33)
+		sh55.append(shift_time)
+		shl55.append(shift_left)
+		pred8.append(pred1)
+
+		if rate3>=100:
+			cc='#009700'
+		elif rate3>=90:
+			cc='#4FC34F'
+		elif rate3>=80:
+			cc='#A4F6A4'
+		elif rate3>=70:
+			cc='#C3C300'
+		elif rate3>=50:
+			cc='#DADA3F'
+		elif rate3>=25:
+			cc='#F6F687'
+		elif rate3>=10:
+			cc='#F7BA84'
+		elif rate3>0:
+			cc='#EC7371'
+		else:
+			if pred1 == 0:
+				cc='#D5D5D5'
+			else:
+				cc='#FF0400'
+		color8.append(cc)
+		rate8.append(rate3)
+		machine8.append(machine2)
+
+	total8=zip(machine8,rate8,color8,pred8,op8,rt8)
+	total99=0
+	last_op=10
+	op99=[]
+	opt99=[]
+
+	op_total = [0 for x in range(200)]	
+
+	for i in total8:
+		op_total[i[4]]=op_total[i[4]] + i[3]
+	
+	jobs1 = zip(machines1,line1,operation1)
+
+	# Date entry for History
+	if request.POST:
+		request.session["track_date"] = request.POST.get("date_st")
+		request.session["track_shift"] = request.POST.get("shift")
+		return render(request,'redirect_cell_track_1467_history.html')	
+	else:
+		form = sup_downForm()
+	args = {}
+	args.update(csrf(request))
+	args['form'] = form
+
+	t = int(time.time())
+	request.session['runrate'] = 1128
+
+
+	return render(request,'cell_track_1467.html',{'t':t,'codes':total8,'op':op_total,'args':args})	
+
 
 
 def cell_track_9341(request):
@@ -4001,6 +4127,26 @@ def cell_track_9341(request):
 	t = int(time.time())
 	request.session['runrate'] = 1128
 
+
+	# This section will check every 30min and email out counts to Jim and Myself
+	# try:
+	db, cur = db_set(request)
+	cur.execute("""CREATE TABLE IF NOT EXISTS tkb_email_10r(Id INT PRIMARY KEY AUTO_INCREMENT,dummy1 INT(30),stamp INT(30) )""")
+	eql = "SELECT MAX(stamp) FROM tkb_email_10r"
+	cur.execute(eql)
+	teql = cur.fetchall()
+	teql2 = int(teql[0][0])
+	ttt=int(time.time())
+	elapsed_time = ttt - teql2
+	if elapsed_time > 1800:
+		x = 1
+		dummy = 8
+		cur.execute('''INSERT INTO tkb_email_10r(dummy1,stamp) VALUES(%s,%s)''', (dummy,ttt))
+		db.commit()
+		track_email(request)  
+	db.close()
+	# except:
+	# 	dummy2 = 0
 
 	return render(request,'cell_track_9341.html',{'t':t,'codes':total8,'op':op_total,'wip':wip_zip,'codes_60':total8_0455,'op_60':op_total_0455,'wip_60':wip_zip_0455,'args':args})	
 
