@@ -206,7 +206,7 @@ def medium_production(request):
 			tuple1 = ['' for x in range(0)]
 			shifthrs1=8
 			iid = 837165
-			pd1 = '2022-05-16'
+			pd1 = '2022-08-01'
 
 			try:
 				cql = "Select cycletime from tkb_cycletime where asset = '%s' and part = '%s'" % (asset1,part)

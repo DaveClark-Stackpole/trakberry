@@ -144,9 +144,9 @@
 		.mainset3{color:black;text-align:center;float:left;width:25%}
 		.wrapper_main {background:chartreuse;width:90%;margin-left: 10px;}
 		
-		.frame1 {color:black;text-align:center;float:left;width:24%;margin-bottom: 5px;}
+		.frame1 {color:black;text-align:center;float:left;width:17%;margin-bottom: 5px;}
 		.framec {color:black;text-align:center;float:left;width:8%;margin-bottom: 5px;}
-		.frameo {color:black;text-align:center;float:left;width:21%;margin-bottom: 5px;}
+		.frameo {color:black;text-align:center;float:left;width:14%;margin-bottom: 5px;}
 		.frames {color:black;text-align:center;float:left;width:2%;margin-bottom: 5px;}
 		.framet {color:black;text-align:center;float:left;width:8%;margin-bottom: 5px;}
 		.framew {color:black;text-align:center;float:left;width:5%;margin-bottom: 5px;}
@@ -185,6 +185,24 @@
 		padding: 4px;
 	}
 	#mainline th {
+		padding-top: 5px;
+		padding-bottom: 5px;
+		text-align: left;
+		background-color: rgb(139, 128, 107);
+		color: white;
+	}
+	</style>
+<style>
+	#upline {
+		font-family: Arial, Helvetica, sans-serif;
+		border-collapse: collapse;
+		width: 100%;
+	}
+	#upline td, #upline th {
+		border: 0px solid rgb(136, 134, 134);
+		padding: 7px;
+	}
+	#upline th {
 		padding-top: 5px;
 		padding-bottom: 5px;
 		text-align: left;
@@ -668,6 +686,54 @@
 						<font style="font-weight:bolder;font-size:70%;">({{codes.28.3}})</font></center><br></td>
 				</tr></table></center>
 				<center><table id="noneline"><tr> <!-- OP120 -->
+					<td><br><center><font style="font-weight:bolder;font-size:100%;">&nbsp;&nbsp;&nbsp;&nbsp;</font></center><br></td>
+				</tr></table></center>
+			</div>
+
+
+
+			<div class="framec">  <!-- Center Line Production-->
+				<center><table id="mainline"><tr> <!-- OP60 -->
+
+
+					<td bgcolor="#bdb4b3"><br><center><font style="font-weight:bolder;font-size:100%;">Uplift</font></center><br></td>
+				</tr></table></center>
+
+				<center><table id="upline"><tr> <!-- OP10 -->
+					<td><br><center><font style="font-weight:bolder;font-size:100%;">&nbsp;&nbsp;&nbsp;&nbsp;</font></center><br></td>
+				</tr></table></center>
+				<center><table id="upline"><tr> <!-- OP30 -->
+					<td><br><center><font style="font-weight:bolder;font-size:100%;">&nbsp;&nbsp;&nbsp;&nbsp;</font></center><br></td>
+				</tr></table></center>
+				<center><table id="upline"><tr> <!-- OP40 -->
+					<td><br><center><font style="font-weight:bolder;font-size:100%;">&nbsp;&nbsp;&nbsp;&nbsp;</font></center><br></td>
+				</tr></table></center>
+
+				<center><table id="upline"><tr> <!-- OP70 -->
+					<td bgcolor={{codes.31.2}}><br><center><font style="font-weight:bolder;font-size:100%;">
+						<a href="{{request.session.local_toggle}}/track_graph_track/get/{{codes.31.0}}" onclick="window.open('{{request.session.local_toggle}}/track_graph_track/get/{{codes.31.0}}', 'newwindow', 'width=1400, height=600'); return false;">
+							{{codes.31.0}}</a></font>
+						<font style="font-weight:bolder;font-size:70%;">({{codes.31.3}})</font></center><br></td>
+				</tr></table></center>
+				<center><table id="upline"><tr> <!-- OP50 -->
+					<td><br><center><font style="font-weight:bolder;font-size:100%;">&nbsp;&nbsp;&nbsp;&nbsp;</font></center><br></td>
+				</tr></table></center>				
+				<center><table id="upline"><tr> <!-- OP70 -->
+					<td><br><center><font style="font-weight:bolder;font-size:100%;">&nbsp;&nbsp;&nbsp;&nbsp;</font></center><br></td>
+				</tr></table></center>
+				<center><table id="upline"><tr> <!-- OP80 -->
+					<td><br><center><font style="font-weight:bolder;font-size:100%;">&nbsp;&nbsp;&nbsp;&nbsp;</font></center><br></td>
+				</tr></table></center>
+				<center><table id="upline"><tr> <!-- OP80 -->
+					<td><br><center><font style="font-weight:bolder;font-size:100%;">&nbsp;&nbsp;&nbsp;&nbsp;</font></center><br></td>
+				</tr></table></center>
+				<center><table id="upline"><tr> <!-- OP80 -->
+					<td><br><center><font style="font-weight:bolder;font-size:100%;">&nbsp;&nbsp;&nbsp;&nbsp;</font></center><br></td>
+				</tr></table></center>
+				<center><table id="upline"><tr> <!-- OP80 -->
+					<td><br><center><font style="font-weight:bolder;font-size:100%;">&nbsp;&nbsp;&nbsp;&nbsp;</font></center><br></td>
+				</tr></table></center>
+				<center><table id="upline"><tr> <!-- OP80 -->
 					<td><br><center><font style="font-weight:bolder;font-size:100%;">&nbsp;&nbsp;&nbsp;&nbsp;</font></center><br></td>
 				</tr></table></center>
 			</div>
