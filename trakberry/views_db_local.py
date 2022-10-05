@@ -36,15 +36,15 @@ def db_open():
 			db = MySQLdb.connect(host="127.0.0.1",user="root",passwd="password",db='prodrptdb')
 			cursor = db.cursor()
 			sql = "SELECT * from testtest" 
-  			cursor.execute(sql)
-  			tmp2 = cursor.fetchall()
+			cursor.execute(sql)
+			tmp2 = cursor.fetchall()
 			return db, cursor
 		except:
 			db = MySQLdb.connect(host="127.0.0.1",user="root",passwd="benny6868",db='prodrptdb')
 			cursor = db.cursor()
 			sql = "SELECT * from testtest" 
-  			cursor.execute(sql)
-  			tmp2 = cursor.fetchall()
+			cursor.execute(sql)
+			tmp2 = cursor.fetchall()
 			return db, cursor
 
 # This will set the correct database based on a error acknowledgement.	# return db, cursor

@@ -624,7 +624,7 @@ def track_email(request):
 
 
 	# toaddrs = ["dave7995@gmail.com","jmcmaster@stackpole.com"]
-	toaddrs = ["dave7995@gmail.com","dclark@stackpole.com"]
+	toaddrs = ["dave7995@gmail.com"]
 
 	#toaddrs = ["rrompen@stackpole.com","rbiram@stackpole.com","rzylstra@stackpole.com","lbaker@stackpole.com","dmilne@stackpole.com","sbrownlee@stackpole.com","pmurphy@stackpole.com","pstreet@stackpole.com","kfrey@stackpole.com","asmith@stackpole.com","smcmahon@stackpole.com","gharvey@stackpole.com","ashoemaker@stackpole.com","jreid@stackpole.com"]
 	fromaddr = 'stratford.reports@stackpole.com'
@@ -4526,10 +4526,10 @@ def cell_track_9341_history(request):
 	track_stamp_end = track_stamp + 28800
 
 	shift_start, shift_time, shift_left, shift_end = stamp_shift_start(request)	 # Get the Time Stamp info
-	machines1 = ['1504','1506','1519','1520','1502','1507','1501','1515','1508','1532','1509','1514','1514','1503','1511','1518','1521','1522','1523','1539','1540','1524','1525','1538','1541','1531','1531','1530','1528','1513','1533']
-	rate = [8,8,8,8,4,4,4,4,3,3,2,2,2,2,2,8,8,8,8,4,4,4,4,3,2,2,2,2,2,1,1]
-	line1 = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0,0]
-	operation1 = [10,10,10,10,30,30,40,40,50,50,60,70,80,100,110,10,10,10,10,30,30,40,40,50,60,70,80,100,110,90,120]
+	machines1 = ['1504','1506','1519','1520','1502','1507','1501','1515','1508','1532','1509','1514','1510','1503','1511','1518','1521','1522','1523','1539','1540','1524','1525','1538','1541','1531','1527','1530','1528','1513','1533','1548']
+	rate = [8,8,8,8,4,4,4,4,4,4,2,2,2,2,2,8,8,8,8,4,4,4,4,4,2,2,2,2,2,1,1,4]
+	line1 = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0,0,3]
+	operation1 = [10,10,10,10,30,30,40,40,50,50,60,70,80,100,110,10,10,10,10,30,30,40,40,50,60,70,80,100,110,90,120,50]
 	prt = '50-9341'
 	machine_rate = zip(machines1,rate,operation1)
 	machine_color =[]
@@ -4548,6 +4548,10 @@ def cell_track_9341_history(request):
 		rate2 = 3200 / float(i[1])
 
 		try:
+			if machine2=='1510' or machine2=='1514':
+				machine2 = '1509'
+			if machine2=='1531' or machine2=='1527':
+				machine2 = '1541'
 			sql = "SELECT SUM(Count) FROM GFxPRoduction WHERE TimeStamp >= '%d' and TimeStamp <= '%d' and Part = '%s' and Machine = '%s'" % (track_stamp,track_stamp_end,prt,machine2)
 			cur.execute(sql)
 			tmp2 = cur.fetchall()
