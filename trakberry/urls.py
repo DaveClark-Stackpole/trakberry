@@ -166,7 +166,7 @@ from views_admin import master
 from views3 import excel_dump, excel_scrap_dump,training_matrix2,training_matrix_find,training_matrix_update_all
 from views3 import bounce_matrix,update_matrix_cancel,matrix_cache_matrix, full_update
 from views_admin import tech_pm_add
-from views_healthsafety import temp_display
+from views_healthsafety import temp_display,temp_test1,temp_test_reset
 # ***********************************************************************************************************************************************************
 
 # *******************************************  Scrap Section ********************************************************************************************
@@ -791,6 +791,10 @@ urlpatterns = [
 
 	url(r'^update7/', update7),
 	url(r'^update7_prev/', update7_prev),
+
+
+	url(r'^temp_test_reset/', temp_test_reset),
+	url(r'^temp_test1/', temp_test1),
 
 	# **************************************************************************
 
