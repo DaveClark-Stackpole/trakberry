@@ -4130,24 +4130,29 @@ def cell_track_9341(request):
 
 
 	# This section will check every 30min and email out counts to Jim and Myself
-	# try:
-	db, cur = db_set(request)
-	cur.execute("""CREATE TABLE IF NOT EXISTS tkb_email_10r(Id INT PRIMARY KEY AUTO_INCREMENT,dummy1 INT(30),stamp INT(30) )""")
-	eql = "SELECT MAX(stamp) FROM tkb_email_10r"
-	cur.execute(eql)
-	teql = cur.fetchall()
-	teql2 = int(teql[0][0])
-	ttt=int(time.time())
-	elapsed_time = ttt - teql2
-	if elapsed_time > 1800:
-		x = 1
-		dummy = 8
-		cur.execute('''INSERT INTO tkb_email_10r(dummy1,stamp) VALUES(%s,%s)''', (dummy,ttt))
-		db.commit()
-		track_email(request)  
-	db.close()
-	# except:
-	# 	dummy2 = 0
+
+	# Take it out for now.   Errors when using GMail accounts
+
+	# # try:
+	# db, cur = db_set(request)
+	# cur.execute("""CREATE TABLE IF NOT EXISTS tkb_email_10r(Id INT PRIMARY KEY AUTO_INCREMENT,dummy1 INT(30),stamp INT(30) )""")
+	# eql = "SELECT MAX(stamp) FROM tkb_email_10r"
+	# cur.execute(eql)
+	# teql = cur.fetchall()
+	# teql2 = int(teql[0][0])
+	# ttt=int(time.time())
+	# elapsed_time = ttt - teql2
+	# if elapsed_time > 1800:
+	# 	x = 1
+	# 	dummy = 8
+	# 	cur.execute('''INSERT INTO tkb_email_10r(dummy1,stamp) VALUES(%s,%s)''', (dummy,ttt))
+	# 	db.commit()
+	# 	track_email(request)  
+	# db.close()
+	# # except:
+	# # 	dummy2 = 0
+
+	# *****************************************************************************************************
 
 	return render(request,'cell_track_9341.html',{'t':t,'codes':total8,'op':op_total,'wip':wip_zip,'codes_60':total8_0455,'op_60':op_total_0455,'wip_60':wip_zip_0455,'args':args})	
 
