@@ -1418,7 +1418,7 @@ def tracking(request):
 		data2, gr_list2 = track_area(request)
 
 
-
+	return render(request, "redirect_trilobe_track.html")
 	return render(request, "track.html",{'GList':gr_list1,"datax":data1,'GList2':gr_list2, "datax2":data2})
 	# except:
 	# 	return render(request, "track_error.html")
@@ -2010,13 +2010,13 @@ def chart2_5404_OP80(request):
 		request.session['asset4_area2'] = '1719'
 		return render(request, "redirect_tracking.html")
 def chart1_5401_OP80(request):
-		request.session['area1'] = '50-5401 OP80'
-		request.session['part_area1'] = 'AB1V Input'
-		request.session['rate_area1'] = 39
-		request.session['asset1_area1'] = '1706'
-		request.session['asset2_area1'] = '1706'
-		request.session['asset3_area1'] = '1706'
-		request.session['asset4_area1'] = '1706'
+		request.session['area1'] = '647 Machining'
+		request.session['part_area1'] = '50-1467'
+		request.session['rate_area1'] = 27
+		request.session['asset1_area1'] = '645'
+		request.session['asset2_area1'] = '645'
+		request.session['asset3_area1'] = '645'
+		request.session['asset4_area1'] = '645'
 		return render(request, "redirect_tracking.html")
 def chart2_5401_OP80(request):
 		request.session['area2'] = '50-5401 OP80'

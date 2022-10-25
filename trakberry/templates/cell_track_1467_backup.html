@@ -144,7 +144,7 @@
 		.mainset3{color:black;text-align:center;float:left;width:25%}
 		.wrapper_main {background:chartreuse;width:90%;margin-left: 10px;}
 		
-		.frame1 {color:black;text-align:center;float:left;width:90%;margin-bottom: 5px;}
+		.frame1 {color:black;text-align:center;float:left;width:24%;margin-bottom: 5px;}
 		.framec {color:black;text-align:center;float:left;width:8%;margin-bottom: 5px;}
 		.frameo {color:black;text-align:center;float:left;width:21%;margin-bottom: 5px;}
 		.frames {color:black;text-align:center;float:left;width:2%;margin-bottom: 5px;}
@@ -378,36 +378,86 @@
 
 <br>
 <div class="wrapper_main">
+	<div class="mainset2">  <!-- MainLine Production-->
+		<table id="prodwk2"><tr> <!-- OP60 -->
+		<td bgcolor="#DCDCDC">
+<!-- Put the History Date Call up section here *************************************************************************** -->
 
+{% if request.session.track_history = 1 %}
 
+<form action="" method="post">{% csrf_token %}
+	<td bgcolor="#DCDCDC"><br><center><font style="font-weight:bolder;font-size:120%;"><u>History &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{request.session.track_date}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{request.session.track_shift}}</u></font><br>
+	<label for="shift"><font style="font-weight:bolder;font-size:70%;"></font><u><b>Shift:</u></b></u>&nbsp;&nbsp;&nbsp;</label>
+		<select style="font-size:12px;height:30px;" id="shift" name="shift" required>
+		<option value=""></option>
+		<option value="Mid">Mid</option>
+		<option value="Day">Day</option>
+		<option value="Aft">Aft</option>
+		</select>
+		<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<u>START DATE</b></u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input style="font-size:12px;height:30px;" type="date" name="date_st" value={{Curr}}>
+		<button style="background-color: #999999;border-radius: 10px;width:90px;height:30px;">Submit</button>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<button  style="background-color: #585858;border-radius: 10px;width:90px;height:30px;color:#d8ff49;font-size:12px;" onclick="track_return()">Return to Track</button>
+	</td>
+</form>
+
+{% else %}<br><center><font style="font-weight:bolder;font-size:120%;"><u>Trilobe Cell Track</u></font>
+	<font style="font-weight:bolder;font-size:85%;">(End of Shift Prediction)</font>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<button  style="background-color: #585858;border-radius: 10px;height:70%;font-size:10px;color:#d8ff49" onclick="track_history()">History</button> </center>
+	<br></td>
+{% endif %}
+<!--   *****************************************************************************************************************    -->
+	</tr></table>
+</div>
+<div class="mainset3">  <!-- MainLine Production-->
+
+	<table id="prodwk4"><tr><td bgcolor="#DCDCDC">
+		<br><center><font style="font-weight:bolder;font-size:120%;"><u>Optimized</u></font>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br><br>
+	</td></tr></table>
+<br>
+</div>
 
 
 			<div class="frame1">  <!-- MainLine Production-->
 				<center><table id="mainline"><tr> <!-- OP60 -->
+					<td bgcolor="#bdb4b3" style="font-size:12px;width:15%;"><br><center><font style="font-weight:bolder;font-size:100%;">&nbsp;&nbsp;&nbsp;&nbsp;</font></center><br></td>
 
-					<td bgcolor="#bdb4b3"><br><center><font style="font-weight:bolder;font-size:500%;">TRILOBE</font>
-						<br><font style="font-weight:bolder;font-size:200%;">Prediction ({{op.10}})</font></center><br></td>
+					<td bgcolor="#bdb4b3"><br><center><font style="font-weight:bolder;font-size:100%;">Mainline</font></center><br></td>
 				</tr></table></center>
-				<center><table id="mainline"><tr> <!-- OP10 -->	
-					<td bgcolor={{codes.0.2}}><br><center><font style="font-weight:bolder;font-size:400%;">{{codes.0.0}}</font>
-						<br><br><font style="font-weight:bolder;font-size:200%;">Prediction ({{codes.0.3}})</font></center><br></td>
-					<td bgcolor={{codes.1.2}}><br><center><font style="font-weight:bolder;font-size:400%;">{{codes.1.0}}</a></font>
-						<br><br><font style="font-weight:bolder;font-size:200%;">Prediction ({{codes.1.3}})</font></center><br></td>
-					</table>
-					<center><table id="mainline"><tr> <!-- OP10 -->	
-						<td bgcolor={{codes.2.2}}><br><center><font style="font-weight:bolder;font-size:400%;">{{codes.2.0}}</font>
-							<br><br><font style="font-weight:bolder;font-size:200%;">Prediction ({{codes.2.3}})</font></center><br></td>
-						<td bgcolor={{codes.3.2}}><br><center><font style="font-weight:bolder;font-size:400%;">{{codes.3.0}}</a></font>
-							<br><br><font style="font-weight:bolder;font-size:200%;">Prediction ({{codes.3.3}})</font></center><br></td>
-					</table>
-					<center><table id="mainline"><tr> <!-- OP10 -->	
-						<td bgcolor={{codes.4.2}}><br><center><font style="font-weight:bolder;font-size:400%;">{{codes.4.0}}</font>
-							<br><br><font style="font-weight:bolder;font-size:200%;">Prediction ({{codes.4.3}})</font></center><br></td>
-						<td bgcolor={{codes.5.2}}><br><center><font style="font-weight:bolder;font-size:400%;">{{codes.5.0}}</a></font>
-							<br><br><font style="font-weight:bolder;font-size:200%;">Prediction ({{codes.5.3}})</font></center><br></td>
-					</table>
-	
+				<center><table id="mainline"><tr> <!-- OP10 -->
+						<td bgcolor="#b0aea9" style="font-size:12px;width:15%;"><br><center><font style="font-weight:bolder;font-size:100%;">OP 10</font>
+							<font style="font-weight:bolder;font-size:85%;"><br>({{op.10}})</font></center></td>
+						<td bgcolor={{codes.0.2}}><br><center><font style="font-weight:bolder;font-size:100%;">
+							<a href="{{request.session.local_toggle}}/track_graph_track/get/{{codes.0.0}}" onclick="window.open('{{request.session.local_toggle}}/track_graph_track/get/{{codes.0.0}}', 'newwindow', 'width=1400, height=600'); return false;">
+								{{codes.0.0}}</a></font>
+							<font style="font-weight:bolder;font-size:70%;">({{codes.0.3}})</font></center><br></td>
+							<td bgcolor={{codes.1.2}}><br><center><font style="font-weight:bolder;font-size:100%;">
+								<a href="{{request.session.local_toggle}}/track_graph_track/get/{{codes.1.0}}" onclick="window.open('{{request.session.local_toggle}}/track_graph_track/get/{{codes.1.0}}', 'newwindow', 'width=1400, height=600'); return false;">
+									{{codes.1.0}}</a></font>
+								<font style="font-weight:bolder;font-size:70%;">({{codes.1.3}})</font></center><br></td>
+								<td bgcolor={{codes.2.2}}><br><center><font style="font-weight:bolder;font-size:100%;">
+									<a href="{{request.session.local_toggle}}/track_graph_track/get/{{codes.2.0}}" onclick="window.open('{{request.session.local_toggle}}/track_graph_track/get/{{codes.2.0}}', 'newwindow', 'width=1400, height=600'); return false;">
+										{{codes.2.0}}</a></font>
 
+									<font style="font-weight:bolder;font-size:70%;">({{codes.2.3}})</font></center><br></td>
+
+									<td bgcolor={{codes.3.2}}><br><center><font style="font-weight:bolder;font-size:100%;">
+									<a href="{{request.session.local_toggle}}/track_graph_track/get/{{codes.3.0}}" onclick="window.open('{{request.session.local_toggle}}/track_graph_track/get/{{codes.3.0}}', 'newwindow', 'width=1400, height=600'); return false;">
+											{{codes.3.0}}</a></font>
+									<font style="font-weight:bolder;font-size:70%;">({{codes.3.3}})</font></center><br></td>
+
+                                    <td bgcolor={{codes.4.2}}><br><center><font style="font-weight:bolder;font-size:100%;">
+                                        <a href="{{request.session.local_toggle}}/track_graph_track/get/{{codes.4.0}}" onclick="window.open('{{request.session.local_toggle}}/track_graph_track/get/{{codes.3.0}}', 'newwindow', 'width=1400, height=600'); return false;">
+                                                {{codes.4.0}}</a></font>
+                                        <font style="font-weight:bolder;font-size:70%;">({{codes.4.3}})</font></center><br></td>
+
+                                    <td bgcolor={{codes.5.2}}><br><center><font style="font-weight:bolder;font-size:100%;">
+                                    <a href="{{request.session.local_toggle}}/track_graph_track/get/{{codes.5.0}}" onclick="window.open('{{request.session.local_toggle}}/track_graph_track/get/{{codes.3.0}}', 'newwindow', 'width=1400, height=600'); return false;">
+                                                    {{codes.5.0}}</a></font>
+                                    <font style="font-weight:bolder;font-size:70%;">({{codes.5.3}})</font></center><br></td>
+				</tr></table></center>
 
 			</div>
 
