@@ -712,12 +712,12 @@
 
 			<div class="framew">  <!-- Center Line Production-->
 				<center><table id="mainline"><tr> 
-					<td bgcolor="#bdb4b3"><br><center><font style="font-weight:bolder;font-size:100%;">Live WIP</font></center><br></td>
+					<!-- <td bgcolor="#bdb4b3"><br><center><font style="font-weight:bolder;font-size:100%;">Live WIP</font></center><br></td> -->
 				</tr></table></center>
 				{% for j in wip %}
 					{% if j.0 != '120' %}
 					<center><table id="mainline"><tr> <!-- OP10 -->
-						<td bgcolor="#E8E8E8"><br><center><font style="font-weight:bolder;font-size:100%;">{{j.3}}</font></center><br></td>
+						<!-- <td bgcolor="#E8E8E8"><br><center><font style="font-weight:bolder;font-size:100%;">{{j.3}}</font></center><br></td> -->
 					</tr></table></center>
 					{% endif %}
 				{% endfor %}
@@ -976,21 +976,21 @@
 		<div class="framew">  <!-- Center Line Production-->
 
 			<center><table id="mainline"><tr> 
-				<td bgcolor="#bdb4b3"><br><center><font style="font-weight:bolder;font-size:100%;">Live WIP</font></center><br></td>
+				<!-- <td bgcolor="#bdb4b3"><br><center><font style="font-weight:bolder;font-size:100%;">Live WIP</font></center><br></td> -->
 			</tr></table></center>
 			{% for j in wip_60 %}
 				{% if j.0 != '120' %}
                 {% if j.0 = '80' %}
                 <center><table id="mainline"><tr> <!-- OP10 -->
-					<td bgcolor="#E8E8E8"><br><center><font style="font-weight:bolder;font-size:100%;">0</font></center><br></td>
+					<!-- <td bgcolor="#E8E8E8"><br><center><font style="font-weight:bolder;font-size:100%;">0</font></center><br></td> -->
 				</tr></table></center>
                 <center><table id="mainline"><tr> <!-- OP10 -->
-					<td bgcolor="#E8E8E8"><br><center><font style="font-weight:bolder;font-size:100%;">0</font></center><br></td>
+					<!-- <td bgcolor="#E8E8E8"><br><center><font style="font-weight:bolder;font-size:100%;">0</font></center><br></td> -->
 				</tr></table></center>
                 {% endif %}
 
 				<center><table id="mainline"><tr> <!-- OP10 -->
-					<td bgcolor="#E8E8E8"><br><center><font style="font-weight:bolder;font-size:100%;">{{j.3}}</font></center><br></td>
+					<!-- <td bgcolor="#E8E8E8"><br><center><font style="font-weight:bolder;font-size:100%;">{{j.3}}</font></center><br></td>-->
 				</tr></table></center>
 				{% endif %}
                 

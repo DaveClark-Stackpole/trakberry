@@ -3568,7 +3568,7 @@ def runrate_10R80(request):
 
 def cell_track_9341_TV(request):
 	request.session["local_switch"] = 0
-	request.session["local_toggle"] = "/trakberry"
+	# request.session["local_toggle"] = "/trakberry"
 	shift_start, shift_time, shift_left, shift_end = stamp_shift_start(request)	 # Get the Time Stamp info
 	machines1 = ['1504','1506','1519','1520','1502','1507','1501','1515','1508','1532','1509','1514','1510','1503','1511','1518','1521','1522','1523','1539','1540','1524','1525','1538','1541','1531','1527','1530','1528','1513','1533']
 	rate = [8,8,8,8,4,4,4,4,3,3,2,2,2,2,2,8,8,8,8,4,4,4,4,3,2,2,2,2,2,1,1]
@@ -3582,7 +3582,7 @@ def cell_track_9341_TV(request):
 	cur.execute(sql)
 	wip = cur.fetchall()
 	wip_stamp = int(wip[0][1])
-
+	wip_stamp = int(time.time()) - 360 # This line is just a temp add to speed up the reads and negate WIP
 	# [1] -- Machine    [4] -- Timestamp  [2] -- Part   [5] -- Count ..usually 1
 	sql = "SELECT * FROM GFxPRoduction WHERE TimeStamp >= '%d' and Part = '%s'" % (wip_stamp,prt)
 	cur.execute(sql)
@@ -3905,6 +3905,9 @@ def cell_track_9341(request):
 	wip_stamp = int(wip[0][1])
 
 	# [1] -- Machine    [4] -- Timestamp  [2] -- Part   [5] -- Count ..usually 1
+	# ******************************************
+	wip_stamp = int(time.time()) - 360 # This line is just a temp add to speed up the reads and negate WIP
+
 	sql = "SELECT * FROM GFxPRoduction WHERE TimeStamp >= '%d' and Part = '%s'" % (wip_stamp,prt)
 	cur.execute(sql)
 	wip_data = cur.fetchall()
