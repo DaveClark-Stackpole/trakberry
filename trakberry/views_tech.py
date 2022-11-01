@@ -1318,14 +1318,17 @@ def tech_history2(request):
 		a=[]
 		aa=[]
 		for i in tmp:
-			a=[]
-			timestamp1 = calendar.timegm(i[2].timetuple())
-			timestamp2 = calendar.timegm(i[7].timetuple())
-			b=timestamp2 - timestamp1
-			for x in i:
-				a.append(x)
-			a.append(b)
-			aa.append(a)
+			try:
+				a=[]
+				timestamp1 = calendar.timegm(i[2].timetuple())
+				timestamp2 = calendar.timegm(i[7].timetuple())
+				b=timestamp2 - timestamp1
+				for x in i:
+					a.append(x)
+				a.append(b)
+				aa.append(a)
+			except:
+				dummy=1
 
 
 		request.session["tech_display"] = 0

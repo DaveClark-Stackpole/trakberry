@@ -3088,7 +3088,7 @@ def prod_ab1v_reaction(request):
 	week_start_ab(request,t)
 	prod_ab1v_1703(request)
 	prod_ab1v_1704(request)
-	prod_10r_1529(request)
+
 
 	# prod_ab1v_1722(request)
 	request.session['working_address'] = 'prod_ab1v_reaction'
@@ -3430,7 +3430,6 @@ def prod_ab1v_1703(request):
 			t1.append(i[4])
 			t2.append(t1)
 		x1 = i[4]
-
 
 	tot2 = []
 	tot3 = []
