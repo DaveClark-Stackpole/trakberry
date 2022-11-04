@@ -591,7 +591,12 @@ urlpatterns = [
 	url(r'^track_graph_prev1/get/(?P<index>\d+)/$', track_graph_prev1),
 	url(r'^track_graph_prev2/get/(?P<index>\d+)/$', track_graph_prev2),
 	url(r'^track_graph_track/get/(?P<index>\d+)/$', track_graph_track),
-	url(r'^track_graph_8670/get/(?P<index>\d+)/$', track_graph_8670),
+	
+	# url(r'^track_graph_8670/get/(?P<index>\d+)/$', track_graph_8670),
+
+	url(r'^track_graph_8670/get/(?P<index>[\w|\W]+)', track_graph_8670),
+
+
 
 	url(r'^track_1703/', track_1703),
 	url(r'^track_1703_initial/get/(?P<index>\d+)/$', track_1703_initial),

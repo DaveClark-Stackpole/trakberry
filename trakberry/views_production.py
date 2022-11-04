@@ -112,7 +112,7 @@ def track_graph_8670(request, index):
 	prt= '50-8670'
 	pp = '6720'
 	request.session['track_track'] = 'Shift Track for Machine '+ str(index)
-	machines7 = ['1703R','1704R','1727Rej','626','659','1712','1716L','1719','1723','Laser']
+	machines7 = ['1703R','1704R','1727','626','659','1712','1716L','1719','1723','Laser']
 	rate7 = [2,2,1,2,2,1,1,1,1,1]
 	part7 = ['50-8670','50-8670','50-8670','50-8670','50-8670','50-8670','50-8670','50-8670','50-8670','50-8670']
 
@@ -3917,7 +3917,7 @@ def cell_track_1467(request):
 def cell_track_8670(request):
 
 	shift_start, shift_time, shift_left, shift_end = stamp_shift_start(request)	 # Get the Time Stamp info
-	machines1 = ['1703R','1704R','1727Rej','626','659','1712','1716L','1719','1723','Laser']
+	machines1 = ['1703R','1704R','1727','626','659','1712','1716L','1719','1723','Laser']
 	rate = [2,2,1,2,2,1,1,1,1,1]
 	line1 = [1,1,1,1,1,1,1,1,1,1]
 	operation1 = [10,10,40,50,50,60,70,80,90,120]
@@ -4030,13 +4030,6 @@ def cell_track_8670(request):
 			cnt33=len(list2)
 
 
-
-
-
-
-
-
-
 		else:
 			# New faster method to search Data.  Doesn't bog down DB
 			list2 = filter(lambda x:x[4]>=t and x[1]==machine2,tmpX)  # Filter list to get 5 min sum
@@ -4044,23 +4037,6 @@ def cell_track_8670(request):
 			list2 = filter(lambda x:x[4]>=start1 and x[1]==machine2,tmpX)  # Filter list to get 5 min sum
 			cnt33 = len(list2)
 
-		# Old Method to search Data
-		# try:
-		# 	sql = "SELECT SUM(Count) FROM GFxPRoduction WHERE TimeStamp >= '%d' and Part = '%s' and Machine = '%s'" % (t,prt,machine2)
-		# 	cur.execute(sql)
-		# 	tmp2 = cur.fetchall()
-		# 	tmp3 = tmp2[0]
-		# 	cnt = int(tmp3[0])
-		# except:
-		# 	cnt = 0
-		# try:
-		# 	sql = "SELECT SUM(Count) FROM GFxPRoduction WHERE TimeStamp >= '%d' and Part = '%s' and Machine = '%s'" % (start1,prt,machine2)
-		# 	cur.execute(sql)
-		# 	tmp22 = cur.fetchall()
-		# 	tmp33 = tmp22[0]
-		# 	cnt33 = int(tmp33[0])
-		# except:
-		# 	cnt33 = 0
 
 		if cnt is None: cnt = 0
 		rate3 = cnt / float(rate2)
