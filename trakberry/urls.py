@@ -165,7 +165,7 @@ from views_barcode import barcode_check_10R,barcode_input_10R,barcode_initial_10
 from views_admin import master
 from views3 import excel_dump, excel_scrap_dump,training_matrix2,training_matrix_find,training_matrix_update_all
 from views3 import bounce_matrix,update_matrix_cancel,matrix_cache_matrix, full_update
-from views_admin import tech_pm_add
+from views_admin import tech_pm_add,manpower_calculation
 from views_healthsafety import temp_display,temp_test1,temp_test_reset
 # ***********************************************************************************************************************************************************
 
@@ -592,9 +592,9 @@ urlpatterns = [
 	url(r'^track_graph_prev2/get/(?P<index>\d+)/$', track_graph_prev2),
 	url(r'^track_graph_track/get/(?P<index>\d+)/$', track_graph_track),
 	
-	# url(r'^track_graph_8670/get/(?P<index>\d+)/$', track_graph_8670),
+	url(r'^track_graph_8670/get/(?P<index>\d+)/$', track_graph_8670),
 
-	url(r'^track_graph_8670/get/(?P<index>[\w|\W]+)', track_graph_8670),
+	# url(r'^track_graph_8670/get/(?P<index>[\w|\W]+)', track_graph_8670),
 
 
 
@@ -709,6 +709,9 @@ urlpatterns = [
 	url(r'^tech_pm_add/', tech_pm_add),
 
 	url(r'^temp_display/', temp_display),
+
+	url(r'^manpower_calculation/', manpower_calculation),
+
 
 	# ************************************************************************
 

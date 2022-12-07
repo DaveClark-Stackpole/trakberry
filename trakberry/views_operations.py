@@ -3238,6 +3238,7 @@ def prod_1467(request):
 
 def prod_10R_initial(request):
 	t=int(time.time())
+
 	request.session['TCURR'] = t
 	request.session['working_address'] = 'prod_10R'
 	return render(request, "test_update7.html")  
@@ -3252,6 +3253,7 @@ def prod_10R(request):
 	request.session['WL'] = 432000
 	request.session['prev_10r'] = 0
 	t=int(time.time())
+
 	request.session['TCURR'] = t
 	week_start_10r(request,t)
 	prod_9341(request)

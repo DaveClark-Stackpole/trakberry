@@ -878,9 +878,13 @@ def tech_pm_complete_asset(request,index):
 	cur.execute(sql)
 	tmp = cur.fetchall()
 
+	t=int(time.time())
 	for i in tmp:
 		id1 = i[0]
 		rql =( 'update PM_CNC_Tech_Temp SET Id="%s" WHERE Id="%s"' % (id_ctr,id1))
+		cur.execute(rql)
+		db.commit()
+		rql =( 'update PM_CNC_Tech_Temp SET Last_Checked="%s"' % (t))
 		cur.execute(rql)
 		db.commit()
 		id_ctr = id_ctr + 1
@@ -897,7 +901,7 @@ def tech_pm_complete_asset(request,index):
 
 
 
-	return render(request,"redirect_master.html")
+	return render(request,"redirect_master2.html")
 
 
 	request.session['tech_pm_asset'] = index
