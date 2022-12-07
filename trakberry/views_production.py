@@ -1447,7 +1447,7 @@ def tracking(request):
 		data2, gr_list2 = track_area(request)
 
 
-	return render(request, "redirect_trilobe_track.html")
+	# return render(request, "redirect_trilobe_track.html")
 	return render(request, "track.html",{'GList':gr_list1,"datax":data1,'GList2':gr_list2, "datax2":data2})
 	# except:
 	# 	return render(request, "track_error.html")
@@ -1985,13 +1985,13 @@ def chart2_5214_OP30(request):
 		request.session['asset4_area2'] = '1710'
 		return render(request, "redirect_tracking.html")
 def chart1_3214_OP30(request):
-		request.session['area1'] = '50-3214 OP30'
+		request.session['area1'] = '50-3214 Wash'
 		request.session['part_area1'] = '50-3214'
-		request.session['rate_area1'] = 76
-		request.session['asset1_area1'] = '1710'
-		request.session['asset2_area1'] = '1710'
-		request.session['asset3_area1'] = '1710'
-		request.session['asset4_area1'] = '1710'
+		request.session['rate_area1'] = 50
+		request.session['asset1_area1'] = '1723'
+		request.session['asset2_area1'] = '1723'
+		request.session['asset3_area1'] = '1723'
+		request.session['asset4_area1'] = '1723'
 		return render(request, "redirect_tracking.html")
 def chart2_3214_OP30(request):
 		request.session['area2'] = '50-3214 OP30'
@@ -2294,9 +2294,33 @@ def mgmt_goals(request):
 	tmp = cur.fetchall()
 	add_factor_5214 = int(tmp[0][3])
 	goal_5214 = int(tmp[0][2])
+	p='50-4114'
+	sql = "SELECT * FROM tkb_production_goals WHERE part = '%s'" % (p)
+	cur.execute(sql)
+	tmp = cur.fetchall()
+	add_factor_4114 = int(tmp[0][3])
+	goal_4114 = int(tmp[0][2])
+	p='50-6114'
+	sql = "SELECT * FROM tkb_production_goals WHERE part = '%s'" % (p)
+	cur.execute(sql)
+	tmp = cur.fetchall()
+	add_factor_6114 = int(tmp[0][3])
+	goal_6114 = int(tmp[0][2])
+	p='50-4314'
+	sql = "SELECT * FROM tkb_production_goals WHERE part = '%s'" % (p)
+	cur.execute(sql)
+	tmp = cur.fetchall()
+	add_factor_4314 = int(tmp[0][3])
+	goal_4314 = int(tmp[0][2])
+	p='50-6314'
+	sql = "SELECT * FROM tkb_production_goals WHERE part = '%s'" % (p)
+	cur.execute(sql)
+	tmp = cur.fetchall()
+	add_factor_6314 = int(tmp[0][3])
+	goal_6314 = int(tmp[0][2])
 	
 
-	part = ['50-0455','50-9341','50-1467','50-3050','50-3627','50-3632','50-1713','50-1731','50-8670','50-5401','50-5404','50-4748','50-4865','50-6729','50-4900','50-3214','50-5214']
+	part = ['50-0455','50-9341','50-1467','50-3050','50-3627','50-3632','50-1713','50-1731','50-8670','50-5401','50-5404','50-4748','50-4865','50-6729','50-4900','50-3214','50-5214','50-4114','50-6114','50-4314','50-6314']
 	goals=[]
 	addfac=[]
 	goals.append(goal_0455)
@@ -2316,6 +2340,10 @@ def mgmt_goals(request):
 	goals.append(goal_4900)
 	goals.append(goal_3214)
 	goals.append(goal_5214)
+	goals.append(goal_4114)
+	goals.append(goal_6114)
+	goals.append(goal_4314)
+	goals.append(goal_6314)
 	addfac.append(add_factor_0455)
 	addfac.append(add_factor_9341)
 	addfac.append(add_factor_1467)
@@ -2333,6 +2361,10 @@ def mgmt_goals(request):
 	addfac.append(add_factor_4900)
 	addfac.append(add_factor_3214)
 	addfac.append(add_factor_5214)
+	addfac.append(add_factor_4114)
+	addfac.append(add_factor_6114)
+	addfac.append(add_factor_4314)
+	addfac.append(add_factor_6314)
 
 	totals=zip(part,goals,addfac)
 	request.session['total_goals'] = totals
@@ -3915,6 +3947,236 @@ def cell_track_1467(request):
 
 	return render(request,'cell_track_1467.html',{'t':t,'codes':total8,'op':op_total,'args':args})	
 def cell_track_8670(request):
+
+	shift_start, shift_time, shift_left, shift_end = stamp_shift_start(request)	 # Get the Time Stamp info
+	machines1 = ['1708','1709','1710','1711','1715','1717','1706','1720','677','748','1723']
+	rate = [1,1,1,1,1,1,1,1,2,2,1]
+	line1 = [1,1,1,1,1,1,1,1,1,1,1]
+	operation1 = [10,20,30,40,50,60,70,80,90,90,100]
+	prt = '50-3214'
+	pp = '3214'
+	machine_rate = zip(machines1,rate,operation1)
+	machine_color =[]
+	db, cur = db_set(request)
+
+	# Filter a List
+	color8=[]
+	rate8=[]
+	machine8=[]
+	pred8 = []
+	av55=[]
+	cnt55=[]
+	sh55=[]
+	shl55=[]
+	op8=[]
+	rt8=[]
+	request.session['shift_start'] = shift_start
+
+
+	# Preliminary testing variables for new methord
+	tt = int(time.time())
+	t=tt-300
+	start1 = tt-shift_time
+	sql="SELECT * FROM GFxPRoduction WHERE TimeStamp >='%s' and Part='%s'"%(start1,prt)
+	cur.execute(sql)
+	tmpX=cur.fetchall()
+
+
+	sql="SELECT * FROM barcode WHERE scrap >='%s'"%(start1)
+	cur.execute(sql)
+	tmpY=cur.fetchall()
+
+
+	db.close()
+	# *********************************************
+
+	for i in machine_rate:
+		machine2 = i[0]
+
+		rate2 = 300 / float(i[1])
+		rate2 = (rate2 / float(28800)) * 300
+
+
+		
+		# If 1510 going take out below conditional statement
+		if machine2 == '1888':
+			machine22 = '1531'
+			list2 = filter(lambda x:x[4]>=t and x[1]==machine22,tmpX)  # Filter list to get 5 min sum
+			cnt = len(list2)
+			list2 = filter(lambda x:x[4]>=start1 and x[1]==machine22,tmpX)  # Filter list to get 5 min sum
+			cnt33 = len(list2)
+
+		elif machine2 == '1510':
+			machine22 = '1514'
+			list2 = filter(lambda x:x[4]>=t and x[1]==machine22,tmpX)  # Filter list to get 5 min sum
+			cnt = len(list2)
+			list2 = filter(lambda x:x[4]>=start1 and x[1]==machine22,tmpX)  # Filter list to get 5 min sum
+			cnt33 = len(list2)	
+
+
+		elif machine2 == '1704R':
+			list2 = filter(lambda x:x[4]>=t and x[1]==machine2,tmpX)  # Filter list to get 5 min sum
+			x1 = 0
+			cnt=0
+			for j in list2:
+				x2 = j[4]
+				if (x2-x1) > 150:
+					cnt=cnt+1
+					x1=j[4]
+			list2 = filter(lambda x:x[4]>=start1 and x[1]==machine2,tmpX)  # Filter list to get 5 min sum
+			x1 = 0
+			cnt33=0
+			for j in list2:
+				x2 = j[4]
+				if (x2-x1) > 150:
+					cnt33=cnt33+1
+					x1=j[4]
+
+		elif machine2 == '1703R':
+
+			list2 = filter(lambda x:x[4]>=t and x[1]==machine2,tmpX)  # Filter list to get 5 min sum
+			x1 = 0
+			cnt=0
+			for j in list2:
+				x2 = j[4]
+				if (x2-x1) > 150:
+					cnt=cnt+1
+					x1=j[4]
+			
+			list2 = filter(lambda x:x[4]>=start1 and x[1]==machine2,tmpX)  # Filter list to get 5 min sum
+			x1 = 0
+			cnt33=0
+			for j in list2:
+				x2 = j[4]
+				if (x2-x1) > 150:
+					cnt33=cnt33+1
+					x1=j[4]
+
+		elif machine2 == 'Laser':
+
+			list2 = filter(lambda x:x[2]>=t and x[1][-4:]==pp,tmpY)  # Filter list to get 5 min sum
+			cnt=len(list2)
+
+			
+			list2 = filter(lambda x:x[2]>=start1 and x[1][-4:]==pp,tmpY)  # Filter list to get 5 min sum
+			cnt33=len(list2)
+
+
+		else:
+			# New faster method to search Data.  Doesn't bog down DB
+			list2 = filter(lambda x:x[4]>=t and x[1]==machine2,tmpX)  # Filter list to get 5 min sum
+			cnt = len(list2)
+			list2 = filter(lambda x:x[4]>=start1 and x[1]==machine2,tmpX)  # Filter list to get 5 min sum
+			cnt33 = len(list2)
+
+
+		if cnt is None: cnt = 0
+		rate3 = cnt / float(rate2)
+		rate3 = int(rate3 * 100) # This will be the percentage we use to determine colour
+
+		# Pediction
+		try:
+			avg8 = cnt33 / float(shift_time)
+		except:
+			shift_time = 100
+			avg8 = cnt33 / float(shift_time)
+			
+		avg9 = avg8 * shift_left
+		pred1 = int(cnt33 + avg9)
+
+		op8.append(i[2])
+		rt8.append(i[1])
+		av55.append(avg8)
+		cnt55.append(cnt33)
+		sh55.append(shift_time)
+		shl55.append(shift_left)
+		pred8.append(pred1)
+
+
+		if rate3>=100:
+			cc='#009700'
+		elif rate3>=90:
+			cc='#4FC34F'
+		elif rate3>=80:
+			cc='#A4F6A4'
+		elif rate3>=70:
+			cc='#C3C300'
+		elif rate3>=50:
+			cc='#DADA3F'
+		elif rate3>=25:
+			cc='#F6F687'
+		elif rate3>=10:
+			cc='#F7BA84'
+		elif rate3>0:
+			cc='#EC7371'
+		else:
+			if pred1 == 0:
+				cc='#D5D5D5'
+			else:
+				cc='#FF0400'
+		color8.append(cc)
+		rate8.append(rate3)
+		machine8.append(machine2)
+
+	total8=zip(machine8,rate8,color8,pred8,op8,rt8)
+	total99=0
+	last_op=10
+	op99=[]
+	opt99=[]
+
+	op_total = [0 for x in range(200)]	
+
+	for i in total8:
+		op_total[i[4]]=op_total[i[4]] + i[3]
+	
+	jobs1 = zip(machines1,line1,operation1)
+
+	
+	# Date entry for History
+	if request.POST:
+		request.session["track_date"] = request.POST.get("date_st")
+		request.session["track_shift"] = request.POST.get("shift")
+		return render(request,'redirect_cell_track_8670_history.html')	
+	else:
+		form = sup_downForm()
+	args = {}
+	args.update(csrf(request))
+	args['form'] = form
+
+
+
+	t = int(time.time())
+	request.session['runrate'] = 1128
+
+
+	# This section will check every 30min and email out counts to Jim and Myself
+
+	# Take it out for now.   Errors when using GMail accounts
+
+	# # try:
+	# db, cur = db_set(request)
+	# cur.execute("""CREATE TABLE IF NOT EXISTS tkb_email_10r(Id INT PRIMARY KEY AUTO_INCREMENT,dummy1 INT(30),stamp INT(30) )""")
+	# eql = "SELECT MAX(stamp) FROM tkb_email_10r"
+	# cur.execute(eql)
+	# teql = cur.fetchall()
+	# teql2 = int(teql[0][0])
+	# ttt=int(time.time())
+	# elapsed_time = ttt - teql2
+	# if elapsed_time > 1800:
+	# 	x = 1
+	# 	dummy = 8
+	# 	cur.execute('''INSERT INTO tkb_email_10r(dummy1,stamp) VALUES(%s,%s)''', (dummy,ttt))
+	# 	db.commit()
+	# 	track_email(request)  
+	# db.close()
+	# # except:
+	# # 	dummy2 = 0
+
+	# *****************************************************************************************************
+
+	return render(request,'cell_track_3214.html',{'t':t,'codes':total8,'op':op_total,'args':args})	
+
+def cell_track_8670_OLD(request):
 
 	shift_start, shift_time, shift_left, shift_end = stamp_shift_start(request)	 # Get the Time Stamp info
 	machines1 = ['1703R','1704R','1727','626','659','1712','1716L','1719','1723','Laser']
