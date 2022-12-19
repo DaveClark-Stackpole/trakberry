@@ -145,7 +145,7 @@ from views_production import plus_0455,minus_0455,plus_9341,minus_9341,plus_3050
 
 from views_operations import gf6_reaction,gf6_input,gf6_reaction_prev,gf6_input_prev,prod_9341,prod_10R,prod_10R_prev, prod_728,prod_728fault,prod_728fault_prev
 from views_operations import test_email_7,prod_10R_initial, prod_ab1v, prod_ab1v_initial, prod_ab1v_prev, prod_ab1v_reaction, prod_ab1v_reaction_prev
-from views_operations import track_single, live_10R,live_update1
+from views_operations import track_single, live_10R,live_update1,prod_counts1,prod_counts2,hourly_counts
 
 
 
@@ -673,6 +673,9 @@ urlpatterns = [
 	url(r'^gf6_input_prev/', gf6_input_prev),
 	url(r'^prod_9341/', prod_9341),
 	url(r'^prod_10R/', prod_10R),
+	url(r'^prod_counts1/', prod_counts1),
+	url(r'^prod_counts2/', prod_counts2),
+	url(r'^hourly_counts/get/(?P<index>[\w|\W]+)', hourly_counts),
 	url(r'^prod_ab1v/', prod_ab1v),
 	url(r'^prod_ab1v_reaction/', prod_ab1v_reaction),
 	url(r'^prod_ab1v_reaction_prev/', prod_ab1v_reaction_prev),
