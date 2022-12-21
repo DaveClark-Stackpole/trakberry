@@ -2751,6 +2751,7 @@ def kiosk_scrap_entry(request):
 			tmp = cursor.fetchall()
 			request.session["scrap_operation_selection"] = tmp
 			db.close()
+
 			return render(request, "redirect_kiosk_scrap_entry.html")
 
 		if request.session["scrap_entry"] == 1:
