@@ -3949,12 +3949,12 @@ def cell_track_1467(request):
 def cell_track_8670(request):
 
 	shift_start, shift_time, shift_left, shift_end = stamp_shift_start(request)	 # Get the Time Stamp info
-	machines1 = ['1740','1701','733','755','1702','1717','1706','1720','677','748','1723']
+	machines1 = ['1703L','1704L','1727','659','626','1712','1716L','1719','677','748','1723']
 	rate = [1,1,1,1,1,1,1,1,2,2,1]
 	line1 = [1,1,1,1,1,1,1,1,1,1,1]
-	operation1 = [10,40,50,60,60,60,70,90,100,90,120]
-	prt = '50-5401'
-	pp = '5401'
+	operation1 = [10,10,40,50,50,60,70,80,100,90,120]
+	prt = '50-8670'
+	pp = '8670'
 	machine_rate = zip(machines1,rate,operation1)
 	machine_color =[]
 	db, cur = db_set(request)
@@ -4118,7 +4118,7 @@ def cell_track_8670(request):
 		rate8.append(rate3)
 		machine8.append(machine2)
 
-	total8=zip(machine8,rate8,color8,cnt55,op8,rt8)
+	total8=zip(machine8,rate8,color8,pred8,op8,rt8)
 	total99=0
 	last_op=10
 	op99=[]
