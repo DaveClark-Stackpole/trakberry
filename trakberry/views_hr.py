@@ -53,6 +53,8 @@ def hr_login_form(request):
 		request.session["login_password_check"] = ''
 		login_password_check(request)
 		check = request.session["login_password_check"]
+
+
 		if check != 'false':
 			request.session["hr_login_name"] = request.session["login_name"]
 			request.session["hr_login_password"] = request.session["login_password"]
@@ -60,6 +62,7 @@ def hr_login_form(request):
 		else:
 			request.session["hr_login_password_check"] = 'False'
 		ch2 = request.session["hr_login_password_check"]
+		
 		return render(request,'redirect_hr.html')  # Need to bounce out to an html and redirect back into a module otherwise infinite loop
 	elif 'button2' in request.POST:
 		request.session["login_name"] = request.POST.get("login_name")

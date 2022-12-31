@@ -3656,7 +3656,7 @@ def prod_counts1(request):
 	return render(request, "prod_counts.html")   
 
 def prod_counts2(request):
-	t=1671437379
+	t=1672093616
 	request.session['TCURR'] = t
 	request.session['WL'] = 432000
 	request.session['TCURR'] = t
@@ -5768,7 +5768,7 @@ def stamp_shift_start(request):
 
 	# Unix Time Stamp for the end of the shift
 	shift_end = t + shift_left
-	
+
 	return u,shift_time,shift_left,shift_end
 
 

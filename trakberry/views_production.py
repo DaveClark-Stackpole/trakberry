@@ -7,7 +7,7 @@ from trakberry.forms import maint_closeForm, maint_loginForm, maint_searchForm, 
 from trakberry.views import done
 from views2 import main_login_form
 from views_mod1 import find_current_date, mgmt_display, mgmt_display_edit
-from views_mod2 import stamp_shift_start
+from views_mod2 import stamp_shift_start,stamp_shift_start_3
 from trakberry.views2 import login_initial
 from trakberry.views_testing import machine_list_display
 from trakberry.views_vacation import vacation_temp, vacation_set_current, vacation_set_current2_1, vacation_set_current5,vacation_set_current6,vacation_set_current77
@@ -3948,13 +3948,13 @@ def cell_track_1467(request):
 	return render(request,'cell_track_1467.html',{'t':t,'codes':total8,'op':op_total,'args':args})	
 def cell_track_8670(request):
 
-	shift_start, shift_time, shift_left, shift_end = stamp_shift_start(request)	 # Get the Time Stamp info
-	machines1 = ['1703L','1704L','1727','659','626','1712','1716L','1719','677','748','1723']
+	shift_start, shift_time, shift_left, shift_end = stamp_shift_start_3(request)	 # Get the Time Stamp info
+	machines1 = ['1705','1704L','1727','1722','626','1712','1716L','1719','677','1706','1723']
 	rate = [1,1,1,1,1,1,1,1,2,2,1]
 	line1 = [1,1,1,1,1,1,1,1,1,1,1]
-	operation1 = [10,10,40,50,50,60,70,80,100,90,120]
-	prt = '50-8670'
-	pp = '8670'
+	operation1 = [10,10,40,50,60,70,70,80,100,90,120]
+	prt = '50-5404'
+	pp = '5404'
 	machine_rate = zip(machines1,rate,operation1)
 	machine_color =[]
 	db, cur = db_set(request)
