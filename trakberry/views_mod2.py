@@ -407,4 +407,36 @@ def stamp_shift_start(request):
 	# Unix Time Stamp for the end of the shift
 	shift_end = t + shift_left
 	
+
+	return u,shift_time,shift_left,shift_end
+
+def stamp_shift_start_3(request):
+	stamp=int(time.time())
+	tm = time.localtime(stamp)
+	hour1 = tm[3]
+	t=int(time.time())
+	tm = time.localtime(t)
+	shift_start = -2
+	current_shift = 3
+	if tm[3]<23 and tm[3]>=15:
+		shift_start = 15
+	elif tm[3]<15 and tm[3]>=7:
+		shift_start = 7
+	cur_hour = tm[3]
+	if cur_hour == 23:
+		cur_hour = -1
+
+	# Unix Time Stamp for start of shift Area 1
+	u = t - (((cur_hour-shift_start)*60*60)+(tm[4]*60)+tm[5])	
+
+	# Amount of seconds run so far on the shift
+	shift_time = t-u  
+
+	# Amount of seconds left on the shift to run
+	shift_left = 28800 - shift_time  
+
+	# Unix Time Stamp for the end of the shift
+	shift_end = t + shift_left
+	
+
 	return u,shift_time,shift_left,shift_end

@@ -419,7 +419,7 @@
 	</td>
 </form>
 
-{% else %}<br><center><font style="font-weight:bolder;font-size:120%;"><u>AB1V 50-5401 Cell Track</u></font>
+{% else %}<br><center><font style="font-weight:bolder;font-size:120%;"><u>AB1V 5404 TRACK</u></font>
 	<font style="font-weight:bolder;font-size:85%;">(End of Shift Prediction)</font>
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <button  style="background-color: #585858;border-radius: 10px;height:70%;font-size:10px;color:#d8ff49" onclick="track_history()">History</button> </center>
@@ -439,84 +439,28 @@
 
 
 			<div class="frame1">  <!-- MainLine Production-->
-				<center><table id="mainline"><tr> <!-- OP60 -->
-					<td bgcolor="#bdb4b3" style="font-size:12px;width:15%;"><br><center><font style="font-weight:bolder;font-size:100%;">&nbsp;&nbsp;&nbsp;&nbsp;</font></center><br></td>
-
-					<td bgcolor="#bdb4b3"><br><center><font style="font-weight:bolder;font-size:100%;">Mainline</font></center><br></td>
-				</tr></table></center>
-				<center><table id="mainline"><tr> <!-- OP10 -->
-						<td bgcolor="#b0aea9" style="font-size:12px;width:15%;"><br><center><font style="font-weight:bolder;font-size:100%;">OP 10</font>
-							<font style="font-weight:bolder;font-size:85%;"><br>({{op.10}})</font></center></td>
-						<td bgcolor={{codes.0.2}}><br><center><font style="font-weight:bolder;font-size:100%;">
-							<a href="{{request.session.local_toggle}}/track_graph_8670/get/{{codes.0.0}}" onclick="window.open('{{request.session.local_toggle}}/track_graph_8670/get/{{codes.0.0}}', 'newwindow', 'width=1400, height=600'); return false;">
-								{{codes.0.0}}</a></font>
-							<font style="font-weight:bolder;font-size:70%;">({{codes.0.3}})</font></center><br></td>
-							<td bgcolor={{codes.1.2}}><br><center><font style="font-weight:bolder;font-size:100%;">
-								<a href="{{request.session.local_toggle}}/track_graph_8670/get/{{codes.1.0}}" onclick="window.open('{{request.session.local_toggle}}/track_graph_8670/get/{{codes.1.0}}', 'newwindow', 'width=1400, height=600'); return false;">
-									{{codes.1.0}}</a></font>
-								<font style="font-weight:bolder;font-size:70%;">({{codes.1.3}})</font></center><br></td>
-
-				</tr></table></center>
-				<center><table id="mainline"><tr> <!-- OP30 -->
-						<td bgcolor="#b0aea9" style="font-size:12px;width:15%;"><br><center><font style="font-weight:bolder;font-size:100%;">OP 40</font>
-							<font style="font-weight:bolder;font-size:85%;"><br>({{op.40}})</font></center></td>
-						<td bgcolor={{codes.2.2}}><br><center><font style="font-weight:bolder;font-size:100%;">
-							<a href="{{request.session.local_toggle}}/track_graph_8670/get/{{codes.2.0}}" onclick="window.open('{{request.session.local_toggle}}/track_graph_8670/get/{{codes.2.0}}', 'newwindow', 'width=1400, height=600'); return false;">
-								{{codes.2.0}}</a></font>
-							<font style="font-weight:bolder;font-size:70%;">({{codes.2.3}})</font></center><br></td>
 
 
-				</tr></table></center>
-				<center><table id="mainline"><tr> <!-- OP50 -->
-					<td bgcolor="#b0aea9" style="font-size:12px;width:15%;"><br><center><font style="font-weight:bolder;font-size:100%;">OP 50</font>
-						<font style="font-weight:bolder;font-size:85%;"><br>({{op.50}})</font></center></td>
-					<td bgcolor={{codes.3.2}}><br><center><font style="font-weight:bolder;font-size:100%;">
-						<a href="{{request.session.local_toggle}}/track_graph_8670/get/{{codes.3.0}}" onclick="window.open('{{request.session.local_toggle}}/track_graph_8670/get/{{codes.3.0}}', 'newwindow', 'width=1400, height=600'); return false;">
-							{{codes.3.0}}</a></font>
-						<font style="font-weight:bolder;font-size:70%;">({{codes.3.3}})</font></center><br></td>
-					<td bgcolor={{codes.4.2}}><br><center><font style="font-weight:bolder;font-size:100%;">
-						<a href="{{request.session.local_toggle}}/track_graph_8670/get/{{codes.4.0}}" onclick="window.open('{{request.session.local_toggle}}/track_graph_8670/get/{{codes.4.0}}', 'newwindow', 'width=1400, height=600'); return false;">
-							{{codes.4.0}}</a></font>
-						<font style="font-weight:bolder;font-size:70%;">({{codes.4.3}})</font></center><br></td>
-				</tr></table></center>
 
-			<center><table id="mainline"><tr> <!-- OP60 -->
-				<td bgcolor="#b0aea9" style="font-size:12px;width:15%;"><br><center><font style="font-weight:bolder;font-size:100%;">OP 60</font>
-					<font style="font-weight:bolder;font-size:85%;"><br>({{op.60}})</font></center></td>
-				<td bgcolor={{codes.5.2}}><br><center><font style="font-weight:bolder;font-size:100%;">
-					<a href="{{request.session.local_toggle}}/track_graph_8670/get/{{codes.5.0}}" onclick="window.open('{{request.session.local_toggle}}/track_graph_8670/get/{{codes.5.0}}', 'newwindow', 'width=1400, height=600'); return false;">
-						{{codes.5.0}}</a></font>
-					<font style="font-weight:bolder;font-size:70%;">({{codes.5.3}})</font></center><br></td>
-			</tr></table></center>
 
-			<center><table id="mainline"><tr> <!-- OP70 -->
-				<td bgcolor="#b0aea9" style="font-size:12px;width:15%;"><br><center><font style="font-weight:bolder;font-size:100%;">OP 70</font>
-					<font style="font-weight:bolder;font-size:85%;"><br>({{op.70}})</font></center></td>
-				<td bgcolor={{codes.6.2}}><br><center><font style="font-weight:bolder;font-size:100%;">
-					<a href="{{request.session.local_toggle}}/track_graph_8670/get/{{codes.6.0}}" onclick="window.open('{{request.session.local_toggle}}/track_graph_8670/get/{{codes.6.0}}', 'newwindow', 'width=1400, height=600'); return false;">
-						{{codes.6.0}}</a></font>
-					<font style="font-weight:bolder;font-size:70%;">({{codes.6.3}})</font></center><br></td>
-			</tr></table></center>
 
-			<center><table id="mainline"><tr> <!-- OP80 -->
-				<td bgcolor="#b0aea9" style="font-size:12px;width:15%;"><br><center><font style="font-weight:bolder;font-size:100%;">OP 80</font>
-					<font style="font-weight:bolder;font-size:85%;"><br>({{op.80}})</font></center></td>
-				<td bgcolor={{codes.7.2}}><br><center><font style="font-weight:bolder;font-size:100%;">
-					<a href="{{request.session.local_toggle}}/track_graph_8670/get/{{codes.7.0}}" onclick="window.open('{{request.session.local_toggle}}/track_graph_8670/get/{{codes.7.0}}', 'newwindow', 'width=1400, height=600'); return false;">
-						{{codes.7.0}}</a></font>
-					<font style="font-weight:bolder;font-size:70%;">({{codes.7.3}})</font></center><br></td>
+
+			<center><table id="mainline"><tr> <!-- OP 50 -->
+				<td bgcolor="#b0aea9" style="font-size:12px;width:15%;"><br><center><font style="font-weight:bolder;font-size:100%;">
+                    <br><br><br><br><br><br><br>
+                    OP 50</font>
+                    
+					<font style="font-weight:bolder;font-size:120%;"><br>({{op.100}})
+                    
+                        <br><br><br><br><br><br><br>
+                    </font></center></td>
+				<td bgcolor={{codes.9.2}}><br><center><font style="font-weight:bolder;font-size:140%;">
+					<a href="{{request.session.local_toggle}}/track_graph_8670/get/{{codes.9.0}}" onclick="window.open('{{request.session.local_toggle}}/track_graph_8670/get/{{codes.9.0}}', 'newwindow', 'width=1400, height=600'); return false;">
+						{{codes.9.0}}</a></font>
+					<font style="font-weight:bolder;font-size:70%;">({{codes.9.3}})</font></center><br></td>
 			</tr></table></center>
 
 
-
-			<center><table id="mainline"><tr> <!-- Laser -->
-				<td bgcolor="#b0aea9" style="font-size:12px;width:15%;"><br><center><font style="font-weight:bolder;font-size:100%;">Wash</font>
-					<font style="font-weight:bolder;font-size:85%;"><br>({{op.120}})</font></center></td>
-				<td bgcolor={{codes.10.2}}><br><center><font style="font-weight:bolder;font-size:100%;">
-					<a href="{{request.session.local_toggle}}/track_graph_8670/get/{{codes.10.0}}" onclick="window.open('{{request.session.local_toggle}}/track_graph_8670/get/{{codes.10.0}}', 'newwindow', 'width=1400, height=600'); return false;">
-						{{codes.10.0}}</a></font>
-					<font style="font-weight:bolder;font-size:70%;">(Total:{{codes.10.3}})</font></center><br></td>
-			</tr></table></center>
 
 
 			</div>
