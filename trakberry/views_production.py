@@ -3949,10 +3949,10 @@ def cell_track_1467(request):
 def cell_track_8670(request):
 
 	shift_start, shift_time, shift_left, shift_end = stamp_shift_start_3(request)	 # Get the Time Stamp info
-	machines1 = ['1705','1704L','1727','1722','626','1712','1716L','1719','677','1706','1723']
-	rate = [1,1,1,1,1,1,1,1,2,2,1]
+	machines1 = ['1705','1746','621','629','785','1748','1718','669','1726','1722','1713','1716R','1719','677']
+	rate = [2,2,2,2,3,3,3,1,1,1,1,1,1,1]
 	line1 = [1,1,1,1,1,1,1,1,1,1,1]
-	operation1 = [10,10,40,50,60,70,70,80,100,90,120]
+	operation1 = [10,10,25,25,30,30,30,35,40,50,60,70,80,90]
 	prt = '50-5404'
 	pp = '5404'
 	machine_rate = zip(machines1,rate,operation1)
@@ -3977,6 +3977,7 @@ def cell_track_8670(request):
 	tt = int(time.time())
 	t=tt-300
 	start1 = tt-shift_time
+
 	sql="SELECT * FROM GFxPRoduction WHERE TimeStamp >='%s' and Part='%s'"%(start1,prt)
 	cur.execute(sql)
 	tmpX=cur.fetchall()
@@ -4174,7 +4175,8 @@ def cell_track_8670(request):
 
 	# *****************************************************************************************************
 
-	return render(request,'cell_track_3214.html',{'t':t,'codes':total8,'op':op_total,'args':args})	
+	return render(request,'cell_5404.html',{'t':t,'codes':total8,'op':op_total,'args':args})	
+	return render(request,'cell_track_8670.html',{'t':t,'codes':total8,'op':op_total,'args':args})	
 
 def cell_track_8670_OLD(request):
 
