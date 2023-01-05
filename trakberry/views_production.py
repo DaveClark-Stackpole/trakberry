@@ -4175,7 +4175,7 @@ def cell_track_8670(request):
 
 	# *****************************************************************************************************
 
-	return render(request,'cell_5404.html',{'t':t,'codes':total8,'op':op_total,'args':args})	
+	# return render(request,'cell_5404.html',{'t':t,'codes':total8,'op':op_total,'args':args})	
 	return render(request,'cell_track_8670.html',{'t':t,'codes':total8,'op':op_total,'args':args})	
 
 def cell_track_8670_OLD(request):

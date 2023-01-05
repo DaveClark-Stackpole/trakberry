@@ -276,13 +276,13 @@
 	</tr>
 {% endfor %}
 
-{% for i in request.session.totals_5401 %}
+{% for i in request.session.totals_5404_1722 %}
 	<tr>
-			<td bgcolor="#CDCDCD"><center><b>50-5401</b></center></td>
+			<td bgcolor="#CDCDCD"><center><b>50-5404(1722)</b></center></td>
 			{% for ii in i %}
 			   <td bgcolor="#CDCDCD"><center>{{ii.3}}</center></td>
 		{% endfor %}
-		{% for x in request.session.op_span_5401 %}
+		{% for x in request.session.op_span_5404_1722 %}
 			{% if x.0 == i.0.0 and x.2 > 0 %} 
 				<td  bgcolor="#CDCDCD" rowspan="{{x.2}}"><center><b>{{x.3}}</b></center></td>
 			{% endif %}
