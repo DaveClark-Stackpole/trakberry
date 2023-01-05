@@ -3949,10 +3949,10 @@ def cell_track_1467(request):
 def cell_track_8670(request):
 
 	shift_start, shift_time, shift_left, shift_end = stamp_shift_start_3(request)	 # Get the Time Stamp info
-	machines1 = ['1705','1746','621','629','785','1748','1718','669','1726','1722','1713','1716R','1719','677']
+	machines1 = ['1705','1746','621','629','785','1748','1718','669','1726','1722','1713','1716R','1719','Laser']
 	rate = [2,2,2,2,3,3,3,1,1,1,1,1,1,1]
 	line1 = [1,1,1,1,1,1,1,1,1,1,1]
-	operation1 = [10,10,25,25,30,30,30,35,40,50,60,70,80,90]
+	operation1 = [10,10,25,25,30,30,30,35,40,50,60,70,80,130]
 	prt = '50-5404'
 	pp = '5404'
 	machine_rate = zip(machines1,rate,operation1)
@@ -4053,7 +4053,7 @@ def cell_track_8670(request):
 					cnt33=cnt33+1
 					x1=j[4]
 
-		elif machine2 == '677':
+		elif machine2 == 'Laser':
 
 			list2 = filter(lambda x:x[2]>=t and x[1][-4:]==pp,tmpY)  # Filter list to get 5 min sum
 			cnt=len(list2)
