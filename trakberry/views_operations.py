@@ -3785,6 +3785,7 @@ def prod_counts1(request):
 	ab1v_3214(request)
 	ab1v_5214(request)
 	ab1v_8670(request)
+	ab1v_5401(request)
 	ab1v_5404_1722(request)
 	ab1v_5404(request)
 	prod_6114_611(request)
@@ -3809,7 +3810,6 @@ def hourly_counts(request,index):
 	dy = index[-3:]
 	asset = '611'
 	part = '50-6114'
-
 	stamp2 = pdate_stamp(pd)
 	if dy == 'Mid':
 		stamp2 = stamp2 - 7200
@@ -3820,6 +3820,34 @@ def hourly_counts(request,index):
 	stamp_start = stamp2
 	stamp_end = stamp_start + 28800
 
+
+	request.session["count_6114"] = filter_prod2(request,stamp_start,stamp_end,'611','50-6114')
+	request.session["count_1722"] = filter_prod2(request,stamp_start,stamp_end,'1722','50-5404')
+
+
+	db, cur = db_set(request) 
+
+	# sql = "SELECT * from barcode where scrap >= '%s' and scrap <= '%s' and RIGHT(asset_num,4) = '%s'" % (stamp_start,stamp_end,part)
+	sql = "SELECT * from barcode where scrap >= '%s' and scrap <= '%s'" % (stamp_start,stamp_end)
+	cur.execute(sql)
+	tmp = cur.fetchall()
+	db.close()
+
+
+
+	request.session["count_6420"] = filter_prod(tmp,stamp_start,'6420')
+	request.session["count_6418"] = filter_prod(tmp,stamp_start,'6418')
+	request.session["count_5404"] = filter_prod(tmp,stamp_start,'5404')
+	request.session["count_3214"] = filter_prod(tmp,stamp_start,'3214')
+	request.session["count_5214"] = filter_prod(tmp,stamp_start,'5214')
+
+
+
+	request.session["pdate2"] = pd
+	request.session["day2"] = dy
+	return render(request, "hourly_counts.html")  
+
+def filter_prod2(request,stamp_start,stamp_end,asset,part):
 	db, cur = db_set(request) 
 	sql = "SELECT * FROM GFxPRoduction WHERE TimeStamp >= '%s' and TimeStamp <= '%s' and Machine = '%s' and Part = '%s'" %(stamp_start,stamp_end,asset,part)
 	cur.execute(sql)
@@ -3834,28 +3862,8 @@ def hourly_counts(request,index):
 		a4 = len(a3)
 		cnt.append(a4)
 		cnt2.append(fi)
-	request.session["count_6114"] = cnt
-
-
-	
-	# sql = "SELECT * from barcode where scrap >= '%s' and scrap <= '%s' and RIGHT(asset_num,4) = '%s'" % (stamp_start,stamp_end,part)
-	sql = "SELECT * from barcode where scrap >= '%s' and scrap <= '%s'" % (stamp_start,stamp_end)
-	cur.execute(sql)
-	tmp = cur.fetchall()
 	db.close()
-
-
-	request.session["count_6420"] = filter_prod(tmp,stamp_start,'6420')
-	request.session["count_6418"] = filter_prod(tmp,stamp_start,'6418')
-	request.session["count_5404"] = filter_prod(tmp,stamp_start,'5404')
-	request.session["count_3214"] = filter_prod(tmp,stamp_start,'3214')
-	request.session["count_5214"] = filter_prod(tmp,stamp_start,'5214')
-
-
-
-	request.session["pdate2"] = pd
-	request.session["day2"] = dy
-	return render(request, "hourly_counts.html")  
+	return cnt
 
 def filter_prod(tmp,stamp_start,part):
 	cnt=[]
