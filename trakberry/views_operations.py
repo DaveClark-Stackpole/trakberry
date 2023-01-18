@@ -3928,7 +3928,7 @@ def prod_1467(request):
 	return
 
 def prod_counts1(request):
-	t=1672904846
+	t=1674061455
 	request.session['TCURR'] = t
 	request.session['WL'] = 432000
 	request.session['TCURR'] = t
