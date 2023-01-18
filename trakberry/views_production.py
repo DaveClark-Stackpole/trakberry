@@ -2184,6 +2184,7 @@ def switch_plan_week(var1,var2,var3,request):
 		else:
 			b.append(i)
 	overall = zip(a,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,b)
+	dddd=3/0
 	request.session['Total_10R'] = overall
 	return overall
 
@@ -2435,11 +2436,11 @@ def minus_1467(request):
 # Monitor Production vs Target on the Big 4
 # Use Live Track and Entries
 def mgmt_track_week(request):
-	machines1 = ['1504','1506','1519','1520','1502','1507','1501','1515','1508','1532','1509','1514','1510','1503','1511','1518','1521','1522','1523','1539','1540','1524','1525','1538','1541','1531','1527','1530','1528','1513','1533','1543','1529','776','1824','1804','1805','1806','1816','650R','650L','769','769']
-	part1=  ['50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-0455','50-0455','50-0455','50-0455','50-0455','50-0455','50-0455','50-0455','50-1467','50-1467','50-1467','50-3050']
-	rate = [8,8,8,8,4,4,4,4,3,3,2,2,2,2,2,8,8,8,8,4,4,4,4,3,2,2,2,2,2,1,1,4,4,4,4,2,2,1,1,3,3,3,1]
-	operation1 = [10,10,10,10,30,30,40,40,50,50,60,70,80,100,110,10,10,10,10,30,30,40,40,50,60,70,80,100,110,90,120,30,30,30,30,40,40,50,120,130,130,130,140]
-	min_sw = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,11,-2,-2,-2,-2,-2,-2,-2,21,31,31,31,41]
+	machines1 = ['1504','1506','1519','1520','1502','1507','1546','1501','1515','1508','1532','1509','1514','1510','1503','1511','1518','1521','1522','1523','1539','1540','1524','1525','1538','1541','1531','1527','1530','1528','1513','1533','1543','1529','776','1824','1804','1805','1806','1816','650R','650L','769','769']
+	part1=  ['50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-0455','50-0455','50-0455','50-0455','50-0455','50-0455','50-0455','50-0455','50-1467','50-1467','50-1467','50-3050']
+	rate = [8,8,8,8,5,5,5,4,4,3,3,2,2,2,2,2,8,8,8,8,4,4,4,4,3,2,2,2,2,2,1,1,4,4,4,4,2,2,1,1,3,3,3,1]
+	operation1 = [10,10,10,10,30,30,30,40,40,50,50,60,70,80,100,110,10,10,10,10,30,30,40,40,50,60,70,80,100,110,90,120,30,30,30,30,40,40,50,120,130,130,130,140]
+	min_sw = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,11,-2,-2,-2,-2,-2,-2,-2,21,31,31,31,41]
 	ooo=[10,30,40,50,60,70,80,90,100,110,120,10,30,40,50,100,120,130,140]
 	opp=['50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-0455','50-0455','50-0455','50-0455','50-0455','50-0455','50-1467','50-3050']
 	prt = '50-9341'
@@ -3949,12 +3950,12 @@ def cell_track_1467(request):
 def cell_track_8670(request):
 
 	shift_start, shift_time, shift_left, shift_end = stamp_shift_start_3(request)	 # Get the Time Stamp info
-	machines1 = ['1705','1746','621','629','785','1748','1718','669','1726','1722','1713','1716R','1719','Laser']
-	rate = [2,2,2,2,3,3,3,1,1,1,1,1,1,1]
+	machines1 = ['1703L','1704L','658','661','1703R','1704R','622','623','1727','659','626','1712','1716L','1719','1723','Laser']
+	rate = [4,4,4,4,4,4,4,4,1,2,1,1,1,1,1]
 	line1 = [1,1,1,1,1,1,1,1,1,1,1]
-	operation1 = [10,10,25,25,30,30,30,35,40,50,60,70,80,130]
-	prt = '50-5404'
-	pp = '5404'
+	operation1 = [10,10,10,10,30,30,30,30,40,50,50,60,70,80,90,130]
+	prt = '50-8670'
+	pp = '8670'
 	machine_rate = zip(machines1,rate,operation1)
 	machine_color =[]
 	db, cur = db_set(request)
@@ -4145,6 +4146,9 @@ def cell_track_8670(request):
 	args['form'] = form
 
 
+	total8_5404,op_total_5404 = cell_track_5404(request)
+
+
 
 	t = int(time.time())
 	request.session['runrate'] = 1128
@@ -4176,7 +4180,167 @@ def cell_track_8670(request):
 	# *****************************************************************************************************
 
 	# return render(request,'cell_5404.html',{'t':t,'codes':total8,'op':op_total,'args':args})	
-	return render(request,'cell_track_8670.html',{'t':t,'codes':total8,'op':op_total,'args':args})	
+	return render(request,'cell_track_8670.html',{'t':t,'codes':total8,'op':op_total,'codes_5404':total8_5404,'op_5404':op_total_5404,'args':args})	
+
+def cell_track_5404(request):
+	shift_start, shift_time, shift_left, shift_end = stamp_shift_start_3(request)	 # Get the Time Stamp info
+	machines1 = ['1705','1746','621','629','785','1748','1718','669','1726','1722','1713','1716R','1719','1723','Laser']
+	rate = [2,2,2,2,3,3,3,1,1,1,1,1,1,1,1]
+	line1 = [1,1,1,1,1,1,1,1,1,1,1]
+	operation1 = [10,10,25,25,30,30,30,35,40,50,60,70,80,90,130]
+	prt = '50-5404'
+	pp = '5404'
+	machine_rate = zip(machines1,rate,operation1)
+	machine_color =[]
+	db, cur = db_set(request)
+	color8=[]
+	rate8=[]
+	machine8=[]
+	pred8 = []
+	av55=[]
+	cnt55=[]
+	sh55=[]
+	shl55=[]
+	op8=[]
+	rt8=[]
+	request.session['shift_start'] = shift_start
+	tt = int(time.time())
+	t=tt-300
+	start1 = tt-shift_time
+	sql="SELECT * FROM GFxPRoduction WHERE TimeStamp >='%s' and Part='%s'"%(start1,prt)
+	cur.execute(sql)
+	tmpX=cur.fetchall()
+	sql="SELECT * FROM barcode WHERE scrap >='%s'"%(start1)
+	cur.execute(sql)
+	tmpY=cur.fetchall()
+	db.close()
+	for i in machine_rate:
+		machine2 = i[0]
+		rate2 = 300 / float(i[1])
+		rate2 = (rate2 / float(28800)) * 300
+		if machine2 == '1888':
+			machine22 = '1531'
+			list2 = filter(lambda x:x[4]>=t and x[1]==machine22,tmpX)  # Filter list to get 5 min sum
+			cnt = len(list2)
+			list2 = filter(lambda x:x[4]>=start1 and x[1]==machine22,tmpX)  # Filter list to get 5 min sum
+			cnt33 = len(list2)
+		elif machine2 == '1510':
+			machine22 = '1514'
+			list2 = filter(lambda x:x[4]>=t and x[1]==machine22,tmpX)  # Filter list to get 5 min sum
+			cnt = len(list2)
+			list2 = filter(lambda x:x[4]>=start1 and x[1]==machine22,tmpX)  # Filter list to get 5 min sum
+			cnt33 = len(list2)	
+		elif machine2 == '1704R':
+			list2 = filter(lambda x:x[4]>=t and x[1]==machine2,tmpX)  # Filter list to get 5 min sum
+			x1 = 0
+			cnt=0
+			for j in list2:
+				x2 = j[4]
+				if (x2-x1) > 150:
+					cnt=cnt+1
+					x1=j[4]
+			list2 = filter(lambda x:x[4]>=start1 and x[1]==machine2,tmpX)  # Filter list to get 5 min sum
+			x1 = 0
+			cnt33=0
+			for j in list2:
+				x2 = j[4]
+				if (x2-x1) > 150:
+					cnt33=cnt33+1
+					x1=j[4]
+		elif machine2 == '1703R':
+			list2 = filter(lambda x:x[4]>=t and x[1]==machine2,tmpX)  # Filter list to get 5 min sum
+			x1 = 0
+			cnt=0
+			for j in list2:
+				x2 = j[4]
+				if (x2-x1) > 150:
+					cnt=cnt+1
+					x1=j[4]		
+			list2 = filter(lambda x:x[4]>=start1 and x[1]==machine2,tmpX)  # Filter list to get 5 min sum
+			x1 = 0
+			cnt33=0
+			for j in list2:
+				x2 = j[4]
+				if (x2-x1) > 150:
+					cnt33=cnt33+1
+					x1=j[4]
+		elif machine2 == 'Laser':
+			list2 = filter(lambda x:x[2]>=t and x[1][-4:]==pp,tmpY)  # Filter list to get 5 min sum
+			cnt=len(list2)			
+			list2 = filter(lambda x:x[2]>=start1 and x[1][-4:]==pp,tmpY)  # Filter list to get 5 min sum
+			cnt33=len(list2)
+		else:
+			# New faster method to search Data.  Doesn't bog down DB
+			list2 = filter(lambda x:x[4]>=t and x[1]==machine2,tmpX)  # Filter list to get 5 min sum
+			cnt = len(list2)
+			list2 = filter(lambda x:x[4]>=start1 and x[1]==machine2,tmpX)  # Filter list to get 5 min sum
+			cnt33 = len(list2)
+		if cnt is None: cnt = 0
+		rate3 = cnt / float(rate2)
+		rate3 = int(rate3 * 100) # This will be the percentage we use to determine colour
+		try:
+			avg8 = cnt33 / float(shift_time)
+		except:
+			shift_time = 100
+			avg8 = cnt33 / float(shift_time)
+			
+		avg9 = avg8 * shift_left
+		pred1 = int(cnt33 + avg9)
+		op8.append(i[2])
+		rt8.append(i[1])
+		av55.append(avg8)
+		cnt55.append(cnt33)
+		sh55.append(shift_time)
+		shl55.append(shift_left)
+		pred8.append(pred1)
+		if rate3>=100:
+			cc='#009700'
+		elif rate3>=90:
+			cc='#4FC34F'
+		elif rate3>=80:
+			cc='#A4F6A4'
+		elif rate3>=70:
+			cc='#C3C300'
+		elif rate3>=50:
+			cc='#DADA3F'
+		elif rate3>=25:
+			cc='#F6F687'
+		elif rate3>=10:
+			cc='#F7BA84'
+		elif rate3>0:
+			cc='#EC7371'
+		else:
+			if pred1 == 0:
+				cc='#D5D5D5'
+			else:
+				cc='#FF0400'
+		color8.append(cc)
+		rate8.append(rate3)
+		machine8.append(machine2)
+
+	total8=zip(machine8,rate8,color8,pred8,op8,rt8)
+	total99=0
+	last_op=10
+	op99=[]
+	opt99=[]
+	op_total = [0 for x in range(200)]	
+	for i in total8:
+		op_total[i[4]]=op_total[i[4]] + i[3]
+	jobs1 = zip(machines1,line1,operation1)
+	if request.POST:
+		request.session["track_date"] = request.POST.get("date_st")
+		request.session["track_shift"] = request.POST.get("shift")
+		return render(request,'redirect_cell_track_8670_history.html')	
+	else:
+		form = sup_downForm()
+	args = {}
+	args.update(csrf(request))
+	args['form'] = form
+	t = int(time.time())
+	request.session['runrate'] = 1128
+
+	return total8, op_total
+	#return render(request,'cell_track_8670.html',{'t':t,'codes':total8,'op':op_total,'args':args})	
 
 def cell_track_8670_OLD(request):
 
@@ -4413,10 +4577,10 @@ def cell_track_8670_OLD(request):
 def cell_track_9341(request):
 
 	shift_start, shift_time, shift_left, shift_end = stamp_shift_start(request)	 # Get the Time Stamp info
-	machines1 = ['1504','1506','1519','1520','1502','1507','1501','1515','1508','1532','1509','1514','1510','1503','1511','1518','1521','1522','1523','1539','1540','1524','1525','1538','1541','1531','1527','1530','1528','1513','1533','1548']
-	rate = [8,8,8,8,4,4,4,4,4,4,2,2,2,2,2,8,8,8,8,4,4,4,4,4,2,2,2,2,2,1,1,4]
-	line1 = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0,0,3]
-	operation1 = [10,10,10,10,30,30,40,40,50,50,60,70,80,100,110,10,10,10,10,30,30,40,40,50,60,70,80,100,110,90,120,50]
+	machines1 = ['1504','1506','1519','1520','1502','1507','1501','1515','1508','1532','1509','1514','1510','1503','1511','1518','1521','1522','1523','1539','1540','1524','1525','1538','1541','1531','1527','1530','1528','1513','1533','1546','1547']
+	rate = [8,8,8,8,4,4,4,4,4,4,2,2,2,2,2,8,8,8,8,4,4,4,4,4,2,2,2,2,2,1,1,5,5]
+	line1 = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0,0,3,3]
+	operation1 = [10,10,10,10,30,30,40,40,50,50,60,70,80,100,110,10,10,10,10,30,30,40,40,50,60,70,80,100,110,90,120,30,40]
 	prt = '50-9341'
 	machine_rate = zip(machines1,rate,operation1)
 	machine_color =[]
@@ -4533,6 +4697,12 @@ def cell_track_9341(request):
 	
 		elif machine2 == '1510':
 			machine22 = '1514'
+			list2 = filter(lambda x:x[4]>=t and x[1]==machine22,tmpX)  # Filter list to get 5 min sum
+			cnt = len(list2)
+			list2 = filter(lambda x:x[4]>=start1 and x[1]==machine22,tmpX)  # Filter list to get 5 min sum
+			cnt33 = len(list2)	
+		elif machine2 == '1547':
+			machine22 = '1546'
 			list2 = filter(lambda x:x[4]>=t and x[1]==machine22,tmpX)  # Filter list to get 5 min sum
 			cnt = len(list2)
 			list2 = filter(lambda x:x[4]>=start1 and x[1]==machine22,tmpX)  # Filter list to get 5 min sum
