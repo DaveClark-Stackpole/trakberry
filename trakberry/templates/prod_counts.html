@@ -332,6 +332,34 @@
 	</tr>
 {% endfor %}
 
+{% for i in request.session.totals_8670_659 %}
+	<tr>
+		<td bgcolor="#ffffff"><center><b>50-8670</b></center></td>
+		{% for ii in i %}
+			<td bgcolor="#ffffff"><center>{{ii.3}}</center></td>
+		{% endfor %}
+		{% for x in request.session.op_span_8670_659 %}
+			{% if x.0 == i.0.0 and x.2 > 0 %} 
+				<td  bgcolor="#ffffff" rowspan="{{x.2}}"><center><b>{{x.3}}</b></center></td>
+			{% endif %}
+		{% endfor %}
+	</tr>
+{% endfor %}
+
+{% for i in request.session.totals_8670_626 %}
+	<tr>
+		<td bgcolor="#ffffff"><center><b>50-8670</b></center></td>
+		{% for ii in i %}
+			<td bgcolor="#ffffff"><center>{{ii.3}}</center></td>
+		{% endfor %}
+		{% for x in request.session.op_span_8670_659 %}
+			{% if x.0 == i.0.0 and x.2 > 0 %} 
+				<td  bgcolor="#ffffff" rowspan="{{x.2}}"><center><b>{{x.3}}</b></center></td>
+			{% endif %}
+		{% endfor %}
+	</tr>
+{% endfor %}
+
 </table>
 <br><br>
 
