@@ -67,22 +67,13 @@ def db_set(request):  # Module to set DB settings to the one that works.  Whethe
  # update
 
 	try:
-		db = MySQLdb.connect(host="10.4.1.245",user="stuser",passwd="stp383",db='prodrptdb')
+		db = MySQLdb.connect(host="127.0.0.1",user="dg417",passwd="dg",db='prodrptdb')
 		cursor = db.cursor()
+		sql = "SELECT * from testtest" 
+		cursor.execute(sql)
+		tmp2 = cursor.fetchall()
 		request.session["local_toggle"]="/trakberry"
 		return db, cursor
-
-		#************ Below code was reading local DB instead of jumping to the mirrored one.   Go back to this if issues on above code *************************
-
-		# db = MySQLdb.connect(host="127.0.0.1",user="dg417",passwd="dg",db='prodrptdb')
-		# cursor = db.cursor()
-		# sql = "SELECT * from testtest" 
-		# cursor.execute(sql)
-		# tmp2 = cursor.fetchall()
-		# request.session["local_toggle"]="/trakberry"
-		# return db, cursor		
-
-		# ********************************************************************************************************************************************
 	except:
 		try:
 			db = MySQLdb.connect(host="127.0.0.1",user="root",passwd="password",db='prodrptdb')
