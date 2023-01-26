@@ -4225,7 +4225,7 @@ def prod_counts1(request):
 	return render(request, "prod_counts.html")   
 
 def prod_counts2(request):
-	t=1673262875
+	t=1674470211
 	request.session['TCURR'] = t
 	request.session['WL'] = 432000
 	request.session['TCURR'] = t

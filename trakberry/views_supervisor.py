@@ -168,6 +168,7 @@ def supervisor_display(request):
 		# assign job date and time to dt
 		dt = tmp2[2]
 		dt_t = time.mktime(dt.timetuple())
+
 		# assign current date and time to dtemp
 		dtemp = vacation_temp()
 		dtemp_t = time.mktime(dtemp.timetuple())
