@@ -5303,47 +5303,197 @@ def cell_track_0455_history(request):
 
 def cell_track_9341_mobile(request):
 
-	
 	shift_start, shift_time, shift_left, shift_end = stamp_shift_start(request)	 # Get the Time Stamp info
-	machines1 = ['1504','1506','1519','1520','1502','1507','1501','1515','1508','1532','1509','1514','1510','1503','1511','1518','1521','1522','1523','1539','1540','1524','1525','1538','1541','1531','1527','1530','1528','1513','1533']
-	rate = [8,8,8,8,4,4,4,4,3,3,2,2,2,2,2,8,8,8,8,4,4,4,4,3,2,2,2,2,2,1,1]
-	line1 = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0,0]
-	operation1 = [10,10,10,10,30,30,40,40,50,50,60,70,80,100,110,10,10,10,10,30,30,40,40,50,60,70,80,100,110,90,120]
+	machines1 = ['1504','1506','1519','1520','1502','1507','1501','1515','1508','1532','1509','1514','1510','1503','1511','1518','1521','1522','1523','1539','1540','1524','1525','1538','1541','1531','1527','1530','1528','1513','1533','1546','1547','1548','1549']
+	rate = [8,8,8,8,4,4,4,4,4,4,2,2,2,2,2,8,8,8,8,4,4,4,4,4,2,2,2,2,2,1,1,5,5,5,3]
+	line1 = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0,0,3,3,3,3]
+	operation1 = [10,10,10,10,30,30,40,40,50,50,60,70,80,100,110,10,10,10,10,30,30,40,40,50,60,70,80,100,110,90,120,30,40,50,60]
 	prt = '50-9341'
 	machine_rate = zip(machines1,rate,operation1)
 	machine_color =[]
 	db, cur = db_set(request)
+	sql = "SELECT * FROM tkb_wip_track where part = '%s'" % (prt) 
+	cur.execute(sql)
+	wip = cur.fetchall()
+	wip_stamp = int(wip[0][1])
+
+	# [1] -- Machine    [4] -- Timestamp  [2] -- Part   [5] -- Count ..usually 1
+	# ******************************************
+	wip_stamp = int(time.time()) - 360 # This line is just a temp add to speed up the reads and negate WIP
+
+	sql = "SELECT * FROM GFxPRoduction WHERE TimeStamp >= '%d' and Part = '%s'" % (wip_stamp,prt)
+	cur.execute(sql)
+	wip_data = cur.fetchall()
+	wip_prod = [0 for x in range(140)]	
+
+	for i in machine_rate:
+		list1 = filter(lambda x:x[1]==i[0],wip_data)  # Filter list and pull out machine to make list1
+		count1=len(list1)  # Total all in list1
+		wip_prod[i[2]] = wip_prod[i[2]] + count1  # Add total to that operation variable
+	
+
+	# This section is temporary as no grinding *************************************
+	wip_prod[80] = wip_prod[40]
+	wip_prod[70] = wip_prod[40]
+	wip_prod[60] = wip_prod[40]
+	wip_prod[50] = wip_prod[40]
+
+	
+	# ******************************************************************************
+
+	op5=[]
+	wip5=[]
+	prd5=[]
+
+
+	for i in wip:
+		op5.append(i[3])
+		wip5.append(int(i[4]))
+		x=int(i[3])
+		prd5.append(wip_prod[x])
+	op5.append('120')
+	wip5.append(0)
+	prd5.append(wip_prod[120])
+	wip_zip=zip(op5,wip5,prd5)  # Generates totals beside old WIP
+	ptr = 1
+	new_wip=[]
+	for i in wip_zip:
+		try:
+			w1=i[1]
+			i1=i[2]
+			i2=wip_zip[ptr][2]
+			w1=w1+(i1-i2)
+		except:
+			w1=0
+		if w1 < 0 : w1 = 0
+		ptr = ptr + 1
+		new_wip.append(w1)
+	wip_zip=zip(op5,wip5,prd5,new_wip)
+
+	# Filter a List
 	color8=[]
 	rate8=[]
 	machine8=[]
+	pred8 = []
+	av55=[]
+	cnt55=[]
+	sh55=[]
+	shl55=[]
+	op8=[]
+	rt8=[]
+	request.session['shift_start'] = shift_start
+
+
+	# Preliminary testing variables for new methord
+	tt = int(time.time())
+	t=tt-300
+	start1 = tt-shift_time
+	sql="SELECT * FROM GFxPRoduction WHERE TimeStamp >='%s' and Part='%s'"%(start1,prt)
+	cur.execute(sql)
+	tmpX=cur.fetchall()
+	db.close()
+	# *********************************************
 
 	for i in machine_rate:
 		machine2 = i[0]
+
 		rate2 = 3200 / float(i[1])
 		rate2 = (rate2 / float(28800)) * 300
-		t=int(time.time()) - 300
 
-		try:
-			sql = "SELECT SUM(Count) FROM GFxPRoduction WHERE TimeStamp >= '%d' and Part = '%s' and Machine = '%s'" % (t,prt,machine2)
-			cur.execute(sql)
-			tmp2 = cur.fetchall()
-			tmp3 = tmp2[0]
-			cnt = int(tmp3[0])
-		except:
-			cnt = 0
+
+		
+		# If 1510 going take out below conditional statement
+		if machine2 == '1888':
+			machine22 = '1531'
+			list2 = filter(lambda x:x[4]>=t and x[1]==machine22,tmpX)  # Filter list to get 5 min sum
+			cnt = len(list2)
+			list2 = filter(lambda x:x[4]>=start1 and x[1]==machine22,tmpX)  # Filter list to get 5 min sum
+			cnt33 = len(list2)
+		# elif machine2 == '1510':  # While running manually 
+		# 	machine22 = '1527'
+		# 	machine23 = '1513'
+		# 	list2 = filter(lambda x:x[4]>=t and x[1]==machine22,tmpX)  # Filter list to get 5 min sum
+		# 	list3 = filter(lambda x:x[4]>=t and x[1]==machine23,tmpX)  # Filter list to get 5 min sum
+		# 	cnt = len(list3) - len(list2)
+		# 	list2 = filter(lambda x:x[4]>=start1 and x[1]==machine22,tmpX)  # Filter list to get 5 min sum
+		# 	list3 = filter(lambda x:x[4]>=start1 and x[1]==machine23,tmpX)  # Filter list to get 5 min sum
+		# 	cnt33 = len(list3) - len(list2)
+
+	
+
+	
+		elif machine2 == '1510':
+			machine22 = '1514'
+			list2 = filter(lambda x:x[4]>=t and x[1]==machine22,tmpX)  # Filter list to get 5 min sum
+			cnt = len(list2)
+			list2 = filter(lambda x:x[4]>=start1 and x[1]==machine22,tmpX)  # Filter list to get 5 min sum
+			cnt33 = len(list2)	
+		elif machine2 == '1547':
+			machine22 = '1546'
+			list2 = filter(lambda x:x[4]>=t and x[1]==machine22,tmpX)  # Filter list to get 5 min sum
+			cnt = len(list2)
+			list2 = filter(lambda x:x[4]>=start1 and x[1]==machine22,tmpX)  # Filter list to get 5 min sum
+			cnt33 = len(list2)	
+		# elif machine2 == '1533':
+		# 	machine22 = '1511'
+		# 	list2 = filter(lambda x:x[4]>=t and x[1]==machine22,tmpX)  # Filter list to get 5 min sum
+		# 	cnt_A = len(list2)
+		# 	list2 = filter(lambda x:x[4]>=start1 and x[1]==machine22,tmpX)  # Filter list to get 5 min sum
+		# 	cnt33_A = len(list2)
+		# 	machine22 = '1528'
+		# 	list2 = filter(lambda x:x[4]>=t and x[1]==machine22,tmpX)  # Filter list to get 5 min sum
+		# 	cnt_B = len(list2)
+		# 	list2 = filter(lambda x:x[4]>=start1 and x[1]==machine22,tmpX)  # Filter list to get 5 min sum
+		# 	cnt33_B = len(list2)
+		# 	cnt = cnt_A + cnt_A
+		# 	cnt33 = cnt33_A + cnt33_B
+		else:
+			# New faster method to search Data.  Doesn't bog down DB
+			list2 = filter(lambda x:x[4]>=t and x[1]==machine2,tmpX)  # Filter list to get 5 min sum
+			cnt = len(list2)
+			list2 = filter(lambda x:x[4]>=start1 and x[1]==machine2,tmpX)  # Filter list to get 5 min sum
+			cnt33 = len(list2)
+
+		# Old Method to search Data
+		# try:
+		# 	sql = "SELECT SUM(Count) FROM GFxPRoduction WHERE TimeStamp >= '%d' and Part = '%s' and Machine = '%s'" % (t,prt,machine2)
+		# 	cur.execute(sql)
+		# 	tmp2 = cur.fetchall()
+		# 	tmp3 = tmp2[0]
+		# 	cnt = int(tmp3[0])
+		# except:
+		# 	cnt = 0
+		# try:
+		# 	sql = "SELECT SUM(Count) FROM GFxPRoduction WHERE TimeStamp >= '%d' and Part = '%s' and Machine = '%s'" % (start1,prt,machine2)
+		# 	cur.execute(sql)
+		# 	tmp22 = cur.fetchall()
+		# 	tmp33 = tmp22[0]
+		# 	cnt33 = int(tmp33[0])
+		# except:
+		# 	cnt33 = 0
+
 		if cnt is None: cnt = 0
-
 		rate3 = cnt / float(rate2)
 		rate3 = int(rate3 * 100) # This will be the percentage we use to determine colour
-		
-		# Below is the Color Codes
-		#009700 100%
-		#4FC34F 90%
-		#A4F6A4 80%
-		#C3C300 70%
-		#DADA3F 50%
-		#F6F687 25%
-		#EC7371 0%
+
+		# Pediction
+		try:
+			avg8 = cnt33 / float(shift_time)
+		except:
+			shift_time = 100
+			avg8 = cnt33 / float(shift_time)
+			
+		avg9 = avg8 * shift_left
+		pred1 = int(cnt33 + avg9)
+
+		op8.append(i[2])
+		rt8.append(i[1])
+		av55.append(avg8)
+		cnt55.append(cnt33)
+		sh55.append(shift_time)
+		shl55.append(shift_left)
+		pred8.append(pred1)
+
 
 		if rate3>=100:
 			cc='#009700'
@@ -5362,17 +5512,73 @@ def cell_track_9341_mobile(request):
 		elif rate3>0:
 			cc='#EC7371'
 		else:
-			cc='#FF0400'
-			#cc='#EC7371'	Change to red when ready to go
+			if pred1 == 0:
+				cc='#D5D5D5'
+			else:
+				cc='#FF0400'
 		color8.append(cc)
 		rate8.append(rate3)
 		machine8.append(machine2)
 
-	total8=zip(machine8,rate8,color8)
+	total8=zip(machine8,rate8,color8,pred8,op8,rt8)
+	total99=0
+	last_op=10
+	op99=[]
+	opt99=[]
 
+	op_total = [0 for x in range(200)]	
 
-	db.close()
+	for i in total8:
+		op_total[i[4]]=op_total[i[4]] + i[3]
+	
 	jobs1 = zip(machines1,line1,operation1)
+
+	
+	# Date entry for History
+	if request.POST:
+		request.session["track_date"] = request.POST.get("date_st")
+		request.session["track_shift"] = request.POST.get("shift")
+		return render(request,'redirect_cell_track_9341_history.html')	
+	else:
+		form = sup_downForm()
+	args = {}
+	args.update(csrf(request))
+	args['form'] = form
+
+	total8_0455,op_total_0455, wip_zip_0455 = cell_track_0455(request)
+
+	t = int(time.time())
+	request.session['runrate'] = 1128
+
+
+	# This section will check every 30min and email out counts to Jim and Myself
+
+	# Take it out for now.   Errors when using GMail accounts
+
+	# # try:
+	# db, cur = db_set(request)
+	# cur.execute("""CREATE TABLE IF NOT EXISTS tkb_email_10r(Id INT PRIMARY KEY AUTO_INCREMENT,dummy1 INT(30),stamp INT(30) )""")
+	# eql = "SELECT MAX(stamp) FROM tkb_email_10r"
+	# cur.execute(eql)
+	# teql = cur.fetchall()
+	# teql2 = int(teql[0][0])
+	# ttt=int(time.time())
+	# elapsed_time = ttt - teql2
+	# if elapsed_time > 1800:
+	# 	x = 1
+	# 	dummy = 8
+	# 	cur.execute('''INSERT INTO tkb_email_10r(dummy1,stamp) VALUES(%s,%s)''', (dummy,ttt))
+	# 	db.commit()
+	# 	track_email(request)  
+	# db.close()
+	# # except:
+	# # 	dummy2 = 0
+
+	# *****************************************************************************************************
+
+	return render(request,'cell_track_9341_mobile.html',{'t':t,'codes':total8,'op':op_total,'wip':wip_zip,'codes_60':total8_0455,'op_60':op_total_0455,'wip_60':wip_zip_0455,'args':args})	
+
+
 
 
 
