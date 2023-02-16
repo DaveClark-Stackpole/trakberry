@@ -52,20 +52,11 @@ def db_open():
 
 
 def db_set2(request):
-
-
 	db = MySQLdb.connect(host="10.4.1.225",user="prodmon",passwd="pm258",db='prodmon')
 	cursor = db.cursor()
 	return db, cursor
 
-
-
 def db_set(request):  # Module to set DB settings to the one that works.  Whether local or Server
-	
-	db = MySQLdb.connect(host="10.4.1.225",user="stuser",passwd="stp383",db='prodrptdb')
-	cursor = db.cursor()
-	return db, cursor
-
 	# db = MySQLdb.connect(host="10.4.1.224",user="dg417",passwd="dg",db='prodrptdb')
 	# cursor = db.cursor()
 	# sql = "SELECT * from testtest" 

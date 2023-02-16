@@ -64,6 +64,11 @@ def db_set(request):  # Module to set DB settings to the one that works.  Whethe
 	tmp2 = cursor.fetchall()
 	return db, cursor
 
+def db_set_3(request):  # Module to set DB settings to the one that works.  Whether local or Server
+	db = MySQLdb.connect(host="10.4.1.245",user="muser",passwd="wsj.231.kql",db="django_pms",port=6601)
+	cursor = db.cursor()
+	return db, cursor
+
  # update
 
 	try:
