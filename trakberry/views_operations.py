@@ -2065,7 +2065,7 @@ def ab1v_8670_2(request):
 	asset_tuple = tuple(asset)
 	partno1 = '50-5401'
 	week_start = request.session['week_start7']
-	week_end = request.session['week_end7']
+	week_end = request.session['week_end7'] + 172800
 	t = request.session['t']
 	week_time_todate = t - week_start
 
@@ -2213,7 +2213,7 @@ def ab1v_5401(request):
 	asset_tuple = tuple(asset)
 	partno1 = '50-5401'
 	week_start = request.session['week_start7']
-	week_end = request.session['week_end7']
+	week_end = request.session['week_end7'] + 172800
 	t = request.session['t']
 	week_time_todate = t - week_start
 
@@ -2361,7 +2361,7 @@ def ab1v_5404(request):
 	asset_tuple = tuple(asset)
 	partno1 = '50-5401'
 	week_start = request.session['week_start7']
-	week_end = request.session['week_end7']
+	week_end = request.session['week_end7'] + 172800
 	t = request.session['t']
 	week_time_todate = t - week_start
 
@@ -2510,7 +2510,7 @@ def ab1v_0450(request):
 	asset_tuple = tuple(asset)
 	partno1 = '50-5401'
 	week_start = request.session['week_start7']
-	week_end = request.session['week_end7']
+	week_end = request.session['week_end7'] + 172800
 	t = request.session['t']
 	week_time_todate = t - week_start
 
@@ -2529,6 +2529,7 @@ def ab1v_0450(request):
 
 
 	# Select all reactions in asset list for date range
+	
 	db, cur = db_set_3(request) 
 	sql = "SELECT * FROM vw_laser_scan WHERE part_number='%s' and ts >= '%s' and ts <= '%s' ORDER BY  %s %s" %(prt7,week_start,week_end,'ts','ASC')
 	# sql = "SELECT * FROM GFxPRoduction WHERE Part='%s' and TimeStamp >= '%s' and TimeStamp <= '%s' and (Machine = '%s' OR Machine ='%s') ORDER BY  %s %s" %(prt7,week_start,week_end,asset1,asset2,'TimeStamp','ASC')
@@ -2547,6 +2548,7 @@ def ab1v_0450(request):
 		t2.append(t1)
 	tot2 = []
 	tot3 = []
+
 
 	
 	for i in asset:
@@ -2658,7 +2660,7 @@ def ab1v_0447(request):
 	asset_tuple = tuple(asset)
 	partno1 = '50-5401'
 	week_start = request.session['week_start7']
-	week_end = request.session['week_end7']
+	week_end = request.session['week_end7'] + 172800
 	t = request.session['t']
 	week_time_todate = t - week_start
 
@@ -2806,7 +2808,7 @@ def ab1v_0519(request):
 	asset_tuple = tuple(asset)
 	partno1 = '50-5401'
 	week_start = request.session['week_start7']
-	week_end = request.session['week_end7']
+	week_end = request.session['week_end7'] + 172800
 	t = request.session['t']
 	week_time_todate = t - week_start
 
