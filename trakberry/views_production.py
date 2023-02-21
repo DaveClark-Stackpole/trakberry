@@ -4760,6 +4760,11 @@ def cell_track_9341(request):
 	# ******************************************
 	wip_stamp = int(time.time()) - 360 # This line is just a temp add to speed up the reads and negate WIP
 
+	sql = "SELECT target FROM tkb_ten_target"
+	cur.execute(sql)
+	target9 = cur.fetchall()
+	current_target = int(target9[0][0])
+
 	sql = "SELECT * FROM GFxPRoduction WHERE TimeStamp >= '%d' and Part = '%s'" % (wip_stamp,prt)
 	cur.execute(sql)
 	wip_data = cur.fetchall()
@@ -4873,6 +4878,15 @@ def cell_track_9341(request):
 			cnt = len(list2)
 			list2 = filter(lambda x:x[4]>=start1 and x[1]==machine22,tmpX)  # Filter list to get 5 min sum
 			cnt33 = len(list2)	
+		elif machine2 == '1515':
+			machine22 = '1546'
+			list2 = filter(lambda x:x[4]>=t and x[1]==machine22,tmpX)  # Filter list to get 5 min sum
+			cnt = len(list2)
+			list2 = filter(lambda x:x[4]>=start1 and x[1]==machine22,tmpX)  # Filter list to get 5 min sum
+			cnt33 = len(list2)	
+			cnt33 = 350
+			cnt = 350
+
 		# elif machine2 == '1533':
 		# 	machine22 = '1511'
 		# 	list2 = filter(lambda x:x[4]>=t and x[1]==machine22,tmpX)  # Filter list to get 5 min sum
@@ -4924,6 +4938,8 @@ def cell_track_9341(request):
 			
 		avg9 = avg8 * shift_left
 		pred1 = int(cnt33 + avg9)
+		if machine2 == '1515':
+			pred1 = 350
 
 		op8.append(i[2])
 		rt8.append(i[1])
@@ -4959,18 +4975,36 @@ def cell_track_9341(request):
 		rate8.append(rate3)
 		machine8.append(machine2)
 
+		
+
+
+
+
 	total8=zip(machine8,rate8,color8,pred8,op8,rt8)
 	total99=0
 	last_op=10
 	op99=[]
 	opt99=[]
 
-	op_total = [0 for x in range(200)]	
+	op_total = [0 for x in range(200)]
+	op_color = [0 for x in range(200)]	
 
 	for i in total8:
 		op_total[i[4]]=op_total[i[4]] + i[3]
 	
 	jobs1 = zip(machines1,line1,operation1)
+
+	ctr9 = 0
+	for i in op_total:
+		if int(i)>int(current_target):
+			color1 = '#68FF33'
+		elif int(i)>int(current_target*.85):
+			color1 = '#F9FF33'
+		else:
+			color1 = '#FF9333'
+		op_color[ctr9] = color1
+		ctr9 = ctr9 + 1
+	# **********************************
 
 	
 	# Date entry for History
@@ -5034,7 +5068,7 @@ def cell_track_9341(request):
 	else:
 		c60 = "#FF7355"
 
-	return render(request,'cell_track_9341.html',{'t':t,'codes':total8,'op':op_total,'wip':wip_zip,'codes_60':total8_0455,'op_60':op_total_0455,'wip_60':wip_zip_0455,'R80':c80,'R60':c60,'args':args})	
+	return render(request,'cell_track_9341.html',{'t':t,'codes':total8,'op':op_total,'op_color':op_color,'wip':wip_zip,'codes_60':total8_0455,'op_60':op_total_0455,'wip_60':wip_zip_0455,'R80':c80,'R60':c60,'args':args})	
 
 
 # Same tracking for 0455
@@ -5636,10 +5670,10 @@ def cell_track_9341_history(request):
 	track_stamp_end = track_stamp + 28800
 
 	shift_start, shift_time, shift_left, shift_end = stamp_shift_start(request)	 # Get the Time Stamp info
-	machines1 = ['1504','1506','1519','1520','1502','1507','1501','1515','1508','1532','1509','1514','1510','1503','1511','1518','1521','1522','1523','1539','1540','1524','1525','1538','1541','1531','1527','1530','1528','1513','1533','1548']
-	rate = [8,8,8,8,4,4,4,4,4,4,2,2,2,2,2,8,8,8,8,4,4,4,4,4,2,2,2,2,2,1,1,4]
-	line1 = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0,0,3]
-	operation1 = [10,10,10,10,30,30,40,40,50,50,60,70,80,100,110,10,10,10,10,30,30,40,40,50,60,70,80,100,110,90,120,50]
+	machines1 = ['1504','1506','1519','1520','1502','1507','1501','1515','1508','1532','1509','1514','1510','1503','1511','1518','1521','1522','1523','1539','1540','1524','1525','1538','1541','1531','1527','1530','1528','1513','1533','1546','1547','1548','1549','594','1550','1552','751','1554']
+	rate = [8,8,8,8,4,4,4,4,4,4,2,2,2,2,2,8,8,8,8,4,4,4,4,4,2,2,2,2,2,1,1,5,5,5,3,3,3,2,3,3]
+	line1 = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0,0,3,3,3,3,3,3,3,3,3]
+	operation1 = [10,10,10,10,30,30,40,40,50,50,60,70,80,100,110,10,10,10,10,30,30,40,40,50,60,70,80,100,110,90,120,30,40,50,60,70,80,90,100,110]
 	prt = '50-9341'
 	machine_rate = zip(machines1,rate,operation1)
 	machine_color =[]
