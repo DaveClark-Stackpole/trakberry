@@ -5001,7 +5001,7 @@ def cell_track_9341(request):
 		elif int(i)>int(current_target*.85):
 			color1 = '#F9FF33'
 		else:
-			color1 = '#FF9333'
+			color1 = '#FF5E33'
 		op_color[ctr9] = color1
 		ctr9 = ctr9 + 1
 	# **********************************

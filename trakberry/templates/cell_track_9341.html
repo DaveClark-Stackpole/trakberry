@@ -1,7 +1,8 @@
 <html>
-
+	{% if request.session.switch_history != 1 %}
+	<meta http-equiv="refresh" content="0; url=http://pmdsdata12/dashboard/cell_track_9341/" />
+	{% endif %}
 	{% if request.session.track_history != 1 %}
-
 	<meta http-equiv="refresh" content="20; url={{request.session.local_toggle}}/cell_track_9341/" />
 	{% endif %}
 <head>
