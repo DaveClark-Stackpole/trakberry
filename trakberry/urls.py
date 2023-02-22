@@ -67,7 +67,7 @@ from views_production import update7,update7_prev
 from views import display, db_write, create_table, test, details_session, details_track, reports, test_time, scheduler, inventory, display2, fade_in, fade2
 from views import create_test_table, alter_table_name, done, new, graph, graph2, graph3, graph749, graph748, graph750, graph677, ttip,graph_close, display_time, graph_close_snap
 from views import graph677_snap, graph748_snap, graph749_snap, graph750_snap, display_initialize, test44, tech_reset,testB
-from views2 import main_password_update, password_edit_form, main_message_form
+from views2 import main_password_update, password_edit_form, main_message_form,switch_history
 from views3 import excel_test,manpower_update, request_test, scrapdate_fix1
 # ***********************************************************************************************************************************************************
 
@@ -208,6 +208,7 @@ urlpatterns = [
 	url(r'^main_login_password_lost_form/', main_login_password_lost_form),
 	url(r'^switch_local/', switch_local),
 	url(r'^switch_net/', switch_net),
+    url(r'^switch_history/', switch_history),
 	url(r'^main_login_form/', main_login_form),
 	url(r'^display1/', display),
 	url(r'^display_initialize/', display_initialize),
