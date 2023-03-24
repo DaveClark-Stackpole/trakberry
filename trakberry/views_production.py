@@ -4787,54 +4787,11 @@ def cell_track_9341(request):
 	target9 = cur.fetchall()
 	current_target = int(target9[0][0])
 
-	# sql = "SELECT * FROM GFxPRoduction WHERE TimeStamp >= '%d' and Part = '%s'" % (wip_stamp,prt)
-	# cur.execute(sql)
-	# wip_data = cur.fetchall()
-	# wip_prod = [0 for x in range(140)]	
-
-	# for i in machine_rate:
-	# 	list1 = filter(lambda x:x[1]==i[0],wip_data)  # Filter list and pull out machine to make list1
-	# 	count1=len(list1)  # Total all in list1
-	# 	wip_prod[i[2]] = wip_prod[i[2]] + count1  # Add total to that operation variable
-	
-
-	# This section is temporary as no grinding *************************************
-	# wip_prod[80] = wip_prod[40]
-	# wip_prod[70] = wip_prod[40]
-	# wip_prod[60] = wip_prod[40]
-	# wip_prod[50] = wip_prod[40]
-
-	
-	# ******************************************************************************
-
 	op5=[]
 	wip5=[]
 	prd5=[]
 
 
-	# for i in wip:
-	# 	op5.append(i[3])
-	# 	wip5.append(int(i[4]))
-	# 	x=int(i[3])
-	# 	prd5.append(wip_prod[x])
-	# op5.append('120')
-	# wip5.append(0)
-	# prd5.append(wip_prod[120])
-	# wip_zip=zip(op5,wip5,prd5)  # Generates totals beside old WIP
-	# ptr = 1
-	# new_wip=[]
-	# for i in wip_zip:
-	# 	try:
-	# 		w1=i[1]
-	# 		i1=i[2]
-	# 		i2=wip_zip[ptr][2]
-	# 		w1=w1+(i1-i2)
-	# 	except:
-	# 		w1=0
-	# 	if w1 < 0 : w1 = 0
-	# 	ptr = ptr + 1
-	# 	new_wip.append(w1)
-	# wip_zip=zip(op5,wip5,prd5,new_wip)
 
 	# Filter a List
 	color8=[]
@@ -4856,7 +4813,13 @@ def cell_track_9341(request):
 	mmachines = tuple(machines1)
 	t=tt-300
 	start1 = tt-shift_time
+
+	# start1 = 1679623208
+	# end1 =   1679652008
+
+
 	sql="SELECT * FROM GFxPRoduction WHERE TimeStamp >='%s' and Machine IN {}".format(mmachines) % (start1)
+	# sql="SELECT * FROM GFxPRoduction WHERE TimeStamp >='%s' and TimeStamp <= '%s' and Machine IN {}".format(mmachines) % (start1,end1)
 	cur.execute(sql)
 	tmpX=cur.fetchall()
 	db.close()
@@ -4870,80 +4833,12 @@ def cell_track_9341(request):
 		rate2 = (rate2 / float(28800)) * 300
 
 		
-		
-		# If 1510 going take out below conditional statement
-		# if machine2 == '1514':
-		# 	machine22 = '1509'
-		# 	list2 = filter(lambda x:x[4]>=t and x[1]==machine22,tmpX)  # Filter list to get 5 min sum
-		# 	cnt = len(list2)
-		# 	list2 = filter(lambda x:x[4]>=start1 and x[1]==machine22,tmpX)  # Filter list to get 5 min sum
-		# 	cnt33 = len(list2) *.93
-		# elif machine2 == '1510':  # While running manually 
-		# 	machine22 = '1527'
-		# 	machine23 = '1513'
-		# 	list2 = filter(lambda x:x[4]>=t and x[1]==machine22,tmpX)  # Filter list to get 5 min sum
-		# 	list3 = filter(lambda x:x[4]>=t and x[1]==machine23,tmpX)  # Filter list to get 5 min sum
-		# 	cnt = len(list3) - len(list2)
-		# 	list2 = filter(lambda x:x[4]>=start1 and x[1]==machine22,tmpX)  # Filter list to get 5 min sum
-		# 	list3 = filter(lambda x:x[4]>=start1 and x[1]==machine23,tmpX)  # Filter list to get 5 min sum
-		# 	cnt33 = len(list3) - len(list2)
-
-	
-
-	
-		# elif machine2 == '1510':
-			
-		# 	machine22 = '1509'
-		# 	list2 = filter(lambda x:x[4]>=t and x[1]==machine22,tmpX)  # Filter list to get 5 min sum
-		# 	cnt = len(list2) *.90
-		# 	list2 = filter(lambda x:x[4]>=start1 and x[1]==machine22,tmpX)  # Filter list to get 5 min sum
-		# 	cnt33 = len(list2)*.9
-
-		# elif machine2 == '1547':
-		# 	machine22 = '1546'
-		# 	list2 = filter(lambda x:x[4]>=t and x[1]==machine22,tmpX)  # Filter list to get 5 min sum
-		# 	cnt = len(list2)
-		# 	list2 = filter(lambda x:x[4]>=start1 and x[1]==machine22,tmpX)  # Filter list to get 5 min sum
-		# 	cnt33 = len(list2)	
 
 
-		# elif machine2 == '1533':
-		# 	machine22 = '1511'
-		# 	list2 = filter(lambda x:x[4]>=t and x[1]==machine22,tmpX)  # Filter list to get 5 min sum
-		# 	cnt_A = len(list2)
-		# 	list2 = filter(lambda x:x[4]>=start1 and x[1]==machine22,tmpX)  # Filter list to get 5 min sum
-		# 	cnt33_A = len(list2)
-		# 	machine22 = '1528'
-		# 	list2 = filter(lambda x:x[4]>=t and x[1]==machine22,tmpX)  # Filter list to get 5 min sum
-		# 	cnt_B = len(list2)
-		# 	list2 = filter(lambda x:x[4]>=start1 and x[1]==machine22,tmpX)  # Filter list to get 5 min sum
-		# 	cnt33_B = len(list2)
-		# 	cnt = cnt_A + cnt_A
-		# 	cnt33 = cnt33_A + cnt33_B
-		# else:
-			# New faster method to search Data.  Doesn't bog down DB
 		list2 = filter(lambda x:x[4]>=t and x[1]==machine2,tmpX)  # Filter list to get 5 min sum
 		cnt = len(list2)
 		list2 = filter(lambda x:x[4]>=start1 and x[1]==machine2,tmpX)  # Filter list to get 5 min sum
 		cnt33 = len(list2)
-
-		# Old Method to search Data
-		# try:
-		# 	sql = "SELECT SUM(Count) FROM GFxPRoduction WHERE TimeStamp >= '%d' and Part = '%s' and Machine = '%s'" % (t,prt,machine2)
-		# 	cur.execute(sql)
-		# 	tmp2 = cur.fetchall()
-		# 	tmp3 = tmp2[0]
-		# 	cnt = int(tmp3[0])
-		# except:
-		# 	cnt = 0
-		# try:
-		# 	sql = "SELECT SUM(Count) FROM GFxPRoduction WHERE TimeStamp >= '%d' and Part = '%s' and Machine = '%s'" % (start1,prt,machine2)
-		# 	cur.execute(sql)
-		# 	tmp22 = cur.fetchall()
-		# 	tmp33 = tmp22[0]
-		# 	cnt33 = int(tmp33[0])
-		# except:
-		# 	cnt33 = 0
 
 
 		if cnt is None: cnt = 0
@@ -4953,25 +4848,25 @@ def cell_track_9341(request):
 		if machine2 == '1514':
 			cnt = request.session['main_cnt'] 
 			cnt33 = request.session['main_cnt33']
-			cnt = cnt * .987
-			cnt33 = cnt33 * .987
+			cnt = int(cnt * .987)
+			cnt33 = int(cnt33 * .987)
 
 		if machine2 == '1531':
 			cnt = request.session['off_cnt'] 
 			cnt33 = request.session['off_cnt33']
-			cnt = cnt * .987
-			cnt33 = cnt33 * .987
+			cnt = int(cnt * .987)
+			cnt33 = int(cnt33 * .987)
 
 		if machine2 == '1510':
 			cnt = request.session['main_cnt'] 
 			cnt33 = request.session['main_cnt33']
-			cnt = cnt * .978
-			cnt33 = cnt33 * .978
+			cnt = int(cnt * .978)
+			cnt33 = int(cnt33 * .978)
 		if machine2 == '1527':
 			cnt = request.session['off_cnt'] 
 			cnt33 = request.session['off_cnt33']
-			cnt = cnt * .978
-			cnt33 = cnt33 * .978
+			cnt = int(cnt * .978)
+			cnt33 = int(cnt33 * .978)
 
 		if machine2 == '1541':
 			request.session['off_cnt'] = cnt
@@ -5004,9 +4899,35 @@ def cell_track_9341(request):
 		cnt55.append(cnt33)
 		sh55.append(shift_time)
 		shl55.append(shift_left)
-		pred8.append(pred1)
+		pred8.append(pred1)      # CHANGE THIS TO pred1 for normal and cnt33 for history
 
-
+		# Use Below for History Tracking
+		# request.session['fixed_color'] = '#D5D5D5'
+		# if rate3>=100:
+		# 	cc='#D5D5D5'
+		# elif rate3>=90:
+		# 	cc='#D5D5D5'
+		# elif rate3>=80:
+		# 	cc='#D5D5D5'
+		# elif rate3>=70:
+		# 	cc='#D5D5D5'
+		# elif rate3>=50:
+		# 	cc='#D5D5D5'
+		# elif rate3>=25:
+		# 	cc='#D5D5D5'
+		# elif rate3>=10:
+		# 	cc='#D5D5D5'
+		# elif rate3>0:
+		# 	cc='#D5D5D5'
+		# else:
+		# 	if pred1 == 0:
+		# 		cc='#D5D5D5'
+		# 	else:
+		# 		cc='#D5D5D5'
+		# &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+		
+		# Use Below for Regular Tracking
+		request.session['fixed_color'] = '#009700'
 		if rate3>=100:
 			cc='#009700'
 		elif rate3>=90:
@@ -5028,6 +4949,9 @@ def cell_track_9341(request):
 				cc='#D5D5D5'
 			else:
 				cc='#FF0400'
+		# ************************************
+
+
 		color8.append(cc)
 		rate8.append(rate3)
 		machine8.append(machine2)
@@ -5398,58 +5322,9 @@ def cell_track_0455(request):
 	db, cur = db_set(request)
 
 
-	# sql = "SELECT * FROM tkb_wip_track where part = '%s'" % (prt) 
-	# cur.execute(sql)
-	# wip = cur.fetchall()
-	# wip_stamp = int(wip[0][1])
-
-	# [1] -- Machine    [4] -- Timestamp  [2] -- Part   [5] -- Count ..usually 1
-	# sql = "SELECT * FROM GFxPRoduction WHERE TimeStamp >= '%d' and Part = '%s'" % (wip_stamp,prt)
-	# cur.execute(sql)
-	# wip_data = cur.fetchall()
-	# wip_prod = [0 for x in range(140)]	
-
-	# for i in machine_rate:
-	# 	list1 = filter(lambda x:x[1]==i[0],wip_data)  # Filter list and pull out machine to make list1
-	# 	count1=len(list1)  # Total all in list1
-	# 	wip_prod[i[2]] = wip_prod[i[2]] + count1  # Add total to that operation variable
-	
-	
-	# wip_prod[80] = wip_prod[40]
-	# wip_prod[70] = wip_prod[40]
-	# wip_prod[60] = wip_prod[40]
-	# wip_prod[50] = wip_prod[40]
-	# wip_prod[100] = wip_prod[40]
-	# wip_prod[90] = wip_prod[40]
 
 
-	# op5=[]
-	# wip5=[]
-	# prd5=[]
-	# for i in wip:
-	# 	op5.append(i[3])
-	# 	wip5.append(int(i[4]))
-	# 	x=int(i[3])
-	# 	prd5.append(wip_prod[x])
-	# op5.append('120')
-	# wip5.append(0)
-	# prd5.append(wip_prod[120])
-	# wip_zip=zip(op5,wip5,prd5)  # Generates totals beside old WIP
-	# ptr = 1
-	# new_wip=[]
-	# for i in wip_zip:
-	# 	try:
-	# 		w1=i[1]
-	# 		i1=i[2]
-	# 		i2=wip_zip[ptr][2]
-	# 		w1=w1+(i1-i2)
-	# 	except:
-	# 		w1=0
-	# 	if w1 < 0 : w1 = 0
-	# 	ptr = ptr + 1
-	# 	new_wip.append(w1)
 
-	# wip_zip=zip(op5,wip5,prd5,new_wip)
 
 
 	# Filter a List
@@ -5468,9 +5343,10 @@ def cell_track_0455(request):
 
 	# Preliminary testing variables for new methord
 	tt = int(time.time())
+	mmachines = tuple(machines1)
 	t=tt-300
 	start1 = tt-shift_time
-	sql="SELECT * FROM GFxPRoduction WHERE TimeStamp >='%s' and Part='%s'"%(start1,prt)
+	sql="SELECT * FROM GFxPRoduction WHERE TimeStamp >='%s' and Machine IN {}".format(mmachines) % (start1)
 	cur.execute(sql)
 	tmpX=cur.fetchall()
 	db.close()
