@@ -2,17 +2,17 @@
 """trakberry URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/1.8/topics/http/urls/
+	https://docs.djangoproject.com/en/1.8/topics/http/urls/
 Examples:
 Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  url(r'^$', views.home, name='home')
+	1. Add an import:  from my_app import views
+	2. Add a URL to urlpatterns:  url(r'^$', views.home, name='home')
 Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  url(r'^$', Home.as_view(), name='home')
+	1. Add an import:  from other_app.views import Home
+	2. Add a URL to urlpatterns:  url(r'^$', Home.as_view(), name='home')
 Including another URLconf
-    1. Add an import:  from blog import urls as blog_urls
-    2. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
+	1. Add an import:  from blog import urls as blog_urls
+	2. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
 """
 
 
@@ -108,7 +108,7 @@ from views_kiosk import entry_recent, manual_cycletime_table, tenr_fix2, tenr_fi
 from views_kiosk import kiosk_initial_GF9,kiosk_initial_6L_IN,kiosk_initial_AB1V, kiosk_sub_menu, kiosk_manual, kiosk_kiosk
 from views_kiosk import kiosk_help_form, kiosk_forklift_form, kiosk_scrap, kiosk_scrap_entry, kiosk_scrap_reset #, kiosk_mult_entries
 from views_kiosk import production_entry_check,kiosk_job_furnace,production_entry_fix,production_entry_fix_shift, production_entry_check_manual
-from views_kiosk import test_1_10R
+from views_kiosk import test_1_10R,down_10r,down_10r_entry,down_10r_asset_check,down_10r_entry2,tech_down_10r,down_10r_fix
 
 # ***********************************************************************************************************************************************************
 # *******************************************  Manpower Section ********************************************************************************************
@@ -193,14 +193,14 @@ from views_hr import hr,hr_login_form
 # ***********************************************************************************************************************************************************
 
 urlpatterns = [
-    url(r'^admin/', include(admin.site.urls)),
-    
-    # May 26,2015
-    # Path for Test of single direct live tracking and then 
-    # link to display.html template
+	url(r'^admin/', include(admin.site.urls)),
+	
+	# May 26,2015
+	# Path for Test of single direct live tracking and then 
+	# link to display.html template
 	url(r'^$',main),
 #part_entries,kiosked_scrap_entry,part_entries_next,part_entries_prev,part_entries_update,
-    
+	
 	url(r'^display/', main),
 	url(r'^testB/', testB),
 	url(r'^main_login/', main_login),
@@ -208,7 +208,7 @@ urlpatterns = [
 	url(r'^main_login_password_lost_form/', main_login_password_lost_form),
 	url(r'^switch_local/', switch_local),
 	url(r'^switch_net/', switch_net),
-    url(r'^switch_history/', switch_history),
+	url(r'^switch_history/', switch_history),
 	url(r'^main_login_form/', main_login_form),
 	url(r'^display1/', display),
 	url(r'^display_initialize/', display_initialize),
@@ -230,7 +230,7 @@ urlpatterns = [
 	url(r'^graph/', graph),
 	url(r'^graph2/', graph2),
 	url(r'^graph3/', graph3),
-    url(r'^db_write/', db_write),  
+	url(r'^db_write/', db_write),  
 	url(r'^sim/', sim),	
 	url(r'^test/', test),
 	url(r'^sup_mess/', sup_mess),	
@@ -319,6 +319,7 @@ urlpatterns = [
 	url(r'^sedit/', supervisor_edit),
 	url(r'^alter/', alter_table_name),
 	url(r'^tech_logout/', tech_logout),
+	url(r'^tech_down_10r/', tech_down_10r),
 	url(r'^jcall/get/(?P<index>\d+)/$', job_call),
 	url(r'^jclose/get/(?P<index>\d+)/$', job_close),
 	url(r'^jpass/get/(?P<index>\d+)/$', job_pass),
@@ -335,8 +336,8 @@ urlpatterns = [
 	url(r'^tech_recent/', tech_recent),
 	url(r'^tech_recent2/', tech_recent2),
 	url(r'^t1_call/', t1_call),
-    url(r'^tech_map/', tech_map),
-    url(r'^tech_message/', tech_message),	
+	url(r'^tech_map/', tech_map),
+	url(r'^tech_message/', tech_message),	
 	url(r'^tech_report_email/', tech_report_email),
 	url(r'^tech_name_update/', tech_name_update),
 	url(r'^tech_epv_assign/', tech_epv_assign),
@@ -400,7 +401,7 @@ urlpatterns = [
 	url(r'^rotation_info_display/', rotation_info_display),
 	url(r'^rotation_matrix/get/(?P<index>\d+)/$', rotation_update),
 
-	                # *******  Scheduling Section   **********
+					# *******  Scheduling Section   **********
 	url(r'^schedule_set/', schedule_set),
 	url(r'^schedule_rotation_start/', schedule_rotation_start),
 	url(r'^schedule_finalize/', schedule_finalize),
@@ -480,6 +481,12 @@ urlpatterns = [
 	
 	# **************  Kiosk Section ***************************************
 	url(r'^kiosk/', kiosk),
+	url(r'^down_10r/', down_10r),
+	url(r'^down_10r_entry/get/(?P<index>\d+)/$', down_10r_entry),
+	url(r'^down_10r_asset_check/', down_10r_asset_check),
+	url(r'^down_10r_entry2/', down_10r_entry2),
+	url(r'^down_10r_fix/get/(?P<index>\d+)/$', down_10r_fix),
+
 	url(r'^set_test1/', set_test1),
 	url(r'^flex_test/', flex_test),
 	url(r'^kiosk_job/', kiosk_job),
@@ -736,7 +743,7 @@ urlpatterns = [
 
 	# **************  Mod2 Section ***************************************
 	url(r'^hrly_display/', hrly_display),
-    url(r'^butter/', butter),
+	url(r'^butter/', butter),
 
 	# *************  Barcode *********************************************
 	url(r'^barcode_input/', barcode_input),

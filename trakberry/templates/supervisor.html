@@ -152,12 +152,16 @@ a.green:hover {color: #FFFFFF;background-color: #315225;border-radius: 25px;}
 <tr><th bgcolor="#b6d6e0" colspan="4" style="font-size: 90%;">
 
 
-<!--    OLD STYLE
-	<button style="text-align: left;width:100%;font-size: 100%;border-style: solid;border-color:{{i.5}};border-radius: 0px;background-color:{{i.5}};"
-	type="submit" class="green" name="one" value="{{i.2}}" /><font color="{{i.5}}">[</font>{{i.4}}<font color="{{i.5}}">] </font> <font color="#FFFFFF">{{i.0}}({{i.3}}):{{i.1}}</font></button>
--->
+{% if i.3 != '10r_tech' %}
+
+
+
+
 <button style="text-align: left;width:100%;font-size: 100%;border-style: solid;border-color:#b6d6e0;border-radius: 0px;background-color:#b6d6e0;"
 	type="submit" name="one" value="{{i.2}}" /><font color="#000000">[{{i.4}}] {{i.0}}({{i.3}}):{{i.1}}</font></button>
+
+	
+{% endif %}
 </th></tr>
 
 

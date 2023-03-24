@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<!-- ********************************* BootStrap Local*******************************-->
+	<script src="/static/bootstrap/js/1.11.3/jquery.min.js"></script>
+	<script src="/static/bootstrap/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
+	<!-- ***********************************************************************************-->
+<style>
+	.frame1 {color:black;text-align:left;float:left;width:100%}
+	.frame3 {color:black;text-align:center;float:left;width:33%}
+	.frame2 {color:black;text-align:center;float:left;width:100%}
+    .wrapper_main {background:chartreuse;width:95%;margin-left: 5px;}
+
+	.mainset2{color:black;text-align:left;float:left;width:45%}
+    .mainset4{color:black;text-align:left;float:left;width:30%}
+    .mainset3{color:black;text-align:left;float:left;width:9%}
+
+
+
+
+
+	#full-screen-background-image {z-index: -999;min-height: 110%; min-width: 100%;width: 100%;height: 110%;position: fixed;top: 0;  left: 0;}
+	.banner2_bg{position:absolute;background-color: #000000;opacity: 0.8;filter:alpha(opacity=80);width:auto; height:auto;z-index:-440;	border-radius: 25px;;}
+	.button {
+ 
+  		height: 45px;
+  		text-align: center;
+  		cursor: pointer;
+  		outline: none;
+  		color: #000000;
+		background-color: #D1CDC2;
+		border: none;
+		border-radius: 15px;
+		box-shadow: 0 7px #999;
+	}
+	.button:hover {background-color: #BEB2A7}
+	.button:active {
+		background-color: #BEB2A7;
+		box-shadow: 0 8px #666;
+		transform: translateY(8px);
+	}
+	.button2 {
+        height: 45px;
+  		text-align: center;
+  		cursor: pointer;
+  		outline: none;
+  		color: #000000;
+		background-color: #89afce;
+		border: none;
+		border-radius: 15px;
+		box-shadow: 0 7px #5c7b94;
+	}
+	.button2:hover {background-color: #89afce}
+	.button2:active {
+		background-color: #89afce;
+		box-shadow: 0 8px  #5c7b94;
+		transform: translateY(8px);
+	}
+	.button3 {
+        height: 45px;
+  		text-align: center;
+  		cursor: pointer;
+  		outline: none;
+  		color: #000000;
+		background-color: #ce9989;
+		border: none;
+		border-radius: 15px;
+		box-shadow: 0 7px #5c7b94;
+	}
+	.button3:hover {background-color:  #c9684b;}
+	.button3:active {
+		background-color: #ce9989;
+		box-shadow: 0 8px  #5c7b94;
+		transform: translateY(8px);
+	}
+	.button4 {
+        height: 70px;
+  		text-align: center;
+  		cursor: pointer;
+  		outline: none;
+  		color: #000000;
+		background-color: #ce8b89;
+		border: none;
+		border-radius: 15px;
+		box-shadow: 0 7px #5c7b94;
+	}
+	.button4:hover {background-color:  #ad6e6c;}
+	.button4:active {
+		background-color: #8a513f;
+		box-shadow: 0 8px  #5c7b94;
+		transform: translateY(8px);
+	}
+	.button5 {
+        height: 70px;
+  		text-align: center;
+  		cursor: pointer;
+  		outline: none;
+  		color: #000000;
+		background-color: #61ee54;
+		border: none;
+		border-radius: 15px;
+		box-shadow: 0 7px #5c7b94;
+	}
+	.button5:hover {background-color:  #51c546;}
+	.button5:active {
+		background-color: #48ad3e;
+		box-shadow: 0 8px  #5c7b94;
+		transform: translateY(8px);
+	}
+	.button6 {
+ 
+  		height: 45px;
+  		text-align: center;
+  		cursor: pointer;
+  		outline: none;
+  		color: #000000;
+		background-color: #D1CDC2;
+		border: none;
+		border-radius: 15px;
+		box-shadow: 0 7px #999;
+	}
+	.button6:hover {background-color: #BEB2A7}
+	.button6:active {
+		background-color: #BEB2A7;
+		box-shadow: 0 8px #666;
+		transform: translateY(8px);
+	}
+	.button_g {
+ 
+  		height: 45px;
+  		text-align: center;
+  		cursor: pointer;
+  		outline: none;
+  		color: #000000;
+		background-color: #8fff83;
+		border: none;
+		border-radius: 15px;
+		box-shadow: 0 7px #999;
+	}
+	.button_g:hover {background-color: #8fff83}
+	.button_g:active {
+		background-color: #8fff83;
+		box-shadow: 0 8px #666;
+		transform: translateY(8px);
+	}
+	.button_r {
+ 
+  		height: 45px;
+  		text-align: center;
+  		cursor: pointer;
+  		outline: none;
+  		color: #000000;
+		background-color: #ff5c33;
+		border: none;
+		border-radius: 15px;
+		box-shadow: 0 7px #999;
+	}
+	.button_r:hover {background-color: #ff5c33}
+	.button_r:active {
+		background-color: #ff5c33;
+		box-shadow: 0 8px #666;
+		transform: translateY(8px);
+	}
+	.button_y {
+ 
+  		height: 45px;
+  		text-align: center;
+  		cursor: pointer;
+  		outline: none;
+  		color: #000000;
+		background-color: yellow;
+		border: none;
+		border-radius: 15px;
+		box-shadow: 0 7px #999;
+	}
+	.button_y:hover {background-color: yellow}
+	.button_y:active {
+		background-color: yellow;
+		box-shadow: 0 8px #666;
+		transform: translateY(8px);
+	}
+</style>
+
+</head>
+<body>
+{% block main %}
+{% endblock %}
+</body>
+</html>

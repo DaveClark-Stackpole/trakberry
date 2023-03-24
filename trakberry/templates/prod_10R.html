@@ -195,8 +195,8 @@
                     <th colspan="3"><center>{{i}}</center></th>
                 {% endfor %}
 				<th rowspan="2"><center>Week Totals</center></th>
-				<th rowspan="2"><center>Current Goal</center></th>
-				<th rowspan="2"><center>Inventory Change</center></th>
+				<th rowspan="2"><center>Predicted Final</center></th>
+				<th rowspan="2"><center>Rel to Goal</center></th>
             </tr><tr>
                 {% for i in request.session.pdate_9341 %}
                     {% for ii in request.session.shift_9341 %}
@@ -424,9 +424,9 @@
 	{% for x in request.session.op_span_8670 %}
 		{% if x.0 == i.0.0 and x.2 > 0 %} 
 			{% if x.3 < request.session.goal_8670 %}
-				<td  bgcolor="#ffffff" rowspan="{{x.2}}"><center><b><font style="color:rgb(180, 0, 0);">{{x.3}}</font></b></center></td>
+				<td  bgcolor="#ffffff" rowspan="{{x.2}}"><center><b><font style="color:rgb(0, 0, 0);">{{request.session.final_count_8670}}</font></b></center></td>
 			{% else %}
-				<td  bgcolor="#ffffff" rowspan="{{x.2}}"><center><b>{{x.3}}</b></center></td>
+				<td  bgcolor="#ffffff" rowspan="{{x.2}}"><center><b>{{request.session.final_count_8670}}</b></center></td>
 			{% endif %}
 			<td  bgcolor="#ffffff" rowspan="{{x.2}}"><center><b>{{request.session.goal_8670}}</b></center></td>
 			{% if request.session.inv_change_8670 < 0 %}
@@ -497,9 +497,9 @@
 		{% for x in request.session.op_span_0447 %}
 			{% if x.0 == i.0.0 and x.2 > 0 %} 
 				{% if x.3 < request.session.goal_0447 %}
-					<td  bgcolor="#CDCDCD" rowspan="{{x.2}}"><center><b><font style="color:rgb(180, 0, 0);">{{x.3}}</font></b></center></td>
+				<td  bgcolor="#CDCDCD" rowspan="{{x.2}}"><center><b><font style="color:rgb(0, 0, 0);">{{request.session.final_count_0447}}</font></b></center></td>
 				{% else %}
-					<td  bgcolor="#CDCDCD" rowspan="{{x.2}}"><center><b>{{x.3}}</b></center></td>
+					<td  bgcolor="#CDCDCD" rowspan="{{x.2}}"><center><b>{{request.session.final_count_0447}}</b></center></td>
 				{% endif %}
 					<td  bgcolor="#CDCDCD" rowspan="{{x.2}}"><center><b>{{request.session.goal_0447}}</b></center></td>
 					{% if request.session.inv_change_0447 < 0 %}
