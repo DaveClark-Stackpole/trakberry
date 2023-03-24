@@ -1,0 +1,46 @@
+{% extends "kiosk/down_10r_style.html" %}
+
+{% block main %}
+
+<meta http-equiv="refresh" content="895; url={{request.session.local_toggle}}/kiosk_menu"/>
+
+<meta name="apple-mobile-web-app-capable" content="yes" />
+
+<form action="" method="post">{% csrf_token %}
+<img alt="full screen background image" src="/static/media/kiosk.jpeg?{{request.session.TCUR}}" id="full-screen-background-image"/>
+<br>
+{% block content%}  <!-- Main Block -->
+
+<br>
+
+<center>
+    
+    <div class="wrapper_main">
+        <div class="mainset2">  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <font style="font-size: 50px; color:white; text-shadow: 5px 5px 5px rgb(177, 177, 177), 0 0 25px rgb(160, 244, 247), 0 0 5px rgb(75, 184, 11);">
+                {{request.session.down_10r_asset}} Needs a Tech</font><br><br><br>
+            <button class="button6" type="button""><font size="4">
+             <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                Problem
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b></font></button>&nbsp;&nbsp;&nbsp;
+             <br><br>
+             <input style="font-size:14px;width:470px;height:120px;text-align: top;" name="reason" type="textarea" placeholder="Describe Problem Here"><br><br>
+             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+             <input style="text-align: left;width:150px;height:40px;font-size: 18px;border-style: solid;border-color:#A1A1A1;border-radius: 10px;" type="submit" value="         Enter  ">
+        </div>
+    </div>
+</center>
+
+
+
+</form>
+
+</center>
+{% endblock %}
+{% endblock %}

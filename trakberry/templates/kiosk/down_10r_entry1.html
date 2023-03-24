@@ -1,0 +1,36 @@
+{% extends "kiosk/down_10r_style.html" %}
+{% block main %}
+
+<meta http-equiv="refresh" content="15; url={{request.session.local_toggle}}/kiosk_menu"/>
+
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<img alt="full screen background image" src="/static/media/kiosk.jpeg?{{request.session.TCUR}}" id="full-screen-background-image"/>
+<br>
+{% block content%}  <!-- Main Block -->
+
+<br>
+<center>
+    
+    <div class="wrapper_main">
+        <div class="mainset2">  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <font style="font-size: 50px; color:white; text-shadow: 5px 5px 5px rgb(177, 177, 177), 0 0 25px rgb(160, 244, 247), 0 0 5px rgb(75, 184, 11);">
+                {{request.session.down_10r_asset}} Needs a Tech</font><br><br><br>
+            <button class="button4" type="button" onclick="window.location.href = '{{request.session.local_toggle}}/down_10r_entry2';"><font size="4">
+                <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Equipment is Down&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b></font></button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="button5" type="button" onclick="window.location.href = '{{request.session.local_toggle}}/down_10r_asset_check';"><font size="4">
+                <b>&nbsp;&nbsp;&nbsp;&nbsp;Equipment Still Able to Run&nbsp;&nbsp;&nbsp;&nbsp;</b></font></button>&nbsp;&nbsp;&nbsp;
+
+        </div>
+
+
+
+
+
+
+    </div>
+</center>
+
+{% endblock %}  <!-- End content Block -->
+
+
+{% endblock %}

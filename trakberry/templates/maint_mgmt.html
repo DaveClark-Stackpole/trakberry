@@ -21,7 +21,7 @@
                     <center><u><b><font color="#000000" style="font-size: 160%;">Maintenance Jobs</u></b></center>
             </div>
         {% for i in index %}
-
+		{% if i.0.4 != '10r_tech' %}
         {% if i.0.4 = 'Electrician' %}
             <div class="body1">
 						{% if i.0.1|slice:"-3:" = wfp %}
@@ -62,7 +62,9 @@
             type="submit" name="one" value="{{i.0.11}}" /><b><font color="#000000">[{{i.0.4}}] {{i.0.0}}:{{i.0.1}}</font></</button>
             </div>
         {% endif %}
-				{% endfor %}
+
+		{% endif %}
+		{% endfor %}
 
         </div>
 

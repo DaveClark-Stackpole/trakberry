@@ -7,6 +7,7 @@ from views2 import main_login_form
 from views3 import shift_area
 from views_mod1 import find_current_date
 from trakberry.views2 import login_initial
+from trakberry.mod1 import hyphon_fix
 from trakberry.views_testing import machine_list_display
 from trakberry.views_vacation import vacation_temp, vacation_set_current, vacation_set_current2, vacation_set_current5
 from views_vacation import vacation_set_current77,vacation_set_current4,vacation_set_current9, vacation_set_current5
@@ -97,6 +98,227 @@ def kiosk(request):
 # Secondary Pages generated from Main Page Button Presses
 # *********************************************************************************************************
 # Kiosk Secondary page initiated by JOB button press on main page
+
+def down_10r(request):
+	machines1 = ['1504','1506','1519','1520','1518','1521','1522','1523','1502','1507','1539','1540','1546','1501','1515','1524','1525','1547','1508','1532','1538','1548','1509','1541','1549','1514','1531','594','1510','1527','1550','1513','1552','1503','1530','751','1511','1528','1554','1533']
+	operation1 = [10,10,10,10,10,10,10,10,30,30,30,30,30,40,40,40,40,40,50,50,50,50,60,60,60,70,70,70,80,80,80,90,90,100,100,100,110,110,110,120]
+	new1 = [0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,1,0,0,0,1,0,0,1,0,0,1,0,0,1,0,1,0,0,1,0,0,1]
+	machine_rate = zip(operation1,machines1,new1)
+	machines1 = ['1800','1801','1802','1529','776','1543','1824','1804','1805','1806','1808','1810','1815','1542','1812','1813','1816']
+	operation1 = [10,10,10,30,30,30,30,40,40,50,60,70,80,90,100,100,110,120]
+	new1 = [0,0,0,1,0,0,0,1,0,1,1,1,1,1,1,1,1,1]
+	machine_rate2 = zip(operation1,machines1,new1)
+	return render(request,"kiosk/down_10r.html",{'machines1':machine_rate,'machines2':machine_rate2})
+
+def tech_down_10r(request):
+	machines1 = ['1504','1506','1519','1520','1518','1521','1522','1523','1502','1507','1539','1540','1546','1501','1515','1524','1525','1547','1508','1532','1538','1548','1509','1541','1549','1514','1531','594','1510','1527','1550','1513','1552','1503','1530','751','1511','1528','1554','1533']
+	operation1 = [10,10,10,10,10,10,10,10,30,30,30,30,30,40,40,40,40,40,50,50,50,50,60,60,60,70,70,70,80,80,80,90,90,100,100,100,110,110,110,120]
+	new1 = [0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,1,0,0,0,1,0,0,1,0,0,1,0,0,1,0,1,0,0,1,0,0,1]
+	color1 = ['#49FF33','#49FF33','#49FF33','#49FF33','#49FF33','#49FF33','#49FF33','#49FF33','#49FF33','#49FF33','#49FF33','#49FF33','#49FF33','#49FF33','#49FF33','#49FF33','#49FF33','#49FF33','#49FF33','#49FF33','#49FF33','#49FF33','#49FF33','#49FF33','#49FF33','#49FF33','#49FF33','#49FF33','#49FF33','#49FF33','#49FF33','#49FF33','#49FF33','#49FF33','#49FF33','#49FF33','#49FF33','#49FF33','#49FF33','#49FF33']
+	machine_rate = zip(operation1,machines1,new1,color1)
+
+	machine_rate = zip(operation1,machines1,new1)
+	machines1 = ['1800','1801','1802','1529','776','1543','1824','1804','1805','1806','1808','1810','1815','1542','1812','1813','1816']
+	operation1 = [10,10,10,30,30,30,30,40,40,50,60,70,80,90,100,100,110,120]
+	new1 = [0,0,0,1,0,0,0,1,0,1,1,1,1,1,1,1,1,1]
+	color1 = ['#49FF33','#49FF33','#49FF33','#49FF33','#49FF33','#49FF33','#49FF33','#49FF33','#49FF33','#49FF33','#49FF33','#49FF33','#49FF33','#49FF33','#49FF33','#49FF33','#49FF33','#49FF33']
+	machine_rate2 = zip(operation1,machines1,new1,color1)
+
+	tech1='10r_tech'
+	db, cur = db_set(request)
+	sql = "SELECT * FROM pr_downtime1 where LEFT(whoisonit,8)= '%s' and completedtime IS NULL" % (tech1)
+	cur.execute(sql)
+	tmp2 = cur.fetchall()
+	db.close()
+
+	op1 =[]
+	m1 = []
+	n1 =[]
+	c1 =[]
+	id1 = []
+	for ii in machine_rate:
+		c2 = 'G'
+		for i in tmp2:
+			if i[0] == ii[1]:
+				if i[5] == 'Yes_Down':
+					c2 = 'R'
+				elif i[5] == 'No':
+					c2 = 'Y'
+		op1.append(ii[0])
+		m1.append(ii[1])
+		n1.append(ii[2])
+		c1.append(c2)
+		try:
+			id1.append(i[11])
+		except:
+			id1.append(0)
+	machine_rate = zip(op1,m1,n1,c1,id1)
+
+	op1 =[]
+	m1 = []
+	n1 =[]
+	c1 =[]
+	id1 =[]
+	for ii in machine_rate2:
+		c2 = 'G'
+		for i in tmp2:
+			if i[0] == ii[1]:
+				if i[5] == 'Yes_Down':
+					c2 = 'R'
+				elif i[5] == 'No':
+					c2 = 'Y'
+		op1.append(ii[0])
+		m1.append(ii[1])
+		n1.append(ii[2])
+		c1.append(c2)
+		try:
+			id1.append(i[11])
+		except:
+			id1.append(0)
+	machine_rate2 = zip(op1,m1,n1,c1,id1)
+
+	return render(request,"tech_down_10r.html",{'machines1':machine_rate,'machines2':machine_rate2})
+
+
+def down_10r_fix(request,index):
+	id1 = index
+	db, cur = db_set(request)
+	sql = "SELECT * FROM pr_downtime1 where idnumber = '%s'" % (id1)
+	cur.execute(sql)
+	tmp2 = cur.fetchall()
+	db.close()
+
+	
+	asset = tmp2[0][0]
+	down1 = tmp2[0][5]
+	reason1 = tmp2[0][1]
+	
+
+	down1 = request.session['down_10r_asset_down']
+	if request.POST:
+		machinenum = asset
+		problem = request.POST.get("reason")
+
+		priority = 30000
+		whoisonit = '10R Tech'
+		
+		# take comment into tx and ensure no "" exist.	If they do change them to ''
+		tx = problem
+		tx = ' ' + tx
+		tps = list(tx)
+
+		# Genius appostrophe fix
+		problem = hyphon_fix(tx)
+
+		t = vacation_temp()
+
+		db, cur = db_set(request)
+
+		asset3 = machinenum[:4]
+		asset2 = machinenum[:3]
+		try:
+			int(asset3)
+			asset4 = asset3
+		except:
+			asset4 = asset2
+		asset5 = machinenum
+		try:
+			bql = "SELECT priority FROM tkb_asset_priority where asset_num = '%s'" % (asset4)
+			cur.execute(bql)
+			tmp2 = cur.fetchall()
+			tmp3 = tmp2[0]
+		except:
+			tmp3 = 999
+		try:
+			priority = tmp3[0]
+		except:
+			priority = 999
+
+		if len(problem)<2:
+			problem='No reason given'
+		cur.execute('''INSERT INTO pr_downtime1(machinenum,problem,priority,whoisonit,called4helptime,down) VALUES(%s,%s,%s,%s,%s,%s)''', (asset5,problem,priority,whoisonit,t,down1))
+		db.commit()
+
+		db.close()
+		return render(request,'redirect_kiosk.html')
+	
+	else:
+		form = sup_downForm()
+	args = {}
+	args.update(csrf(request))
+	args['form'] = form
+	return render(request, "down_10r_fix.html",{'args':args})
+
+def down_10r_entry(request,index):
+	request.session['down_10r_asset'] = index
+	request.session['down_10r_asset_down'] = 'Yes_Down'
+	return render(request,"kiosk/down_10r_entry1.html")
+
+def down_10r_asset_check(request):
+	request.session['down_10r_asset_down'] = 'No'
+	return down_10r_entry2(request)
+
+def down_10r_entry2(request):
+	asset = request.session['down_10r_asset']
+	down1 = request.session['down_10r_asset_down']
+
+
+	if request.POST:
+		machinenum = asset
+		problem = request.POST.get("reason")
+
+		priority = 30000
+		whoisonit = '10r_tech'
+		
+		# take comment into tx and ensure no "" exist.	If they do change them to ''
+		tx = problem
+		tx = ' ' + tx
+		tps = list(tx)
+
+		# Genius appostrophe fix
+		problem = hyphon_fix(tx)
+
+		t = vacation_temp()
+
+		db, cur = db_set(request)
+
+		asset3 = machinenum[:4]
+		asset2 = machinenum[:3]
+		try:
+			int(asset3)
+			asset4 = asset3
+		except:
+			asset4 = asset2
+		asset5 = machinenum
+		try:
+			bql = "SELECT priority FROM tkb_asset_priority where asset_num = '%s'" % (asset4)
+			cur.execute(bql)
+			tmp2 = cur.fetchall()
+			tmp3 = tmp2[0]
+		except:
+			tmp3 = 999
+		try:
+			priority = tmp3[0]
+		except:
+			priority = 999
+
+		if len(problem)<2:
+			problem='No reason given'
+		cur.execute('''INSERT INTO pr_downtime1(machinenum,problem,priority,whoisonit,called4helptime,down) VALUES(%s,%s,%s,%s,%s,%s)''', (asset5,problem,priority,whoisonit,t,down1))
+		db.commit()
+
+		db.close()
+		return render(request,'redirect_kiosk.html')
+		
+	else:
+		form = sup_downForm()
+	args = {}
+	args.update(csrf(request))
+	args['form'] = form
+	return render(request, "down_10r_entry2.html",{'args':args})
+
+
+
 def kiosk_job(request):
 	if request.POST:
 		button_1 = request.POST

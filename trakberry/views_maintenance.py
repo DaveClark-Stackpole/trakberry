@@ -146,7 +146,7 @@ def maint_mgmt(request):
 	whoisonit2 = 'Engineering'
 	maint_login_check(request) #check if login table exists.   If not then create it
 	db, cursor = db_set(request)
-	SQ_Sup = "SELECT * FROM pr_downtime1 where closed IS NULL and whoisonit != '%s' and whoisonit != '%s' ORDER By (priority) ASC" % (whoisonit1,whoisonit2)
+	SQ_Sup = "SELECT * FROM pr_downtime1 where closed IS NULL and whoisonit != '%s' and whoisonit != '%s' and (whoisonit NOT IN (SELECT tech From tkb_techs)) ORDER By (priority) ASC" % (whoisonit1,whoisonit2)
 	cursor.execute(SQ_Sup)
 	tmp = cursor.fetchall()
 
