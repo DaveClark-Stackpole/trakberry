@@ -4446,7 +4446,7 @@ def prod_9341(request):
 	asset2 = '1533'
 	if request.session['prev_10r'] == 0:
 		asset1 = '1533'
-		asset2 = '1533'
+		asset2 = '1816'
 
 	operation = [10]
 	# ************************************************************************************
@@ -4502,7 +4502,7 @@ def prod_9341(request):
 
 	# Select all reactions in asset list for date range
 
-	sql = "SELECT * FROM GFxPRoduction WHERE TimeStamp >= '%s' and TimeStamp <= '%s' and (Machine = '%s' OR Machine ='%s') ORDER BY  %s %s" %(week_start,week_end,asset1,asset2,'TimeStamp','ASC')
+	sql = "SELECT * FROM GFxPRoduction WHERE TimeStamp >= '%s' and TimeStamp <= '%s' and (Machine = '%s' OR Machine ='%s') and Part = '%s' ORDER BY  %s %s" % (week_start,week_end,asset1,asset2,partno1,'TimeStamp','ASC')
 	cur.execute(sql)
 	tmp = cur.fetchall()
 	t1 = []
@@ -4645,7 +4645,7 @@ def prod_0455(request):
 
 
 	# Select all reactions in asset list for date range
-	sql = "SELECT * FROM GFxPRoduction WHERE TimeStamp >= '%s' and TimeStamp <= '%s' and Machine = '%s'" %(week_start,week_end,asset[0])
+	sql = "SELECT * FROM GFxPRoduction WHERE TimeStamp >= '%s' and TimeStamp <= '%s' and Machine = '%s' and Part = '%s'" %(week_start,week_end,asset[0],part[0])
 	cur.execute(sql)
 	tmp = cur.fetchall()
 	t1 = []
@@ -5133,8 +5133,8 @@ def prod_10R(request):
 	ab1v_0519(request)
 	ab1v_0447(request)
 	# prod_4748_live(request)
-	# prod_4865a(request)
-	# prod_5081(request)
+	prod_4865a(request)
+	prod_5081(request)
 	# prod_6729(request)
 	# prod_4900(request)
 	request.session['working_address'] = 'prod_10R'
@@ -5146,7 +5146,7 @@ def prod_10R_prev(request):
 	t=request.session['week_start7']
 	s=request.session['week_end7']
 
-	t=t-604800
+	t=t-488000
 	
 	week_start_10r(request,t)
 
@@ -5159,25 +5159,25 @@ def prod_10R_prev(request):
 
 	request.session['prev_10r'] = 1
 	prod_9341(request)
-	prod_0455(request)
-	prod_3050(request)
-	prod_1467(request)
-	week_start_gf6(request,t)
-	gf6_1713(request)
-	gf6_3627(request)
-	gf6_1731(request)
-	gf6_3632(request)
-	ab1v_8670_2(request)
-	ab1v_5401(request)
-	ab1v_5404(request)
-	ab1v_0450(request)
-	ab1v_0519(request)
-	ab1v_0447(request)
-	prod_4748_live(request)
-	prod_4865a(request)
-	prod_5081(request)
-	prod_6729(request)
-	prod_4900(request)
+	# prod_0455(request)
+	# prod_3050(request)
+	# prod_1467(request)
+	# week_start_gf6(request,t)
+	# gf6_1713(request)
+	# gf6_3627(request)
+	# gf6_1731(request)
+	# gf6_3632(request)
+	# ab1v_8670_2(request)
+	# ab1v_5401(request)
+	# ab1v_5404(request)
+	# ab1v_0450(request)
+	# ab1v_0519(request)
+	# ab1v_0447(request)
+	# prod_4748_live(request)
+	# prod_4865a(request)
+	# prod_5081(request)
+	# prod_6729(request)
+	# prod_4900(request)
 	return render(request, "prod_10R.html")  
 
 def prod_ab1v_reaction(request):
