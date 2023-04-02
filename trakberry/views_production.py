@@ -10,7 +10,7 @@ from views_mod1 import find_current_date, mgmt_display, mgmt_display_edit
 from views_mod2 import stamp_shift_start,stamp_shift_start_3
 from trakberry.views2 import login_initial
 from trakberry.views_testing import machine_list_display
-from trakberry.views_vacation import vacation_temp, vacation_set_current, vacation_set_current2_1, vacation_set_current5,vacation_set_current6,vacation_set_current77
+from trakberry.views_vacation import vacation_temp, vacation_set_current, vacation_set_current2_1, vacation_set_current5,vacation_set_current6,vacation_set_current77,vacation_set_current9
 from views_vacation import vacation_1
 from views_operations import week_start_10r
 from django.http import QueryDict
@@ -77,9 +77,9 @@ def track_graph_prev1(request, index):
 def track_graph_track(request, index):
 	prt= '50-9341'
 	request.session['track_track'] = 'Shift Track for Machine '+ str(index)
-	machines7 = ['1504','1506','1519','1520','1502','1507','1501','1515','1508','1532','1509','1514','1510','1503','1511','1518','1521','1522','1523','1539','1540','1524','1525','1538','1541','1531','1527','1530','1528','1513','1533','1800','1801','1802','1529','1543','776','1824','1804','1805','1806','1808','1810','1815','1812','1816']
-	rate7 = [8,8,8,8,4,4,4,4,3,3,2,2,2,2,2,8,8,8,8,4,4,4,4,3,2,2,2,2,2,1,1,2,2,2,4,4,4,4,2,2,1,1,1,1,1,1]
-	part7 = ['50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-0455','50-0455','50-0455','50-0455','50-0455','50-0455','50-0455','50-0455','50-0455','50-0455','50-0455','50-0455','50-0455','50-0455','50-0455']
+	machines7 = ['1504','1506','1519','1520','1502','1507','1501','1515','1508','1532','1509','1514','1510','1503','1511','1518','1521','1522','1523','1539','1540','1524','1525','1538','1541','1531','1527','1530','1528','1513','1533','1800','1801','1802','1529','1543','776','1824','1804','1805','1806','1808','1810','1815','1812','1816','1554']
+	rate7 = [8,8,8,8,4,4,4,4,3,3,2,2,2,2,2,8,8,8,8,4,4,4,4,3,2,2,2,2,2,1,1,2,2,2,4,4,4,4,2,2,1,1,1,1,1,1,6]
+	part7 = ['50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-9341','50-0455','50-0455','50-0455','50-0455','50-0455','50-0455','50-0455','50-0455','50-0455','50-0455','50-0455','50-0455','50-0455','50-0455','50-0455','50-9341']
 
 	# machines1 = ['1800','1801','1802','1529','1543','776','1824','1804','1805','1806','1808','1810','1815','1812','1816']
 	# rate = [2,2,2,4,4,4,4,2,2,1,1,1,1,1,1]
@@ -102,10 +102,13 @@ def track_graph_track(request, index):
 	u = int(request.session['shift_start'])
 
 
-	u=1679288406
+
 	t = int(u) + 28800
 	t=int(time.time())
-	t=1679306406
+
+	s=1679968958
+	t=1679997758
+
 
 
 	gr_list = track_data(request,t,u,prt,rate) # Get the Graph Data
@@ -4762,36 +4765,23 @@ def cell_track_8670_OLD(request):
 
 	return render(request,'cell_track_8670.html',{'t':t,'codes':total8,'op':op_total,'args':args})	
 
-def cell_track_9341(request):
-
+def cell_track_9341_archive(request):
 	shift_start, shift_time, shift_left, shift_end = stamp_shift_start(request)	 # Get the Time Stamp info
 	machines1 = ['1504','1506','1519','1520','1502','1507','1501','1515','1508','1532','1509','1514','1510','1503','1511','1518','1521','1522','1523','1539','1540','1524','1525','1538','1541','1531','1527','1530','1528','1513','1533','1546','1547','1548','1549','594','1550','1552','751','1554','1802','1816']
 	rate = [9,9,9,9,4,4,4,4,4,4,2,2,2,2,2,9,9,9,9,4,4,4,4,4,2,2,2,2,2,1,2,5,5,5,3,3,3,2,3,3,9,2]
 	line1 = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0,0,3,3,3,3,3,3,3,3,3,3,3]
-	operation1 = [10,10,10,10,30,30,40,40,50,50,60,70,80,100,110,10,10,10,10,30,30,40,40,50,60,70,80,100,110,90,120,30,40,50,60,70,80,90,100,110,10,120]
+	operation1 = [10,10,10,10,30,30,40,40,50,50,60,70,80,100,110,10,10,10,10,30,30,40,40,50,60,70,80,100,110,90,120,30,40,50,60,70,80,90,100,110,10,130]
 	prt = '50-9341'
 	machine_rate = zip(machines1,rate,operation1)
 	machine_color =[]
 	db, cur = db_set(request)
-	# sql = "SELECT * FROM tkb_wip_track where part = '%s'" % (prt) 
-	# cur.execute(sql)
-	# wip = cur.fetchall()
-	# wip_stamp = int(wip[0][1])
-
-	# [1] -- Machine    [4] -- Timestamp  [2] -- Part   [5] -- Count ..usually 1
-	# ******************************************
-	# wip_stamp = int(time.time()) - 360 # This line is just a temp add to speed up the reads and negate WIP
-
 	sql = "SELECT target FROM tkb_ten_target"
 	cur.execute(sql)
 	target9 = cur.fetchall()
 	current_target = int(target9[0][0])
-
 	op5=[]
 	wip5=[]
 	prd5=[]
-
-
 
 	# Filter a List
 	color8=[]
@@ -4806,24 +4796,16 @@ def cell_track_9341(request):
 	rt8=[]
 	request.session['shift_start'] = shift_start
 
-
 	# Preliminary testing variables for new methord
-	tt = int(time.time())
-
 	mmachines = tuple(machines1)
-	t=tt-300
-	start1 = tt-shift_time
 
-	# start1 = 1679623208
-	# end1 =   1679652008
-
-
-	sql="SELECT * FROM GFxPRoduction WHERE TimeStamp >='%s' and Machine IN {}".format(mmachines) % (start1)
-	# sql="SELECT * FROM GFxPRoduction WHERE TimeStamp >='%s' and TimeStamp <= '%s' and Machine IN {}".format(mmachines) % (start1,end1)
+	start1 = 1679680975
+	end1 =   1679709775
+	t=start1-300
+	sql="SELECT * FROM GFxPRoduction WHERE TimeStamp >='%s' and TimeStamp <= '%s' and Machine IN {}".format(mmachines) % (start1,end1)
 	cur.execute(sql)
 	tmpX=cur.fetchall()
 	db.close()
-
 	# *********************************************
 
 	for i in machine_rate:
@@ -4831,9 +4813,6 @@ def cell_track_9341(request):
 
 		rate2 = 3200 / float(i[1])
 		rate2 = (rate2 / float(28800)) * 300
-
-		
-
 
 		list2 = filter(lambda x:x[4]>=t and x[1]==machine2,tmpX)  # Filter list to get 5 min sum
 		cnt = len(list2)
@@ -4890,8 +4869,7 @@ def cell_track_9341(request):
 			
 		avg9 = avg8 * shift_left
 		pred1 = int(cnt33 + avg9)
-		if machine2 == '1515':
-			pred1 = 350
+
 
 		op8.append(i[2])
 		rt8.append(i[1])
@@ -4899,67 +4877,36 @@ def cell_track_9341(request):
 		cnt55.append(cnt33)
 		sh55.append(shift_time)
 		shl55.append(shift_left)
-		pred8.append(pred1)      # CHANGE THIS TO pred1 for normal and cnt33 for history
+		pred8.append(cnt33)      # CHANGE THIS TO pred1 for normal and cnt33 for history
 
 		# Use Below for History Tracking
-		# request.session['fixed_color'] = '#D5D5D5'
-		# if rate3>=100:
-		# 	cc='#D5D5D5'
-		# elif rate3>=90:
-		# 	cc='#D5D5D5'
-		# elif rate3>=80:
-		# 	cc='#D5D5D5'
-		# elif rate3>=70:
-		# 	cc='#D5D5D5'
-		# elif rate3>=50:
-		# 	cc='#D5D5D5'
-		# elif rate3>=25:
-		# 	cc='#D5D5D5'
-		# elif rate3>=10:
-		# 	cc='#D5D5D5'
-		# elif rate3>0:
-		# 	cc='#D5D5D5'
-		# else:
-		# 	if pred1 == 0:
-		# 		cc='#D5D5D5'
-		# 	else:
-		# 		cc='#D5D5D5'
-		# &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
-		
-		# Use Below for Regular Tracking
-		request.session['fixed_color'] = '#009700'
+		request.session['fixed_color'] = '#D5D5D5'
 		if rate3>=100:
-			cc='#009700'
+			cc='#D5D5D5'
 		elif rate3>=90:
-			cc='#4FC34F'
+			cc='#D5D5D5'
 		elif rate3>=80:
-			cc='#A4F6A4'
+			cc='#D5D5D5'
 		elif rate3>=70:
-			cc='#C3C300'
+			cc='#D5D5D5'
 		elif rate3>=50:
-			cc='#DADA3F'
+			cc='#D5D5D5'
 		elif rate3>=25:
-			cc='#F6F687'
+			cc='#D5D5D5'
 		elif rate3>=10:
-			cc='#F7BA84'
+			cc='#D5D5D5'
 		elif rate3>0:
-			cc='#EC7371'
+			cc='#D5D5D5'
 		else:
 			if pred1 == 0:
 				cc='#D5D5D5'
 			else:
-				cc='#FF0400'
-		# ************************************
-
-
+				cc='#D5D5D5'
+		# &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+	
 		color8.append(cc)
 		rate8.append(rate3)
 		machine8.append(machine2)
-
-		
-
-
-
 
 	total8=zip(machine8,rate8,color8,pred8,op8,rt8)
 	total99=0
@@ -4985,9 +4932,10 @@ def cell_track_9341(request):
 			test2.append(c)
 
 	test3=zip(test1,test2)
+
+	op_total[120] = op_total[120] + 97
+	
 	jobs1 = zip(machines1,line1,operation1)
-
-
 
 	ctr9 = 0
 	for i in op_total:
@@ -5001,48 +4949,10 @@ def cell_track_9341(request):
 		ctr9 = ctr9 + 1
 	# **********************************
 
-	
-	# Date entry for History
-	if request.POST:
-		request.session["track_date"] = request.POST.get("date_st")
-		request.session["track_shift"] = request.POST.get("shift")
-		return render(request,'redirect_cell_track_9341_history.html')	
-	else:
-		form = sup_downForm()
-	args = {}
-	args.update(csrf(request))
-	args['form'] = form
 
-	total8_0455,op_total_0455 = cell_track_0455(request)
+	total8_0455,op_total_0455 = cell_track_0455_archive(start1,end1,request)
 
 	t = int(time.time())
-	request.session['runrate'] = 1128
-
-
-	# This section will check every 30min and email out counts to Jim and Myself
-
-	# Take it out for now.   Errors when using GMail accounts
-
-	# # try:
-	# db, cur = db_set(request)
-	# cur.execute("""CREATE TABLE IF NOT EXISTS tkb_email_10r(Id INT PRIMARY KEY AUTO_INCREMENT,dummy1 INT(30),stamp INT(30) )""")
-	# eql = "SELECT MAX(stamp) FROM tkb_email_10r"
-	# cur.execute(eql)
-	# teql = cur.fetchall()
-	# teql2 = int(teql[0][0])
-	# ttt=int(time.time())
-	# elapsed_time = ttt - teql2
-	# if elapsed_time > 1800:
-	# 	x = 1
-	# 	dummy = 8
-	# 	cur.execute('''INSERT INTO tkb_email_10r(dummy1,stamp) VALUES(%s,%s)''', (dummy,ttt))
-	# 	db.commit()
-	# 	track_email(request)  
-	# db.close()
-	# # except:
-	# # 	dummy2 = 0
-
-	# *****************************************************************************************************
 
 	r80 = int(total8[30][3])
 	r60= int(total8_0455[14][3])
@@ -5063,8 +4973,122 @@ def cell_track_9341(request):
 	else:
 		c60 = "#FF7355"
 
-	return render(request,'cell_track_9341.html',{'t':t,'codes':total8,'op':op_total,'op_color':op_color,'codes_60':total8_0455,'op_60':op_total_0455,'R80':c80,'R60':c60,'args':args})	
+	return render(request,'cell_track_9341_archive.html',{'t':t,'codes':total8,'op':op_total,'op_color':op_color,'codes_60':total8_0455,'op_60':op_total_0455,'R80':c80,'R60':c60})	
 
+def cell_track_9341(request):
+	return render(request,'redirect_cell_track_9341_new.html')	
+
+def date_stamp(datee):
+	string=str(datee)[:10]
+	hr1 = int(str(datee)[11:13])*60*60
+	mi1 = int(str(datee)[14:16])*60
+	element = datetime.datetime.strptime(string,"%Y-%m-%d")
+	tuple = element.timetuple()
+	timestamp1 = time.mktime(tuple) + hr1 + mi1
+	return timestamp1,string,hr1,mi1
+
+def track_9341_history_date(request):
+	# t = datetime.datetime.now()
+	date = vacation_set_current9()
+
+	request.session["date1_default"] =  date
+	# request.session["date2_default"] = t
+	if request.POST:
+		date1 = request.POST.get("scrap_display_date1")
+		date2 = request.POST.get("scrap_display_date2")
+		date3 = "date_selection"
+
+		timestamp1,date1,hr1,mi1 = date_stamp(date1)
+		
+		timestamp2,date2,hr2,mi2 = date_stamp(date2)
+
+		request.session['timestamp1'] = timestamp1
+		request.session['date1'] = date1
+		request.session['hr1'] = hr1
+		request.session['min1'] = mi1
+		request.session['timestamp2'] = timestamp2
+		request.session['date2'] = date2
+		request.session['hr2'] = hr2
+		request.session['min2'] = mi2
+		
+		return render(request, "redirect_cell_track_9341_history2.html")
+
+	else:
+		form = sup_downForm()
+	args = {}
+	args.update(csrf(request))
+	args['form'] = form
+	return render(request,'track_9341_history_date.html',{'args':args})
+
+def cell_track_9341_history2(request):
+	shift_start, shift_time, shift_left, shift_end = stamp_shift_start(request)	 # Get the Time Stamp info
+	machines1 = ['1504','1506','1519','1520','1502','1507','1501','1515','1508','1532','1509','1514','1510','1503','1511','1518','1521','1522','1523','1539','1540','1524','1525','1538','1541','1531','1527','1530','1528','1513','1533','1546','1547','1548','1549','594','1550','1552','751','1554','1802']
+	rate = [9,9,9,9,4,4,4,4,4,4,2,2,2,2,2,9,9,9,9,4,4,4,4,4,2,2,2,2,2,1,2,5,5,5,3,3,3,2,3,3,9]
+	line1 = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0,0,3,3,3,3,3,3,3,3,3,3]
+	operation1 = [10,10,10,10,30,30,40,40,50,50,60,70,80,100,110,10,10,10,10,30,30,40,40,50,60,70,80,100,110,90,120,30,40,50,60,70,80,90,100,110,10]
+	prt = '50-9341'
+	machine_rate = zip(machines1,rate,operation1)
+	machine_color =[]
+	db, cur = db_set(request)
+	sql = "SELECT target FROM tkb_ten_target"
+	cur.execute(sql)
+	target9 = cur.fetchall()
+	current_target = int(target9[0][0])
+
+	op5=[]
+	wip5=[]
+	prd5=[]
+
+	# Filter a List
+	color8=[]
+	rate8=[]
+	machine8=[]
+	pred8 = []
+	av55=[]
+	cnt55=[]
+	sh55=[]
+	shl55=[]
+	op8=[]
+	rt8=[]
+	request.session['shift_start'] = shift_start
+
+	# Preliminary testing variables for new methord
+	tt = int(time.time())
+
+	mmachines = tuple(machines1)
+	t=tt-300
+	start1 = tt-shift_time
+
+	s=int(request.session['timestamp1'])
+	t=int(request.session['timestamp2'])
+
+	start2 = tt - 300
+
+	sql="SELECT Machine, COUNT(*) FROM GFxPRoduction WHERE TimeStamp >='%s' and TimeStamp <= '%s' and Machine IN {} GROUP BY Machine".format(mmachines) % (s,t)
+	cur.execute(sql)
+	tmpX=cur.fetchall()
+
+	counts1 = [0 for x in range(1999)]
+	for i in tmpX:
+		counts1[int(i[0])] = i[1]
+
+	db.close()
+
+	op_total = [0 for x in range(200)]
+	op_color = [0 for x in range(200)]	
+	for i in machine_rate:
+		op_total[i[2]] = op_total[i[2]] + counts1[int(i[0])]
+	ctr9 = 0
+	for i in op_total:
+		if int(i)>int(current_target):
+			color1 = '#68FF33'
+		elif int(i)>int(current_target*.85):
+			color1 = '#F9FF33'
+		else:
+			color1 = '#FF5E33'
+		op_color[ctr9] = color1
+		ctr9 = ctr9 + 1
+	return render(request,'cell_track_9341_date.html',{'t':t,'counts':counts1,'op':op_total,'op_color':op_color})	
 
 def cell_track_9341_NEW(request):
 	shift_start, shift_time, shift_left, shift_end = stamp_shift_start(request)	 # Get the Time Stamp info
@@ -5307,10 +5331,7 @@ def cell_track_9341_NEW(request):
 
 	return render(request,'cell_track_9341.html',{'t':t,'codes':total8,'op':op_total,'op_color':op_color,'codes_60':total8_0455,'op_60':op_total_0455,'wip_60':wip_zip_0455,'R80':c80,'R60':c60,'args':args})	
 
-
-# Same tracking for 0455
-def cell_track_0455(request):
-	
+def cell_track_0455_archive(start1,end1,request):
 	shift_start, shift_time, shift_left, shift_end = stamp_shift_start(request)	 # Get the Time Stamp info
 	machines1 = ['1800','1801','1802','1529','1543','776','1824','1804','1805','1806','1808','1810','1815','1812','1816']
 	rate = [2,2,2,4,4,4,4,2,2,1,1,1,1,1,1]
@@ -5321,11 +5342,123 @@ def cell_track_0455(request):
 	machine_color =[]
 	db, cur = db_set(request)
 
+	# Filter a List
+	color8=[]
+	rate8=[]
+	machine8=[]
+	pred8 = []
+	av55=[]
+	cnt55=[]
+	sh55=[]
+	shl55=[]
+	op8=[]
+	rt8=[]
+	request.session['shift_start'] = shift_start
+
+
+	mmachines = tuple(machines1)
+
+	sql="SELECT * FROM GFxPRoduction WHERE TimeStamp >='%s' and TimeStamp <= '%s' and Machine IN {}".format(mmachines) % (start1,end1)
+
+	cur.execute(sql)
+	tmpX=cur.fetchall()
+	db.close()
+	# *********************************************
 
 
 
+	for i in machine_rate:
+		machine2 = i[0]
+		rate2 = 900 / float(i[1])
+		rate2 = (rate2 / float(28800)) * 300
+		t = start1 - 300
+		# New faster method to search Data.  Doesn't bog down DB
+		list2 = filter(lambda x:x[4]>=t and x[1]==machine2,tmpX)  # Filter list to get 5 min sum
+		cnt = len(list2)
+		list2 = filter(lambda x:x[4]>=start1 and x[1]==machine2,tmpX)  # Filter list to get 5 min sum
+		cnt33 = len(list2)
+
+		if cnt is None: cnt = 0
+		rate3 = cnt / float(rate2)
+		rate3 = int(rate3 * 100) # This will be the percentage we use to determine colour
+		# Pediction
+		try:
+			avg8 = cnt33 / float(shift_time)
+		except:
+			shift_time = 100
+			avg8 = cnt33 / float(shift_time)
+			
+		avg9 = avg8 * shift_left
+		pred1 = int(cnt33 + avg9)
+
+		op8.append(i[2])
+		rt8.append(i[1])
+		av55.append(avg8)
+		cnt55.append(cnt33)
+		sh55.append(shift_time)
+		shl55.append(shift_left)
+
+		
+		# # Use the below pred8 for normal
+		pred8.append(cnt33)
+
+		# This is temp for total so far
+		# pred8.append(cnt33)
 
 
+		if rate3>=100:
+			cc='#009700'
+		elif rate3>=90:
+			cc='#4FC34F'
+		elif rate3>=80:
+			cc='#A4F6A4'
+		elif rate3>=70:
+			cc='#C3C300'
+		elif rate3>=50:
+			cc='#DADA3F'
+		elif rate3>=25:
+			cc='#F6F687'
+		elif rate3>=10:
+			cc='#F7BA84'
+		elif rate3>0:
+			cc='#EC7371'
+		else:
+			if pred1 == 0:
+				cc='#D5D5D5'
+			else:
+				cc='#FF0400'
+
+		# if machine2=='1800' or machine2=='1801' or machine2 =='1802': cc='#C8C8C8'
+		color8.append(cc)
+		rate8.append(rate3)
+		machine8.append(machine2)
+
+	total8=zip(machine8,rate8,color8,pred8,op8,rt8)
+
+	total99=0
+	last_op=10
+	op99=[]
+	opt99=[]
+
+	op_total = [0 for x in range(200)]	
+
+	for i in total8:
+		op_total[i[4]]=op_total[i[4]] + i[3]
+
+	jobs1 = zip(machines1,line1,operation1)
+
+	return total8, op_total
+# Same tracking for 0455
+def cell_track_0455(request):
+	shift_start, shift_time, shift_left, shift_end = stamp_shift_start(request)	 # Get the Time Stamp info
+	machines1 = ['1800','1801','1802','1529','1543','776','1824','1804','1805','1806','1808','1810','1815','1812','1816']
+	rate = [2,2,2,4,4,4,4,2,2,1,1,1,1,1,1]
+	line1 = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+	operation1 = [10,10,10,30,30,30,30,40,40,50,60,70,80,100,120]
+	prt = '50-0455'
+	machine_rate = zip(machines1,rate,operation1)
+	machine_color =[]
+	db, cur = db_set(request)
 
 	# Filter a List
 	color8=[]
@@ -5364,26 +5497,6 @@ def cell_track_0455(request):
 		cnt = len(list2)
 		list2 = filter(lambda x:x[4]>=start1 and x[1]==machine2,tmpX)  # Filter list to get 5 min sum
 		cnt33 = len(list2)
-
-
-
-		# try:
-		# 	sql = "SELECT SUM(Count) FROM GFxPRoduction WHERE TimeStamp >= '%d' and Part = '%s' and Machine = '%s'" % (t,prt,machine2)
-		# 	cur.execute(sql)
-		# 	tmp2 = cur.fetchall()
-		# 	tmp3 = tmp2[0]
-		# 	cnt = int(tmp3[0])
-		# except:
-		# 	cnt = 0
-		# try:
-		# 	sql = "SELECT SUM(Count) FROM GFxPRoduction WHERE TimeStamp >= '%d' and Part = '%s' and Machine = '%s'" % (start1,prt,machine2)
-		# 	cur.execute(sql)
-		# 	tmp22 = cur.fetchall()
-		# 	tmp33 = tmp22[0]
-		# 	cnt33 = int(tmp33[0])
-		# except:
-		# 	cnt33 = 0
-
 
 		if cnt is None: cnt = 0
 		rate3 = cnt / float(rate2)

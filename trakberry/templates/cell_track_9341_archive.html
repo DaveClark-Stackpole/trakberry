@@ -2,7 +2,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <meta http-equiv="refresh" content="10;">
+
 
     <title>9341 Tracking</title>
     <meta charset="utf-8">
@@ -11,10 +11,7 @@
     <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" rel="stylesheet">
     <script crossorigin="anonymous" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
     
-    <script>
-        function track_history () { location.replace("/cell_track_9341_history_on") }
-        function track_return () { location.replace("/cell_track_9341_history_off") }
-    </script>
+
     <!-- Format for Background image -->
 
     <style>
@@ -140,7 +137,7 @@
     <div class="containter main d-flex justify-content-center">
         <div class="L10R80">
             <div class="heading" style="background-color:{{op_color.120}};">
-                10R80 Predict ({{counts.1533}})
+                10R80 Predict ({{op.120}})
             </div>
             <div class="mainline"> <!-- MainLine Production-->
                 <div class="subheading borders">Mainline</div>
@@ -155,7 +152,7 @@
             onclick="window.open('/dashboard/track_graph_track/get/1504/', 'newwindow', 'width=1400, height=600'); return false;">
             1504</a>
     </div>
-    <div class="asset-count">({{counts.1504}})</div>
+    <div class="asset-count">({{codes.0.3}})</div>
 </div>
 
                     <div class="asset borders" style="background-color:{{codes.1.2}}">
@@ -164,7 +161,7 @@
             onclick="window.open('{{request.session.local_toggle}}/track_graph_track/get/{{codes.1.0}}', 'newwindow', 'width=1400, height=600'); return false;">
             1506</a>
     </div>
-    <div class="asset-count">({{counts.1506}})</div>
+    <div class="asset-count">({{codes.1.3}})</div>
 </div>
 
                     <div class="asset borders" style="background-color:{{codes.2.2}}">
@@ -173,7 +170,7 @@
             onclick="window.open('/dashboard/track_graph_track/get/1519/', 'newwindow', 'width=1400, height=600'); return false;">
             1519</a>
     </div>
-    <div class="asset-count">({{counts.1519}})</div>
+    <div class="asset-count">({{codes.2.3}})</div>
 </div>
 
                     <div class="asset borders" style="background-color:{{codes.3.2}}">
@@ -182,7 +179,7 @@
             onclick="window.open('/dashboard/track_graph_track/get/1520/', 'newwindow', 'width=1400, height=600'); return false;">
             1520</a>
     </div>
-    <div class="asset-count">({{counts.1520}})</div>
+    <div class="asset-count">({{codes.3.3}})</div>
 </div>
 
                 </div>
@@ -197,7 +194,7 @@
             onclick="window.open('/dashboard/track_graph_track/get/1502/', 'newwindow', 'width=1400, height=600'); return false;">
             1502</a>
     </div>
-    <div class="asset-count">({{counts.1502}})</div>
+    <div class="asset-count">({{codes.4.3}})</div>
 </div>
 
                     <div class="asset borders" style="background-color:{{codes.5.2}}">
@@ -206,7 +203,7 @@
             onclick="window.open('/dashboard/track_graph_track/get/1507/', 'newwindow', 'width=1400, height=600'); return false;">
             1507</a>
     </div>
-    <div class="asset-count">({{counts.1507}})</div>
+    <div class="asset-count">({{codes.5.3}})</div>
 </div>
 
                 </div>
@@ -217,11 +214,11 @@
                     </div>
                     <div class="asset borders" style="background-color:{{codes.6.2}}">
     <div class="asset-number">
-        <a href="{{request.session.local_toggle}}/track_graph_track/get/1501/"
-            onclick="window.open('{{request.session.local_toggle}}/track_graph_track/get/1501/', 'newwindow', 'width=1400, height=600'); return false;">
+        <a href="/dashboard/track_graph_track/get/1501/"
+            onclick="window.open('/dashboard/track_graph_track/get/1501/', 'newwindow', 'width=1400, height=600'); return false;">
             1501</a>
     </div>
-    <div class="asset-count">({{counts.1501}})</div>
+    <div class="asset-count">({{codes.6.3}})</div>
 </div>
 
                     <div class="asset borders" style="background-color:{{codes.7.2}}">
@@ -230,7 +227,7 @@
             onclick="window.open('/dashboard/track_graph_track/get/1515/', 'newwindow', 'width=1400, height=600'); return false;">
             1515</a>
     </div>
-    <div class="asset-count">({{counts.1515}})</div>
+    <div class="asset-count">({{codes.7.3}})</div>
 </div>
 
                 </div>
@@ -245,7 +242,7 @@
             onclick="window.open('/track_graph_track/get/1508/', 'newwindow', 'width=1400, height=600'); return false;">
             1508</a>
     </div>
-    <div class="asset-count">({{counts.1508}})</div>
+    <div class="asset-count">({{codes.8.3}})</div>
 </div>
 
                     <div class="asset borders" style="background-color:{{codes.9.2}}">
@@ -254,7 +251,7 @@
             onclick="window.open('/track_graph_track/get/1532/', 'newwindow', 'width=1400, height=600'); return false;">
             1532</a>
     </div>
-    <div class="asset-count">({{counts.1532}})</div>
+    <div class="asset-count">({{codes.9.3}})</div>
 </div>
 
                 </div>
@@ -269,7 +266,7 @@
             onclick="window.open('/track_graph_track/get/1509/', 'newwindow', 'width=1400, height=600'); return false;">
             1509</a>
     </div>
-    <div class="asset-count">({{counts.1509}})</div>
+    <div class="asset-count">({{codes.10.3}})</div>
 </div>
 
                 </div>
@@ -278,13 +275,13 @@
                         <div class="asset-number">OP70</div>
                         <div class="asset-count">({{op.70}})</div>
                     </div>
-                    <div class="asset borders" style="background-color:{{codes.10.2}}">
+                    <div class="asset borders" style="background-color:{{request.session.fixed_color}}">
     <div class="asset-number">
         <a href="/dashboard/track_graph_track/get/1514/"
             onclick="window.open('/dashboard/track_graph_track/get/1514/', 'newwindow', 'width=1400, height=600'); return false;">
             1514</a>
     </div>
-    <div class="asset-count">({{counts.1514}})</div>
+    <div class="asset-count">({{codes.11.3}})</div>
 </div>
 
                 </div>
@@ -293,13 +290,13 @@
                         <div class="asset-number">OP80</div>
                         <div class="asset-count">({{op.80}})</div>
                     </div>
-                    <div class="asset borders" style="background-color:{{codes.10.2}}">
+                    <div class="asset borders" style="background-color:{{request.session.fixed_color}}">
     <div class="asset-number">
         <a href="/dashboard/track_graph_track/get/1510/"
             onclick="window.open('/dashboard/track_graph_track/get/1510/', 'newwindow', 'width=1400, height=600'); return false;">
             1510</a>
     </div>
-    <div class="asset-count">({{counts.1510}})</div>
+    <div class="asset-count">({{codes.12.3}})</div>
 </div>
 
                 </div>
@@ -314,7 +311,7 @@
             onclick="window.open('/dashboard/track_graph_track/get/1513/', 'newwindow', 'width=1400, height=600'); return false;">
             1513</a>
     </div>
-    <div class="asset-count">({{counts.1513}})</div>
+    <div class="asset-count">({{codes.29.3}})</div>
 </div>
 
                 </div>
@@ -329,7 +326,7 @@
             onclick="window.open('/dashboard/track_graph_track/get/1503/', 'newwindow', 'width=1400, height=600'); return false;">
             1503</a>
     </div>
-    <div class="asset-count">({{counts.1503}})</div>
+    <div class="asset-count">({{codes.13.3}})</div>
 </div>
 
                 </div>
@@ -340,11 +337,11 @@
                     </div>
                     <div class="asset borders" style="background-color:{{codes.14.2}}">
     <div class="asset-number">
-        <a href="{{request.session.local_toggle}}/track_graph_track/get/1511/"
-            onclick="window.open('{{request.session.local_toggle}}/track_graph_track/get/1511/', 'newwindow', 'width=1400, height=600'); return false;">
+        <a href="/dashboard/track_graph_track/get/1511/"
+            onclick="window.open('/dashboard/track_graph_track/get/1511/', 'newwindow', 'width=1400, height=600'); return false;">
             1511</a>
     </div>
-    <div class="asset-count">({{counts.1511}})</div>
+    <div class="asset-count">({{codes.14.3}})</div>
 </div>
 
                 </div>
@@ -359,7 +356,7 @@
             onclick="window.open('/dashboard/track_graph_track/get/1533/', 'newwindow', 'width=1400, height=600'); return false;">
             1533</a>
     </div>
-    <div class="asset-count">({{counts.1533}})</div>
+    <div class="asset-count">({{codes.30.3}})</div>
 </div>
 
                 </div>
@@ -373,7 +370,7 @@
             onclick="window.open('/dashboard/track_graph_track/get/1518/', 'newwindow', 'width=1400, height=600'); return false;">
             1518</a>
     </div>
-    <div class="asset-count">({{counts.1518}})</div>
+    <div class="asset-count">({{codes.15.3}})</div>
 </div>
 
                     <div class="asset borders" style="background-color:{{codes.16.2}}">
@@ -382,7 +379,7 @@
             onclick="window.open('/dashboard/track_graph_track/get/1521/', 'newwindow', 'width=1400, height=600'); return false;">
             1521</a>
     </div>
-    <div class="asset-count">({{counts.1521}})</div>
+    <div class="asset-count">({{codes.16.3}})</div>
 </div>
 
                     <div class="asset borders" style="background-color:{{codes.17.2}}">
@@ -391,7 +388,7 @@
             onclick="window.open('/dashboard/track_graph_track/get/1522/', 'newwindow', 'width=1400, height=600'); return false;">
             1522</a>
     </div>
-    <div class="asset-count">({{counts.1522}})</div>
+    <div class="asset-count">({{codes.17.3}})</div>
 </div>
 
                     <div class="asset borders" style="background-color:{{codes.18.2}}">
@@ -400,7 +397,7 @@
             onclick="window.open('/dashboard/track_graph_track/get/1523/', 'newwindow', 'width=1400, height=600'); return false;">
             1523</a>
     </div>
-    <div class="asset-count">({{counts.1523}})</div>
+    <div class="asset-count">({{codes.18.3}})</div>
 </div>
 
                 </div>
@@ -411,7 +408,7 @@
             onclick="window.open('/dashboard/track_graph_track/get/1539/', 'newwindow', 'width=1400, height=600'); return false;">
             1539</a>
     </div>
-    <div class="asset-count">({{counts.1539}})</div>
+    <div class="asset-count">({{codes.19.3}})</div>
 </div>
 
                     <div class="asset borders" style="background-color:{{codes.20.2}}">
@@ -420,7 +417,7 @@
             onclick="window.open('/dashboard/track_graph_track/get/1540/', 'newwindow', 'width=1400, height=600'); return false;">
             1540</a>
     </div>
-    <div class="asset-count">({{counts.1540}})</div>
+    <div class="asset-count">({{codes.20.3}})</div>
 </div>
 
                 </div>
@@ -431,7 +428,7 @@
             onclick="window.open('/dashboard/track_graph_track/get/1524/', 'newwindow', 'width=1400, height=600'); return false;">
             1524</a>
     </div>
-    <div class="asset-count">({{counts.1524}})</div>
+    <div class="asset-count">({{codes.21.3}})</div>
 </div>
 
                     <div class="asset borders" style="background-color:{{codes.22.2}}">
@@ -440,7 +437,7 @@
             onclick="window.open('/dashboard/track_graph_track/get/1525/', 'newwindow', 'width=1400, height=600'); return false;">
             1525</a>
     </div>
-    <div class="asset-count">({{counts.1525}})</div>
+    <div class="asset-count">({{codes.22.3}})</div>
 </div>
 
                 </div>
@@ -451,7 +448,7 @@
             onclick="window.open('/dashboard/track_graph_track/get/1538/', 'newwindow', 'width=1400, height=600'); return false;">
             1538</a>
     </div>
-    <div class="asset-count">({{counts.1538}})</div>
+    <div class="asset-count">({{codes.23.3}})</div>
 </div>
 
                 </div>
@@ -462,29 +459,29 @@
             onclick="window.open('/dashboard/track_graph_track/get/1541/', 'newwindow', 'width=1400, height=600'); return false;">
             1541</a>
     </div>
-    <div class="asset-count">({{counts.1541}})</div>
+    <div class="asset-count">({{codes.24.3}})</div>
 </div>
 
                 </div>
                 <div class="op">  <!-- OP 70  -->
-                    <div class="asset borders" style="background-color:{{codes.24.2}}">
+                    <div class="asset borders" style="background-color:{{request.session.fixed_color}}">
     <div class="asset-number">
         <a href="/dashboard/track_graph_track/get/1531/"
             onclick="window.open('/dashboard/track_graph_track/get/1531/', 'newwindow', 'width=1400, height=600'); return false;">
             1531</a>
     </div>
-    <div class="asset-count">({{counts.1531}})</div>
+    <div class="asset-count">(1002)</div>
 </div>
 
                 </div>
                 <div class="op">  <!-- OP 80  -->
-                    <div class="asset borders" style="background-color:{{codes.24.2}}">
+                    <div class="asset borders" style="background-color:{{request.session.fixed_color}}">
     <div class="asset-number">
         <a href="/dashboard/track_graph_track/get/1527/"
             onclick="window.open('/dashboard/track_graph_track/get/1527/', 'newwindow', 'width=1400, height=600'); return false;">
             1527</a>
     </div>
-    <div class="asset-count">({{counts.1527}})</div>
+    <div class="asset-count">(819)</div>
 </div>
 
                 </div>
@@ -496,18 +493,18 @@
             onclick="window.open('/dashboard/track_graph_track/get/1530/', 'newwindow', 'width=1400, height=600'); return false;">
             1530</a>
     </div>
-    <div class="asset-count">({{counts.1530}})</div>
+    <div class="asset-count">({{codes.27.3}})</div>
 </div>
 
                 </div>
                 <div class="op">  <!-- OP 110  -->
                     <div class="asset borders" style="background-color:{{codes.28.2}}">
     <div class="asset-number">
-        <a href="{{request.session.local_toggle}}/track_graph_track/get/1528/"
-            onclick="window.open('{{request.session.local_toggle}}/track_graph_track/get/1528/', 'newwindow', 'width=1400, height=600'); return false;">
+        <a href="/dashboard/track_graph_track/get/1528/"
+            onclick="window.open('/dashboard/track_graph_track/get/1528/', 'newwindow', 'width=1400, height=600'); return false;">
             1528</a>
     </div>
-    <div class="asset-count">({{counts.1528}})</div>
+    <div class="asset-count">({{codes.28.3}})</div>
 </div>
 
                 </div>
@@ -522,24 +519,24 @@
                                 onclick="window.open('/dashboard/track_graph_track/get/1546/', 'newwindow', 'width=1400, height=600'); return false;">
                                 1802</a>
                         </div>
-                        <div class="asset-count">({{counts.1802}})</div>
+                        <div class="asset-count">({{codes.40.3}})</div>
                     </div>
                 </div>  
 
 
                 <div class="op">  <!-- OP 30  -->
-                    <div class="asset borders" style="background-color:{{codes.33.2}}">
+                    <div class="asset borders" style="background-color:#D5D5D5">
     <div class="asset-number">
         <a href="/dashboard/track_graph_track/get/1546/"
             onclick="window.open('/dashboard/track_graph_track/get/1546/', 'newwindow', 'width=1400, height=600'); return false;">
             1546</a>
     </div>
-    <div class="asset-count">({{counts.1546}})</div>
+    <div class="asset-count">(0)</div>
 </div>
 
                 </div>
                 <div class="op">  <!-- OP 40  -->
-                    <div class="asset borders" style="background-color:{{codes.33.2}}">
+                    <div class="asset borders" style="background-color:#D5D5D5">
     <div class="asset-number">
         <a href="/dashboard/track_graph_track/get/1547/"
             onclick="window.open('/dashboard/track_graph_track/get/1547/', 'newwindow', 'width=1400, height=600'); return false;">
@@ -618,8 +615,8 @@
                 <div class="op">  <!-- OP 110  -->
                     <div class="asset borders" style="background-color:{{codes.39.2}}">
     <div class="asset-number">
-        <a href="{{request.session.local_toggle}}/track_graph_track/get/1554/"
-            onclick="window.open('{{request.session.local_toggle}}/track_graph_track/get/1554/', 'newwindow', 'width=1400, height=600'); return false;">
+        <a href="/dashboard/track_graph_track/get/1554/"
+            onclick="window.open('/dashboard/track_graph_track/get/1554/', 'newwindow', 'width=1400, height=600'); return false;">
             1554</a>
     </div>
     <div class="asset-count">({{codes.39.3}})</div>
@@ -848,14 +845,14 @@
             onclick="window.open('/dashboard/track_graph_track/get/1813/', 'newwindow', 'width=1400, height=600'); return false;">
             1813</a>
     </div>
-    <div class="asset-count">({{codes_60.14.3}})</div>v
+    <div class="asset-count">({{codes_60.13.3}})</div>v
 </div>
 
                 </div>
                 <div class="op">  <!-- OP 120  -->
                     <div class="c-op borders" style="background-color:#D5D5D5">
                         <div class="asset-number">Final</div>
-                        <div class="asset-count">({{codes_60.14.3}})</div>
+                        <div class="asset-count">(97)</div>
                     </div>
                     <div class="asset borders" style="background-color:#A4F6A4"">
     <div class="asset-number">
@@ -863,7 +860,7 @@
             onclick="window.open('/dashboard/track_graph_track/get/1816/', 'newwindow', 'width=1400, height=600'); return false;">
             1816</a>
     </div>
-    <div class="asset-count">({{codes_60.14.3}})</div>
+    <div class="asset-count">(97)</div>
 </div>
 
                 </div>
