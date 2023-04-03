@@ -5024,20 +5024,21 @@ def cell_track_9341_history2(request):
 	shift_start, shift_time, shift_left, shift_end = stamp_shift_start(request)	 # Get the Time Stamp info
 	machines1 = ['1504','1506','1519','1520','1502','1507','1501','1515','1508','1532','1509','1514','1510','1503','1511','1518','1521','1522','1523','1539','1540','1524','1525','1538','1541','1531','1527','1530','1528','1513','1533','1546','1547','1548','1549','594','1550','1552','751','1554','1802']
 	rate = [9,9,9,9,4,4,4,4,4,4,2,2,2,2,2,9,9,9,9,4,4,4,4,4,2,2,2,2,2,1,2,5,5,5,3,3,3,2,3,3,9]
+	rate2 = [400,400,400,400,700,700,700,700,900,900,1600,1600,1600,1400,1400,400,400,400,400,700,700,700,700,900,1200,1200,1200,1200,1200,2800,2800,350,350,500,500,500,500,350,350,350,400]
 	line1 = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0,0,3,3,3,3,3,3,3,3,3,3]
 	operation1 = [10,10,10,10,30,30,40,40,50,50,60,70,80,100,110,10,10,10,10,30,30,40,40,50,60,70,80,100,110,90,120,30,40,50,60,70,80,90,100,110,10]
 	prt = '50-9341'
-	machine_rate = zip(machines1,rate,operation1)
+	machine_rate = zip(machines1,rate,operation1,rate2)
 	machine_color =[]
 	db, cur = db_set(request)
 	sql = "SELECT target FROM tkb_ten_target"
 	cur.execute(sql)
 	target9 = cur.fetchall()
 	current_target = int(target9[0][0])
-
 	op5=[]
 	wip5=[]
 	prd5=[]
+
 
 	# Filter a List
 	color8=[]
@@ -5063,14 +5064,37 @@ def cell_track_9341_history2(request):
 	t=int(request.session['timestamp2'])
 
 	start2 = tt - 300
+	ts = t-s
+	current_rate = (t-s)/float(28800)
 
 	sql="SELECT Machine, COUNT(*) FROM GFxPRoduction WHERE TimeStamp >='%s' and TimeStamp <= '%s' and Machine IN {} GROUP BY Machine".format(mmachines) % (s,t)
 	cur.execute(sql)
 	tmpX=cur.fetchall()
 
 	counts1 = [0 for x in range(1999)]
+	acolor1 = [0 for x in range(1999)]
+	def_cnt = 0
 	for i in tmpX:
-		counts1[int(i[0])] = i[1]
+		
+		cnt = i[1]
+
+		counts1[int(i[0])] = cnt
+		c=[item for item in machine_rate if item[0]==i[0]]  # List of the Tuple for this machine #
+		mrate = c[0][3]  # Rate for this machine number
+		eff1 = (int(cnt) / float(int(mrate)*current_rate)*100)
+		color2 = '#FF5E33'
+		if eff1 > 70:
+			color2 = '#F9FF33'
+		if eff1 > 85:
+			color2 = '#68FF33'
+		acolor1[int(i[0])] = color2
+		if int(i[0]) == 1549:
+			def_cnt = i[1]
+			def_clr = color2
+			counts1[1550] = def_cnt
+			counts1[594] = def_cnt
+			acolor1[1550] = def_clr
+			acolor1[594] = def_clr
 
 	db.close()
 
@@ -5079,6 +5103,7 @@ def cell_track_9341_history2(request):
 	for i in machine_rate:
 		op_total[i[2]] = op_total[i[2]] + counts1[int(i[0])]
 	ctr9 = 0
+	current_target = current_target * current_rate
 	for i in op_total:
 		if int(i)>int(current_target):
 			color1 = '#68FF33'
@@ -5088,7 +5113,7 @@ def cell_track_9341_history2(request):
 			color1 = '#FF5E33'
 		op_color[ctr9] = color1
 		ctr9 = ctr9 + 1
-	return render(request,'cell_track_9341_date.html',{'t':t,'counts':counts1,'op':op_total,'op_color':op_color})	
+	return render(request,'cell_track_9341_date.html',{'t':t,'counts':counts1,'acolor1':acolor1,'op':op_total,'op_color':op_color})	
 
 def cell_track_9341_NEW(request):
 	shift_start, shift_time, shift_left, shift_end = stamp_shift_start(request)	 # Get the Time Stamp info
