@@ -5074,27 +5074,43 @@ def cell_track_9341_history2(request):
 	counts1 = [0 for x in range(1999)]
 	acolor1 = [0 for x in range(1999)]
 	def_cnt = 0
+	skip1 = ['1550','594','1514','1510','1531','1527']
 	for i in tmpX:
-		
-		cnt = i[1]
-
-		counts1[int(i[0])] = cnt
-		c=[item for item in machine_rate if item[0]==i[0]]  # List of the Tuple for this machine #
-		mrate = c[0][3]  # Rate for this machine number
-		eff1 = (int(cnt) / float(int(mrate)*current_rate)*100)
-		color2 = '#FF5E33'
-		if eff1 > 70:
-			color2 = '#F9FF33'
-		if eff1 > 85:
-			color2 = '#68FF33'
-		acolor1[int(i[0])] = color2
-		if int(i[0]) == 1549:
-			def_cnt = i[1]
-			def_clr = color2
-			counts1[1550] = def_cnt
-			counts1[594] = def_cnt
-			acolor1[1550] = def_clr
-			acolor1[594] = def_clr
+		if i[0] in skip1:
+			dummy=1
+		else:
+			cnt = i[1]
+			counts1[int(i[0])] = cnt
+			c=[item for item in machine_rate if item[0]==i[0]]  # List of the Tuple for this machine #
+			mrate = c[0][3]  # Rate for this machine number
+			eff1 = (int(cnt) / float(int(mrate)*current_rate)*100)
+			color2 = '#FF5E33'
+			if eff1 > 70:
+				color2 = '#F9FF33'
+			if eff1 > 85:
+				color2 = '#68FF33'
+			acolor1[int(i[0])] = color2
+			if int(i[0]) == 1549:
+				def_cnt = i[1]
+				def_clr = color2
+				counts1[1550] = def_cnt
+				counts1[594] = def_cnt
+				acolor1[1550] = def_clr
+				acolor1[594] = def_clr
+			if int(i[0]) == 1509:
+				def_cnt = i[1]
+				def_clr = color2
+				counts1[1514] = def_cnt - 16
+				counts1[1510] = def_cnt - 23
+				acolor1[1514] = def_clr
+				acolor1[1510] = def_clr
+			if int(i[0]) == 1541:
+				def_cnt = i[1]
+				def_clr = color2
+				counts1[1531] = def_cnt - 8
+				counts1[1527] = def_cnt - 13
+				acolor1[1531] = def_clr
+				acolor1[1527] = def_clr
 
 	db.close()
 
