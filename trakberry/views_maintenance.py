@@ -13,6 +13,7 @@ from views_supervisor import supervisor_tech_call
 from trakberry.views_testing import machine_list_display
 from mod1 import hyphon_fix, multi_name_breakdown
 import MySQLdb
+import datetime
 
 
 
@@ -1057,6 +1058,176 @@ def maint(request):
 	project = 'Project'
 	return render(request,"maint.html",{'L':LList,'N':n,'M':M,'E':E,'wfp':wfp,'project':project,'techs':tech_tmp})
 
+def maint_close_message(request):
+	index = request.session["index"]
+	Maint_Manpower = []
+	request.session["login_department"] = 'Maintenance'
+	Maint_Manpower = maint_manpower(request)
+
+	# Select prodrptdb db located in views_db
+	db, cursor = db_set(request)
+	SQ_Sup = "SELECT * FROM pr_downtime1 where idnumber='%s'" %(index)
+	cursor.execute(SQ_Sup)
+	tmp = cursor.fetchall()
+	tmp2=tmp[0]
+	request.session["machinenum"] = tmp2[0]
+	request.session["problem"] = tmp2[1]
+	request.session["priority"] = tmp2[3]
+	request.session["manpower"] = tmp2[4]
+
+	nm = multi_name_breakdown(tmp2[4])	# put all the names in a list that are seperated by a	|
+
+	db.close()
+
+
+	if request.POST:
+
+		machinenum = request.POST.get("machine")
+		problem = request.POST.get("reason")
+		manpower = request.POST.get("manpower")
+		whoisonit = 'tech'
+
+		a = request.POST
+		try:
+			b=int(a.get("one"))
+			manpower = request.session["manpower"]
+		except:
+			manpower = generate_string(request.session["manpower"],manpower)
+			b=-5
+
+		problem = hyphon_fix(problem)  # Send text to rid it of nasty hyphon glitches  :)
+		db, cursor = db_set(request)
+		cur = db.cursor()
+
+		asset3 = machinenum[:4]
+		asset2 = machinenum[:3]
+		try:
+			int(asset3)
+			asset4 = asset3
+		except:
+			asset4 = asset2
+		
+		try:
+			bql = "SELECT priority FROM tkb_asset_priority where asset_num = '%s'" % (asset4)
+			cur.execute(bql)
+			tmp2 = cur.fetchall()
+			tmp3 = tmp2[0][0]
+		except:
+			tmp3 = 999
+		priority = int(tmp3)
+
+		if problem[-3:] == 'WFP':
+			priority = 10000
+		elif problem[-7:] == 'Project':
+			priority = 5000
+
+		if b==-5:  # Route to update maintenance manpower but keep editing
+			mql =( 'update pr_downtime1 SET machinenum="%s" WHERE idnumber="%s"' % (machinenum,index))
+			cur.execute(mql)
+			db.commit()
+			tql =( 'update pr_downtime1 SET problem="%s" WHERE idnumber="%s"' % (problem,index))
+			cur.execute(tql)
+			db.commit()
+			uql =( 'update pr_downtime1 SET whoisonit="%s" WHERE idnumber="%s"' % (manpower,index))
+			cur.execute(uql)
+			uql =( 'update pr_downtime1 SET priority="%s" WHERE idnumber="%s"' % (priority,index))
+			cur.execute(uql)
+			db.commit()
+			db.close()
+			return render(request,'redirect_maint_edit.html')  # Need to bounce out to an html and redirect back into a module otherwise infinite loop
+
+		if b==-4:  # Route to update maintenance manpower but keep editing
+			request.session["bounce"] = 0
+			return render(request,'redirect_maint_mgmt.html')
+
+		if b==-3:  # Route to Update item and back to main
+			mql =( 'update pr_downtime1 SET machinenum="%s" WHERE idnumber="%s"' % (machinenum,index))
+			cur.execute(mql)
+			db.commit()
+			tql =( 'update pr_downtime1 SET problem="%s" WHERE idnumber="%s"' % (problem,index))
+			cur.execute(tql)
+			db.commit()
+			uql =( 'update pr_downtime1 SET priority="%s" WHERE idnumber="%s"' % (priority,index))
+			cur.execute(uql)
+			db.commit()
+			db.close()
+			return render(request,'redirect_maint_mgmt.html')  # Need to bounce out to an html and redirect back into a module otherwise infinite loop
+
+
+		if b==-2:	# Route to bounce and check if we are really going to close this item
+			request.session["bounce"] = 1
+			return render(request,'redirect_maint_edit.html')  # Need to bounce out to an html and redirect back into a module otherwise infinite loop
+
+		
+		return render(request,'redirect_maint_mgmt.html')  # Need to bounce out to an html and redirect back into a module otherwise infinite loop
+
+	else:
+		form = sup_downForm()
+	args = {}
+	args.update(csrf(request))
+	args['form'] = form
+
+	return render(request,'maintenance_edit.html',{'args':args,'MList':Maint_Manpower})
+
+def maint_job_close(request):	
+	# Select prodrptdb db located in views_db
+	index = request.session['index']
+	db, cursor = db_set(request)  
+	sql = "SELECT * FROM pr_downtime1 where idnumber='%s'" %(index)
+	cursor.execute(sql)
+	tmp = cursor.fetchall()
+	tmp2 = tmp[0]
+	machine = tmp2[0]
+	description = tmp2[1]
+	maint1 = tmp2[4]
+
+	try:
+		request.session["tech_comment"]
+	except:
+		request.session["tech_comment"] = ""
+
+	if request.POST:
+		
+		# take comment into tx and ensure no "" exist.  If they do change them to ''
+		tx = request.POST.get("comment")
+		tx = ' ' + tx
+		if (tx.find('"'))>0:
+			#request.session["test_comment"] = tx
+			#return out(request)
+			ty = list(tx)
+			ta = tx.find('"')
+			tb = tx.rfind('"')
+			ty[ta] = "'"
+			ty[tb] = "'"
+			tc = "".join(ty)
+		else:
+			tc = tx
+		request.session["tech_comment"] = tc
+		t = datetime.datetime.now()
+		if len(tc) < 6:
+			return render(request,'redirect_maint_job_close.html')
+
+		db, cur = db_set(request)  
+		sql =( 'update pr_downtime1 SET remedy="%s" WHERE idnumber="%s"' % (tc,index))
+		cur.execute(sql)
+		db.commit()
+		tql =( 'update pr_downtime1 SET completedtime="%s" WHERE idnumber="%s"' % (t,index))
+		cur.execute(tql)
+		db.commit()
+		db.close()
+
+		return maint(request)
+		
+	else:
+		form = maint_closeForm()
+	args = {}
+	args.update(csrf(request))
+	args['form'] = form
+	return render(request,'maint_job_close.html', {'Machine':machine,'Description':description,'args':args})	
+
+
+
+
 def maint_close_item(request):
 	index=request.session["index"]
 	db, cur = db_set(request)
@@ -1115,8 +1286,9 @@ def maint_call(request, index):
 
 def maint_close(request, index):
 	request.session["index"] = index
-	request.session["bounce2_switch"] = 1
-	return render(request,"redirect_maint.html")
+	request.session["bounce2_switch"] = 0
+	return maint_job_close(request)
+	# return render(request,"redirect_maint.html")
 
 def maint_names(request):
 	Maint_Manpower = []

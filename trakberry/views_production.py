@@ -5002,6 +5002,7 @@ def track_9341_history_date(request):
 		
 		timestamp2,date2,hr2,mi2 = date_stamp(date2)
 
+
 		request.session['timestamp1'] = timestamp1
 		request.session['date1'] = date1
 		request.session['hr1'] = hr1
