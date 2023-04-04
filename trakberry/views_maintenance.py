@@ -23,8 +23,25 @@ import time
 #import datetime as dt
 from django.core.context_processors import csrf
 
-def maint_job_entry(request):
 
+
+def maint_down_no(request):
+	request.session['asset_down'] = 'No'
+	return maint_job_entry(request)
+
+def maint_down_yes(request):
+	request.session['asset_down'] = 'Yes_Down'
+	return maint_job_entry(request)
+
+
+def maint_init_call(request):
+	request.session["whoisonit"] = 'Electrician'
+	request.session['asset_down'] = 'Yes_Down'
+	return render(request,"maint_down_1.html")
+
+
+def maint_job_entry(request):
+	down7 = request.session['asset_down']
 	if request.POST:
 		machinenum = request.POST.get("machine")
 		problem = request.POST.get("reason")
@@ -91,13 +108,13 @@ def maint_job_entry(request):
 			side1 = '0'
 
 		try:
-			cur.execute('''INSERT INTO pr_downtime1(machinenum,problem,priority,whoisonit,called4helptime,side) VALUES(%s,%s,%s,%s,%s,%s)''', (asset5,problem,priority,whoisonit,t,side1))
+			cur.execute('''INSERT INTO pr_downtime1(machinenum,problem,priority,whoisonit,called4helptime,side,down) VALUES(%s,%s,%s,%s,%s,%s,%s)''', (asset5,problem,priority,whoisonit,t,side1,down7))
 			db.commit()
 			db.close()
 		except:
 			cur.execute("Alter Table pr_downtime1 ADD Column side VARCHAR(100) DEFAULT '0'") #% (side2)	 # Add a Column
 			db.commit()
-			cur.execute('''INSERT INTO pr_downtime1(machinenum,problem,priority,whoisonit,called4helptime,side) VALUES(%s,%s,%s,%s,%s,%s)''', (asset5,problem,priority,whoisonit,t,side1))
+			cur.execute('''INSERT INTO pr_downtime1(machinenum,problem,priority,whoisonit,called4helptime,side,down) VALUES(%s,%s,%s,%s,%s,%s,%s)''', (asset5,problem,priority,whoisonit,t,side1,down7))
 			db.commit()
 			db.close()
 		return render(request,'redirect_maint_mgmt.html')

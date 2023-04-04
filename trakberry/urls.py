@@ -77,7 +77,7 @@ from views_supervisor import supervisor_display, supervisor_tech_call,supervisor
 from views_supervisor import vacation_display_jump, supervisor_edit, sup_close, employee_vac_enter, vacation_display
 from views_supervisor import vacation_display_increment, vacation_display_decrement, vacation_edit, vacation_delete, sup_message_reply1,sup_message_reply0
 from views_supervisor import employee_vac_enter_init, employee_vac_enter_init2, vacation_month_fix, vacation_display_initial, resetcheck,sup_message
-from views_supervisor import check_email_problem
+from views_supervisor import check_email_problem, supervisor_down_no,supervisor_down_yes
 # ***********************************************************************************************************************************************************
 
 
@@ -94,6 +94,7 @@ from views_scheduler import schedule_set2b,schedule_set3,schedule_reset_data,sch
 # *******************************************  Maintenance App Section ********************************************************************************************
 from views_maintenance import maint_mgmt,maint, maint_call, maint_pass, maint_close, maint_logout, maint_job_history, maint_map, maint_call_call
 from views_maintenance import maint_mgmt_login_form, maintenance_edit, maintenance_close, maint_close_item, maint_job_entry, maint_mgmt_auto, maint_TV
+from views_maintenance import maint_init_call,maint_down_yes,maint_down_no
 # ***********************************************************************************************************************************************************
 
 # *******************************************  Inventory Section ********************************************************************************************
@@ -311,6 +312,8 @@ urlpatterns = [
 	url(r'^reset_call_route/', reset_call_route),
 	url(r'^sup_down_elec/', supervisor_elec_call),
 	url(r'^sup_down_maint/', supervisor_maint_call),
+    url(r'^supervisor_down_no/', supervisor_down_no),
+    url(r'^supervisor_down_yes/', supervisor_down_yes),
 	url(r'^sup_message_reply1/', sup_message_reply1),
 	url(r'^sup_message_reply0/', sup_message_reply0),
 	url(r'^sup_message/', sup_message), 
@@ -354,9 +357,12 @@ urlpatterns = [
 	url(r'^maint_mgmt/', maint_mgmt),
 	url(r'^maint_mgmt_auto/', maint_mgmt_auto),
 	url(r'^maintenance_edit/', maintenance_edit),
+    url(r'^maint_init_call/', maint_init_call),
 	url(r'^maintenance_close/', maintenance_close),
 	url(r'^maint_mgmt_login_form/', maint_mgmt_login_form),
-	url(r'^maint/', maint),
+	url(r'^maint_down_yes/', maint_down_yes),
+    url(r'^maint_down_no/', maint_down_no),
+    url(r'^maint/', maint),
 	url(r'^maint_TV/', maint_TV),
 	url(r'^maint_map/', maint_map),
 	url(r'^mcall/get/(?P<index>\d+)/$', maint_call),
