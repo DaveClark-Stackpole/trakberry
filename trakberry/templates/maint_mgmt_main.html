@@ -35,7 +35,40 @@
 .body5{color:black;text-align:center;background:rgb(199, 187, 166);float:left;border: .4px solid rgb(0, 0, 0);position:relative;width:100%;}
 .body6{color:black;text-align:center;background:rgb(240, 227, 203);float:left;border: .4px solid rgb(0, 0, 0);position:relative;width:100%;}
 
-
+.button4 {
+height: 70px;
+ text-align: center;
+ cursor: pointer;
+ outline: none;
+ color: #000000;
+background-color: #ce8b89;
+border: none;
+border-radius: 15px;
+box-shadow: 0 7px #5c7b94;
+}
+.button4:hover {background-color:  #ad6e6c;}
+.button4:active {
+background-color: #8a513f;
+box-shadow: 0 8px  #5c7b94;
+transform: translateY(8px);
+}
+.button5 {
+height: 70px;
+ text-align: center;
+ cursor: pointer;
+ outline: none;
+ color: #000000;
+background-color: #61ee54;
+border: none;
+border-radius: 15px;
+box-shadow: 0 7px #5c7b94;
+}
+.button5:hover {background-color:  #51c546;}
+.button5:active {
+background-color: #48ad3e;
+box-shadow: 0 8px  #5c7b94;
+transform: translateY(8px);
+}
 			</style>
 
 
@@ -80,7 +113,7 @@
                         <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
                         <li><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-stats"></span> Utilities<b class="caret"></b></a>
                          <ul class="dropdown-menu multi-level"  style="background-color:{{request.session.main_menu_color}}" >
-                            <li><a href="{{request.session.local_toggle}}/maint_job_entry">Enter Machine Down</a></li>
+                            <li><a href="{{request.session.local_toggle}}/maint_init_call">Enter Machine Down</a></li>
                             <li><a href="#">Add Another Employee</a></li>
                             <li><a href="#">Edit Names</a></li>                  
                         </ul>        

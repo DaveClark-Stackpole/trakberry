@@ -489,16 +489,29 @@ def supervisor_tech_call(request):
 
 	return supervisor_down(request)
 
+def supervisor_down_no(request):
+	request.session['asset_down'] = 'No'
+	return supervisor_down(request)
+
+def supervisor_down_yes(request):
+	request.session['asset_down'] = 'Yes_Down'
+	return supervisor_down(request)
+
+
 def supervisor_elec_call(request):
 	request.session["whoisonit"] = 'Electrician'
-	return supervisor_down(request)
+	request.session['asset_down'] = 'Yes_Down'
+	return render(request,"supervisor_down_1.html")
+
 
 def supervisor_maint_call(request):
 	request.session["whoisonit"] = 'Millwright'
-	return supervisor_down(request)	
+	request.session['asset_down'] = 'Yes_Down'
+	return render(request,"supervisor_down_1.html")
+
 	
 def supervisor_down(request):	
-	
+	down7 = request.session['asset_down']
 	if request.POST:
 
 		machinenum = request.POST.get("machine")
@@ -612,13 +625,13 @@ def supervisor_down(request):
 			priority = 1
 			
 		try:
-			cur.execute('''INSERT INTO pr_downtime1(machinenum,problem,priority,whoisonit,called4helptime,side) VALUES(%s,%s,%s,%s,%s,%s)''', (asset5,problem,priority,whoisonit,t,side1))
+			cur.execute('''INSERT INTO pr_downtime1(machinenum,problem,priority,whoisonit,called4helptime,side,down) VALUES(%s,%s,%s,%s,%s,%s,%s)''', (asset5,problem,priority,whoisonit,t,side1,down7))
 			db.commit()
 			db.close()
 		except:
 			cur.execute("Alter Table pr_downtime1 ADD Column side VARCHAR(100) DEFAULT '0'") #% (side2)  # Add a Column
 			db.commit()
-			cur.execute('''INSERT INTO pr_downtime1(machinenum,problem,priority,whoisonit,called4helptime,side) VALUES(%s,%s,%s,%s,%s,%s)''', (asset5,problem,priority,whoisonit,t,side1))
+			cur.execute('''INSERT INTO pr_downtime1(machinenum,problem,priority,whoisonit,called4helptime,side,down) VALUES(%s,%s,%s,%s,%s,%s,%s)''', (asset5,problem,priority,whoisonit,t,side1,down7))
 			db.commit()
 			db.close()
 		# prioritize(request)
