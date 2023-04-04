@@ -511,7 +511,12 @@ def supervisor_maint_call(request):
 
 	
 def supervisor_down(request):	
-	down7 = request.session['asset_down']
+	try:
+		down7 = request.session['asset_down']
+	except:
+		down7 = 'Yes_Down'
+		request.session['asset_down'] = 'Yes_Down'
+
 	if request.POST:
 
 		machinenum = request.POST.get("machine")
