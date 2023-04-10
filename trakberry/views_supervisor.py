@@ -614,6 +614,9 @@ def supervisor_down(request):
 			priority = 1
 		if asset4 == '611':
 			priority = 1
+		
+		if problem[:4] == ' C/O':
+			priority = 0
 			
 		
 # This will determine side of asset and put in breakdown

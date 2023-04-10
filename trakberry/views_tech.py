@@ -442,7 +442,8 @@ def tech(request):
 		request.session["tech_alarm"] = "/media/clock.wav"
 		request.session["tech_ctr"] = ctr
 	list = zip(job,prob,id,tch,priority)
-	
+
+
 	db.close()
 	n = "none"
 	if request.session["login_tech"] == "Jim Barker":
@@ -1102,20 +1103,105 @@ def tech_message_reply1(request):
 	
 	
 def job_call(request, index):	
-	
 	tec = request.session["login_tech"]
-
+	t = datetime.datetime.now()
 	# Select prodrptdb db located in views_db
 	db, cur = db_set(request)  
 	sql =( 'update pr_downtime1 SET whoisonit="%s" WHERE idnumber="%s"' % (tec,index))
 	cur.execute(sql)
 	db.commit()
+	tql =( 'update pr_downtime1 SET updatedtime="%s" WHERE idnumber="%s"' % (t,index))
+	cur.execute(tql)
+	db.commit()
 	db.close()
-
 	return tech(request)
 
-def job_close(request, index):	
+def changeover1(request, index):	
+	t = datetime.datetime.now()
+	db, cur = db_set(request)  
+	sql = "SELECT problem FROM pr_downtime1 where idnumber='%s'" %(index)
+	cur.execute(sql)
+	tmp = cur.fetchall()
+	tmp2 = tmp[0][0]
+	x = tmp2[4:]
+	x = ' C-O' + x
+	sql =( 'update pr_downtime1 SET problem="%s" WHERE idnumber="%s"' % (x,index))
+	cur.execute(sql)
+	db.commit()
+	tql =( 'update pr_downtime1 SET changeovertime="%s" WHERE idnumber="%s"' % (t,index))
+	cur.execute(tql)
+	db.commit()
+	db.close()
+	return tech(request)
+
+
+def changeover2(request, index):	
+
+	# Select prodrptdb db located in views_db
+	db, cursor = db_set(request)  
+	sql = "SELECT whoisonit FROM pr_downtime1 where idnumber='%s'" %(index)
+	cursor.execute(sql)
+	tmp = cursor.fetchall()
+	tmp2 = tmp[0]
+	ssql = "SELECT * FROM pr_downtime1 where idnumber='%s'" %(index)
+	cursor.execute(ssql)
+	ttmp = cursor.fetchall()
+	m2 = ttmp[0]
+	m1 = m2[0]
+	m3 = m2[1]
+	#m2 = ttmp[1]
 	
+	try:
+		request.session["tech_comment"]
+	except:
+		request.session["tech_comment"] = ""
+
+		
+	if request.POST:
+		
+		# take comment into tx and ensure no "" exist.  If they do change them to ''
+		
+		tx = request.POST.get("comment")
+		tx = ' ' + tx
+		if (tx.find('"'))>0:
+			#request.session["test_comment"] = tx
+			#return out(request)
+			ty = list(tx)
+			ta = tx.find('"')
+			tb = tx.rfind('"')
+			ty[ta] = "'"
+			ty[tb] = "'"
+			tc = "".join(ty)
+		else:
+			tc = tx
+		request.session["tech_comment"] = tc
+		t = datetime.datetime.now()
+		
+
+		# Select prodrptdb db located in views_db
+		db, cur = db_set(request)  
+
+		sql =( 'update pr_downtime1 SET remedy="%s" WHERE idnumber="%s"' % (tc,index))
+		cur.execute(sql)
+		db.commit()
+		db.close()
+		
+		db, cur = db_set(request)  
+		tql =( 'update pr_downtime1 SET completedtime="%s" WHERE idnumber="%s"' % (t,index))
+		cur.execute(tql)
+		db.commit()
+		db.close()
+
+		return tech(request)
+		
+	else:
+		form = tech_closeForm()
+	args = {}
+	args.update(csrf(request))
+	args['form'] = form
+	return render(request,'tech_close.html',{'Machine':m1,'Description':m3,'args': args})
+
+def job_close(request, index):	
 
 	# Select prodrptdb db located in views_db
 	db, cursor = db_set(request)  

@@ -28,6 +28,7 @@ from views_tech import tech_message_close,tech_message_reply1, tech_report_email
 from views_tech import tech_epv,tech_epv_back,tech_epv_complete, tech_epv_person_update,tech_epv_assign,tech_PM_assign,tech_epv_week_assign
 from views_tech import epv_checks_update
 from views_tech import tech_pm, tech_pm_back,tech_pm_complete,tech_PM_master_complete,tech_pm_complete_all,tech_pm_summary, tech_pm_complete_asset
+from views_tech import changeover1
 #from views_tech import hour_check
 from views_transfer import transfer
 
@@ -140,7 +141,7 @@ from views_production import chart1_5401_OP80, chart2_5401_OP80, chart1_3214_OP3
 from views_production import chart1_1467b,chart2_1467b,chart1_3050b,chart2_3050b,chart1_5710b,chart2_5710b
 from views_production import chart1_1467o,chart2_1467o,chart1_1467br,chart2_1467br,chart1_0455_OP50,chart2_0455_OP50,chart1_0455_OP40,chart2_0455_OP40
 from views_production import mgmt_priorities,auto_updater,cell_track_9341,track_email,cell_track_9341_mobile,cell_track_9341_history_on,cell_track_9341_history
-from views_production import cell_track_9341_history_off,mgmt_track_week,mgmt_goals,cell_track_9341_TV,track_1703_initial,track_1704_initial
+from views_production import cell_track_9341_history_off,mgmt_track_week,mgmt_goals,cell_track_9341_TV,track_1703_initial,track_1704_initial,cell_track_9341_v2
 from views_production import cell_track_1467,cell_track_8670,cell_track_9341_history2,track_9341_history_date,cell_track_9341_NEW
 from views_production import plus_0455,minus_0455,plus_9341,minus_9341,plus_3050,minus_3050,plus_1467,minus_1467, wip_update,runrate_10R80,cell_track_9341_archive
 
@@ -247,6 +248,8 @@ urlpatterns = [
 	url(r'^tech_epv_person_update/', tech_epv_person_update),
 	url(r'^email_hour_check/', email_hour_check),
 	url(r'^modal_test/', modal_test),	
+
+    
 	
 	# Reports URL Patterns ***********************************
 	url(r'^reports/', select_date),
@@ -325,6 +328,7 @@ urlpatterns = [
 	url(r'^tech_down_10r/', tech_down_10r),
 	url(r'^jcall/get/(?P<index>\d+)/$', job_call),
 	url(r'^jclose/get/(?P<index>\d+)/$', job_close),
+    url(r'^changeover1/get/(?P<index>\d+)/$', changeover1),
 	url(r'^jpass/get/(?P<index>\d+)/$', job_pass),
 	url(r'^tech_epv/get/(?P<index>\w{0,50})/$', tech_epv),
 	url(r'^tech_pm/get/(?P<index>\w{0,50})/$', tech_pm),
@@ -677,6 +681,7 @@ urlpatterns = [
 	url(r'^cell_track_9341_history/', cell_track_9341_history),
     url(r'^cell_track_9341_archive/', cell_track_9341_archive),
     url(r'^cell_track_9341_history2/', cell_track_9341_history2),
+	url(r'^cell_track_9341_v2/', cell_track_9341_v2),
     url(r'^track_9341_history_date/', track_9341_history_date),
 	url(r'^wip_update/', wip_update),
 

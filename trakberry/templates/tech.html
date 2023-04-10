@@ -230,6 +230,36 @@
 <div class="frame1" >
 <br><br><br><br>
 {% for i in L %}
+
+
+{% if i.1|slice:"0:4" == " C/O" %}
+<div class="comment4" style="font-size:15px;font-weight: bold;background-color: #8ee0f5;border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;">{{i.0}}</div>
+<div class="comment4" style="font-size:15px;font-weight: bold;background-color: #8ee0f5;border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;">{{i.1}}</div>
+<div class="comment4" style="font-size:15px;font-weight: bold;background-color: #8ad6e9;border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;">
+	<a href="{{request.session.local_toggle}}/jcall/get/{{ i.2 }}" style="color: black">{{i.3}}</b></a>
+</div>
+<div class="comment3" style="font-size:15px;font-weight: bold;background-color: #003daf;border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;">
+	<a href="{{request.session.local_toggle}}/changeover1/get/{{ i.2 }}" style="color:rgb(255, 255, 255);">C/O Mechanical Complete</a>
+</div>
+<div class="comment3" style="font-size:15px;font-weight: bold;background-color: #003daf;border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;">
+	<a href="#" style="color:#003daf;">C/O Final Complete</a>
+</div>
+
+{% elif i.1|slice:"0:4" == " C-O" %}
+<div class="comment4" style="font-size:15px;font-weight: bold;background-color: #f5a3ee;border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;">{{i.0}}</div>
+<div class="comment4" style="font-size:15px;font-weight: bold;background-color: #f5a3ee;border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;">{{i.1}}</div>
+<div class="comment4" style="font-size:15px;font-weight: bold;background-color: #f5a3ee;border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;">
+	<a href="{{request.session.local_toggle}}/jcall/get/{{ i.2 }}" style="color: black">{{i.3}}</b></a>
+</div>
+<div class="comment3" style="font-size:15px;font-weight: bold;background-color: #774073;border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;">
+	<a href="#" style="color:#774073;">C/O Mechanical Complete</a>
+</div>
+<div class="comment3" style="font-size:15px;font-weight: bold;background-color: #774073;border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;">
+	<a href="{{request.session.local_toggle}}/jclose/get/{{ i.2 }}" style="color:rgb(255, 255, 255);">C/O Final Complete</a>
+</div>
+
+
+{% else %}
 <div class="comment4" style="font-size:15px;font-weight: bold;background-color: #97f58e;border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;">{{i.0}}</div>
 <div class="comment4" style="font-size:15px;font-weight: bold;background-color: #97f58e;border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;">{{i.1}}</div>
 <div class="comment4" style="font-size:15px;font-weight: bold;background-color: #53d147;border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;">
@@ -241,6 +271,12 @@
 <div class="comment3" style="font-size:15px;font-weight: bold;background-color: #c2c2c2;border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;">
 	<a href="{{request.session.local_toggle}}/jpass/get/{{ i.2 }}" style="color:rgb(0, 0, 0);">Pass Off</a>
 </div>
+
+
+{% endif %}
+
+
+
 <div class="comment5"></div>
 {% endfor %}
 </div>  <!-- Frame1 end -->

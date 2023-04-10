@@ -160,12 +160,23 @@ def tech(request):
 def job_call(request, index):	
     
 	tec = request.session["login_tech"]
+	t = datetime.datetime.now()
 
 	# Select prodrptdb db located in views_db
 	db, cur = db_set(request)  
 	sql =( 'update pr_downtime1 SET whoisonit="%s" WHERE idnumber="%s"' % (tec,index))
 	cur.execute(sql)
 	db.commit()
+
+	tql =( 'update pr_downtime1 SET changeovertime="%s" WHERE idnumber="%s"' % (t,index))
+	cur.execute(tql)
+	db.commit()
+
+	tttt=3/0
+	
+
+
+
 	db.close()
 
 	return tech(request)

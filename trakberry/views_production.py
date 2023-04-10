@@ -4975,7 +4975,7 @@ def cell_track_9341_archive(request):
 
 	return render(request,'cell_track_9341_archive.html',{'t':t,'codes':total8,'op':op_total,'op_color':op_color,'codes_60':total8_0455,'op_60':op_total_0455,'R80':c80,'R60':c60})	
 
-def cell_track_9341(request):
+def cell_track_9341_NEW(request):
 	return render(request,'redirect_cell_track_9341_new.html')	
 
 def date_stamp(datee):
@@ -5003,6 +5003,8 @@ def track_9341_history_date(request):
 		timestamp2,date2,hr2,mi2 = date_stamp(date2)
 
 
+
+
 		request.session['timestamp1'] = timestamp1
 		request.session['date1'] = date1
 		request.session['hr1'] = hr1
@@ -5021,11 +5023,11 @@ def track_9341_history_date(request):
 	args['form'] = form
 	return render(request,'track_9341_history_date.html',{'args':args})
 
-def cell_track_9341_history2(request):
+def cell_track_9341_v2(request):
 	shift_start, shift_time, shift_left, shift_end = stamp_shift_start(request)	 # Get the Time Stamp info
 	machines1 = ['1504','1506','1519','1520','1502','1507','1501','1515','1508','1532','1509','1514','1510','1503','1511','1518','1521','1522','1523','1539','1540','1524','1525','1538','1541','1531','1527','1530','1528','1513','1533','1546','1547','1548','1549','594','1550','1552','751','1554','1802']
 	rate = [9,9,9,9,4,4,4,4,4,4,2,2,2,2,2,9,9,9,9,4,4,4,4,4,2,2,2,2,2,1,2,5,5,5,3,3,3,2,3,3,9]
-	rate2 = [400,400,400,400,700,700,700,700,900,900,1600,1600,1600,1400,1400,400,400,400,400,700,700,700,700,900,1200,1200,1200,1200,1200,2800,2800,350,350,500,500,500,500,350,350,350,400]
+	rate2 = [400,400,400,400,700,700,700,700,900,900,1600,1600,1600,1400,1400,400,400,400,400,700,700,700,700,900,1200,1200,1200,1200,1200,2800,2800,350,350,350,350,350,350,350,350,350,400]
 	line1 = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0,0,3,3,3,3,3,3,3,3,3,3]
 	operation1 = [10,10,10,10,30,30,40,40,50,50,60,70,80,100,110,10,10,10,10,30,30,40,40,50,60,70,80,100,110,90,120,30,40,50,60,70,80,90,100,110,10]
 	prt = '50-9341'
@@ -5035,6 +5037,8 @@ def cell_track_9341_history2(request):
 	sql = "SELECT target FROM tkb_ten_target"
 	cur.execute(sql)
 	target9 = cur.fetchall()
+	db.close()
+
 	current_target = int(target9[0][0])
 	op5=[]
 	wip5=[]
@@ -5064,10 +5068,278 @@ def cell_track_9341_history2(request):
 	s=int(request.session['timestamp1'])
 	t=int(request.session['timestamp2'])
 
+	s = start1
+
 	start2 = tt - 300
 	ts = t-s
 	current_rate = (t-s)/float(28800)
 
+	db, cur = db_set(request)
+	sql="SELECT Machine, COUNT(*) FROM GFxPRoduction WHERE TimeStamp >='%s' and Machine IN {} GROUP BY Machine".format(mmachines) % (s)
+	cur.execute(sql)
+	tmpX=cur.fetchall()
+
+	sql="SELECT Machine, COUNT(*) FROM GFxPRoduction WHERE TimeStamp >='%s' and TimeStamp <='%s' and Machine IN {} GROUP BY Machine".format(mmachines) % (start2,start1)
+	cur.execute(sql)
+	tmpY=cur.fetchall()
+
+
+	counts1 = [0 for x in range(1999)]
+	acolor1 = [0 for x in range(1999)]
+	def_cnt = 0
+	skip1 = ['1550','594','1514','1510','1531','1527']
+
+	for i in tmpX:
+		if i[0] in skip1:
+			dummy=1
+		else:
+			try:
+				cnt = i[1]
+				cnt2 = cnt / float(shift_time)
+				cnt3 = cnt2 * shift_left
+				cnt4 = cnt + cnt3
+			except:
+				cnt4 = 0
+			counts1[int(i[0])] = int(cnt4)
+			c=[item for item in machine_rate if item[0]==i[0]]  # List of the Tuple for this machine #
+			mrate = c[0][3]  # Rate for this machine number
+			eff1 = (int(cnt4) / float(int(mrate))) *100
+
+			color2 = '#FF5E33'
+			if eff1 > 70:
+				color2 = '#F9FF33'
+			if eff1 > 85:
+				color2 = '#68FF33'
+			acolor1[int(i[0])] = color2
+			if int(i[0]) == 1549:
+				def_cnt = i[1]
+				def_clr = color2
+				counts1[1550] = int(cnt4)
+				counts1[594] = int(cnt4)
+				acolor1[1550] = def_clr
+				acolor1[594] = def_clr
+			if int(i[0]) == 1509:
+				def_cnt = i[1]
+				def_clr = color2
+				counts1[1514] = int(cnt4) - 16
+				counts1[1510] = int(cnt4) - 23
+				acolor1[1514] = def_clr
+				acolor1[1510] = def_clr
+			if int(i[0]) == 1541:
+				def_cnt = i[1]
+				def_clr = color2
+				counts1[1531] =int(cnt4) - 8
+				counts1[1527] = int(cnt4) - 13
+				acolor1[1531] = def_clr
+				acolor1[1527] = def_clr
+
+	db.close()
+
+	op_total = [0 for x in range(200)]
+	op_color = [0 for x in range(200)]	
+	for i in machine_rate:
+		op_total[i[2]] = op_total[i[2]] + counts1[int(i[0])]
+	ctr9 = 0
+	# current_target = current_target * current_rate
+	for i in op_total:
+		if int(i)>int(current_target):
+			color1 = '#68FF33'
+		elif int(i)>int(current_target*.85):
+			color1 = '#F9FF33'
+		else:
+			color1 = '#FF5E33'
+		op_color[ctr9] = color1
+		ctr9 = ctr9 + 1
+	tt,ccounts1,aacolor1,oop_total,oop_color = cell_track_0455_v2(request)
+
+
+
+
+	return render(request,'cell_track_9341_v2.html',{'t':t,'counts':counts1,'acolor1':acolor1,'op':op_total,'op_color':op_color,'tt':tt,'ccounts':ccounts1,'aacolor1':aacolor1,'oop':oop_total,'oop_color':oop_color})	
+
+def cell_track_0455_v2(request):
+	shift_start, shift_time, shift_left, shift_end = stamp_shift_start(request)	 # Get the Time Stamp info
+	machines1 = ['1800','1529','776','1824','1543','1804','1805','1806','1808','1810','1815','1542','1812','1813','1816']
+	rate = [3,4,4,4,4,2,2,1,1,1,1,1,1,1,1]
+	rate2 = [400,300,150,250,300,500,500,900,900,900,900,900,900,900,900]
+	line1 = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+	operation1 = [10,30,30,30,30,40,40,50,60,70,80,90,100,110,120]
+	prt = '50-0455'
+	machine_rate = zip(machines1,rate,operation1,rate2)
+	machine_color =[]
+	db, cur = db_set(request)
+	sql = "SELECT target FROM tkb_ten_target"
+	cur.execute(sql)
+	target9 = cur.fetchall()
+	db.close()
+
+	current_target = int(target9[0][0])
+	op5=[]
+	wip5=[]
+	prd5=[]
+
+
+	# Filter a List
+	color8=[]
+	rate8=[]
+	machine8=[]
+	pred8 = []
+	av55=[]
+	cnt55=[]
+	sh55=[]
+	shl55=[]
+	op8=[]
+	rt8=[]
+	request.session['shift_start'] = shift_start
+
+	# Preliminary testing variables for new methord
+	tt = int(time.time())
+
+	mmachines = tuple(machines1)
+	t=tt-300
+	start1 = tt-shift_time
+
+	s=int(request.session['timestamp1'])
+	t=int(request.session['timestamp2'])
+
+	s = start1
+
+	start2 = tt - 300
+	ts = t-s
+	current_rate = (t-s)/float(28800)
+
+	db, cur = db_set(request)
+	sql="SELECT Machine, COUNT(*) FROM GFxPRoduction WHERE TimeStamp >='%s' and Machine IN {} GROUP BY Machine".format(mmachines) % (s)
+	cur.execute(sql)
+	tmpX=cur.fetchall()
+
+	sql="SELECT Machine, COUNT(*) FROM GFxPRoduction WHERE TimeStamp >='%s' and TimeStamp <='%s' and Machine IN {} GROUP BY Machine".format(mmachines) % (start2,start1)
+	cur.execute(sql)
+	tmpY=cur.fetchall()
+
+
+	counts1 = [0 for x in range(1999)]
+	acolor1 = [0 for x in range(1999)]
+	def_cnt = 0
+	skip1 = ['1550','594','1514','1510','1531','1527']
+
+	for i in tmpX:
+		if i[0] in skip1:
+			dummy=1
+		else:
+			try:
+				cnt = i[1]
+				cnt2 = cnt / float(shift_time)
+				cnt3 = cnt2 * shift_left
+				cnt4 = cnt + cnt3
+			except:
+				cnt4 = 0
+			counts1[int(i[0])] = int(cnt4)
+			c=[item for item in machine_rate if item[0]==i[0]]  # List of the Tuple for this machine #
+			mrate = c[0][3]  # Rate for this machine number
+			eff1 = (int(cnt4) / float(int(mrate))) *100
+
+			color2 = '#FF5E33'
+			if eff1 > 70:
+				color2 = '#F9FF33'
+			if eff1 > 85:
+				color2 = '#68FF33'
+			acolor1[int(i[0])] = color2
+			if int(i[0]) == 1549:
+				def_cnt = i[1]
+				def_clr = color2
+				counts1[1550] = int(cnt4)
+				counts1[594] = int(cnt4)
+				acolor1[1550] = def_clr
+				acolor1[594] = def_clr
+			if int(i[0]) == 1509:
+				def_cnt = i[1]
+				def_clr = color2
+				counts1[1514] = int(cnt4) - 16
+				counts1[1510] = int(cnt4) - 23
+				acolor1[1514] = def_clr
+				acolor1[1510] = def_clr
+			if int(i[0]) == 1541:
+				def_cnt = i[1]
+				def_clr = color2
+				counts1[1531] =int(cnt4) - 8
+				counts1[1527] = int(cnt4) - 13
+				acolor1[1531] = def_clr
+				acolor1[1527] = def_clr
+
+	db.close()
+
+	op_total = [0 for x in range(200)]
+	op_color = [0 for x in range(200)]	
+	for i in machine_rate:
+		op_total[i[2]] = op_total[i[2]] + counts1[int(i[0])]
+	ctr9 = 0
+	# current_target = current_target * current_rate
+	for i in op_total:
+		if int(i)>int(current_target):
+			color1 = '#68FF33'
+		elif int(i)>int(current_target*.85):
+			color1 = '#F9FF33'
+		else:
+			color1 = '#FF5E33'
+		op_color[ctr9] = color1
+		ctr9 = ctr9 + 1
+	return t,counts1,acolor1,op_total,op_color
+	return render(request,'cell_track_9341_v2.html',{'t':t,'counts':counts1,'acolor1':acolor1,'op':op_total,'op_color':op_color})
+
+
+def cell_track_9341_history2(request):
+	shift_start, shift_time, shift_left, shift_end = stamp_shift_start(request)	 # Get the Time Stamp info
+	machines1 = ['1504','1506','1519','1520','1502','1507','1501','1515','1508','1532','1509','1514','1510','1503','1511','1518','1521','1522','1523','1539','1540','1524','1525','1538','1541','1531','1527','1530','1528','1513','1533','1546','1547','1548','1549','594','1550','1552','751','1554','1802']
+	rate = [9,9,9,9,4,4,4,4,4,4,2,2,2,2,2,9,9,9,9,4,4,4,4,4,2,2,2,2,2,1,2,5,5,5,3,3,3,2,3,3,9]
+	rate2 = [400,400,400,400,700,700,700,700,900,900,1600,1600,1600,1400,1400,400,400,400,400,700,700,700,700,900,1200,1200,1200,1200,1200,2800,2800,350,350,500,500,500,500,350,350,350,400]
+	line1 = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0,0,3,3,3,3,3,3,3,3,3,3]
+	operation1 = [10,10,10,10,30,30,40,40,50,50,60,70,80,100,110,10,10,10,10,30,30,40,40,50,60,70,80,100,110,90,120,30,40,50,60,70,80,90,100,110,10]
+	prt = '50-9341'
+	machine_rate = zip(machines1,rate,operation1,rate2)
+	machine_color =[]
+	db, cur = db_set(request)
+	sql = "SELECT target FROM tkb_ten_target"
+	cur.execute(sql)
+	target9 = cur.fetchall()
+	db.close()
+
+	current_target = int(target9[0][0])
+	op5=[]
+	wip5=[]
+	prd5=[]
+
+
+	# Filter a List
+	color8=[]
+	rate8=[]
+	machine8=[]
+	pred8 = []
+	av55=[]
+	cnt55=[]
+	sh55=[]
+	shl55=[]
+	op8=[]
+	rt8=[]
+	request.session['shift_start'] = shift_start
+
+	# Preliminary testing variables for new methord
+	tt = int(time.time())
+
+	mmachines = tuple(machines1)
+	t=tt-300
+	start1 = tt-shift_time
+
+	s=int(request.session['timestamp1'])
+	t=int(request.session['timestamp2'])
+
+	
+
+	start2 = tt - 300
+	ts = t-s
+	current_rate = (t-s)/float(28800)
+
+	db, cur = db_set(request)
 	sql="SELECT Machine, COUNT(*) FROM GFxPRoduction WHERE TimeStamp >='%s' and TimeStamp <= '%s' and Machine IN {} GROUP BY Machine".format(mmachines) % (s,t)
 	cur.execute(sql)
 	tmpX=cur.fetchall()
@@ -5132,7 +5404,7 @@ def cell_track_9341_history2(request):
 		ctr9 = ctr9 + 1
 	return render(request,'cell_track_9341_date.html',{'t':t,'counts':counts1,'acolor1':acolor1,'op':op_total,'op_color':op_color})	
 
-def cell_track_9341_NEW(request):
+def cell_track_9341(request):
 	shift_start, shift_time, shift_left, shift_end = stamp_shift_start(request)	 # Get the Time Stamp info
 	machines1 = ['1504','1506','1519','1520','1502','1507','1501','1515','1508','1532','1509','1514','1510','1503','1511','1518','1521','1522','1523','1539','1540','1524','1525','1538','1541','1531','1527','1530','1528','1513','1533','1546','1547','1548','1549','594','1550','1552','751','1554']
 	rate = [8,8,8,8,4,4,4,4,4,4,2,2,2,2,2,8,8,8,8,4,4,4,4,4,2,2,2,2,2,1,1,5,5,5,3,3,3,2,3,3]
@@ -5172,6 +5444,8 @@ def cell_track_9341_NEW(request):
 	cur.execute(sql)
 	tmpY=cur.fetchall()
 
+	fffff=3/0
+
 
 
 
@@ -5182,11 +5456,12 @@ def cell_track_9341_NEW(request):
 		machine2 = i[0]
 		rate2 = 3200 / float(i[1])
 		rate2 = (rate2 / float(28800)) * 300
-		sql="SELECT Machine, COUNT(*) FROM GFxPRoduction WHERE TimeStamp >='%s' and Part='%s' GROUP BY Machine" % (start1,prt) 
+		sql="SELECT * FROM GFxPRoduction WHERE TimeStamp >='%s' and Part='%s' GROUP BY Machine" % (start1,prt) 
 		cur.execute(sql)
 		tmpX=cur.fetchall()
-		cnt33 = int(tmpX[0])
-		rrr=3/0
+
+
+
 
 
 		# If 1510 going take out below conditional statement
@@ -5327,30 +5602,6 @@ def cell_track_9341_NEW(request):
 	request.session['runrate'] = 1128
 
 
-	# This section will check every 30min and email out counts to Jim and Myself
-
-	# Take it out for now.   Errors when using GMail accounts
-
-	# # try:
-	# db, cur = db_set(request)
-	# cur.execute("""CREATE TABLE IF NOT EXISTS tkb_email_10r(Id INT PRIMARY KEY AUTO_INCREMENT,dummy1 INT(30),stamp INT(30) )""")
-	# eql = "SELECT MAX(stamp) FROM tkb_email_10r"
-	# cur.execute(eql)
-	# teql = cur.fetchall()
-	# teql2 = int(teql[0][0])
-	# ttt=int(time.time())
-	# elapsed_time = ttt - teql2
-	# if elapsed_time > 1800:
-	# 	x = 1
-	# 	dummy = 8
-	# 	cur.execute('''INSERT INTO tkb_email_10r(dummy1,stamp) VALUES(%s,%s)''', (dummy,ttt))
-	# 	db.commit()
-	# 	track_email(request)  
-	# db.close()
-	# # except:
-	# # 	dummy2 = 0
-
-	# *****************************************************************************************************
 
 	r80 = int(total8[30][3])
 	r60= int(total8_0455[14][3])
