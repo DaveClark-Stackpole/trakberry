@@ -5023,6 +5023,15 @@ def track_9341_history_date(request):
 	args['form'] = form
 	return render(request,'track_9341_history_date.html',{'args':args})
 
+def cell_9341_mobile(request):
+	request.session['mobile_check'] = 1
+	return cell_track_9341_v2(request)
+
+def cell_9341_screen(request):
+	request.session['mobile_check'] = 0
+	return cell_track_9341_v2(request)
+
+
 def cell_track_9341_v2(request):
 	shift_start, shift_time, shift_left, shift_end = stamp_shift_start(request)	 # Get the Time Stamp info
 	machines1 = ['1504','1506','1519','1520','1502','1507','1501','1515','1508','1532','1509','1514','1510','1503','1511','1518','1521','1522','1523','1539','1540','1524','1525','1538','1541','1531','1527','1530','1528','1513','1533','1546','1547','1548','1549','594','1550','1552','751','1554','1802']
@@ -5043,7 +5052,6 @@ def cell_track_9341_v2(request):
 	op5=[]
 	wip5=[]
 	prd5=[]
-
 
 	# Filter a List
 	color8=[]
@@ -5148,8 +5156,6 @@ def cell_track_9341_v2(request):
 
 	db.close()
 
-
-
 	op_total = [0 for x in range(200)]
 	op_color = [0 for x in range(200)]	
 	for i in machine_rate:
@@ -5167,10 +5173,16 @@ def cell_track_9341_v2(request):
 		ctr9 = ctr9 + 1
 	tt,ccounts1,aacolor1,oop_total,oop_color = cell_track_0455_v2(request)
 
+	try:
+		request.session['mobile_check'] 
+	except:
+		request.session['mobile_check'] = 0
 
+	if request.session['mobile_check'] == 0:
+		return render(request,'cell_track_9341_v2.html',{'t':t,'counts':counts1,'down1':down1,'acolor1':acolor1,'op':op_total,'op_color':op_color,'tt':tt,'ccounts':ccounts1,'aacolor1':aacolor1,'oop':oop_total,'oop_color':oop_color})	
+	else:
+		return render(request,'cell_track_9341_v2_mobile.html',{'t':t,'counts':counts1,'down1':down1,'acolor1':acolor1,'op':op_total,'op_color':op_color,'tt':tt,'ccounts':ccounts1,'aacolor1':aacolor1,'oop':oop_total,'oop_color':oop_color})	
 
-
-	return render(request,'cell_track_9341_v2.html',{'t':t,'counts':counts1,'down1':down1,'acolor1':acolor1,'op':op_total,'op_color':op_color,'tt':tt,'ccounts':ccounts1,'aacolor1':aacolor1,'oop':oop_total,'oop_color':oop_color})	
 
 def cell_track_0455_v2(request):
 	shift_start, shift_time, shift_left, shift_end = stamp_shift_start(request)	 # Get the Time Stamp info
