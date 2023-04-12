@@ -142,7 +142,7 @@ from views_production import chart1_1467b,chart2_1467b,chart1_3050b,chart2_3050b
 from views_production import chart1_1467o,chart2_1467o,chart1_1467br,chart2_1467br,chart1_0455_OP50,chart2_0455_OP50,chart1_0455_OP40,chart2_0455_OP40
 from views_production import mgmt_priorities,auto_updater,cell_track_9341,track_email,cell_track_9341_mobile,cell_track_9341_history_on,cell_track_9341_history
 from views_production import cell_track_9341_history_off,mgmt_track_week,mgmt_goals,cell_track_9341_TV,track_1703_initial,track_1704_initial,cell_track_9341_v2
-from views_production import cell_track_1467,cell_track_8670,cell_track_9341_history2,track_9341_history_date,cell_track_9341_NEW
+from views_production import cell_track_1467,cell_track_8670,cell_track_9341_history2,track_9341_history_date,cell_track_9341_NEW,cell_9341_mobile,cell_9341_screen
 from views_production import plus_0455,minus_0455,plus_9341,minus_9341,plus_3050,minus_3050,plus_1467,minus_1467, wip_update,runrate_10R80,cell_track_9341_archive
 
 from views_operations import gf6_reaction,gf6_input,gf6_reaction_prev,gf6_input_prev,prod_9341,prod_10R,prod_10R_prev, prod_728,prod_728fault,prod_728fault_prev
@@ -681,7 +681,9 @@ urlpatterns = [
 	url(r'^cell_track_9341_history/', cell_track_9341_history),
     url(r'^cell_track_9341_archive/', cell_track_9341_archive),
     url(r'^cell_track_9341_history2/', cell_track_9341_history2),
-	url(r'^cell_track_9341_v2/', cell_track_9341_v2),
+	url(r'^cell_9341_mobile/', cell_9341_mobile),
+    url(r'^cell_9341_screen/', cell_9341_screen),
+    url(r'^cell_track_9341_v2/', cell_track_9341_v2),
     url(r'^track_9341_history_date/', track_9341_history_date),
 	url(r'^wip_update/', wip_update),
 
