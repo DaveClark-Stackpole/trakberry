@@ -239,7 +239,11 @@
 	<a href="{{request.session.local_toggle}}/jcall/get/{{ i.2 }}" style="color: black">{{i.3}}</b></a>
 </div>
 <div class="comment3" style="font-size:15px;font-weight: bold;background-color: #003daf;border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;">
-	<a href="{{request.session.local_toggle}}/changeover1/get/{{ i.2 }}" style="color:rgb(255, 255, 255);">C/O Mechanical Complete</a>
+	{% if i.3 == "TAKE CALL" %} 
+		<a href="#" style="color:rgb(255, 255, 255);">C/O Mechanical Complete</a>
+	{% else %}
+		<a href="{{request.session.local_toggle}}/changeover1/get/{{ i.2 }}" style="color:rgb(255, 255, 255);">C/O Mechanical Complete</a>
+	{% endif %}
 </div>
 <div class="comment3" style="font-size:15px;font-weight: bold;background-color: #003daf;border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;">
 	<a href="#" style="color:#003daf;">C/O Final Complete</a>

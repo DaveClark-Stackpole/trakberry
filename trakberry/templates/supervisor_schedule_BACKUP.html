@@ -1,0 +1,211 @@
+
+<html>
+<head>
+<!-- Test  -->
+ <!-- Format for Background image -->
+
+
+
+
+  <title>Shift Schedule {{request.session.shift_schedule_area}}</title>
+
+	
+  <script src="/static/bootstrap/js/1.11.3/jquery.min.js"></script>
+  <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
+  
+
+
+  <!-- <link rel="stylesheet" href="/static/style_1/grid_kiosk_job_production2.css?{{TCUR}}">    -->
+
+	<style type="text/css">
+		.mainset{color:black;text-align:center;float:left;width:100%}
+		.wrapper_main {background:chartreuse;width:90%;margin-left: 10px;}
+		
+		.frame1 {color:black;text-align:center;float:left;width:32%;margin-bottom: 5px;}
+		.frame2a{color:black;text-align:center;background:rgb(202, 188, 83);float:left;width:32%;position:relative;left:5px;border-radius: 15px;margin-bottom: 5px;}
+
+		.frame2{color:black;text-align:center;background:rgb(83, 134, 202);float:left;width:32%;position:relative;left:5px;margin-bottom: 5px;}
+		.frame3 {color:black;text-align:center;background:rgb(61, 138, 64);float:left;width:32%;position:relative;left:10px;margin-bottom: 5px;}
+		.frame4 {color:black;text-align:center;float:left;width:98%;position:relative;left:5px;margin-bottom: 5px;margin-top: 15px;}
+
+		.frame5{color:black;text-align:center;background:rgb(168, 168, 168);float:right;width:40%}
+		.head1{color:black;text-align:center;border: .4px solid rgb(0, 0, 0);background:rgb(114, 159, 243);width:85%}
+		.head1_u{color:black;text-align:center;border: .4px solid rgb(0, 0, 0);background:rgb(226, 226, 226);width:100%}
+		.head2_u{color:black;text-align:center;float:left;font-size: 60%;border: .4px solid rgb(0, 0, 0);background: rgb(184, 167, 142);width:25%}
+		.body1_u{color:black;text-align:left;float: left;border: 1px solid rgb(0, 0, 0);width:25%}
+		.head2{color:black;text-align:center;float:left;font-size: 60%;border: .4px solid rgb(222, 231, 95);background: rgb(184, 167, 142);width:65%}
+		.body1{color:black;text-align:left;float: left;border: 1px solid rgb(0, 0, 0);width:85%}
+		.body2{color:black;text-align:left;float: left;border: 1px solid rgb(0, 0, 0);width:65%}
+		.body3{color:black;text-align:center;background:rgb(199, 187, 166);float:left;width:33%;border: .4px solid rgb(0, 0, 0)}
+		.body3h{color:black;text-align:center;background:rgb(187, 186, 184);float:left;width:33%;border: .4px solid rgb(0, 0, 0)}
+		.body3t{color:black;text-align:center;background:rgb(187, 186, 184);float:left;font-size:medium;width:99%;border: .4px solid rgb(0, 0, 0)}
+
+		.frameA {color:black;text-align:center;float:left;width:95%;margin-bottom: 5px;}
+		
+	</style>
+
+
+
+<!-- Style for Production Summaries -->
+<style>   
+	#prodsum {
+		font-family: Arial, Helvetica, sans-serif;
+		border-collapse: collapse;
+		width: 100%;
+	}
+	#prodsum td, #prodsum th {
+		border: 1px solid rgb(136, 134, 134);
+		padding: 2px;
+	}
+	/* #prodsum tr:nth-child(even){background-color: #96dbf8;}
+	#prodsum tr:nth-child(odd){background-color: #45b4c6;} */
+	#prodsum tr:hover {background-color: #ddd;}
+	#prodsum th {
+		padding-top: 6px;
+		padding-bottom: 6px;
+		text-align: left;
+		background-color: rgb(68, 82, 91);
+		color: white;
+	}
+</style>
+<style>   
+	#prodso {
+		font-family: Arial, Helvetica, sans-serif;
+		border-collapse: collapse;
+		width: 100%;
+	}
+	#prodso td, #prodso th {
+		border: 1px solid rgb(30,148,20);
+		padding: 3px;
+	}
+	/* #prodsum tr:nth-child(even){background-color: #96dbf8;}
+	#prodsum tr:nth-child(odd){background-color: #45b4c6;} */
+	#prodso tr:hover {background-color: #ddd;}
+	#prodso th {
+		padding-top: 10px;
+		padding-bottom: 10px;
+		text-align: left;
+		background-color: rgb(13,76,8);
+		color: white;
+	}
+</style>
+<style>   
+	#prodto {
+		font-family: Arial, Helvetica, sans-serif;
+		border-collapse: collapse;
+		width: 100%;
+	}
+	#prodto td, #prodto th {
+		border: 1px solid rgb(179, 117, 24);
+		padding: 3px;
+	}
+	/* #prodsum tr:nth-child(even){background-color: #96dbf8;}
+	#prodsum tr:nth-child(odd){background-color: #45b4c6;} */
+	#prodto tr:hover {background-color: #ddd;}
+	#prodto th {
+		padding-top: 10px;
+		padding-bottom: 10px;
+		text-align: left;
+		background-color: rgb(184, 145, 88);
+		color: white;
+	}
+</style>
+<style>   
+	#prodtr {
+		font-family: Arial, Helvetica, sans-serif;
+		border-collapse: collapse;
+		width: 100%;
+	}
+	#prodtr td, #prodtr th {
+		border: 1px solid rgb(180, 142, 216);
+		padding: 3px;
+	}
+	/* #prodsum tr:nth-child(even){background-color: #96dbf8;}
+	#prodsum tr:nth-child(odd){background-color: #45b4c6;} */
+	#prodtr tr:hover {background-color: #ddd;}
+	#prodtr th {
+		padding-top: 10px;
+		padding-bottom: 10px;
+		text-align: left;
+		background-color: rgb(80, 54, 85);
+		color: white;
+	}
+</style>
+<style>
+	body  {
+		background-color:rgb(255, 255, 255);
+	
+	}
+
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+
+
+<div class="wrapper_main">
+	<div class="frame4">  <!-- Production Summary-->
+
+
+		<table id="prodsum">
+			<tr><td colspan="25" bgcolor="#343E45"><center><font style="font-weight:bolder;font-size:x-large;color:#fff;">Shift Schedule {{request.session.shift_schedule}}</font>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<button onclick="window.print()">PRINT</button></td></tr>
+			<tr><td colspan="2" bgcolor="#343E45"><center><font style="font-weight:bolder;font-size:14px;color:#fff;">Job</center></td>
+				<td colspan="2" bgcolor="#343E45"><center><font style="font-weight:bolder;font-size:14px;color:#fff;">Employee</center></td>
+				<td colspan="2" bgcolor="#343E45"><center><font style="font-weight:bolder;font-size:14px;color:#fff;">Break</center></td>
+				<td colspan="2" bgcolor="#343E45"><center><font style="font-weight:bolder;font-size:14px;color:#fff;">Relief/Notes</center></td>
+				<td colspan="2" bgcolor="#343E45"><center><font style="font-weight:bolder;font-size:14px;color:#fff;">Machines</center></td>
+				<td colspan="2" bgcolor="#343E45"><center><font style="font-weight:bolder;font-size:14px;color:#fff;">&nbsp;&nbsp;&nbsp;</center></td>
+				<td colspan="2" bgcolor="#343E45"><center><font style="font-weight:bolder;font-size:14px;color:#fff;">Job</center></td>
+				<td colspan="2" bgcolor="#343E45"><center><font style="font-weight:bolder;font-size:14px;color:#fff;">Employee</center></td>
+				<td colspan="2" bgcolor="#343E45"><center><font style="font-weight:bolder;font-size:14px;color:#fff;">Break</center></td>
+				<td colspan="2" bgcolor="#343E45"><center><font style="font-weight:bolder;font-size:14px;color:#fff;">Relief/Notes</center></td>
+				<td colspan="2" bgcolor="#343E45"><center><font style="font-weight:bolder;font-size:14px;color:#fff;">Machines</center></td>
+			</tr>
+
+
+		{% for i in j3 %}
+		<tr><td colspan="2"><font style="font-weight:bolder;font-size:12px;color:#000000;">{{i.0}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+			<td colspan="2"><center><font style="font-weight:bolder;font-size:12px;color:#fff;"></center></td>
+			<td colspan="2"><center><font style="font-weight:bolder;font-size:12px;color:#fff;"></center></td>
+			<td colspan="2"><center><font style="font-weight:bolder;font-size:12px;color:#fff;"></center></td>
+			<td colspan="2"><center><font style="font-weight:bolder;font-size:12px;color:#fff;"></center></td>
+			<td colspan="2" bgcolor="#cacaca"><center><font style="font-weight:bolder;font-size:14px;color:#fff;">&nbsp;&nbsp;&nbsp;</center></td>
+			<td colspan="2"><font style="font-weight:bolder;font-size:12px;color:#000000;">{{i.1}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+			<td colspan="2"><center><font style="font-weight:bolder;font-size:12px;color:#fff;"></center></td>
+			<td colspan="2"><center><font style="font-weight:bolder;font-size:12px;color:#fff;"></center></td>
+			<td colspan="2"><center><font style="font-weight:bolder;font-size:12px;color:#fff;"></center></td>
+			<td colspan="2"><center><font style="font-weight:bolder;font-size:12px;color:#fff;"></center></td>
+		</tr>
+		{% endfor %}
+		{% for i in blank1 %}
+		<tr><td colspan="2"><font style="font-weight:bolder;font-size:12px;color:#000000;"></td>
+			<td colspan="2"><center><font style="font-weight:bolder;font-size:12px;color:#fff;"></center></td>
+			<td colspan="2"><center><font style="font-weight:bolder;font-size:12px;color:#fff;"></center></td>
+			<td colspan="2"><center><font style="font-weight:bolder;font-size:12px;color:#fff;"></center></td>
+			<td colspan="2"><center><font style="font-weight:bolder;font-size:12px;color:#fff;"></center></td>
+			<td colspan="2" bgcolor="#cacaca"><center><font style="font-weight:bolder;font-size:14px;color:#fff;">&nbsp;&nbsp;&nbsp;</center></td>
+			<td colspan="2"><font style="font-weight:bolder;font-size:12px;color:#000000;"></td>
+			<td colspan="2"><center><font style="font-weight:bolder;font-size:12px;color:#fff;"></center></td>
+			<td colspan="2"><center><font style="font-weight:bolder;font-size:12px;color:#fff;"></center></td>
+			<td colspan="2"><center><font style="font-weight:bolder;font-size:12px;color:#fff;"></center></td>
+			<td colspan="2"><center><font style="font-weight:bolder;font-size:12px;color:#fff;"></center></td>
+		</tr>
+		{% endfor %}
+
+</table>
+<br><br>
+
+	</div>
+</div>
+</body></html>
