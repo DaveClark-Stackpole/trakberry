@@ -78,7 +78,7 @@ from views_supervisor import supervisor_display, supervisor_tech_call,supervisor
 from views_supervisor import vacation_display_jump, supervisor_edit, sup_close, employee_vac_enter, vacation_display
 from views_supervisor import vacation_display_increment, vacation_display_decrement, vacation_edit, vacation_delete, sup_message_reply1,sup_message_reply0
 from views_supervisor import employee_vac_enter_init, employee_vac_enter_init2, vacation_month_fix, vacation_display_initial, resetcheck,sup_message
-from views_supervisor import check_email_problem, supervisor_down_no,supervisor_down_yes
+from views_supervisor import check_email_problem, supervisor_down_no,supervisor_down_yes,supervisor_schedule
 # ***********************************************************************************************************************************************************
 
 
@@ -110,7 +110,7 @@ from views_kiosk import entry_recent, manual_cycletime_table, tenr_fix2, tenr_fi
 from views_kiosk import kiosk_initial_GF9,kiosk_initial_6L_IN,kiosk_initial_AB1V, kiosk_sub_menu, kiosk_manual, kiosk_kiosk
 from views_kiosk import kiosk_help_form, kiosk_forklift_form, kiosk_scrap, kiosk_scrap_entry, kiosk_scrap_reset #, kiosk_mult_entries
 from views_kiosk import production_entry_check,kiosk_job_furnace,production_entry_fix,production_entry_fix_shift, production_entry_check_manual
-from views_kiosk import test_1_10R,down_10r,down_10r_entry,down_10r_asset_check,down_10r_entry2,tech_down_10r,down_10r_fix
+from views_kiosk import test_1_10R,down_10r,down_10r_entry,down_10r_asset_check,down_10r_entry2,tech_down_10r,down_10r_fix,redirect_down_10r_fix
 
 # ***********************************************************************************************************************************************************
 # *******************************************  Manpower Section ********************************************************************************************
@@ -319,7 +319,8 @@ urlpatterns = [
     url(r'^supervisor_down_yes/', supervisor_down_yes),
 	url(r'^sup_message_reply1/', sup_message_reply1),
 	url(r'^sup_message_reply0/', sup_message_reply0),
-	url(r'^sup_message/', sup_message), 
+	url(r'^sup_message/', sup_message),
+    url(r'^supervisor_schedule/', supervisor_schedule), 
 	#url(r'^sup_down_main/', supervisor_main_call),
 	#url(r'^sedit/get/(?P<index>\d+)/$', supervisor_edit),
 	url(r'^sedit/', supervisor_edit),
@@ -352,6 +353,12 @@ urlpatterns = [
 	url(r'^tech_PM_master_complete/', tech_PM_master_complete),
 	url(r'^tech_epv_week_assign/', tech_epv_week_assign),
 	url(r'^tech_pm_summary/', tech_pm_summary),
+    url(r'^redirect_down_10r_fix/', redirect_down_10r_fix),
+    
+
+	url(r'^tech_pm_summary/', tech_pm_summary),
+    
+
 	url(r'^epv_checks_update/', epv_checks_update),
 
 	url(r'^main_password_update/', main_password_update),

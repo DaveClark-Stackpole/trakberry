@@ -1280,6 +1280,12 @@ def maint_call(request, index):
 	sql =( 'update pr_downtime1 SET whoisonit="%s", whoisonit_full="%s" WHERE idnumber="%s"' % (t,tfull,index))
 	cur.execute(sql)
 	db.commit()
+
+	htime = datetime.datetime.now()
+	tql =( 'update pr_downtime1 SET updatedtime="%s" WHERE idnumber="%s"' % (htime,index))
+	cur.execute(tql)
+	db.commit()
+
 	db.close()
 
 	return maint(request)

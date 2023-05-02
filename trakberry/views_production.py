@@ -99,17 +99,21 @@ def track_graph_track(request, index):
 	request.session['asset2_area'] = index
 	request.session['asset3_area'] = index
 	request.session['asset4_area'] = index
+
+
+
 	u = int(request.session['shift_start'])
-
-
-
-	t = int(u) + 28800
+	# t = int(u) + 28800
 	t=int(time.time())
 
-	s=1679968958
-	t=1679997758
-
-
+	try:
+		request.session['archive_graph_check']
+	except:
+		request.session['archive_graph_check'] = 0
+	check1 = request.session['archive_graph_check']
+	if check1 == 1:
+		u = request.session['timestamp1']
+		t = request.session['timestamp2']
 
 	gr_list = track_data(request,t,u,prt,rate) # Get the Graph Data
 	return render(request, "graph_track_track.html",{'GList':gr_list})
@@ -3393,7 +3397,6 @@ def mgmt_users_logins_add(request):
 			b = -4
 		db, cursor = db_set(request)
 		cur = db.cursor()
-
 		if b == -3:	 # Reroute to the Warning message 
 			request.session["bounce"] = 1
 			request.session["user_logins1"] = user_name
@@ -3656,6 +3659,9 @@ def runrate_10R80(request):
 
 
 def cell_track_9341_TV(request):
+	return render(request,'redirect_cell_track_9341.html')	
+
+
 	request.session["local_switch"] = 0
 	# request.session["local_toggle"] = "/trakberry"
 	shift_start, shift_time, shift_left, shift_end = stamp_shift_start(request)	 # Get the Time Stamp info
@@ -5013,6 +5019,7 @@ def track_9341_history_date(request):
 		request.session['date2'] = date2
 		request.session['hr2'] = hr2
 		request.session['min2'] = mi2
+		request.session['archive_graph_check'] = 1
 		
 		return render(request, "redirect_cell_track_9341_history2.html")
 
@@ -5226,8 +5233,8 @@ def cell_track_0455_v2(request):
 	t=tt-300
 	start1 = tt-shift_time
 
-	s=int(request.session['timestamp1'])
-	t=int(request.session['timestamp2'])
+	# s=int(request.session['timestamp1'])
+	# t=int(request.session['timestamp2'])
 
 	s = start1
 

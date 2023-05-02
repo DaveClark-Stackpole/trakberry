@@ -2415,3 +2415,28 @@ def tech_report_email():
 	db.close()
 	return
 
+def supervisor_schedule(request):
+	request.session['shift_schedule_area'] = ' Area 1'
+	request.session['shift_schedule'] = ' Area 1 Mid April 19,2023'
+	area1 = 'Area 1'
+	db, cur = db_set(request)
+	sql = "SELECT DISTINCT Job FROM tkb_allocation WHERE Area = '%s' ORDER BY %s %s " %(area1,'priority','ASC')
+	cur.execute(sql)
+	tmp = cur.fetchall()
+	count1 = len(tmp)
+	counta = int( count1 / float(2) + 2 )
+	j1 = []
+	j2 = []
+	ctr = 0
+	for i in tmp:
+		ctr = ctr + 1
+		if ctr < counta:
+			j1.append(i[0])
+		else:
+			j2.append(i[0])
+	j3=zip(j1,j2)
+	blank1 = [0,0,0,0,0,0,0,0]
+
+		
+	return render(request,'supervisor_schedule.html',{'j3':j3,'blank1':blank1})
+

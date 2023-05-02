@@ -179,9 +179,13 @@ def tech_down_10r(request):
 
 	return render(request,"tech_down_10r.html",{'machines1':machine_rate,'machines2':machine_rate2})
 
+def redirect_down_10r_fix(request):
+	index = request.session['variable1']
+	return down_10r_fix(request,index)
 
 def down_10r_fix(request,index):
 	id1 = index
+
 	db, cur = db_set(request)
 	sql = "SELECT * FROM pr_downtime1 where idnumber = '%s'" % (id1)
 	cur.execute(sql)
@@ -192,16 +196,25 @@ def down_10r_fix(request,index):
 	asset = tmp2[0][0]
 	down1 = tmp2[0][5]
 	reason1 = tmp2[0][1]
-	
+	request.session['tech_asset'] = asset
+	request.session['tech_down'] = down1
+	request.session['tech_reason'] = reason1 
 
 	down1 = request.session['down_10r_asset_down']
+
 	if request.POST:
 		machinenum = asset
 		problem = request.POST.get("reason")
+		solution = request.POST.get("solution")
+
+		if len(solution) < 10:
+			request.session['variable1'] = index
+			return render(request,"redirect_down_10r_fix.html")
 
 		priority = 30000
 		whoisonit = '10R Tech'
-		
+
+
 		# take comment into tx and ensure no "" exist.	If they do change them to ''
 		tx = problem
 		tx = ' ' + tx
@@ -210,43 +223,31 @@ def down_10r_fix(request,index):
 		# Genius appostrophe fix
 		problem = hyphon_fix(tx)
 
-		t = vacation_temp()
+		tx = solution
+		solution = hyphon_fix(tx)
 
+		c=1
+
+		t = vacation_temp()
 		db, cur = db_set(request)
 
-		asset3 = machinenum[:4]
-		asset2 = machinenum[:3]
-		try:
-			int(asset3)
-			asset4 = asset3
-		except:
-			asset4 = asset2
-		asset5 = machinenum
-		try:
-			bql = "SELECT priority FROM tkb_asset_priority where asset_num = '%s'" % (asset4)
-			cur.execute(bql)
-			tmp2 = cur.fetchall()
-			tmp3 = tmp2[0]
-		except:
-			tmp3 = 999
-		try:
-			priority = tmp3[0]
-		except:
-			priority = 999
+		tql =( 'update pr_downtime1 SET completedtime="%s" WHERE idnumber="%s"' % (t,id1))
+		cur.execute(tql)
+		db.commit()
 
-		if len(problem)<2:
-			problem='No reason given'
-		cur.execute('''INSERT INTO pr_downtime1(machinenum,problem,priority,whoisonit,called4helptime,down) VALUES(%s,%s,%s,%s,%s,%s)''', (asset5,problem,priority,whoisonit,t,down1))
+		tql =( 'update pr_downtime1 SET remedy="%s" WHERE idnumber="%s"' % (solution,id1))
+		cur.execute(tql)
 		db.commit()
 
 		db.close()
-		return render(request,'redirect_kiosk.html')
+		return render(request,'redirect_tech_down_10r.html')
 	
 	else:
 		form = sup_downForm()
 	args = {}
 	args.update(csrf(request))
 	args['form'] = form
+
 	return render(request, "down_10r_fix.html",{'args':args})
 
 def down_10r_entry(request,index):
