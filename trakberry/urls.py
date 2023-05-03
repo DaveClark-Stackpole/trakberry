@@ -111,6 +111,7 @@ from views_kiosk import kiosk_initial_GF9,kiosk_initial_6L_IN,kiosk_initial_AB1V
 from views_kiosk import kiosk_help_form, kiosk_forklift_form, kiosk_scrap, kiosk_scrap_entry, kiosk_scrap_reset #, kiosk_mult_entries
 from views_kiosk import production_entry_check,kiosk_job_furnace,production_entry_fix,production_entry_fix_shift, production_entry_check_manual
 from views_kiosk import test_1_10R,down_10r,down_10r_entry,down_10r_asset_check,down_10r_entry2,tech_down_10r,down_10r_fix,redirect_down_10r_fix
+from views_kiosk import tech_down_10r_displayset, tech_down_10r_mobileset
 
 # ***********************************************************************************************************************************************************
 # *******************************************  Manpower Section ********************************************************************************************
@@ -354,6 +355,8 @@ urlpatterns = [
 	url(r'^tech_epv_week_assign/', tech_epv_week_assign),
 	url(r'^tech_pm_summary/', tech_pm_summary),
     url(r'^redirect_down_10r_fix/', redirect_down_10r_fix),
+    url(r'^tech_down_10r_mobileset/', tech_down_10r_mobileset),
+    url(r'^tech_down_10r_displayset/', tech_down_10r_displayset),
     
 
 	url(r'^tech_pm_summary/', tech_pm_summary),

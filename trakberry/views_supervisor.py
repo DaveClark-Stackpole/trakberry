@@ -632,16 +632,11 @@ def supervisor_down(request):
 		if asset4 in tpriority:
 			priority = 1
 			
-		try:
-			cur.execute('''INSERT INTO pr_downtime1(machinenum,problem,priority,whoisonit,called4helptime,side,down) VALUES(%s,%s,%s,%s,%s,%s,%s)''', (asset5,problem,priority,whoisonit,t,side1,down7))
-			db.commit()
-			db.close()
-		except:
-			cur.execute("Alter Table pr_downtime1 ADD Column side VARCHAR(100) DEFAULT '0'") #% (side2)  # Add a Column
-			db.commit()
-			cur.execute('''INSERT INTO pr_downtime1(machinenum,problem,priority,whoisonit,called4helptime,side,down) VALUES(%s,%s,%s,%s,%s,%s,%s)''', (asset5,problem,priority,whoisonit,t,side1,down7))
-			db.commit()
-			db.close()
+
+		cur.execute('''INSERT INTO pr_downtime1(machinenum,problem,priority,whoisonit,called4helptime,side,down,changeovertime) VALUES(%s,%s,%s,%s,%s,%s,%s,%s)''', (asset5,problem,priority,whoisonit,t,side1,down7,t))
+		db.commit()
+		db.close()
+
 		# prioritize(request)
 		return done(request)
 		

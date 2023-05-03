@@ -62,7 +62,7 @@ def db_set_3(request):  # Module to set DB settings to the one that works.  Whet
 	return db, cursor
 
 def db_set(request):  # Module to set DB settings to the one that works.  Whether local or Server
-	db = MySQLdb.connect(host="10.4.1.245",user="stuser",passwd="stp383",db='prodrptdb')
+	db = MySQLdb.connect(host="10.4.1.224",user="stuser",passwd="stp383",db='prodrptdb')
 	cursor = db.cursor()
 	return db, cursor
 
