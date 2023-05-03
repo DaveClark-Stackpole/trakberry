@@ -17,7 +17,7 @@
     <div class="frame1">
         
         <button class="button2" type="button"><font size="2">
-        <b>&nbsp;&nbsp;&nbsp;&nbsp;OP&nbsp;&nbsp;10&nbsp;&nbsp;&nbsp;&nbsp;</b></font></button>&nbsp;&nbsp;&nbsp;
+        <b>&nbsp;10&nbsp;</b></font></button>
         {% for i in machines1 %}
             {% if i.2 == 1 %} 
                 </div>
@@ -25,13 +25,13 @@
 	            <div class="frame1">
                     <button class="button2" type="button"><font size="2">
                     {% if i.0 > 99 %}
-                        <b>&nbsp;&nbsp;&nbsp;&nbsp;OP&nbsp;&nbsp;{{i.0}}&nbsp;&nbsp;</b></font></button>&nbsp;&nbsp;&nbsp;
+                        <b>&nbsp;{{i.0}}&nbsp;</b></font></button>&nbsp;
                     {% else %}
-                        <b>&nbsp;&nbsp;&nbsp;&nbsp;OP&nbsp;&nbsp;{{i.0}}&nbsp;&nbsp;&nbsp;&nbsp;</b></font></button>&nbsp;&nbsp;&nbsp;
+                        <b>&nbsp;{{i.0}}&nbsp;</b></font></button>&nbsp;
                     {% endif %}
             {% endif %} 
 		    <button class="button" type="button" onclick="window.location.href = '{{request.session.local_toggle}}/down_10r_entry/get/{{i.1}}';"><font size="2">
-            <b>&nbsp;&nbsp;&nbsp;&nbsp;{{i.1}}&nbsp;&nbsp;&nbsp;&nbsp;</b></font></button>
+            <b>&nbsp;&nbsp;{{i.1}}&nbsp;&nbsp;</b></font></button>
         {% endfor %}
 	</div>
 </div>
@@ -42,7 +42,7 @@
 
     <div class="frame1">
         <button class="button2" type="button"><font size="2">
-        <b>&nbsp;&nbsp;&nbsp;&nbsp;OP&nbsp;&nbsp;10&nbsp;&nbsp;&nbsp;&nbsp;</b></font></button>&nbsp;&nbsp;&nbsp;
+        <b>&nbsp;10&nbsp;</b></font></button>&nbsp;
         {% for i in machines2 %}
             {% if i.2 == 1 %} 
                 </div>
@@ -50,13 +50,13 @@
 	            <div class="frame1">
                     <button class="button2" type="button"><font size="2">
                     {% if i.0 > 99 %}
-                        <b>&nbsp;&nbsp;&nbsp;&nbsp;OP&nbsp;&nbsp;{{i.0}}&nbsp;&nbsp;</b></font></button>&nbsp;&nbsp;&nbsp;
+                        <b>&nbsp;{{i.0}}&nbsp;</b></font></button>&nbsp;
                     {% else %}
-                        <b>&nbsp;&nbsp;&nbsp;&nbsp;OP&nbsp;&nbsp;{{i.0}}&nbsp;&nbsp;&nbsp;&nbsp;</b></font></button>&nbsp;&nbsp;&nbsp;
+                        <b>&nbsp;{{i.0}}&nbsp;</b></font></button>&nbsp;
                     {% endif %}
             {% endif %} 
 		    <button class="button" type="button" onclick="window.location.href = '{{request.session.local_toggle}}/down_10r_entry/get/{{i.1}}';"><font size="2">
-            <b>&nbsp;&nbsp;&nbsp;&nbsp;{{i.1}}&nbsp;&nbsp;&nbsp;&nbsp;</b></font></button>
+            <b>&nbsp;&nbsp;{{i.1}}&nbsp;&nbsp;</b></font></button>
         {% endfor %}
 	</div>
 </div>
