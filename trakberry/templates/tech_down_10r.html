@@ -9,87 +9,75 @@
 {% block content%}  <!-- Main Block -->
 
 <br>
-<center>
+
     <div class="tech_10r_scale_ipad"> <!-- Scale Size-->
-    <div class="wrapper_main">
-        <div class="mainset2">  
-            <font style="font-size: 50px; color:white; text-shadow: 5px 5px 5px rgb(177, 177, 177), 0 0 25px rgb(160, 244, 247), 0 0 5px rgb(75, 184, 11);">10R80</font><br>
-    <div class="frame1">
-        
-        <button class="button2" type="button"><font size="2">
-        <b>&nbsp;&nbsp;&nbsp;&nbsp;OP&nbsp;&nbsp;10&nbsp;&nbsp;&nbsp;&nbsp;</b></font></button>&nbsp;&nbsp;&nbsp;
-        {% for i in machines1 %}
-            {% if i.2 == 1 %} 
-                </div>
-                <br><br><br>
-	            <div class="frame1">
+        <div class="wrapper_main"><center>
+            <font style="font-size: 70px; color:rgb(187, 255, 190); text-shadow: 15px 15px 15px rgb(177, 177, 177), 0 0 25px rgb(160, 244, 247), 0 0 5px rgb(75, 184, 11);">
+            </center>
+            10R CNC Tech APP</font><br>
+            <div class="mainset2">  
+                <font style="font-size: 30px; color:white; text-shadow: 5px 5px 5px rgb(177, 177, 177), 0 0 25px rgb(160, 244, 247), 0 0 5px rgb(75, 184, 11);">10R80</font><br>
+                <div class="frame1">
                     <button class="button2" type="button"><font size="2">
-                    {% if i.0 > 99 %}
-                        <b>&nbsp;&nbsp;&nbsp;&nbsp;OP&nbsp;&nbsp;{{i.0}}&nbsp;&nbsp;</b></font></button>&nbsp;&nbsp;&nbsp;
-                    {% else %}
-                        <b>&nbsp;&nbsp;&nbsp;&nbsp;OP&nbsp;&nbsp;{{i.0}}&nbsp;&nbsp;&nbsp;&nbsp;</b></font></button>&nbsp;&nbsp;&nbsp;
-                    {% endif %}
-            {% endif %} 
-            {% if i.3 == 'G' %}
-		    <button class="button_g" type="button"><font size="2">
-            <b>&nbsp;&nbsp;&nbsp;&nbsp;{{i.1}}&nbsp;&nbsp;&nbsp;&nbsp;</b></font></button>
-            {% elif i.3 == 'R' %}
-            <button class="button_r" type="button" onclick="window.location.href = '{{request.session.local_toggle}}/down_10r_fix/get/{{i.4}}';"><font size="2">
-            <b>&nbsp;&nbsp;&nbsp;&nbsp;{{i.1}}&nbsp;&nbsp;&nbsp;&nbsp;</b></font></button>
-            {% else %}
-            <button class="button_y" type="button" onclick="window.location.href = '{{request.session.local_toggle}}/down_10r_fix/get/{{i.4}}';"><font size="2">
-            <b>&nbsp;&nbsp;&nbsp;&nbsp;{{i.1}}&nbsp;&nbsp;&nbsp;&nbsp;</b></font></button>
-            {% endif %}
-
-        {% endfor %}
-	</div>
-</div>
-
-
-<div class="mainset4">  
-    <font style="font-size: 50px; color:white; text-shadow: 5px 5px 5px rgb(177, 177, 177), 0 0 25px rgb(160, 244, 247), 0 0 5px rgb(75, 184, 11);">10R60</font><br>
-
-    <div class="frame1">
-        <button class="button2" type="button"><font size="2">
-        <b>&nbsp;&nbsp;&nbsp;&nbsp;OP&nbsp;&nbsp;10&nbsp;&nbsp;&nbsp;&nbsp;</b></font></button>&nbsp;&nbsp;&nbsp;
-        {% for i in machines2 %}
-            {% if i.2 == 1 %} 
-                </div>
-                <br><br><br>
-	            <div class="frame1">
+                    <b>&nbsp;&nbsp;&nbsp;&nbsp;OP&nbsp;&nbsp;10&nbsp;&nbsp;&nbsp;&nbsp;</b></font></button>&nbsp;&nbsp;&nbsp;
+                    {% for i in machines1 %}
+                        {% if i.2 == 1 %} 
+                            </div>
+                            <br><br><br>
+	                        <div class="frame1">
+                                <button class="button2" type="button"><font size="2">
+                                {% if i.0 > 99 %}
+                                    <b>&nbsp;&nbsp;&nbsp;&nbsp;OP&nbsp;&nbsp;{{i.0}}&nbsp;&nbsp;</b></font></button>&nbsp;&nbsp;&nbsp;
+                                {% else %}
+                                    <b>&nbsp;&nbsp;&nbsp;&nbsp;OP&nbsp;&nbsp;{{i.0}}&nbsp;&nbsp;&nbsp;&nbsp;</b></font></button>&nbsp;&nbsp;&nbsp;
+                                {% endif %}
+                        {% endif %} 
+                        {% if i.3 == 'G' %}
+		                    <button class="button_g" type="button"><font size="2">
+                            <b>&nbsp;&nbsp;&nbsp;&nbsp;{{i.1}}&nbsp;&nbsp;&nbsp;&nbsp;</b></font></button>
+                        {% elif i.3 == 'R' %}
+                            <button class="button_r" type="button" onclick="window.location.href = '{{request.session.local_toggle}}/down_10r_fix/get/{{i.4}}';"><font size="2">
+                            <b>&nbsp;&nbsp;&nbsp;&nbsp;{{i.1}}&nbsp;&nbsp;&nbsp;&nbsp;</b></font></button>
+                        {% else %}
+                            <button class="button_y" type="button" onclick="window.location.href = '{{request.session.local_toggle}}/down_10r_fix/get/{{i.4}}';"><font size="2">
+                            <b>&nbsp;&nbsp;&nbsp;&nbsp;{{i.1}}&nbsp;&nbsp;&nbsp;&nbsp;</b></font></button>
+                        {% endif %}
+                    {% endfor %}
+	            </div>
+            </div>
+            <div class="mainset4">  
+                <font style="font-size: 30px; color:white; text-shadow: 5px 5px 5px rgb(177, 177, 177), 0 0 25px rgb(160, 244, 247), 0 0 5px rgb(75, 184, 11);">10R60</font><br>
+                <div class="frame1">
                     <button class="button2" type="button"><font size="2">
-                    {% if i.0 > 99 %}
-                        <b>&nbsp;&nbsp;&nbsp;&nbsp;OP&nbsp;&nbsp;{{i.0}}&nbsp;&nbsp;</b></font></button>&nbsp;&nbsp;&nbsp;
-                    {% else %}
-                        <b>&nbsp;&nbsp;&nbsp;&nbsp;OP&nbsp;&nbsp;{{i.0}}&nbsp;&nbsp;&nbsp;&nbsp;</b></font></button>&nbsp;&nbsp;&nbsp;
-                    {% endif %}
-            {% endif %} 
-            {% if i.3 == 'G' %}
-		    <button class="button_g" type="button"><font size="2">
-            <b>&nbsp;&nbsp;&nbsp;&nbsp;{{i.1}}&nbsp;&nbsp;&nbsp;&nbsp;</b></font></button>
-            {% elif i.3 == 'R' %}
-            <button class="button_r" type="button" onclick="window.location.href = '{{request.session.local_toggle}}/down_10r_fix/get/{{i.4}}';"><font size="2">
-            <b>&nbsp;&nbsp;&nbsp;&nbsp;{{i.1}}&nbsp;&nbsp;&nbsp;&nbsp;</b></font></button>
-            {% else %}
-            <button class="button_y" type="button" onclick="window.location.href = '{{request.session.local_toggle}}/down_10r_fix/get/{{i.4}}';"><font size="2">
-            <b>&nbsp;&nbsp;&nbsp;&nbsp;{{i.1}}&nbsp;&nbsp;&nbsp;&nbsp;</b></font></button>
-            {% endif %}
-        {% endfor %}
-	</div>
-</div>
+                    <b>&nbsp;&nbsp;&nbsp;&nbsp;OP&nbsp;&nbsp;10&nbsp;&nbsp;&nbsp;&nbsp;</b></font></button>&nbsp;&nbsp;&nbsp;
+                    {% for i in machines2 %}
+                        {% if i.2 == 1 %} 
+                            </div>
+                            <br><br><br>
+	                        <div class="frame1">
+                                <button class="button2" type="button"><font size="2">
+                                {% if i.0 > 99 %}
+                                    <b>&nbsp;&nbsp;&nbsp;&nbsp;OP&nbsp;&nbsp;{{i.0}}&nbsp;&nbsp;</b></font></button>&nbsp;&nbsp;&nbsp;
+                                {% else %}
+                                    <b>&nbsp;&nbsp;&nbsp;&nbsp;OP&nbsp;&nbsp;{{i.0}}&nbsp;&nbsp;&nbsp;&nbsp;</b></font></button>&nbsp;&nbsp;&nbsp;
+                                {% endif %}
+                        {% endif %} 
+                        {% if i.3 == 'G' %}
+		                    <button class="button_g" type="button"><font size="2">
+                            <b>&nbsp;&nbsp;&nbsp;&nbsp;{{i.1}}&nbsp;&nbsp;&nbsp;&nbsp;</b></font></button>
+                        {% elif i.3 == 'R' %}
+                            <button class="button_r" type="button" onclick="window.location.href = '{{request.session.local_toggle}}/down_10r_fix/get/{{i.4}}';"><font size="2">
+                            <b>&nbsp;&nbsp;&nbsp;&nbsp;{{i.1}}&nbsp;&nbsp;&nbsp;&nbsp;</b></font></button>
+                        {% else %}
+                            <button class="button_y" type="button" onclick="window.location.href = '{{request.session.local_toggle}}/down_10r_fix/get/{{i.4}}';"><font size="2">
+                            <b>&nbsp;&nbsp;&nbsp;&nbsp;{{i.1}}&nbsp;&nbsp;&nbsp;&nbsp;</b></font></button>
+                        {% endif %}
+                    {% endfor %}
+	            </div>
+            </div>
+        </div>
+    </div><!--End of scale Size-->
 
-
-
-
-
-
-
-</div>
-
-
-
-</div><!--End of scale Size-->
-</center>
 
 {% endblock %}  <!-- End content Block -->
 

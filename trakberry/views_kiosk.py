@@ -110,6 +110,14 @@ def down_10r(request):
 	machine_rate2 = zip(operation1,machines1,new1)
 	return render(request,"kiosk/down_10r.html",{'machines1':machine_rate,'machines2':machine_rate2})
 
+def tech_down_10r_mobileset(request):  # Set session variable so view will display IPad version
+	request.session['tech_down_mobileset'] = 1
+	return render(request,"redirect_tech_down_10r.html")
+
+def tech_down_10r_displayset(request):  # Set session variable so view will display IPad version
+	request.session['tech_down_mobileset'] = 0
+	return render(request,"redirect_tech_down_10r.html")
+
 def tech_down_10r(request):
 	machines1 = ['1504','1506','1519','1520','1518','1521','1522','1523','1502','1507','1539','1540','1546','1501','1515','1524','1525','1547','1508','1532','1538','1548','1509','1541','1549','1514','1531','594','1510','1527','1550','1513','1552','1503','1530','751','1511','1528','1554','1533']
 	operation1 = [10,10,10,10,10,10,10,10,30,30,30,30,30,40,40,40,40,40,50,50,50,50,60,60,60,70,70,70,80,80,80,90,90,100,100,100,110,110,110,120]
@@ -177,7 +185,11 @@ def tech_down_10r(request):
 			id1.append(0)
 	machine_rate2 = zip(op1,m1,n1,c1,id1)
 
-	return render(request,"tech_down_10r.html",{'machines1':machine_rate,'machines2':machine_rate2})
+	if request.session['tech_down_mobileset'] == 1:
+		return render(request,"tech_down_10r_mobile.html",{'machines1':machine_rate,'machines2':machine_rate2})
+	else:
+		return render(request,"tech_down_10r.html",{'machines1':machine_rate,'machines2':machine_rate2})
+	
 
 def redirect_down_10r_fix(request):
 	index = request.session['variable1']
@@ -200,12 +212,18 @@ def down_10r_fix(request,index):
 	request.session['tech_down'] = down1
 	request.session['tech_reason'] = reason1 
 
-	down1 = request.session['down_10r_asset_down']
+	#down1 = request.session['down_10r_asset_down']
 
 	if request.POST:
 		machinenum = asset
 		problem = request.POST.get("reason")
 		solution = request.POST.get("solution")
+
+		var1 = request.POST.get("enter")  # was the Pass off button pressed or just enter
+		if var1 == ' Pass Off ':
+			a = 1
+		else:
+			a = 2
 
 		if len(solution) < 10:
 			request.session['variable1'] = index
@@ -214,7 +232,6 @@ def down_10r_fix(request,index):
 		priority = 30000
 		whoisonit = '10R Tech'
 
-
 		# take comment into tx and ensure no "" exist.	If they do change them to ''
 		tx = problem
 		tx = ' ' + tx
@@ -222,24 +239,32 @@ def down_10r_fix(request,index):
 
 		# Genius appostrophe fix
 		problem = hyphon_fix(tx)
-
 		tx = solution
 		solution = hyphon_fix(tx)
 
+		problem = problem + " Tech:" + solution
 		c=1
-
 		t = vacation_temp()
+		w = 'Millwright'
 		db, cur = db_set(request)
 
-		tql =( 'update pr_downtime1 SET completedtime="%s" WHERE idnumber="%s"' % (t,id1))
-		cur.execute(tql)
-		db.commit()
 
+		if a == 1:
+			tql =( 'update pr_downtime1 SET whoisonit="%s" WHERE idnumber="%s"' % (w,id1))
+			cur.execute(tql)
+			db.commit()
+			tql =( 'update pr_downtime1 SET problem="%s" WHERE idnumber="%s"' % (problem,id1))
+			cur.execute(tql)
+			db.commit()
+		else:
+			tql =( 'update pr_downtime1 SET completedtime="%s" WHERE idnumber="%s"' % (t,id1))
+			cur.execute(tql)
+			db.commit()
 		tql =( 'update pr_downtime1 SET remedy="%s" WHERE idnumber="%s"' % (solution,id1))
 		cur.execute(tql)
 		db.commit()
-
 		db.close()
+
 		return render(request,'redirect_tech_down_10r.html')
 	
 	else:
@@ -247,6 +272,7 @@ def down_10r_fix(request,index):
 	args = {}
 	args.update(csrf(request))
 	args['form'] = form
+
 
 	return render(request, "down_10r_fix.html",{'args':args})
 
@@ -305,7 +331,7 @@ def down_10r_entry2(request):
 
 		if len(problem)<2:
 			problem='No reason given'
-		cur.execute('''INSERT INTO pr_downtime1(machinenum,problem,priority,whoisonit,called4helptime,down) VALUES(%s,%s,%s,%s,%s,%s)''', (asset5,problem,priority,whoisonit,t,down1))
+		cur.execute('''INSERT INTO pr_downtime1(machinenum,problem,priority,whoisonit,called4helptime,down,changeovertime) VALUES(%s,%s,%s,%s,%s,%s,%s)''', (asset5,problem,priority,whoisonit,t,down1,t))
 		db.commit()
 
 		db.close()
