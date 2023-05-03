@@ -146,20 +146,20 @@ def tech_down_10r(request):
 	id1 = []
 	for ii in machine_rate:
 		c2 = 'G'
+		idd = '0'
 		for i in tmp2:
 			if i[0] == ii[1]:
 				if i[5] == 'Yes_Down':
 					c2 = 'R'
 				elif i[5] == 'No':
 					c2 = 'Y'
+				idd = i[11]
 		op1.append(ii[0])
 		m1.append(ii[1])
 		n1.append(ii[2])
 		c1.append(c2)
-		try:
-			id1.append(i[11])
-		except:
-			id1.append(0)
+		id1.append(idd)
+
 	machine_rate = zip(op1,m1,n1,c1,id1)
 
 	op1 =[]
@@ -169,21 +169,23 @@ def tech_down_10r(request):
 	id1 =[]
 	for ii in machine_rate2:
 		c2 = 'G'
+		idd = '0'
 		for i in tmp2:
 			if i[0] == ii[1]:
 				if i[5] == 'Yes_Down':
 					c2 = 'R'
 				elif i[5] == 'No':
 					c2 = 'Y'
+				idd = i[11]
 		op1.append(ii[0])
 		m1.append(ii[1])
 		n1.append(ii[2])
 		c1.append(c2)
-		try:
-			id1.append(i[11])
-		except:
-			id1.append(0)
+		id1.append(idd)
+
 	machine_rate2 = zip(op1,m1,n1,c1,id1)
+
+
 
 	if request.session['tech_down_mobileset'] == 1:
 		return render(request,"tech_down_10r_mobile.html",{'machines1':machine_rate,'machines2':machine_rate2})
