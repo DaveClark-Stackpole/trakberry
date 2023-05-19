@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
-from trakberry.forms import kiosk_dispForm1,kiosk_dispForm2,kiosk_dispForm3,kiosk_dispForm4, sup_downForm
+from trakberry.forms import kiosk_dispForm1,kiosk_dispForm2,kiosk_dispForm3,kiosk_dispForm4, sup_downForm,tech_loginForm
 from trakberry.views import done
 from views2 import main_login_form
 from views3 import shift_area
@@ -118,6 +118,32 @@ def tech_down_10r_displayset(request):  # Set session variable so view will disp
 	request.session['tech_down_mobileset'] = 0
 	return render(request,"redirect_tech_down_10r.html")
 
+
+def tech_10r_login(request):
+	db, cursor = db_set(request)
+	sql = "SELECT tech FROM tkb_techs ORDER BY tech ASC" 
+	cursor.execute(sql)
+	tmp = cursor.fetchall()
+	db.close()
+	if request.POST:
+		tec = request.POST.get("user")
+		request.session['tech_down_10r_login'] = 1
+		request.session["login_tech10r"] = tec
+		
+		return render(request,'redirect_tech_down_10r.html')
+	else:
+		form = tech_loginForm()
+	args = {}
+	args.update(csrf(request))
+	args['form'] = form
+	return render(request,'login_10r_tech.html',{'args':args,'tech':tmp})
+
+
+def tech_10r_logout(request):
+	request.session['tech_down_10r_login'] = 0
+	return render(request,'redirect_tech_down_10r.html')
+
+
 def tech_down_10r(request):
 	machines1 = ['1504','1506','1519','1520','1518','1521','1522','1523','1502','1507','1539','1540','1546','1501','1515','1524','1525','1547','1508','1532','1538','1548','1509','1541','1549','1514','1531','594','1510','1527','1550','1513','1552','1503','1530','751','1511','1528','1554','1533']
 	operation1 = [10,10,10,10,10,10,10,10,30,30,30,30,30,40,40,40,40,40,50,50,50,50,60,60,60,70,70,70,80,80,80,90,90,100,100,100,110,110,110,120]
@@ -134,7 +160,8 @@ def tech_down_10r(request):
 
 	tech1='10r_tech'
 	db, cur = db_set(request)
-	sql = "SELECT * FROM pr_downtime1 where LEFT(whoisonit,8)= '%s' and completedtime IS NULL" % (tech1)
+	#sql = "SELECT * FROM pr_downtime1 where LEFT(whoisonit,8)= '%s' and completedtime IS NULL" % (tech1)
+	sql = "SELECT * FROM pr_downtime1 where completedtime IS NULL"
 	cur.execute(sql)
 	tmp2 = cur.fetchall()
 	db.close()
@@ -144,47 +171,58 @@ def tech_down_10r(request):
 	n1 =[]
 	c1 =[]
 	id1 = []
+	ss1 = []
 	for ii in machine_rate:
 		c2 = 'G'
 		idd = '0'
+		sss = ''
 		for i in tmp2:
+
 			if i[0] == ii[1]:
 				if i[5] == 'Yes_Down':
 					c2 = 'R'
-				elif i[5] == 'No':
+				if i[5] == 'No':
 					c2 = 'Y'
+				if i[4] != tech1:
+					c2 = 'GR'
+					sss = i[4]
 				idd = i[11]
 		op1.append(ii[0])
 		m1.append(ii[1])
 		n1.append(ii[2])
 		c1.append(c2)
 		id1.append(idd)
+		ss1.append(sss)
 
-	machine_rate = zip(op1,m1,n1,c1,id1)
-
+	machine_rate = zip(op1,m1,n1,c1,id1,ss1)
 	op1 =[]
 	m1 = []
 	n1 =[]
 	c1 =[]
 	id1 =[]
+	ss1 = []
 	for ii in machine_rate2:
 		c2 = 'G'
 		idd = '0'
+		ss = ''
 		for i in tmp2:
 			if i[0] == ii[1]:
 				if i[5] == 'Yes_Down':
 					c2 = 'R'
-				elif i[5] == 'No':
+				if i[5] == 'No':
 					c2 = 'Y'
+				if i[4] != tech1:
+					c2 = 'GR'
+					sss = i[4]
 				idd = i[11]
 		op1.append(ii[0])
 		m1.append(ii[1])
 		n1.append(ii[2])
 		c1.append(c2)
 		id1.append(idd)
+		ss1.append(sss)
 
-	machine_rate2 = zip(op1,m1,n1,c1,id1)
-
+	machine_rate2 = zip(op1,m1,n1,c1,id1,ss1)
 
 
 	if request.session['tech_down_mobileset'] == 1:
@@ -210,9 +248,12 @@ def down_10r_fix(request,index):
 	asset = tmp2[0][0]
 	down1 = tmp2[0][5]
 	reason1 = tmp2[0][1]
+	who1 = tmp2[0][4]
 	request.session['tech_asset'] = asset
 	request.session['tech_down'] = down1
 	request.session['tech_reason'] = reason1 
+	request.session['tech_who'] = who1 
+	request.session['tech_index'] = str(id1)
 
 	#down1 = request.session['down_10r_asset_down']
 
@@ -232,7 +273,10 @@ def down_10r_fix(request,index):
 			return render(request,"redirect_down_10r_fix.html")
 
 		priority = 30000
-		whoisonit = '10R Tech'
+		try:
+			whoisonit = request.session['login_tech10r']
+		except:
+			whoisonit = 'tech_10r'
 
 		# take comment into tx and ensure no "" exist.	If they do change them to ''
 		tx = problem
@@ -277,6 +321,26 @@ def down_10r_fix(request,index):
 
 
 	return render(request, "down_10r_fix.html",{'args':args})
+
+
+def down_10r_fix_assign(request):
+	try:
+		who1 = request.session['login_tech10r']
+	except:
+		who1 = '10r_tech'
+	#who1 = request.session['tech_who'] 
+	id1 = request.session['tech_index']
+	db, cur = db_set(request)
+	tql =( 'update pr_downtime1 SET whoisonit="%s" WHERE idnumber="%s"' % (who1,id1))
+	cur.execute(tql)
+	db.commit()
+	db.close()
+	return down_10r_fix(request,id1)
+
+
+	
+
+
 
 def down_10r_entry(request,index):
 	request.session['down_10r_asset'] = index
@@ -3497,6 +3561,29 @@ def production_duplicate_fix(request,date1):
 		cur.execute(dql)
 		db.commit()
 	return
+
+def production_entry_cleanup(request):
+	db, cur = db_set(request)
+
+	st='No Entry'
+	dql = ('DELETE FROM tkb_scheduled WHERE status = "%s"' % (st))
+	cur.execute(dql)
+	db.commit()
+
+	st='not a job'
+	dql = ('DELETE FROM tkb_scheduled WHERE Job = "%s"' % (st))
+	cur.execute(dql)
+	db.commit()
+
+	st='Good'
+	cql = ('update tkb_scheduled SET Status = "%s"' % (st))
+	cur.execute(cql)
+	db.commit()
+	
+
+	return render(request,"redirect_master2.html")
+
+
 
 
 def production_entry_fix(request):

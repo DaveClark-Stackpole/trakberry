@@ -327,7 +327,8 @@ def supervisor_display(request):
 	active1 = 0
 	whoisonit1 = 'tech'
 	whoisonit2 = 'Engineering'
-	SQ_Sup = "SELECT * FROM pr_downtime1 where closed IS NULL and whoisonit != '%s' and whoisonit != '%s' ORDER By (priority) ASC" % (whoisonit1,whoisonit2)
+	whoisonit3 = '10r_tech'
+	SQ_Sup = "SELECT * FROM pr_downtime1 where closed IS NULL and whoisonit != '%s' and whoisonit != '%s' and whoisonit != '%s' ORDER By (priority) ASC" % (whoisonit1,whoisonit2,whoisonit3)
 	cur.execute(SQ_Sup)
 	tmp = cur.fetchall()
 	SQ2 = "SELECT user_name FROM tkb_logins where active1 != '%d'" % (active1)

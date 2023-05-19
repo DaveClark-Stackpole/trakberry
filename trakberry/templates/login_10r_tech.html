@@ -1,0 +1,47 @@
+{% extends "kiosk/down_10r_style_mobile.html" %}
+{% block main %}
+
+
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<img alt="full screen background image" src="/static/media/kiosk.jpeg?{{request.session.TCUR}}" id="full-screen-background-image"/>
+
+<font color="#000000" size ="3">
+
+
+
+
+<br>
+
+
+            <center>
+            <font style="font-size: 70px; color:rgb(187, 255, 190); text-shadow: 15px 15px 15px rgb(177, 177, 177), 0 0 25px rgb(160, 244, 247), 0 0 5px rgb(75, 184, 11);">
+            </center>
+            10R CNC Tech APP </font><br>
+
+
+<br><br><br>
+
+
+<form action="" method="post">{% csrf_token %}
+
+
+<b><u>Tech Name</b></u>&nbsp;
+<select name ="user">
+
+{% for i in tech%}
+<option value="{{ i.0 }}">{{ i.0 }} </option>
+{% endfor %}
+</select>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+<input type="submit">
+
+
+
+
+</form>
+
+</font>
+
+
+{% endblock %}

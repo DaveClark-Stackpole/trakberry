@@ -1,7 +1,14 @@
 {% extends "kiosk/down_10r_style_mobile.html" %}
 {% block main %}
-
+<title>10R Tech APP MOBILE</title>
 <meta http-equiv="refresh" content="8; url={{request.session.local_toggle}}/tech_down_10r"/>
+
+
+{% if request.session.tech_down_10r_login != 1 %} 
+    <meta http-equiv="refresh" content="0; url={{request.session.local_toggle}}/tech_10r_login"/>
+
+{% endif %} 
+
 
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <img alt="full screen background image" src="/static/media/kiosk.jpeg?{{request.session.TCUR}}" id="full-screen-background-image"/>
@@ -15,6 +22,18 @@
             <font style="font-size: 70px; color:rgb(187, 255, 190); text-shadow: 15px 15px 15px rgb(177, 177, 177), 0 0 25px rgb(160, 244, 247), 0 0 5px rgb(75, 184, 11);">
             </center>
             10R CNC Tech APP</font><br>
+          
+            <font style="font-size: 20px; color:rgb(187, 255, 190); text-shadow: 15px 15px 15px rgb(177, 177, 177), 0 0 25px rgb(160, 244, 247), 0 0 5px rgb(75, 184, 11);">
+        
+            {{request.session.login_tech10r}}</font>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <font style="font-size: 16px; color:rgb(187, 255, 190); text-shadow: 15px 15px 15px rgb(177, 177, 177), 0 0 25px rgb(160, 244, 247), 0 0 5px rgb(75, 184, 11);">
+
+
+            <a href="{{request.session.local_toggle}}/tech_10r_logout/"
+            onclick="window.open('{{request.session.local_toggle}}/tech_10r_logout/'); return false;">
+            <font style="border:1px solid; border-color: rgb(255, 255, 255);border-radius: 30px;background-color: #7bcf70;box-shadow:4px 4px 8px #C84529;color:rgb(0, 0, 0);"> 
+                &nbsp;&nbsp;Logout&nbsp;&nbsp;</font></a>            </center><br>
         <div class="mainset2">  
             <font style="font-size: 30px; color:white; text-shadow: 5px 5px 5px rgb(177, 177, 177), 0 0 25px rgb(160, 244, 247), 0 0 5px rgb(75, 184, 11);">10R80</font><br>
     <div class="frame1">

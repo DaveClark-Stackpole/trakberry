@@ -475,6 +475,13 @@ def maintenance_edit(request):
 			db.commit()
 			uql =( 'update pr_downtime1 SET whoisonit="%s" WHERE idnumber="%s"' % (manpower,index))
 			cur.execute(uql)
+
+			htime = datetime.datetime.now()
+			tql =( 'update pr_downtime1 SET updatedtime="%s" WHERE idnumber="%s"' % (htime,index))
+			cur.execute(tql)
+			db.commit()
+
+
 			uql =( 'update pr_downtime1 SET priority="%s" WHERE idnumber="%s"' % (priority,index))
 			cur.execute(uql)
 			db.commit()

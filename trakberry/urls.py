@@ -111,13 +111,13 @@ from views_kiosk import kiosk_initial_GF9,kiosk_initial_6L_IN,kiosk_initial_AB1V
 from views_kiosk import kiosk_help_form, kiosk_forklift_form, kiosk_scrap, kiosk_scrap_entry, kiosk_scrap_reset #, kiosk_mult_entries
 from views_kiosk import production_entry_check,kiosk_job_furnace,production_entry_fix,production_entry_fix_shift, production_entry_check_manual
 from views_kiosk import test_1_10R,down_10r,down_10r_entry,down_10r_asset_check,down_10r_entry2,tech_down_10r,down_10r_fix,redirect_down_10r_fix
-from views_kiosk import tech_down_10r_displayset, tech_down_10r_mobileset
+from views_kiosk import tech_down_10r_displayset, tech_down_10r_mobileset,tech_10r_login,tech_10r_logout,down_10r_fix_assign
 
 # ***********************************************************************************************************************************************************
 # *******************************************  Manpower Section ********************************************************************************************
 from views_kiosk import manpower_layout, tenr_fix,kiosk_menu,ab1v_manpower,tenr1,trilobe,tenr2, error_hourly_duplicate
 from views_kiosk import kiosk_production_write
-from views_kiosk import set_test1, kiosk_fix55, kiosk_fix44, kiosk_help_close, kiosk_epv_verification, kiosk_epv_entry
+from views_kiosk import set_test1, kiosk_fix55, kiosk_fix44, kiosk_help_close, kiosk_epv_verification, kiosk_epv_entry, production_entry_cleanup
 from views_manpower import manpower_allocation_interval_pick
 
 # ***********************************************************************************************************************************************************
@@ -553,6 +553,7 @@ urlpatterns = [
 	url(r'^kiosk_initial_GF9/', kiosk_initial_GF9),
 	url(r'^kiosk_initial_AB1V/', kiosk_initial_AB1V),
 	url(r'^kiosk_help_close/', kiosk_help_close),
+    url(r'^production_entry_cleanup/', production_entry_cleanup),
 	url(r'^trilobe/', trilobe),
 	url(r'^manual_production_entry/', manual_production_entry),
 	url(r'^manual_production_entry2/', manual_production_entry2),
@@ -563,7 +564,12 @@ urlpatterns = [
 	url(r'^manual_cycletime_table/', manual_cycletime_table),
 	url(r'^ab1v_manpower/', ab1v_manpower),
 
-	url(r'^test_1_10R/', test_1_10R),
+	url(r'^tech_10r_login/', tech_10r_login),
+    url(r'^tech_10r_logout/', tech_10r_logout),
+    url(r'^down_10r_fix_assign/', down_10r_fix_assign),
+
+
+
 
 
 
