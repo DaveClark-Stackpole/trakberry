@@ -59,8 +59,11 @@
             {% elif i.3 == 'R' %}
             <button class="button_r" type="button" onclick="window.location.href = '{{request.session.local_toggle}}/down_10r_fix/get/{{i.4}}';"><font size="2">
             <b>{{i.1}}</b></font></button>
-            {% else %}
+            {% elif i.3 == 'Y' %}
             <button class="button_y" type="button" onclick="window.location.href = '{{request.session.local_toggle}}/down_10r_fix/get/{{i.4}}';"><font size="2">
+            <b>{{i.1}}</b></font></button>
+            {% else %}
+            <button class="button_gr" type="button" onclick="window.location.href = '{{request.session.local_toggle}}/down_10r_fix/get/{{i.4}}';"><font size="2">
             <b>{{i.1}}</b></font></button>
             {% endif %}
             
@@ -95,8 +98,11 @@
             {% elif i.3 == 'R' %}
             <button class="button_r" type="button" onclick="window.location.href = '{{request.session.local_toggle}}/down_10r_fix/get/{{i.4}}';"><font size="2">
             <b>{{i.1}}</b></font></button>
-            {% else %}
+            {% elif i.3 == 'Y' %}
             <button class="button_y" type="button" onclick="window.location.href = '{{request.session.local_toggle}}/down_10r_fix/get/{{i.4}}';"><font size="2">
+            <b>{{i.1}}</b></font></button>
+            {% else %}
+            <button class="button_gr" type="button" onclick="window.location.href = '{{request.session.local_toggle}}/down_10r_fix/get/{{i.4}}';"><font size="2">
             <b>{{i.1}}</b></font></button>
             {% endif %}
         {% endfor %}
