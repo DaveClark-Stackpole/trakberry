@@ -18,34 +18,88 @@
     <div class="wrapper_main">
         <div class="mainset2">  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <font style="font-size: 50px; color:white; text-shadow: 5px 5px 5px rgb(177, 177, 177), 0 0 25px rgb(160, 244, 247), 0 0 5px rgb(75, 184, 11);">
-                {{request.session.down_10r_asset}} Needs a Tech</font><br><br><br>
-            <button class="button6" type="button""><font size="4">
-             <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                Problem
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b></font></button>&nbsp;&nbsp;&nbsp;
-             <br><br>
-             <input style="font-size:14px;width:470px;height:120px;text-align: top;" name="reason" type="textarea" value="{{request.session.tech_reason}}"><br><br>
-             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-             <br><br>
-             <button class="button6" type="button""><font size="4">
-             <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
-                Solution or Pass off Information
+                {{request.session.tech_asset}} Needs a Tech</font><br><br>
                 
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </b></font></button>&nbsp;&nbsp;&nbsp;<br><br>
-             <input style="font-size:14px;width:470px;height:120px;text-align: top;" name="solution" type="textarea" placeholder="Enter Solution or Pass of information Here"><br><br>
+                {% if request.session.tech_who == '10r_tech' %}
 
-             <input style="text-align: left;width:180px;height:40px;font-size: 18px;border-style: solid;background-color:#88ff26;border-color:#a1a1a1;border-radius: 10px;" name = "enter" type="submit" value="              Enter                 ">
-             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-             <input style="text-align: left;width:100px;height:40px;font-size: 18px;border-style: solid;background-color:#55b2ff;border-color:#A1A1A1;border-radius: 10px;" name = "enter" type="submit" value=" Pass Off ">
+                        <button class="button_g" type="button" onclick="window.location.href = '{{request.session.local_toggle}}/down_10r_fix_assign/';"><font size="2">
+                        <b>&nbsp;&nbsp;&nbsp;&nbsp;Take Call&nbsp;&nbsp;&nbsp;&nbsp;</b></font></button>
+
+                    <br><br>
+                    <button class="button6" type="button""><font size="4">
+                     <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        Problem
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b></font></button>&nbsp;&nbsp;&nbsp;
+                     <br><br>
+                    <textarea style="font-size:14px;width:470px;height:120px;text-align: top;" name="reason">{{request.session.tech_reason}}</textarea><br><br>
+                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                     <br><br>
+
+            {% elif request.session.tech_who == request.session.login_tech10r %}
+            <button class="button_g" type="button"><font size="2">
+                <b>&nbsp;&nbsp;&nbsp;&nbsp;Your Call&nbsp;&nbsp;&nbsp;&nbsp;</b></font></button>
+                <br><br>
+ 
+                 <button class="button6" type="button""><font size="4">
+                  <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                     Problem
+                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b></font></button>&nbsp;&nbsp;&nbsp;
+                  <br><br>
+                 <textarea style="font-size:14px;width:470px;height:120px;text-align: top;" name="reason">{{request.session.tech_reason}}</textarea><br><br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <br><br>
+                  <button class="button6" type="button""><font size="4">
+                  <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     
+                     Solution or Pass off Information
+                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                 </b></font></button>&nbsp;&nbsp;&nbsp;<br><br>
+                  <input style="font-size:14px;width:470px;height:120px;text-align: top;" name="solution" type="textarea" placeholder="Enter Solution or Pass of information Here"><br><br>
+                  <input style="text-align: left;width:180px;height:40px;font-size: 18px;border-style: solid;background-color:#88ff26;border-color:#a1a1a1;border-radius: 10px;" name = "enter" type="submit" value="              Enter                 ">
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <input style="text-align: left;width:100px;height:40px;font-size: 18px;border-style: solid;background-color:#55b2ff;border-color:#A1A1A1;border-radius: 10px;" name = "enter" type="submit" value=" Pass Off ">
+
+                {% else %}
+                    <button class="button_g" type="button"><font size="2">
+                    <b>&nbsp;&nbsp;&nbsp;&nbsp;{{request.session.tech_who}}&nbsp;&nbsp;&nbsp;&nbsp;</b></font></button>
+                    <br><br>
+                    <button class="button6" type="button""><font size="4">
+                     <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        Problem
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b></font></button>&nbsp;&nbsp;&nbsp;
+                     <br><br>
+                    <textarea style="font-size:14px;width:470px;height:120px;text-align: top;">{{request.session.tech_reason}}</textarea><br><br>
+                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                     <br><br>
+
+        
+
+  
+        
+        
+                {% endif %}
+                    
+
+
         </div>
     </div>
 </center>

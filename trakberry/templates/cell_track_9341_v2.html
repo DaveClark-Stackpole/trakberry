@@ -143,8 +143,8 @@
 <body>
     <div class="containter main d-flex justify-content-center">
         <div class="L10R80">
-            <div class="heading" style="background-color:{{op_color.120}};">
-                10R80 Predict ({{op.120}})
+            <div class="heading" style="background-color:{{acolor1.1533}};">
+                10R80 Predict ({{counts.1533}})
             </div>
             <div class="mainline"> <!-- MainLine Production-->
                 <div class="subheading borders">Mainline</div>
@@ -499,7 +499,7 @@
                 <div class="op">  <!-- OP 120  -->
                     <div class="c-op borders" style="background-color:{{op_color.120}}">
                         <div class="asset-number">Final</div>
-                        <div class="asset-count">({{op.120}})</div>
+                        <div class="asset-count">({{counts.1533}})</div>
                     </div>
                     <div class="asset borders" style="background-color:{{acolor1.1533}}">
 {% if down1.1533 %}
@@ -802,9 +802,12 @@
                 <div class="op"><!-- OP 10  -->
                     <div class="asset borders" style="background-color:{{acolor1.1802}}">
 {% if down1.1802 %}
-    <div class="asset-number">
-
-    </div>
+<div class="asset-number">
+    <a href="/track_graph_track/get/1802/"
+        onclick="window.open('/track_graph_track/get/1802/', 'newwindow', 'width=1400, height=600'); return false;">
+        <font style="border:1px solid; border-color: rgb(255, 255, 255);border-radius: 30px;background-color: #971B00;box-shadow:4px 4px 8px #C84529;color:rgb(204, 204, 204);"> 
+            &nbsp;&nbsp;1802&nbsp;&nbsp;</font></a>
+</div>
 {% else %}
     <div class="asset-number">
         <a href="/dashboard/track_graph_track/get/1802/"
@@ -812,7 +815,7 @@
             1802</a>
     </div>
 {% endif %}
-    <div class="asset-count"></div>
+    <div class="asset-count">({{counts.1802}})</div>
 </div>
                 </div>  
 
@@ -998,11 +1001,11 @@
                 </div>
 
                 <div class="op">  <!-- OP 120  -->
-                    <div class="asset borders" style="background-color:{{codes.40.2}}">
+                    <div class="asset borders" style="background-color:{{aacolor1.1899}}">
     <div class="asset-number">
         <a href="/dashboard/track_graph_track/get/1816/"
-            onclick="window.open('/dashboard/track_graph_track/get/1554/', 'newwindow', 'width=1400, height=600'); return false;">
-            </a>
+            onclick="window.open('/dashboard/track_graph_track/get/1816/', 'newwindow', 'width=1400, height=600'); return false;">
+            1816</a>
     </div>
     <div class="asset-count"></div>
 </div>
@@ -1014,7 +1017,7 @@
             <div class="op"> </div>
         </div>
         <div class="L10R60">
-            <div class="heading" style="background-color:#FF7355;">
+            <div class="heading" style="background-color:{{aacolor1.1816}};">
                 10R60 Predict ({{oop.120}})
             </div>
             <div class="subheading borders">Mainline</div>
@@ -1223,9 +1226,9 @@
 
                 </div>
                 <div class="op">  <!-- OP 120  -->
-                    <div class="c-op borders" style="background-color:{{oop_color.120}}">
+                    <div class="c-op borders" style="background-color:{{aacolor1.1816}}">
                         <div class="asset-number">Final</div>
-                        <div class="asset-count">({{oop.120}})</div>
+                        <div class="asset-count">({{ccounts.1816}})</div>
                     </div>
                     <div class="asset borders" style="background-color:{{aacolor1.1816}}"">
     <div class="asset-number">

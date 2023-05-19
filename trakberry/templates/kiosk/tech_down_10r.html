@@ -1,7 +1,12 @@
 {% extends "kiosk/down_10r_style.html" %}
 {% block main %}
 
-<meta http-equiv="refresh" content="60; url={{request.session.local_toggle}}/tech_down_10r"/>
+<meta http-equiv="refresh" content="10; url={{request.session.local_toggle}}/tech_down_10r"/> 
+
+
+{% if request.session.10r_tech_login != 1 %} 
+    <meta http-equiv="refresh" content="0; url={{request.session.local_toggle}}/sup"/>
+{% endif %}
 
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <img alt="full screen background image" src="/static/media/kiosk.jpeg?{{request.session.TCUR}}" id="full-screen-background-image"/>
