@@ -3606,6 +3606,12 @@ def production_entry_fix(request):
 	# cur.execute(sql)
 	# db.commit()
 	# db.close()
+	b = 0
+	dql = ('DELETE FROM tkb_scheduled WHERE Clock = "%s"' %(b))
+	cur.execute(dql)
+	db.commit()
+
+
 
 	sql = "SELECT * FROM tkb_scheduled WHERE Shift = '%s' and Status != '%s' and Status != '%s' ORDER BY %s %s, %s %s, %s %s" %(shift,status1,status2,'Date1','DESC','Status','DESC','Employee','ASC')
 	cur.execute(sql)
