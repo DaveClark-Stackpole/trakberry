@@ -243,8 +243,8 @@ def temp_display(request):
 			message = message + " Zone " + zone1 + " is currently at " + temp1 + " Humidex and has " + direction1 + " level " + level1 + " " + b + x + b + b
 
 		message = message + " Please click on the below link to acknowledge the appropriate action has been taken" + b + b
-		# message = message + "http://pmdsdata.stackpole.ca:8986/trakberry/master2/"+str(t) + b + b + b + b + b 
-		message = message + "http://localhost:8080/temp_ack/get/"+str(t) + b + b + b + b + b 
+		#message = message + "http://pmdsdata.stackpole.ca:8986/trakberry/master2/"+str(t) + b + b + b + b + b 
+		message = message + "http://pmdsdata.stackpole.ca:8986/trakberry/temp_ack/get/"+str(t) + b + b + b + b + b 
 		
 
 
