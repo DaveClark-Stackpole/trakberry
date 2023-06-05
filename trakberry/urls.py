@@ -169,7 +169,7 @@ from views_admin import master
 from views3 import excel_dump, excel_scrap_dump,training_matrix2,training_matrix_find,training_matrix_update_all
 from views3 import bounce_matrix,update_matrix_cancel,matrix_cache_matrix, full_update
 from views_admin import tech_pm_add,manpower_calculation
-from views_healthsafety import temp_display,temp_test1,temp_test_reset
+from views_healthsafety import temp_display,temp_test1,temp_test_reset,temp_ack,temp_ack_taken
 # ***********************************************************************************************************************************************************
 
 # *******************************************  Scrap Section ********************************************************************************************
@@ -250,7 +250,7 @@ urlpatterns = [
 	url(r'^email_hour_check/', email_hour_check),
 	url(r'^modal_test/', modal_test),	
 
-    
+	
 	
 	# Reports URL Patterns ***********************************
 	url(r'^reports/', select_date),
@@ -316,12 +316,12 @@ urlpatterns = [
 	url(r'^reset_call_route/', reset_call_route),
 	url(r'^sup_down_elec/', supervisor_elec_call),
 	url(r'^sup_down_maint/', supervisor_maint_call),
-    url(r'^supervisor_down_no/', supervisor_down_no),
-    url(r'^supervisor_down_yes/', supervisor_down_yes),
+	url(r'^supervisor_down_no/', supervisor_down_no),
+	url(r'^supervisor_down_yes/', supervisor_down_yes),
 	url(r'^sup_message_reply1/', sup_message_reply1),
 	url(r'^sup_message_reply0/', sup_message_reply0),
 	url(r'^sup_message/', sup_message),
-    url(r'^supervisor_schedule/', supervisor_schedule), 
+	url(r'^supervisor_schedule/', supervisor_schedule), 
 	#url(r'^sup_down_main/', supervisor_main_call),
 	#url(r'^sedit/get/(?P<index>\d+)/$', supervisor_edit),
 	url(r'^sedit/', supervisor_edit),
@@ -330,7 +330,7 @@ urlpatterns = [
 	url(r'^tech_down_10r/', tech_down_10r),
 	url(r'^jcall/get/(?P<index>\d+)/$', job_call),
 	url(r'^jclose/get/(?P<index>\d+)/$', job_close),
-    url(r'^changeover1/get/(?P<index>\d+)/$', changeover1),
+	url(r'^changeover1/get/(?P<index>\d+)/$', changeover1),
 	url(r'^jpass/get/(?P<index>\d+)/$', job_pass),
 	url(r'^tech_epv/get/(?P<index>\w{0,50})/$', tech_epv),
 	url(r'^tech_pm/get/(?P<index>\w{0,50})/$', tech_pm),
@@ -354,13 +354,13 @@ urlpatterns = [
 	url(r'^tech_PM_master_complete/', tech_PM_master_complete),
 	url(r'^tech_epv_week_assign/', tech_epv_week_assign),
 	url(r'^tech_pm_summary/', tech_pm_summary),
-    url(r'^redirect_down_10r_fix/', redirect_down_10r_fix),
-    url(r'^tech_down_10r_mobileset/', tech_down_10r_mobileset),
-    url(r'^tech_down_10r_displayset/', tech_down_10r_displayset),
-    
+	url(r'^redirect_down_10r_fix/', redirect_down_10r_fix),
+	url(r'^tech_down_10r_mobileset/', tech_down_10r_mobileset),
+	url(r'^tech_down_10r_displayset/', tech_down_10r_displayset),
+	
 
 	url(r'^tech_pm_summary/', tech_pm_summary),
-    
+	
 
 	url(r'^epv_checks_update/', epv_checks_update),
 
@@ -371,12 +371,12 @@ urlpatterns = [
 	url(r'^maint_mgmt/', maint_mgmt),
 	url(r'^maint_mgmt_auto/', maint_mgmt_auto),
 	url(r'^maintenance_edit/', maintenance_edit),
-    url(r'^maint_init_call/', maint_init_call),
+	url(r'^maint_init_call/', maint_init_call),
 	url(r'^maintenance_close/', maintenance_close),
 	url(r'^maint_mgmt_login_form/', maint_mgmt_login_form),
 	url(r'^maint_down_yes/', maint_down_yes),
-    url(r'^maint_down_no/', maint_down_no),
-    url(r'^maint/', maint),
+	url(r'^maint_down_no/', maint_down_no),
+	url(r'^maint/', maint),
 	url(r'^maint_TV/', maint_TV),
 	url(r'^maint_map/', maint_map),
 	url(r'^mcall/get/(?P<index>\d+)/$', maint_call),
@@ -388,7 +388,7 @@ urlpatterns = [
 	url(r'^maint_call_call/', maint_call_call),
 	url(r'^maint_close_item/', maint_close_item),
 	url(r'^maint_job_entry/', maint_job_entry),
-    url(r'^maint_job_close/', maint_job_close),
+	url(r'^maint_job_close/', maint_job_close),
 	url(r'^sup_pie_chart/', sup_pie_chart),
 	
 	
@@ -553,7 +553,7 @@ urlpatterns = [
 	url(r'^kiosk_initial_GF9/', kiosk_initial_GF9),
 	url(r'^kiosk_initial_AB1V/', kiosk_initial_AB1V),
 	url(r'^kiosk_help_close/', kiosk_help_close),
-    url(r'^production_entry_cleanup/', production_entry_cleanup),
+	url(r'^production_entry_cleanup/', production_entry_cleanup),
 	url(r'^trilobe/', trilobe),
 	url(r'^manual_production_entry/', manual_production_entry),
 	url(r'^manual_production_entry2/', manual_production_entry2),
@@ -565,8 +565,8 @@ urlpatterns = [
 	url(r'^ab1v_manpower/', ab1v_manpower),
 
 	url(r'^tech_10r_login/', tech_10r_login),
-    url(r'^tech_10r_logout/', tech_10r_logout),
-    url(r'^down_10r_fix_assign/', down_10r_fix_assign),
+	url(r'^tech_10r_logout/', tech_10r_logout),
+	url(r'^down_10r_fix_assign/', down_10r_fix_assign),
 
 
 
@@ -690,17 +690,17 @@ urlpatterns = [
 	url(r'^cell_track_1467/', cell_track_1467),
 	url(r'^cell_track_8670/', cell_track_8670),
 	url(r'^cell_track_9341_TV/', cell_track_9341_TV),
-    url(r'^cell_track_9341_NEW/', cell_track_9341_NEW),
+	url(r'^cell_track_9341_NEW/', cell_track_9341_NEW),
 	url(r'^cell_track_9341_mobile/', cell_track_9341_mobile),
 	url(r'^cell_track_9341_history_on/', cell_track_9341_history_on),
 	url(r'^cell_track_9341_history_off/', cell_track_9341_history_off),
 	url(r'^cell_track_9341_history/', cell_track_9341_history),
-    url(r'^cell_track_9341_archive/', cell_track_9341_archive),
-    url(r'^cell_track_9341_history2/', cell_track_9341_history2),
+	url(r'^cell_track_9341_archive/', cell_track_9341_archive),
+	url(r'^cell_track_9341_history2/', cell_track_9341_history2),
 	url(r'^cell_9341_mobile/', cell_9341_mobile),
-    url(r'^cell_9341_screen/', cell_9341_screen),
-    url(r'^cell_track_9341_v2/', cell_track_9341_v2),
-    url(r'^track_9341_history_date/', track_9341_history_date),
+	url(r'^cell_9341_screen/', cell_9341_screen),
+	url(r'^cell_track_9341_v2/', cell_track_9341_v2),
+	url(r'^track_9341_history_date/', track_9341_history_date),
 	url(r'^wip_update/', wip_update),
 
 
@@ -850,6 +850,9 @@ urlpatterns = [
 
 	url(r'^temp_test_reset/', temp_test_reset),
 	url(r'^temp_test1/', temp_test1),
+	url(r'^temp_ack/get/(?P<index>\w{0,50})/$', temp_ack),
+	url(r'^temp_ack_taken/', temp_ack_taken),
+	
 
 	# **************************************************************************
 

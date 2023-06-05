@@ -1,0 +1,203 @@
+
+<html>
+	<body>
+	<head>
+	
+
+	<style type="text/css">
+		.mainset{color:black;text-align:center;float:left;width:100%}
+		.wrapper_main {background:rgb(255, 255, 255);width:90%;margin-left: 10px;}
+		.frame1 {color:black;text-align:left;float:left;width:80%;margin-bottom: 5px;margin-left: 5%;}
+		.frame1_u {color:black;text-align:center;background:rgb(214, 214, 214);float:left;width:60%;margin: 20px;}
+		.frame2 {color:black;text-align:left;float:left;width:100%;}
+		.frame6{color:black;text-align:left;background:rgb(255, 255, 255);float:left;width:14%;position:relative;left:5px;margin-bottom: 5px;}
+		.frame3 {color:black;text-align:center;background:rgb(61, 138, 64);float:left;width:51%;position:relative;}
+		.frame4 {color:black;text-align:center;background:rgb(235, 142, 89);float:left;width:49%;position:relative;left:5px;}
+		.frame5{color:black;text-align:center;background:rgb(168, 168, 168);float:right;width:40%}
+		.head1{color:black;text-align:center;border: .4px solid rgb(0, 0, 0);background:rgb(114, 159, 243);width:85%}
+		.head1_u{color:black;text-align:center;border: .4px solid rgb(0, 0, 0);border-radius: 10px;background:rgb(98, 202, 197);width:30%;margin-left: 30%;}
+		.head2_u{color:black;text-align:center;float:left;font-size: 60%;border: .4px solid rgb(0, 0, 0);background: rgb(184, 167, 142);width:25%}
+		.body1_u{color:black;text-align:left;float: left;border: 1px solid rgb(0, 0, 0);width:25%}
+		.head2{color:black;text-align:center;float:left;font-size: 60%;border: .4px solid rgb(222, 231, 95);background: rgb(184, 167, 142);width:65%}
+		.body1{color:black;text-align:left;float: left;border: 1px solid rgb(0, 0, 0);width:85%}
+		.body2{color:black;text-align:left;float: left;border: 1px solid rgb(0, 0, 0);width:65%}
+		.body3{color:black;text-align:center;background:rgb(199, 187, 166);float:left;width:33%;border: .4px solid rgb(0, 0, 0)}
+		.body3h{color:black;text-align:center;background:rgb(187, 186, 184);float:left;width:33%;border: .4px solid rgb(0, 0, 0)}
+		.body3t{color:black;text-align:center;background:rgb(187, 186, 184);float:left;font-size:medium;width:99%;border: .4px solid rgb(0, 0, 0)}
+	
+        .button_r {
+         height: 45px;
+        text-align: center;
+ cursor: pointer;
+ outline: none;
+ color: #000000;
+background-color: #ff5c33;
+border: none;
+border-radius: 15px;
+box-shadow: 0 7px #999;
+}
+.button_r:hover {background-color: #ff5c33}
+.button_r:active {
+background-color: #ff5c33;
+box-shadow: 0 8px #666;
+transform: translateY(8px);
+}   
+
+	</style>
+<style>
+	body  {
+		background-color:rgb(116, 146, 185);
+	
+	}
+	
+	</style>
+<style>
+	#prodwk {
+		font-family: Arial, Helvetica, sans-serif;
+		border-collapse: collapse;
+		width: 70%;
+	}
+	#prodwk td, #prodwk th {
+		border: 1px solid rgb(0, 0, 0);
+
+		padding: 8px;
+	}
+	#prodwk tr:nth-child(even){background-color: #f8ce96;}
+	#prodwk tr:nth-child(odd){background-color: #e29d4e;}
+	#prodwk tr:hover {background-color: #ddd;}
+	#prodwk th {
+		padding-top: 3px;
+		padding-bottom: 3px;
+		text-align: left;
+		background-color: rgb(139, 117, 107);
+		color: white;
+	}
+	</style>
+
+
+	<style>
+		table {	border-collapse: collapse;border-spacing: 0;width: 85%;}
+		th, td {text-align: left;padding: 2px;}
+	</style>
+	</head>
+
+
+	
+
+	
+	<div class="wrapper_main">
+		<div class="frame2">  
+			<div class="head1_u"><center>
+				<font size="6"><b>Temperature Monitoring Alert !</b></font></center>
+			</div>
+		</div>
+	<div class="frame1">  
+		<br><br>
+		<table id="prodwk">
+		<tr>
+            <td bgcolor="#DCDCDC"><center><font style="font-weight:bolder;font-size:120%;"></font>
+                <center>
+                <font style="font-size: 18px; color:rgb(63, 104, 29); text-shadow: 1px 1px 2px black, 0 0 25px rgb(0, 0, 0), 0 0 5px rgb(255, 255, 255);">
+                Zone
+                </font>
+                </center>
+            </center></td>
+            <td bgcolor="#DCDCDC"><center><font style="font-weight:bolder;font-size:120%;"></font>
+                <center>
+                <font style="font-size: 18px; color:rgb(63, 104, 29); text-shadow: 1px 1px 2px black, 0 0 25px rgb(0, 0, 0), 0 0 5px rgb(255, 255, 255);">
+                Humidex
+                </font>
+                </center>
+            </center></td>
+
+            <td bgcolor="#DCDCDC"><center><font style="font-weight:bolder;font-size:120%;"></font>
+                <center>
+                <font style="font-size: 18px; color:rgb(63, 104, 29); text-shadow: 1px 1px 2px black, 0 0 25px rgb(0, 0, 0), 0 0 5px rgb(255, 255, 255);">
+                Note
+                </font>
+                </center>
+            </center></td>
+
+	</tr>
+    {% for i in request.session.temp_alerts %}
+    <tr>
+        <td bgcolor="#DCDCDC"><center><font style="font-weight:bolder;font-size:120%;"></font>
+        <center>
+        <font style="font-size: 18px; color:rgb(63, 104, 29); text-shadow: 1px 1px 2px black, 0 0 25px rgb(0, 0, 0), 0 0 5px rgb(255, 255, 255);">
+            {{ i.2}}
+
+        </font>
+        </center>
+    </center></td>
+    <td bgcolor="#DCDCDC"><center><font style="font-weight:bolder;font-size:120%;"></font>
+        <center>
+        <font style="font-size: 18px; color:rgb(63, 104, 29); text-shadow: 1px 1px 2px black, 0 0 25px rgb(0, 0, 0), 0 0 5px rgb(255, 255, 255);">
+        {{i.1}}
+        </font>
+        </center>
+    </center></td>
+
+    <td bgcolor="#DCDCDC"><center><font style="font-weight:bolder;font-size:120%;"></font>
+        <center>
+        <font style="font-size: 18px; color:rgb(63, 104, 29); text-shadow: 1px 1px 2px black, 0 0 25px rgb(0, 0, 0), 0 0 5px rgb(255, 255, 255);">
+        Now at Level {{i.3}}
+
+        {% if i.3 == "0" %}
+            No Heat Stress Warning
+        {% elif i.3 == "1" %} 
+            supply water to workers on an as needed basis.
+        {% elif i.3 == "2" %} 
+            post Heat Stress Alert notice.  encourage workers that they need to drink extra water.  Start recording hourly temperature and relative humidity.
+        {% elif i.3 == "3" %} 
+             post Heat Stress Warning notice.  notify workers that they need to drink extra water.  ensure workers are trained to recognize symptoms.
+        {% elif i.3 == "4" %} 
+             work with 15 minutes relief per hour can continue.  Provide adequate cool 10-15C water at least 1 cup every 20minutes.  Worker with symptoms should seek medical attention.   
+        {% elif i.3 == "5" %} 
+             work with 30 minutes relief per hour can continue in addition Provide adequate cool 10-15C water at least 1 cup every 20minutes.  Worker with symptoms should seek medical attention..
+        {% elif i.3 == "6" %} 
+             If feasible work with 45 minutes relief per hour can continue in addition Provide adequate cool 10-15C water at least 1 cup every 20minutes.  Worker with symptoms should seek medical attention..
+        {% elif i.3 == "7" %} 
+             only medically supervised work can continue.
+        {% endif %}
+ 
+            
+            
+        </font>
+        </center>
+    </center></td>
+    </tr>
+    {% endfor %}
+
+</table>
+
+<br><br><br>
+
+{% if request.session.temp_ack_button == 1 %}
+
+
+
+
+
+
+
+<button class="button_r" type="button" onclick="window.location.href = '{{request.session.local_toggle}}/temp_ack_taken';"><font size="3">
+    <b>&nbsp;&nbsp;&nbsp;&nbsp;Acknowledge action was taken &nbsp;&nbsp;&nbsp;&nbsp;</b></font></button>
+
+{% else %}<br><br>
+<font style="font-size: 25px; color:rgb(44, 241, 61); text-shadow: 1px 1px 2px black, 0 0 25px rgb(0, 0, 0), 0 0 5px rgb(255, 255, 255);">
+Alert has been acknowledged 
+</font>
+
+{% endif %}
+
+	</div>
+
+
+	
+	</div>
+	<br><br>
+	
+	
+	</body>
+	
+	</html>
