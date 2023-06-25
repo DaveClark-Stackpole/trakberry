@@ -312,9 +312,9 @@ def tech(request):
 	# cursor.execute("""CREATE TABLE IF NOT EXISTS quality_epv_checks(Id INT PRIMARY KEY AUTO_INCREMENT,date1 CHAR(80),shift1 CHAR(80), check1 Char(80), description1 Char(80), asset1 Char(80), master1 Char(80), comment Char(255), clock_num Char(80))""")
 	# cursor.execute("""CREATE TABLE IF NOT EXISTS quality_epv_week(Id INT PRIMARY KEY AUTO_INCREMENT,date1 CHAR(80),QC1 Char(255), OP1 Char(255), Check1 Char(255), Desc1 Char(255), Method1 Char(255), Asset Char(80), Person Char(100))""")
 	date_start = week_start_finder(request)
-	xql = "SELECT * FROM quality_epv_checks where (clock_num > '%s')" %(clock_len)
-	cursor.execute(xql)
-	xmp = cursor.fetchall()
+	# xql = "SELECT * FROM quality_epv_checks where (clock_num > '%s')" %(clock_len)
+	# cursor.execute(xql)
+	# xmp = cursor.fetchall()
 
 	aql = "SELECT COUNT(*) FROM quality_epv_checks where (date1 = '%s' and clock_num > '%s')" %(date_start,clock_len)
 	cursor.execute(aql)

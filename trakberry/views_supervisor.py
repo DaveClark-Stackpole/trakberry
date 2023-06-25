@@ -2411,6 +2411,111 @@ def tech_report_email():
 	db.close()
 	return
 
+def trainer_initialize(request):
+	request.session['trainer'] = ''
+	request.session['trainer_step'] = 1
+	request.session['trainer_jobs'] = ''
+	return trainer(request)
+
+# Display and edit Trainers list
+def trainer(request):
+	emp1 = request.session['trainer']
+	db, cur = db_set(request)  # Select list of Employees classified as Trainers
+
+		# Select Full list if nothing selected
+	sql = "SELECT DISTINCT(Employee) from tkb_trainer ORDER BY %s %s" %('Employee','ASC')
+	cur.execute(sql)
+	tmp = cur.fetchall()
+	ztmp=list(tmp)
+	a=[' ']
+	b=''
+	a.append(b)
+	a=tuple(a)
+	ztmp.append(a)
+	a=['** ADD NEW TRAINER **']
+	b=''
+	a.append(b)
+	a=tuple(a)
+	ztmp.append(a)
+
+	sql = "SELECT DISTINCT(Job) from tkb_allocation"
+	cur.execute(sql)
+	tmp = cur.fetchall()
+	request.session['jobs'] = tmp
+
+		
+		# *************************************
+	if request.session['trainer_step'] == 2:
+		emp1 = request.session['trainer'] 
+		sql = "SELECT Job,Id from tkb_trainer WHERE Employee='%s'" %(emp1)
+		cur.execute(sql)
+		tmp = cur.fetchall()
+		request.session['trainer_jobs'] = tmp
+
+	db.close()
+
+	if request.POST:
+		selection1 = request.POST.get("emp1")
+		selection2 = request.POST.get("job1")
+		selection3 = request.POST.get("delete1")
+		selection4 = request.POST.get("new1")
+
+		if selection4 is None:
+			dummy = 1
+		else:
+			db, cur = db_set(request)
+			job1 = ''
+			cur.execute('''INSERT INTO tkb_trainer(Employee,Job) VALUES(%s,%s)''', (selection4,job1))		
+			db.commit()
+			db.close()
+			request.session['trainer_step'] = 2
+			return render(request,'redirect_trainer.html')
+
+		if selection3 is None:
+			if request.session['trainer_step'] == 1 or request.session['trainer_step'] == 2:
+				if selection1 == '** ADD NEW TRAINER **':
+					db, cur = db_set(request)
+					request.session['trainer_step'] = 3
+					sql = "SELECT DISTINCT(Employee) from tkb_manpower ORDER BY %s %s" % ('Employee','ASC')
+					cur.execute(sql)
+					tmp = cur.fetchall()
+					request.session['trainer_employees'] = tmp
+					db.close()
+					return render(request,'redirect_trainer.html')
+
+				elif selection2 is None:
+					request.session['trainer'] = selection1
+					request.session['trainer_step'] = 2
+					return render(request,'redirect_trainer.html')
+				else:
+					emp1 = request.session['trainer']
+					job1 = selection2
+					db, cur = db_set(request)
+					cur.execute('''INSERT INTO tkb_trainer(Employee,Job) VALUES(%s,%s)''', (emp1,job1))		
+					db.commit()
+					db.close()
+					return render(request,'redirect_trainer.html')
+		else:
+			db, cur = db_set(request)
+			dql = ('DELETE FROM tkb_trainer WHERE Id = "%s"' % (selection3))
+			cur.execute(dql)
+			db.commit()
+			db.close()
+			return render(request,'redirect_trainer.html')
+
+	else:
+		form = sup_closeForm()
+	args = {}
+	args.update(csrf(request))
+	args['form'] = form
+
+
+	return render(request,'trainer.html',{'List':ztmp,'args':args})
+
+
+
+
+	
 def supervisor_schedule(request):
 	request.session['shift_schedule_area'] = ' Area 1'
 	request.session['shift_schedule'] = ' Area 1 Mid April 19,2023'
