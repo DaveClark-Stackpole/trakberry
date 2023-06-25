@@ -206,7 +206,7 @@ def temp_display(request):
 		message3 = ''
 		message3 = message3 + 'Heat Alert'
 		# toaddrs = ["dclark@stackpole.com"]
-		toaddrs = ["dclark@stackpole.com","amckinlay@stackpole.com","dave.godbout@johnsonelectric.com","andrew.smith@johnsonelectric.com","david.mclaren@johnsonelectric.com","egeorge@stackpole.com","gary.harvey@johnsonelectric.com","jpearce@stackpole.com","jskillings@stackpole.com","ken.frey@johnsonelectric.com","patrick.street@johnsonelectric.com","sbhardwaj@stackpole.com","sherman@stackpole.com","scott.brownlee@johnsonelectric.com"]
+		toaddrs = ["dclark@stackpole.com","amckinlay@stackpole.com","dgodbout@stackpole.com","asmith@stackpole.com","dmclaren@stackpole.com","egeorge@stackpole.com","gharvey@stackpole.com","jpearce@stackpole.com","jskillings@stackpole.com","kfrey@stackpole.com","pstreet@stackpole.com","sbhardwaj@stackpole.com","sherman@stackpole.com","sbrownlee@stackpole.com","pcurrie@stackpole.com","smcmahon@stackpole.com"]
 		fromaddr = 'stratford.reports@stackpole.com'
 		frname = 'Heat Alert'
 		server = SMTP('mesg06.stackpole.ca')
