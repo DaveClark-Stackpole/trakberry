@@ -38,7 +38,10 @@ def downtime_category_enter(request):
 	a='2023-06-01'
 	b='uncategorized'
 	c=''
+	d='2'
+	#wql="SELECT problem,idnumber,machinenum,category FROM pr_downtime1 where completedtime >'%s' and (category ='%s' OR category IS NULL or category='%s') and (LEFT(machinenum,1)='%s') ORDER BY %s %s" % (a,b,c,d,'completedtime','ASC')
 	wql="SELECT problem,idnumber,machinenum,category FROM pr_downtime1 where completedtime >'%s' and (category ='%s' OR category IS NULL or category='%s') ORDER BY %s %s" % (a,b,c,'completedtime','ASC')
+
 	cur.execute(wql)
 	wmp = cur.fetchall()
 	swmp = len(wmp)
@@ -68,38 +71,45 @@ def downtime_category_enter(request):
 def downtime_category(request):
 
 	# This will execute code
-	a='2023-07-04'
+	a='2023-06-01'
 	b='uncategorized'
 	c=''
-
+	d='2'
 	db, cur = db_set(request)
 
+	#sql="SELECT problem,idnumber,machinenum,completedtime,category FROM pr_downtime1 where completedtime >'%s' and (category ='%s' OR category IS NULL or category='%s') and (LEFT(machinenum,1)='%s') ORDER BY %s %s" % (a,b,c,d,'completedtime','ASC')
 	sql="SELECT problem,idnumber,machinenum,completedtime,category FROM pr_downtime1 where completedtime >'%s' and (category ='%s' OR category IS NULL or category='%s') ORDER BY %s %s" % (a,b,c,'completedtime','ASC')
+
 	cur.execute(sql)
 	tmp = cur.fetchall()
 
+	sql="SELECT * FROM tkb_downtime_categories ORDER BY %s %s, %s %s" % ('Category','ASC','Keyword','ASC')
+	cur.execute(sql)
+	ttmp = cur.fetchall()
+	request.session['downtime_category'] = ttmp
 
-	list2 = request.session['downtime_category']
+	list2 = ttmp
 	aa=[]
 	ctr = 0
+	uuu=0
 	for i in tmp:
 		a=[]
 		p='uncategorized'
 		xi = i[0].split(" ")
 		for j in xi:
 			key2 = j.lower()
-			cat2 = filter(lambda c:c[2]==key2,list2)
-			try:
-				p = cat2[0][1]
+			if len(key2)>1:
+				cat2 = filter(lambda c:c[2].strip()==key2.strip(),list2)
+				try:
+					p = cat2[0][1]
+					uuu=1
 
-			except:
-				dummy = 1
-
-
-
+				except:
+					dummy = 1
 
 		id5 = i[1]
 		st5 = p
+
 		a.append(id5)
 		a.append(st5)
 
@@ -107,7 +117,6 @@ def downtime_category(request):
 		ctr = ctr + 1
 
 
-		
 	y = len(aa)
 	request.session['Length_None'] = y
 	for i in aa:
