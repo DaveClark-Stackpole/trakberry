@@ -196,6 +196,13 @@ from views_manpower import trained_email
 from views_hr import hr,hr_login_form
 # ***********************************************************************************************************************************************************
 
+
+# *******************************************  Machinery ********************************************************************************************
+from views_machinery import downtime_category_enter
+from views_machinery import downtime_category
+# *
+
+
 urlpatterns = [
 	url(r'^admin/', include(admin.site.urls)),
 	
@@ -860,7 +867,9 @@ urlpatterns = [
 	
 
 	# **************************************************************************
-
+# *******************************************  Machinery ********************************************************************************************
+	url(r'^downtime_category_enter/', downtime_category_enter),
+    url(r'^downtime_category/', downtime_category),
 
 
 
