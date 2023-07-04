@@ -611,7 +611,7 @@ def supervisor_down(request):
 			priority = tmp3[0]
 		except:
 			priority = 999
-		if asset4[:2] == '27':
+		if asset4[:1] == '2':
 			priority = 1
 		if asset4 == '611':
 			priority = 1

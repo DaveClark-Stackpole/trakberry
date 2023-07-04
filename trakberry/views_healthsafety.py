@@ -144,7 +144,7 @@ def temp_display(request):
 		if humidex > 32 : level = 1
 		if humidex > 36 : level = 2
 		if humidex > 40 : level = 3
-		if humidex > 43 : level = 4
+		if humidex > 42 : level = 4
 		if humidex > 45: level = 5
 		if humidex > 47 : level = 6
 		if humidex > 50 : level = 7
@@ -161,6 +161,7 @@ def temp_display(request):
 	tmp=cur.fetchall()
 	
 	chng2 = []
+
 	for i in tmp4:
 		for ii in tmp:
 			if (i[2] == ii[2]) and (i[0] != ii[0]):
@@ -206,7 +207,7 @@ def temp_display(request):
 		message3 = ''
 		message3 = message3 + 'Heat Alert'
 		# toaddrs = ["dclark@stackpole.com"]
-		toaddrs = ["dclark@stackpole.com","amckinlay@stackpole.com","dgodbout@stackpole.com","asmith@stackpole.com","dmclaren@stackpole.com","egeorge@stackpole.com","gharvey@stackpole.com","jpearce@stackpole.com","jskillings@stackpole.com","kfrey@stackpole.com","pstreet@stackpole.com","sbhardwaj@stackpole.com","sherman@stackpole.com","sbrownlee@stackpole.com","pcurrie@stackpole.com","smcmahon@stackpole.com"]
+		toaddrs = ["dclark@stackpole.com","nkleingeltink@stackpole.com","amckinlay@stackpole.com","dgodbout@stackpole.com","asmith@stackpole.com","dmclaren@stackpole.com","egeorge@stackpole.com","gharvey@stackpole.com","jpearce@stackpole.com","jskillings@stackpole.com","kfrey@stackpole.com","pstreet@stackpole.com","sbhardwaj@stackpole.com","sherman@stackpole.com","sbrownlee@stackpole.com","pcurrie@stackpole.com","smcmahon@stackpole.com"]
 		fromaddr = 'stratford.reports@stackpole.com'
 		frname = 'Heat Alert'
 		server = SMTP('mesg06.stackpole.ca')

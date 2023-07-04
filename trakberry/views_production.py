@@ -5115,6 +5115,8 @@ def cell_track_9341_v2(request):
 				cnt2 = cnt / float(shift_time)
 				cnt3 = cnt2 * shift_left
 				cnt4 = cnt + cnt3
+				if i[0] == '1533':
+					cnt4 = cnt4 + 400
 			except:
 				cnt4 = 0
 			counts1[int(i[0])] = int(cnt4)
@@ -5440,7 +5442,7 @@ def cell_track_9341_history2(request):
 	return render(request,'cell_track_9341_date.html',{'t':t,'counts':counts1,'acolor1':acolor1,'op':op_total,'op_color':op_color})	
 
 def cell_track_9341(request):
-	return render(request,'cell_track_9341.html')	
+	#return render(request,'cell_track_9341.html')	
 
 	shift_start, shift_time, shift_left, shift_end = stamp_shift_start(request)	 # Get the Time Stamp info
 	machines1 = ['1504','1506','1519','1520','1502','1507','1501','1515','1508','1532','1509','1514','1510','1503','1511','1518','1521','1522','1523','1539','1540','1524','1525','1538','1541','1531','1527','1530','1528','1513','1533','1546','1547','1548','1549','594','1550','1552','751','1554']
@@ -5481,7 +5483,7 @@ def cell_track_9341(request):
 	cur.execute(sql)
 	tmpY=cur.fetchall()
 
-	fffff=3/0
+	#fffff=3/0
 
 
 
@@ -5633,7 +5635,7 @@ def cell_track_9341(request):
 	args.update(csrf(request))
 	args['form'] = form
 
-	total8_0455,op_total_0455, wip_zip_0455 = cell_track_0455(request)
+	#total8_0455,op_total_0455, wip_zip_0455 = cell_track_0455(request)
 
 	t = int(time.time())
 	request.session['runrate'] = 1128
@@ -5641,7 +5643,7 @@ def cell_track_9341(request):
 
 
 	r80 = int(total8[30][3])
-	r60= int(total8_0455[14][3])
+	#r60= int(total8_0455[14][3])
 
 	c80= "#bdb4b3"
 	c60= "#bdb4b3"
@@ -5652,14 +5654,16 @@ def cell_track_9341(request):
 	else:
 		c80 = "#FF7355"
 
-	if r60 > 899:
-		c60 = "#7FEB1E"
-	elif r60 > 699:
-		c60 = "#FFEB55"
-	else:
-		c60 = "#FF7355"
+	# if r60 > 899:
+	# 	c60 = "#7FEB1E"
+	# elif r60 > 699:
+	# 	c60 = "#FFEB55"
+	# else:
+	# 	c60 = "#FF7355"
 
-	return render(request,'cell_track_9341.html',{'t':t,'codes':total8,'op':op_total,'op_color':op_color,'codes_60':total8_0455,'op_60':op_total_0455,'wip_60':wip_zip_0455,'R80':c80,'R60':c60,'args':args})	
+	return render(request,'cell_track_9341.html',{'t':t,'codes':total8,'op':op_total,'op_color':op_color,'R80':c80,'args':args})	
+
+	#return render(request,'cell_track_9341.html',{'t':t,'codes':total8,'op':op_total,'op_color':op_color,'codes_60':total8_0455,'op_60':op_total_0455,'wip_60':wip_zip_0455,'R80':c80,'R60':c60,'args':args})	
 
 def cell_track_0455_archive(start1,end1,request):
 	shift_start, shift_time, shift_left, shift_end = stamp_shift_start(request)	 # Get the Time Stamp info
