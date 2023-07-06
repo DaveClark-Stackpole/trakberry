@@ -7395,3 +7395,115 @@ def live_update1(request):
 	time.sleep(1)
 	request.session['ctr1'] = ctr
 	return render(request, "test99.html",{'ctr':ctr})  
+
+
+def pareto_test(request):
+	db, cursor = db_set(request)
+	d1 = str(request.session['downtime_month'])
+	p1 = str(request.session['product_line'])
+	d2_1 = d1[:5]
+	d2_2 = d1[-2:]
+	d2_2 = str(int(d2_2) + 1)
+	if len(d2_2) < 2: d2_2 = '0' + d2_2
+	d2 = d2_1 + d2_2
+
+	aa = ['1504','1506','1518','1519','1520','1521','1522','1523','1502','1507','1539','1540','1515','1501','1524','1525','1508','1532','1538','1509','1513','1533','1503','1530','1511','1528']
+	aw = [8,8,8,8,8,8,8,8,5,5,5,5,5,5,5,5,4,4,4,3,2,1,2,2,2,2]
+
+	asset1=request.session['top_asset']
+	ccat = request.session['top_category']
+	
+
+	c1 = 'Hydraulic'
+	# sql = "SELECT * FROM Maintenance_Data where asset = '%s' and completedtime> '%s' and completedtime < '%s' and category = '%s'" %(asset1,d1,d2,c1)
+
+	if p1 == '10R80':
+		sql = "SELECT asset,problem,remedy,ROUND(ROUND(Downtime,0)/3600,2) AS Hrs ,category FROM vw_Maintenance_Data_10R80 where completedtime> '%s' and completedtime < '%s' and asset='%s' and category='%s' ORDER BY %s %s " %(d1,d2,asset1,ccat,'Downtime','DESC')
+		wql = "SELECT asset,category,sum(Downtime) FROM vw_Maintenance_Data_10R80 where completedtime> '%s' and completedtime < '%s' Group by asset,category" %(d1,d2)
+		request.session['downtime_title'] = 'Downtime 10R80 Pareto ' + d1
+	elif p1 == 'AB1V Inputs':
+		sql = "SELECT asset,problem,remedy,ROUND(ROUND(Downtime,0)/3600,2) AS Hrs ,category FROM vw_Maintenance_Data_AB1V_Inputs where completedtime> '%s' and completedtime < '%s' and asset='%s' and category='%s' ORDER BY %s %s " %(d1,d2,asset1,ccat,'Downtime','DESC')
+		wql = "SELECT asset,category,sum(Downtime) FROM vw_Maintenance_Data_AB1V_Inputs where completedtime> '%s' and completedtime < '%s' Group by asset,category" %(d1,d2)
+		request.session['downtime_title'] = 'Downtime AB1V Inputs Pareto ' + d1
+	elif p1 == 'AB1V Overdrives':
+		sql = "SELECT asset,problem,remedy,ROUND(ROUND(Downtime,0)/3600,2) AS Hrs ,category FROM vw_Maintenance_Data_AB1V_Overdrives where completedtime> '%s' and completedtime < '%s' and asset='%s' and category='%s' ORDER BY %s %s " %(d1,d2,asset1,ccat,'Downtime','DESC')
+		wql = "SELECT asset,category,sum(Downtime) FROM vw_Maintenance_Data_AB1V_Overdrives where completedtime> '%s' and completedtime < '%s' Group by asset,category" %(d1,d2)
+		request.session['downtime_title'] = 'Downtime AB1V Overdrives Pareto ' + d1
+	else: 
+		sql = "SELECT asset,problem,remedy,ROUND(ROUND(Downtime,0)/3600,2) AS Hrs ,category FROM vw_Maintenance_Data_AB1V_Reactions where completedtime> '%s' and completedtime < '%s' and asset='%s' and category='%s' ORDER BY %s %s " %(d1,d2,asset1,ccat,'Downtime','DESC')
+		wql = "SELECT asset,category,sum(Downtime) FROM vw_Maintenance_Data_AB1V_Reactions where completedtime> '%s' and completedtime < '%s' Group by asset,category" %(d1,d2)
+		request.session['downtime_title'] = 'Downtime AB1V Reactions Pareto ' + d1
+
+
+	cursor.execute(sql)
+	tmp = cursor.fetchall()	
+
+	cursor.execute(wql)
+	tmp2 = cursor.fetchall()
+
+	
+	tmp4=sorted(tmp2,key=lambda x:(x[2]),reverse=True)
+
+	asset1 = []
+	cat1 = []
+	time1 = []
+	link1 = []
+
+	ctr = 0
+	for i in tmp4:
+		asset1.append(i[0])
+		cat1.append(i[1])
+		
+		t1 = int(i[2])
+		t1 = t1 / float(60)
+		t1 = t1 / float(60)
+		time1.append(t1)
+		link1.append(i[0]+'*'+i[1])
+		ctr = ctr + 1
+		if ctr > 9: break
+	data2=zip(asset1,cat1,time1,link1)
+
+
+
+
+
+
+
+
+
+	db.close()
+
+	return render(request, "pareto_test.html",{'data1':tmp,'data2':data2})  
+
+def downtime_month_selection(request):
+	request.session['top_asset'] = ''
+	request.session['top_category'] = ''
+	if request.POST:
+		month = request.POST.get("start")
+		pline = request.POST.get("pline")
+		request.session['downtime_month'] = month
+		request.session['product_line'] = pline
+
+		return render(request, "redirect_pareto_test.html")
+
+
+	else:
+		form = sup_downForm()
+	args = {}
+	args.update(csrf(request))
+	args['form'] = form
+	return render(request,'downtime_month_selection.html',{'args':args})
+
+
+
+def downtime_category_selection(request,index):
+	a=index
+	f1 = a.find('*')
+	b1 = a[:f1]
+	f1 = (len(a)-f1-1)*-1
+	b2 = a[f1:]
+	request.session['top_asset'] = b1
+	request.session['top_category'] = b2
+
+
+	return render(request, "redirect_pareto_test.html") 
