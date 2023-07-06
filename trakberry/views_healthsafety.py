@@ -146,7 +146,7 @@ def temp_display(request):
 		if humidex > 40 : level = 3
 		if humidex > 42 : level = 4
 		if humidex > 45: level = 5
-		if humidex > 47 : level = 6
+		if humidex > 46 : level = 6
 		if humidex > 50 : level = 7
 		tt.append(level)
 		tt.append(humidex)

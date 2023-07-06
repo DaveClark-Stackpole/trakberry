@@ -97,6 +97,7 @@ from views_scheduler import schedule_set2b,schedule_set3,schedule_reset_data,sch
 from views_maintenance import maint_mgmt,maint, maint_call, maint_pass, maint_close, maint_logout, maint_job_history, maint_map, maint_call_call
 from views_maintenance import maint_mgmt_login_form, maintenance_edit, maintenance_close, maint_close_item, maint_job_entry, maint_mgmt_auto, maint_TV
 from views_maintenance import maint_init_call,maint_down_yes,maint_down_no,maint_job_close
+
 # ***********************************************************************************************************************************************************
 
 # *******************************************  Inventory Section ********************************************************************************************
@@ -150,6 +151,7 @@ from views_production import plus_0455,minus_0455,plus_9341,minus_9341,plus_3050
 from views_operations import gf6_reaction,gf6_input,gf6_reaction_prev,gf6_input_prev,prod_9341,prod_10R,prod_10R_prev, prod_728,prod_728fault,prod_728fault_prev
 from views_operations import test_email_7,prod_10R_initial, prod_ab1v, prod_ab1v_initial, prod_ab1v_prev, prod_ab1v_reaction, prod_ab1v_reaction_prev
 from views_operations import track_single, live_10R,live_update1,prod_counts1,prod_counts2,hourly_counts
+from views_operations import pareto_test,downtime_month_selection,downtime_category_selection
 
 
 
@@ -402,6 +404,7 @@ urlpatterns = [
 	url(r'^maint_job_entry/', maint_job_entry),
 	url(r'^maint_job_close/', maint_job_close),
 	url(r'^sup_pie_chart/', sup_pie_chart),
+    url(r'^pareto_test/', pareto_test),
 	
 	
 	# **************  Employee Section ***************************************
@@ -749,6 +752,9 @@ urlpatterns = [
 
 
 	url(r'^runrate_10R80/', runrate_10R80),
+    
+	url(r'^downtime_month_selection/', downtime_month_selection),
+    url(r'^downtime_category_selection/get/(?P<index>[\w|\W]+)', downtime_category_selection),
 
 
 
