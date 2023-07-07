@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Highcharts Basic line Chart</title>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            var chartitle= {
+                text: '{{request.session.pareto_history_title}}',
+                x: -20 //center
+            }
+            var chartsubtitle = {
+                text: '',
+                x: -20
+            }
+            var chartxaxis =  {
+                categories: ['Apr', 'May', 'Jun', 'Jul']
+            }
+            var chartyaxis = {
+                title: {
+                    text: 'Hrs Down'
+                },
+                plotLines: [{
+                    value: 0,
+                    width: 1,
+                    color: '#808080'
+                }]
+            }
+            var chartooltip =  {
+                valueSuffix: '°C'
+            }
+            var chartlegend= {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'middle',
+                borderWidth: 0
+            }
+            var chartseries=[{
+                name: '',
+
+                data: [{{data1.0}},{{data1.1}}, {{data1.2}}, {{data1.3}}]
+            
+            }]
+            $('#container').highcharts({
+                title: chartitle,
+                subtitle: chartsubtitle,
+                xAxis:chartxaxis,
+                yAxis: chartyaxis,
+                tooltip: chartooltip,
+                legend: chartlegend,
+                series: chartseries
+            });
+        });
+    </script>
+</head>
+<body>
+    <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+
+
+</body>
+</html>

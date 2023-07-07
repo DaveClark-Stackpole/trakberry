@@ -151,7 +151,7 @@ from views_production import plus_0455,minus_0455,plus_9341,minus_9341,plus_3050
 from views_operations import gf6_reaction,gf6_input,gf6_reaction_prev,gf6_input_prev,prod_9341,prod_10R,prod_10R_prev, prod_728,prod_728fault,prod_728fault_prev
 from views_operations import test_email_7,prod_10R_initial, prod_ab1v, prod_ab1v_initial, prod_ab1v_prev, prod_ab1v_reaction, prod_ab1v_reaction_prev
 from views_operations import track_single, live_10R,live_update1,prod_counts1,prod_counts2,hourly_counts
-from views_operations import pareto_test,downtime_month_selection,downtime_category_selection
+from views_operations import pareto_test,downtime_month_selection,downtime_category_selection,downtime_category_history
 
 
 
@@ -755,6 +755,7 @@ urlpatterns = [
     
 	url(r'^downtime_month_selection/', downtime_month_selection),
     url(r'^downtime_category_selection/get/(?P<index>[\w|\W]+)', downtime_category_selection),
+    url(r'^downtime_category_history/get/(?P<index>[\w|\W]+)', downtime_category_history),
 
 
 
