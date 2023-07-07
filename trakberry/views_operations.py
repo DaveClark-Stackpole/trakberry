@@ -7407,6 +7407,8 @@ def pareto_test(request):
 	if len(d2_2) < 2: d2_2 = '0' + d2_2
 	d2 = d2_1 + d2_2
 
+
+
 	aa = ['1504','1506','1518','1519','1520','1521','1522','1523','1502','1507','1539','1540','1515','1501','1524','1525','1508','1532','1538','1509','1513','1533','1503','1530','1511','1528']
 	aw = [8,8,8,8,8,8,8,8,5,5,5,5,5,5,5,5,4,4,4,3,2,1,2,2,2,2]
 
@@ -7418,20 +7420,20 @@ def pareto_test(request):
 	# sql = "SELECT * FROM Maintenance_Data where asset = '%s' and completedtime> '%s' and completedtime < '%s' and category = '%s'" %(asset1,d1,d2,c1)
 
 	if p1 == '10R80':
-		sql = "SELECT asset,problem,remedy,ROUND(ROUND(Downtime,0)/3600,2) AS Hrs ,category FROM vw_Maintenance_Data_10R80 where completedtime> '%s' and completedtime < '%s' and asset='%s' and category='%s' ORDER BY %s %s " %(d1,d2,asset1,ccat,'Downtime','DESC')
-		wql = "SELECT asset,category,sum(Downtime) FROM vw_Maintenance_Data_10R80 where completedtime> '%s' and completedtime < '%s' Group by asset,category" %(d1,d2)
+		sql = "SELECT asset,problem,remedy,(ROUND(ROUND(Downtime,0)/3600,2))/asset_duplicates AS Hrs ,category FROM vw_Maintenance_Data_10R80 where completedtime> '%s' and completedtime < '%s' and asset='%s' and category='%s' ORDER BY %s %s " %(d1,d2,asset1,ccat,'Downtime','DESC')
+		wql = "SELECT asset,category,sum(Downtime)/asset_duplicates FROM vw_Maintenance_Data_10R80 where completedtime> '%s' and completedtime < '%s' Group by asset,category" %(d1,d2)
 		request.session['downtime_title'] = 'Downtime 10R80 Pareto ' + d1
 	elif p1 == 'AB1V Inputs':
-		sql = "SELECT asset,problem,remedy,ROUND(ROUND(Downtime,0)/3600,2) AS Hrs ,category FROM vw_Maintenance_Data_AB1V_Inputs where completedtime> '%s' and completedtime < '%s' and asset='%s' and category='%s' ORDER BY %s %s " %(d1,d2,asset1,ccat,'Downtime','DESC')
-		wql = "SELECT asset,category,sum(Downtime) FROM vw_Maintenance_Data_AB1V_Inputs where completedtime> '%s' and completedtime < '%s' Group by asset,category" %(d1,d2)
+		sql = "SELECT asset,problem,remedy,(ROUND(ROUND(Downtime,0)/3600,2))/asset_duplicates AS Hrs ,category FROM vw_Maintenance_Data_AB1V_Inputs where completedtime> '%s' and completedtime < '%s' and asset='%s' and category='%s' ORDER BY %s %s " %(d1,d2,asset1,ccat,'Downtime','DESC')
+		wql = "SELECT asset,category,sum(Downtime)/asset_duplicates FROM vw_Maintenance_Data_AB1V_Inputs where completedtime> '%s' and completedtime < '%s' Group by asset,category" %(d1,d2)
 		request.session['downtime_title'] = 'Downtime AB1V Inputs Pareto ' + d1
 	elif p1 == 'AB1V Overdrives':
-		sql = "SELECT asset,problem,remedy,ROUND(ROUND(Downtime,0)/3600,2) AS Hrs ,category FROM vw_Maintenance_Data_AB1V_Overdrives where completedtime> '%s' and completedtime < '%s' and asset='%s' and category='%s' ORDER BY %s %s " %(d1,d2,asset1,ccat,'Downtime','DESC')
-		wql = "SELECT asset,category,sum(Downtime) FROM vw_Maintenance_Data_AB1V_Overdrives where completedtime> '%s' and completedtime < '%s' Group by asset,category" %(d1,d2)
+		sql = "SELECT asset,problem,remedy,(ROUND(ROUND(Downtime,0)/3600,2))/asset_duplicates AS Hrs ,category FROM vw_Maintenance_Data_AB1V_Overdrives where completedtime> '%s' and completedtime < '%s' and asset='%s' and category='%s' ORDER BY %s %s " %(d1,d2,asset1,ccat,'Downtime','DESC')
+		wql = "SELECT asset,category,sum(Downtime)/asset_duplicates FROM vw_Maintenance_Data_AB1V_Overdrives where completedtime> '%s' and completedtime < '%s' Group by asset,category" %(d1,d2)
 		request.session['downtime_title'] = 'Downtime AB1V Overdrives Pareto ' + d1
 	else: 
-		sql = "SELECT asset,problem,remedy,ROUND(ROUND(Downtime,0)/3600,2) AS Hrs ,category FROM vw_Maintenance_Data_AB1V_Reactions where completedtime> '%s' and completedtime < '%s' and asset='%s' and category='%s' ORDER BY %s %s " %(d1,d2,asset1,ccat,'Downtime','DESC')
-		wql = "SELECT asset,category,sum(Downtime) FROM vw_Maintenance_Data_AB1V_Reactions where completedtime> '%s' and completedtime < '%s' Group by asset,category" %(d1,d2)
+		sql = "SELECT asset,problem,remedy,(ROUND(ROUND(Downtime,0)/3600,2))/asset_duplicates AS Hrs ,category FROM vw_Maintenance_Data_AB1V_Reactions where completedtime> '%s' and completedtime < '%s' and asset='%s' and category='%s' ORDER BY %s %s " %(d1,d2,asset1,ccat,'Downtime','DESC')
+		wql = "SELECT asset,category,sum(Downtime)/asset_duplicates FROM vw_Maintenance_Data_AB1V_Reactions where completedtime> '%s' and completedtime < '%s' Group by asset,category" %(d1,d2)
 		request.session['downtime_title'] = 'Downtime AB1V Reactions Pareto ' + d1
 
 
@@ -7441,7 +7443,7 @@ def pareto_test(request):
 	cursor.execute(wql)
 	tmp2 = cursor.fetchall()
 
-	
+
 	tmp4=sorted(tmp2,key=lambda x:(x[2]),reverse=True)
 
 	asset1 = []
@@ -7462,13 +7464,6 @@ def pareto_test(request):
 		ctr = ctr + 1
 		if ctr > 9: break
 	data2=zip(asset1,cat1,time1,link1)
-
-
-
-
-
-
-
 
 
 	db.close()
@@ -7507,3 +7502,85 @@ def downtime_category_selection(request,index):
 
 
 	return render(request, "redirect_pareto_test.html") 
+
+def downtime_category_history(request,index):
+
+
+
+	a=index
+	f1 = a.find('*')
+	b1 = str(a[:f1])
+	f1 = (len(a)-f1-1)*-1
+	b2 = str(a[f1:])
+	request.session['top_asset'] = b1
+	request.session['top_category'] = b2
+	request.session['pareto_history_title'] = b1 + ' ' + b2
+
+	dd = ['2023-04','2023-05','2023-06','2023-07']
+	data1 =[]
+	a=[]
+	db, cursor = db_set(request)
+	for i in dd:
+		d1 = i
+		d2_1 = d1[:5]
+		d2_2 = d1[-2:]
+		d2_2 = str(int(d2_2) + 1)
+		if len(d2_2) < 2: d2_2 = '0' + d2_2
+		d2 = d2_1 + d2_2
+
+		
+		sql = "SELECT sum(Downtime) FROM vw_Maintenance_Data_10R80 where asset = '%s' and category = '%s' and completedtime > '%s' and completedtime < '%s'" %(b1,b2,d1,d2)
+		cursor.execute(sql)
+		tmp4 = cursor.fetchall()	
+
+		sql = "SELECT sum(Downtime) FROM vw_Maintenance_Data_AB1V_Overdrives where asset = '%s' and category = '%s' and completedtime > '%s' and completedtime < '%s'" %(b1,b2,d1,d2)
+		cursor.execute(sql)
+		tmp1 = cursor.fetchall()	
+
+		sql = "SELECT sum(Downtime) FROM vw_Maintenance_Data_AB1V_Inputs where asset = '%s' and category = '%s' and completedtime > '%s' and completedtime < '%s'" %(b1,b2,d1,d2)
+		cursor.execute(sql)
+		tmp2 = cursor.fetchall()	
+
+		sql = "SELECT sum(Downtime) FROM vw_Maintenance_Data_AB1V_Reactions where asset = '%s' and category = '%s' and completedtime > '%s' and completedtime < '%s'" %(b1,b2,d1,d2)
+		cursor.execute(sql)
+		tmp3 = cursor.fetchall()	
+
+
+		
+		q1 = tmp4[0][0]
+		q2 = tmp3[0][0]
+		q3 = tmp2[0][0]
+		q4 = tmp1[0][0]
+
+		if q1 == None: q1 = 0
+		if q2 == None: q2 = 0
+		if q3 == None: q3 = 0
+		if q4 == None: q4 = 0
+
+		q5=q1+q2+q3+q4
+	
+
+
+
+
+
+		data1.append(q5)
+	
+
+
+	# for i in data1:
+	# 	try:
+	# 		x=int(i[0])
+	# 	except:
+	# 		x=0
+	# 	a.append(x)
+
+
+
+
+
+
+	
+
+
+	return render(request, "pareto_history.html",{'data1':data1}) 
