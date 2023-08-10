@@ -2015,7 +2015,7 @@ def ab1v_8670_659(request):
 	color2 = '#E1C394'  # Color for line 2
 	return
 
-def ab1v_8670_2(request):
+def ab1v_8670(request):
 	prt7 = '50-8670'
 	db, cur = db_set(request) 
 	try:
@@ -2026,18 +2026,19 @@ def ab1v_8670_2(request):
 		tmp = cur.fetchall()
 		goal = int(tmp[0][2])
 	except:
-		goal = 32970
-	db.close()
+		goal = 7000
 	# ******************  Below data entered for each part  ******************************
 	color1 = '#96dbf8'  # Color for line 1
 	color2 = '#82BED7'  # Color for line 2
-	asset = ['1714']
+	asset = ['1750']
 	part  = ['50-8670']
-	asset1 = '1714'
-	asset2 = '1714'
+	asset1 = '1750'
+	asset2 = '1724'
+	asset3 = '1725'
 	if request.session['prev_10r'] == 0:
-		asset1 = '1714'
-		asset2 = '1714'
+		asset1 = '1750'
+		asset2 = '1724'
+		asset3 = '1725'
 
 	operation = [10]
 	# ************************************************************************************
@@ -2064,14 +2065,16 @@ def ab1v_8670_2(request):
 
 	total = zip(asset,part,operation)
 	asset_tuple = tuple(asset)
-	partno1 = '50-5401'
+	partno1 = '50-8670'
 	week_start = request.session['week_start7']
-	week_end = request.session['week_end7'] + 172800
+	week_end = request.session['week_end7']
 	t = request.session['t']
 	week_time_todate = t - week_start
 
-	
+	request.session['WL'] = 604800
 	goal_todate = int((goal / float(request.session['WL'])) * week_time_todate)  # Current Goal to date
+
+	wll = request.session['WL']
 
 	if goal_todate > goal: goal_todate = goal
 	if request.session['WL'] == 77: goal_todate = goal
@@ -2081,39 +2084,22 @@ def ab1v_8670_2(request):
 		stamp1 = week_start + (86400 * i)
 		pdate1 = stamp_pdate(stamp1)
 		pdate_week.append(pdate1) # This is the tuple of days in the week to cycle through
-
-
-	
 	# Select all reactions in asset list for date range
-	db, cur = db_set_3(request) 
-	sql = "SELECT * FROM vw_laser_scan WHERE part_number='%s' and ts >= '%s' and ts <= '%s' ORDER BY  %s %s" %(prt7,week_start,week_end,'ts','ASC')
-	# sql = "SELECT * FROM GFxPRoduction WHERE Part='%s' and TimeStamp >= '%s' and TimeStamp <= '%s' and (Machine = '%s' OR Machine ='%s') ORDER BY  %s %s" %(prt7,week_start,week_end,asset1,asset2,'TimeStamp','ASC')
+	sql = "SELECT * FROM GFxPRoduction WHERE TimeStamp >= '%s' and TimeStamp <= '%s' and (Machine = '%s' OR Machine ='%s' OR Machine ='%s') and Part = '%s' ORDER BY  %s %s" % (week_start,week_end,asset1,asset2,asset3,partno1,'TimeStamp','ASC')
 	cur.execute(sql)
 	tmp = cur.fetchall()
-
-	sql = "SELECT COUNT(*) FROM vw_laser_scan WHERE part_number='%s' and ts >= '%s' and ts <= '%s' ORDER BY  %s %s" %(prt7,week_start,week_end,'ts','ASC')
-	cur.execute(sql)
-	tmp4 = cur.fetchall()
-
-
-
-	
-	db.close()
 	t1 = []
 	t2 = []
-	
 	for i in tmp:
 		t1=[]
-		t1.append(i[1])
-		t1.append(str(i[2]))
+		t1.append(i[0])
+		t1.append(str(i[1]))
+		t1.append(i[2])
 		t1.append(i[3])
-		# t1.append(i[3])
-		# t1.append(i[4])
+		t1.append(i[4])
 		t2.append(t1)
 	tot2 = []
 	tot3 = []
-
-
 	for i in asset:
 		op4 = filter(lambda c:c[0]==i,operation_totals)
 		op5 = op4[0][1]  # Current operation
@@ -2130,25 +2116,18 @@ def ab1v_8670_2(request):
 				tot.append(i)
 				tot.append(j)
 				tot.append(k)
-				a3 = filter(lambda c:c[2]>st and c[2]<fi,t2)  
+				a3 = filter(lambda c:c[4]>st and c[4]<fi,t2)  
 				sum1 = len(a3)
 
 				a33 = sum1
 				op[op5] = op[op5] + sum1
-
 				tot.append(a33)
-
-
 				tot2.append(tot)
 				# if ctr > 2:
 				# 	r=3/0
 				st = st + 28800
-
 		tot3.append(tot2)
-
-
 	color_used = color2
-
 	for i in operation_totals:
 		i.append(op[i[1]])
 		if i[2] != 0:
@@ -2162,15 +2141,18 @@ def ab1v_8670_2(request):
 			a3 = filter(lambda c:c[0]==ii[0],operation_totals)  
 			a4=a3[0][4]
 			ii.append(a4)
+	count1 = int(a3[0][3])
+	week_time = 604800
+	pred1 = (count1 / float(week_time_todate))*week_time
+	goal_todate = int((goal / float(request.session['WL'])) * week_time_todate)  # Current Goal to date
 	request.session['totals_8670'] = tot3
 	request.session['shift_8670'] = shift2  #Need 
 	request.session['pdate_8670'] = pdate_week  #Need
 	request.session['op_totals_8670'] = op
 	request.session['op_span_8670'] = operation_totals
-	request.session['goal_8670'] = goal_todate
+	request.session['goal_8670'] = int(pred1)
 	inv_change =  int(operation_totals[0][3]) - int(goal_todate)
 	request.session['inv_change_8670'] = inv_change
-	request.session['final_count_8670'] = tmp4[0][0]
 	return 
 
 def ab1v_5401(request):
@@ -2184,18 +2166,160 @@ def ab1v_5401(request):
 		tmp = cur.fetchall()
 		goal = int(tmp[0][2])
 	except:
-		goal = 32970
-	db.close()
+		goal = 7000
 	# ******************  Below data entered for each part  ******************************
 	color1 = '#96dbf8'  # Color for line 1
 	color2 = '#82BED7'  # Color for line 2
-	asset = ['1714']
+	asset = ['1750']
 	part  = ['50-5401']
-	asset1 = '1714'
-	asset2 = '1714'
+	asset1 = '1750'
+	asset2 = '1724'
+	asset3 = '1725'
 	if request.session['prev_10r'] == 0:
-		asset1 = '1714'
-		asset2 = '1714'
+		asset1 = '1750'
+		asset2 = '1724'
+		asset3 = '1725'
+
+	operation = [10]
+	# ************************************************************************************
+	shift = ['11pm-7am','7am-3pm','3pm-11pm']
+	shift2 = ['Mid','Day','Aft']
+	pdate_week = []
+	op = [0 for x in range(50)]	
+	ctr_operation = []
+	for i in operation:
+		ctr = 0
+		for ii in operation:
+			if i == ii: ctr = ctr + 1
+		ctr_operation.append(ctr)
+	operation_totals = zip(asset,operation,ctr_operation)
+	b1 = zip(*operation_totals)  # Unzip elements
+	b2 = [list(z) for z in zip(b1[0],b1[1],b1[2]) ]  # Rebuilt list so it's list of list
+	x = 0
+	for i in b2:
+		x = x + 1
+		for c in range(x,len(b2)):
+			if i[1] == b2[c][1]:
+				b2[c][2] = 0
+	operation_totals = b2
+
+	total = zip(asset,part,operation)
+	asset_tuple = tuple(asset)
+	partno1 = '50-5401'
+	week_start = request.session['week_start7'] 
+	week_end = request.session['week_end7']
+	t = request.session['t']
+	week_time_todate = t - week_start
+
+	request.session['WL'] = 604800
+	goal_todate = int((goal / float(request.session['WL'])) * week_time_todate)  # Current Goal to date
+
+	wll = request.session['WL']
+
+	if goal_todate > goal: goal_todate = goal
+	if request.session['WL'] == 77: goal_todate = goal
+	pdate_start = stamp_pdate(week_start)
+	pdate_week.append(pdate_start)
+	for i in range(1,7):
+		stamp1 = week_start + (86400 * i)
+		pdate1 = stamp_pdate(stamp1)
+		pdate_week.append(pdate1) # This is the tuple of days in the week to cycle through
+	# Select all reactions in asset list for date range
+	sql = "SELECT * FROM GFxPRoduction WHERE TimeStamp >= '%s' and TimeStamp <= '%s' and (Machine = '%s' OR Machine ='%s' OR Machine ='%s') and Part = '%s' ORDER BY  %s %s" % (week_start,week_end,asset1,asset2,asset3,partno1,'TimeStamp','ASC')
+	cur.execute(sql)
+	tmp = cur.fetchall()
+	t1 = []
+	t2 = []
+	for i in tmp:
+		t1=[]
+		t1.append(i[0])
+		t1.append(str(i[1]))
+		t1.append(i[2])
+		t1.append(i[3])
+		t1.append(i[4])
+		t2.append(t1)
+	tot2 = []
+	tot3 = []
+	for i in asset:
+		op4 = filter(lambda c:c[0]==i,operation_totals)
+		op5 = op4[0][1]  # Current operation
+		tot2 =[]
+
+		st = week_start
+		ctr = 0
+
+		for j in pdate_week:
+			for k in shift:
+				ctr = ctr + 1
+				fi = st + 28800
+				tot =[]
+				tot.append(i)
+				tot.append(j)
+				tot.append(k)
+				a3 = filter(lambda c:c[4]>st and c[4]<fi,t2)  
+				sum1 = len(a3)
+
+				a33 = sum1
+				op[op5] = op[op5] + sum1
+				tot.append(a33)
+				tot2.append(tot)
+				# if ctr > 2:
+				# 	r=3/0
+				st = st + 28800
+		tot3.append(tot2)
+	color_used = color2
+	for i in operation_totals:
+		i.append(op[i[1]])
+		if i[2] != 0:
+			if color_used == color2 :
+				color_used = color1
+			else:
+				color_used = color2
+		i.append(color_used)
+	for i in tot3:
+		for ii in i:
+			a3 = filter(lambda c:c[0]==ii[0],operation_totals)  
+			a4=a3[0][4]
+			ii.append(a4)
+	count1 = int(a3[0][3])
+	week_time = 604800
+	pred1 = (count1 / float(week_time_todate))*week_time
+	goal_todate = int((goal / float(request.session['WL'])) * week_time_todate)  # Current Goal to date
+	request.session['totals_5401'] = tot3
+	request.session['shift_5401'] = shift2  #Need 
+	request.session['pdate_5401'] = pdate_week  #Need
+	request.session['op_totals_5401'] = op
+	request.session['op_span_5401'] = operation_totals
+	request.session['goal_5401'] = int(pred1)
+	inv_change =  int(operation_totals[0][3]) - int(goal_todate)
+	request.session['inv_change_5401'] = inv_change
+	return 
+
+def ab1v_5401_old2(request):
+	prt7 = '50-5401'
+	db, cur = db_set(request) 
+	try:
+		st1 = request.session['week_start7']
+		fi1 = request.session['week_end7']
+		sql = "SELECT * FROM tkb_weekly_goals WHERE part = '%s' and timeStamp >= '%s' and timeStamp <= '%s'" %(prt7,st1,fi1)
+		cur.execute(sql)
+		tmp = cur.fetchall()
+		goal = int(tmp[0][2])
+	except:
+		goal = 32970
+	#db.close()
+	# ******************  Below data entered for each part  ******************************
+	color1 = '#96dbf8'  # Color for line 1
+	color2 = '#82BED7'  # Color for line 2
+	asset = ['1750']
+	part  = ['50-5401']
+	asset1 = '1724'
+	asset2 = '1725'
+	asset3 = '1750'
+	if request.session['prev_10r'] == 0:
+		asset1 = '1724'
+		asset2 = '1725'
+		asset3 = '1750'
 
 	operation = [10]
 	# ************************************************************************************
@@ -2243,9 +2367,11 @@ def ab1v_5401(request):
 
 	
 	# Select all reactions in asset list for date range
-	db, cur = db_set_3(request) 
-	sql = "SELECT * FROM vw_laser_scan WHERE part_number='%s' and ts >= '%s' and ts <= '%s' ORDER BY  %s %s" %(prt7,week_start,week_end,'ts','ASC')
-	# sql = "SELECT * FROM GFxPRoduction WHERE Part='%s' and TimeStamp >= '%s' and TimeStamp <= '%s' and (Machine = '%s' OR Machine ='%s') ORDER BY  %s %s" %(prt7,week_start,week_end,asset1,asset2,'TimeStamp','ASC')
+	#db, cur = db_set(request) 
+	# sql = "SELECT * FROM vw_laser_scan WHERE part_number='%s' and ts >= '%s' and ts <= '%s' ORDER BY  %s %s" %(prt7,week_start,week_end,'ts','ASC')
+	#sql = "SELECT * FROM GFxPRoduction WHERE Part='%s' and TimeStamp >= '%s' and TimeStamp <= '%s' and (Machine = '%s' OR Machine ='%s' OR Machine ='%s') ORDER BY  %s %s" %(prt7,week_start,week_end,asset1,asset2,asset3,'TimeStamp','ASC')
+	sql = "SELECT * FROM GFxPRoduction WHERE TimeStamp >= '%s' and TimeStamp <= '%s' and Machine = '%s' and Part = '%s'" %(week_start,week_end,asset[0],part[0])
+
 	cur.execute(sql)
 	tmp = cur.fetchall()
 	db.close()
@@ -2333,18 +2459,19 @@ def ab1v_5404(request):
 		tmp = cur.fetchall()
 		goal = int(tmp[0][2])
 	except:
-		goal = 32970
-	db.close()
+		goal = 7000
 	# ******************  Below data entered for each part  ******************************
 	color1 = '#96dbf8'  # Color for line 1
 	color2 = '#82BED7'  # Color for line 2
-	asset = ['1714']
+	asset = ['1750']
 	part  = ['50-5404']
-	asset1 = '1714'
-	asset2 = '1714'
+	asset1 = '1750'
+	asset2 = '1724'
+	asset3 = '1725'
 	if request.session['prev_10r'] == 0:
-		asset1 = '1714'
-		asset2 = '1714'
+		asset1 = '1750'
+		asset2 = '1724'
+		asset3 = '1725'
 
 	operation = [10]
 	# ************************************************************************************
@@ -2371,14 +2498,16 @@ def ab1v_5404(request):
 
 	total = zip(asset,part,operation)
 	asset_tuple = tuple(asset)
-	partno1 = '50-5401'
+	partno1 = '50-5404'
 	week_start = request.session['week_start7']
-	week_end = request.session['week_end7'] + 172800
+	week_end = request.session['week_end7']
 	t = request.session['t']
 	week_time_todate = t - week_start
 
-	
+	request.session['WL'] = 604800
 	goal_todate = int((goal / float(request.session['WL'])) * week_time_todate)  # Current Goal to date
+
+	wll = request.session['WL']
 
 	if goal_todate > goal: goal_todate = goal
 	if request.session['WL'] == 77: goal_todate = goal
@@ -2388,31 +2517,22 @@ def ab1v_5404(request):
 		stamp1 = week_start + (86400 * i)
 		pdate1 = stamp_pdate(stamp1)
 		pdate_week.append(pdate1) # This is the tuple of days in the week to cycle through
-
-
-	
 	# Select all reactions in asset list for date range
-	db, cur = db_set_3(request) 
-	sql = "SELECT * FROM vw_laser_scan WHERE part_number='%s' and ts >= '%s' and ts <= '%s' ORDER BY  %s %s" %(prt7,week_start,week_end,'ts','ASC')
-	# sql = "SELECT * FROM GFxPRoduction WHERE Part='%s' and TimeStamp >= '%s' and TimeStamp <= '%s' and (Machine = '%s' OR Machine ='%s') ORDER BY  %s %s" %(prt7,week_start,week_end,asset1,asset2,'TimeStamp','ASC')
+	sql = "SELECT * FROM GFxPRoduction WHERE TimeStamp >= '%s' and TimeStamp <= '%s' and (Machine = '%s' OR Machine ='%s' OR Machine ='%s') and Part = '%s' ORDER BY  %s %s" % (week_start,week_end,asset1,asset2,asset3,partno1,'TimeStamp','ASC')
 	cur.execute(sql)
 	tmp = cur.fetchall()
-	db.close()
 	t1 = []
 	t2 = []
-	
 	for i in tmp:
 		t1=[]
-		t1.append(i[1])
-		t1.append(str(i[2]))
+		t1.append(i[0])
+		t1.append(str(i[1]))
+		t1.append(i[2])
 		t1.append(i[3])
-		# t1.append(i[3])
-		# t1.append(i[4])
+		t1.append(i[4])
 		t2.append(t1)
 	tot2 = []
 	tot3 = []
-
-
 	for i in asset:
 		op4 = filter(lambda c:c[0]==i,operation_totals)
 		op5 = op4[0][1]  # Current operation
@@ -2429,25 +2549,18 @@ def ab1v_5404(request):
 				tot.append(i)
 				tot.append(j)
 				tot.append(k)
-				a3 = filter(lambda c:c[2]>st and c[2]<fi,t2)  
+				a3 = filter(lambda c:c[4]>st and c[4]<fi,t2)  
 				sum1 = len(a3)
 
 				a33 = sum1
 				op[op5] = op[op5] + sum1
-
 				tot.append(a33)
-
-
 				tot2.append(tot)
 				# if ctr > 2:
 				# 	r=3/0
 				st = st + 28800
-
 		tot3.append(tot2)
-
-
 	color_used = color2
-
 	for i in operation_totals:
 		i.append(op[i[1]])
 		if i[2] != 0:
@@ -2461,12 +2574,16 @@ def ab1v_5404(request):
 			a3 = filter(lambda c:c[0]==ii[0],operation_totals)  
 			a4=a3[0][4]
 			ii.append(a4)
+	count1 = int(a3[0][3])
+	week_time = 604800
+	pred1 = (count1 / float(week_time_todate))*week_time
+	goal_todate = int((goal / float(request.session['WL'])) * week_time_todate)  # Current Goal to date
 	request.session['totals_5404'] = tot3
 	request.session['shift_5404'] = shift2  #Need 
 	request.session['pdate_5404'] = pdate_week  #Need
 	request.session['op_totals_5404'] = op
 	request.session['op_span_5404'] = operation_totals
-	request.session['goal_5404'] = goal_todate
+	request.session['goal_5404'] = int(pred1)
 	inv_change =  int(operation_totals[0][3]) - int(goal_todate)
 	request.session['inv_change_5404'] = inv_change
 	return 
@@ -2483,18 +2600,19 @@ def ab1v_0450(request):
 		tmp = cur.fetchall()
 		goal = int(tmp[0][2])
 	except:
-		goal = 2400
-	db.close()
+		goal = 7000
 	# ******************  Below data entered for each part  ******************************
 	color1 = '#96dbf8'  # Color for line 1
 	color2 = '#82BED7'  # Color for line 2
-	asset = ['1714']
-	part  = ['50-8670']
-	asset1 = '1714'
-	asset2 = '1714'
+	asset = ['1750']
+	part  = ['50-0450']
+	asset1 = '1750'
+	asset2 = '1724'
+	asset3 = '1725'
 	if request.session['prev_10r'] == 0:
-		asset1 = '1714'
-		asset2 = '1714'
+		asset1 = '1750'
+		asset2 = '1724'
+		asset3 = '1725'
 
 	operation = [10]
 	# ************************************************************************************
@@ -2521,14 +2639,16 @@ def ab1v_0450(request):
 
 	total = zip(asset,part,operation)
 	asset_tuple = tuple(asset)
-	partno1 = '50-5401'
+	partno1 = '50-0450'
 	week_start = request.session['week_start7']
-	week_end = request.session['week_end7'] + 172800
+	week_end = request.session['week_end7']
 	t = request.session['t']
 	week_time_todate = t - week_start
 
-	
+	request.session['WL'] = 604800
 	goal_todate = int((goal / float(request.session['WL'])) * week_time_todate)  # Current Goal to date
+
+	wll = request.session['WL']
 
 	if goal_todate > goal: goal_todate = goal
 	if request.session['WL'] == 77: goal_todate = goal
@@ -2538,31 +2658,22 @@ def ab1v_0450(request):
 		stamp1 = week_start + (86400 * i)
 		pdate1 = stamp_pdate(stamp1)
 		pdate_week.append(pdate1) # This is the tuple of days in the week to cycle through
-
-
-	
 	# Select all reactions in asset list for date range
-	db, cur = db_set_3(request) 
-	sql = "SELECT * FROM vw_laser_scan WHERE part_number='%s' and ts >= '%s' and ts <= '%s' ORDER BY  %s %s" %(prt7,week_start,week_end,'ts','ASC')
-	# sql = "SELECT * FROM GFxPRoduction WHERE Part='%s' and TimeStamp >= '%s' and TimeStamp <= '%s' and (Machine = '%s' OR Machine ='%s') ORDER BY  %s %s" %(prt7,week_start,week_end,asset1,asset2,'TimeStamp','ASC')
+	sql = "SELECT * FROM GFxPRoduction WHERE TimeStamp >= '%s' and TimeStamp <= '%s' and (Machine = '%s' OR Machine ='%s' OR Machine ='%s') and Part = '%s' ORDER BY  %s %s" % (week_start,week_end,asset1,asset2,asset3,partno1,'TimeStamp','ASC')
 	cur.execute(sql)
 	tmp = cur.fetchall()
-	db.close()
 	t1 = []
 	t2 = []
-	
 	for i in tmp:
 		t1=[]
-		t1.append(i[1])
-		t1.append(str(i[2]))
+		t1.append(i[0])
+		t1.append(str(i[1]))
+		t1.append(i[2])
 		t1.append(i[3])
-		# t1.append(i[3])
-		# t1.append(i[4])
+		t1.append(i[4])
 		t2.append(t1)
 	tot2 = []
 	tot3 = []
-
-
 	for i in asset:
 		op4 = filter(lambda c:c[0]==i,operation_totals)
 		op5 = op4[0][1]  # Current operation
@@ -2579,25 +2690,18 @@ def ab1v_0450(request):
 				tot.append(i)
 				tot.append(j)
 				tot.append(k)
-				a3 = filter(lambda c:c[2]>st and c[2]<fi,t2)  
+				a3 = filter(lambda c:c[4]>st and c[4]<fi,t2)  
 				sum1 = len(a3)
 
 				a33 = sum1
 				op[op5] = op[op5] + sum1
-
 				tot.append(a33)
-
-
 				tot2.append(tot)
 				# if ctr > 2:
 				# 	r=3/0
 				st = st + 28800
-
 		tot3.append(tot2)
-
-
 	color_used = color2
-
 	for i in operation_totals:
 		i.append(op[i[1]])
 		if i[2] != 0:
@@ -2611,12 +2715,16 @@ def ab1v_0450(request):
 			a3 = filter(lambda c:c[0]==ii[0],operation_totals)  
 			a4=a3[0][4]
 			ii.append(a4)
+	count1 = int(a3[0][3])
+	week_time = 604800
+	pred1 = (count1 / float(week_time_todate))*week_time
+	goal_todate = int((goal / float(request.session['WL'])) * week_time_todate)  # Current Goal to date
 	request.session['totals_0450'] = tot3
 	request.session['shift_0450'] = shift2  #Need 
 	request.session['pdate_0450'] = pdate_week  #Need
 	request.session['op_totals_0450'] = op
 	request.session['op_span_0450'] = operation_totals
-	request.session['goal_0450'] = goal_todate
+	request.session['goal_0450'] = int(pred1)
 	inv_change =  int(operation_totals[0][3]) - int(goal_todate)
 	request.session['inv_change_0450'] = inv_change
 	return 
@@ -2632,18 +2740,19 @@ def ab1v_0447(request):
 		tmp = cur.fetchall()
 		goal = int(tmp[0][2])
 	except:
-		goal = 2400
-	db.close()
+		goal = 7000
 	# ******************  Below data entered for each part  ******************************
 	color1 = '#96dbf8'  # Color for line 1
 	color2 = '#82BED7'  # Color for line 2
-	asset = ['1714']
+	asset = ['1750']
 	part  = ['50-0447']
-	asset1 = '1714'
-	asset2 = '1714'
+	asset1 = '1750'
+	asset2 = '1724'
+	asset3 = '1725'
 	if request.session['prev_10r'] == 0:
-		asset1 = '1714'
-		asset2 = '1714'
+		asset1 = '1750'
+		asset2 = '1724'
+		asset3 = '1725'
 
 	operation = [10]
 	# ************************************************************************************
@@ -2670,14 +2779,16 @@ def ab1v_0447(request):
 
 	total = zip(asset,part,operation)
 	asset_tuple = tuple(asset)
-	partno1 = '50-5401'
+	partno1 = '50-0447'
 	week_start = request.session['week_start7']
-	week_end = request.session['week_end7'] + 172800
+	week_end = request.session['week_end7']
 	t = request.session['t']
 	week_time_todate = t - week_start
 
-	
+	request.session['WL'] = 604800
 	goal_todate = int((goal / float(request.session['WL'])) * week_time_todate)  # Current Goal to date
+
+	wll = request.session['WL']
 
 	if goal_todate > goal: goal_todate = goal
 	if request.session['WL'] == 77: goal_todate = goal
@@ -2687,37 +2798,22 @@ def ab1v_0447(request):
 		stamp1 = week_start + (86400 * i)
 		pdate1 = stamp_pdate(stamp1)
 		pdate_week.append(pdate1) # This is the tuple of days in the week to cycle through
-
-
-	
 	# Select all reactions in asset list for date range
-	db, cur = db_set_3(request) 
-	sql = "SELECT * FROM vw_laser_scan WHERE part_number='%s' and ts >= '%s' and ts <= '%s' ORDER BY  %s %s" %(prt7,week_start,week_end,'ts','ASC')
-	# sql = "SELECT * FROM GFxPRoduction WHERE Part='%s' and TimeStamp >= '%s' and TimeStamp <= '%s' and (Machine = '%s' OR Machine ='%s') ORDER BY  %s %s" %(prt7,week_start,week_end,asset1,asset2,'TimeStamp','ASC')
+	sql = "SELECT * FROM GFxPRoduction WHERE TimeStamp >= '%s' and TimeStamp <= '%s' and (Machine = '%s' OR Machine ='%s' OR Machine ='%s') and Part = '%s' ORDER BY  %s %s" % (week_start,week_end,asset1,asset2,asset3,partno1,'TimeStamp','ASC')
 	cur.execute(sql)
 	tmp = cur.fetchall()
-
-	sql = "SELECT COUNT(*) FROM vw_laser_scan WHERE part_number='%s' and ts >= '%s' and ts <= '%s' ORDER BY  %s %s" %(prt7,week_start,week_end,'ts','ASC')
-	cur.execute(sql)
-	tmp4 = cur.fetchall()
-
-
-	db.close()
 	t1 = []
 	t2 = []
-	
 	for i in tmp:
 		t1=[]
-		t1.append(i[1])
-		t1.append(str(i[2]))
+		t1.append(i[0])
+		t1.append(str(i[1]))
+		t1.append(i[2])
 		t1.append(i[3])
-		# t1.append(i[3])
-		# t1.append(i[4])
+		t1.append(i[4])
 		t2.append(t1)
 	tot2 = []
 	tot3 = []
-
-
 	for i in asset:
 		op4 = filter(lambda c:c[0]==i,operation_totals)
 		op5 = op4[0][1]  # Current operation
@@ -2734,25 +2830,18 @@ def ab1v_0447(request):
 				tot.append(i)
 				tot.append(j)
 				tot.append(k)
-				a3 = filter(lambda c:c[2]>st and c[2]<fi,t2)  
+				a3 = filter(lambda c:c[4]>st and c[4]<fi,t2)  
 				sum1 = len(a3)
 
 				a33 = sum1
 				op[op5] = op[op5] + sum1
-
 				tot.append(a33)
-
-
 				tot2.append(tot)
 				# if ctr > 2:
 				# 	r=3/0
 				st = st + 28800
-
 		tot3.append(tot2)
-
-
 	color_used = color2
-
 	for i in operation_totals:
 		i.append(op[i[1]])
 		if i[2] != 0:
@@ -2766,15 +2855,18 @@ def ab1v_0447(request):
 			a3 = filter(lambda c:c[0]==ii[0],operation_totals)  
 			a4=a3[0][4]
 			ii.append(a4)
+	count1 = int(a3[0][3])
+	week_time = 604800
+	pred1 = (count1 / float(week_time_todate))*week_time
+	goal_todate = int((goal / float(request.session['WL'])) * week_time_todate)  # Current Goal to date
 	request.session['totals_0447'] = tot3
 	request.session['shift_0447'] = shift2  #Need 
 	request.session['pdate_0447'] = pdate_week  #Need
 	request.session['op_totals_0447'] = op
 	request.session['op_span_0447'] = operation_totals
-	request.session['goal_0447'] = goal_todate
+	request.session['goal_0447'] = int(pred1)
 	inv_change =  int(operation_totals[0][3]) - int(goal_todate)
 	request.session['inv_change_0447'] = inv_change
-	request.session['final_count_0447'] = tmp4[0][0]
 	return 
 
 def ab1v_0519(request):
@@ -2788,18 +2880,19 @@ def ab1v_0519(request):
 		tmp = cur.fetchall()
 		goal = int(tmp[0][2])
 	except:
-		goal = 2400
-	db.close()
+		goal = 7000
 	# ******************  Below data entered for each part  ******************************
 	color1 = '#96dbf8'  # Color for line 1
 	color2 = '#82BED7'  # Color for line 2
-	asset = ['1714']
-	part  = ['50-8670']
-	asset1 = '1714'
-	asset2 = '1714'
+	asset = ['1750']
+	part  = ['50-0519']
+	asset1 = '1750'
+	asset2 = '1724'
+	asset3 = '1725'
 	if request.session['prev_10r'] == 0:
-		asset1 = '1714'
-		asset2 = '1714'
+		asset1 = '1750'
+		asset2 = '1724'
+		asset3 = '1725'
 
 	operation = [10]
 	# ************************************************************************************
@@ -2826,14 +2919,16 @@ def ab1v_0519(request):
 
 	total = zip(asset,part,operation)
 	asset_tuple = tuple(asset)
-	partno1 = '50-5401'
+	partno1 = '50-0519'
 	week_start = request.session['week_start7']
-	week_end = request.session['week_end7'] + 172800
+	week_end = request.session['week_end7']
 	t = request.session['t']
 	week_time_todate = t - week_start
 
-	
+	request.session['WL'] = 604800
 	goal_todate = int((goal / float(request.session['WL'])) * week_time_todate)  # Current Goal to date
+
+	wll = request.session['WL']
 
 	if goal_todate > goal: goal_todate = goal
 	if request.session['WL'] == 77: goal_todate = goal
@@ -2843,31 +2938,22 @@ def ab1v_0519(request):
 		stamp1 = week_start + (86400 * i)
 		pdate1 = stamp_pdate(stamp1)
 		pdate_week.append(pdate1) # This is the tuple of days in the week to cycle through
-
-
-	
 	# Select all reactions in asset list for date range
-	db, cur = db_set_3(request) 
-	sql = "SELECT * FROM vw_laser_scan WHERE part_number='%s' and ts >= '%s' and ts <= '%s' ORDER BY  %s %s" %(prt7,week_start,week_end,'ts','ASC')
-	# sql = "SELECT * FROM GFxPRoduction WHERE Part='%s' and TimeStamp >= '%s' and TimeStamp <= '%s' and (Machine = '%s' OR Machine ='%s') ORDER BY  %s %s" %(prt7,week_start,week_end,asset1,asset2,'TimeStamp','ASC')
+	sql = "SELECT * FROM GFxPRoduction WHERE TimeStamp >= '%s' and TimeStamp <= '%s' and (Machine = '%s' OR Machine ='%s' OR Machine ='%s') and Part = '%s' ORDER BY  %s %s" % (week_start,week_end,asset1,asset2,asset3,partno1,'TimeStamp','ASC')
 	cur.execute(sql)
 	tmp = cur.fetchall()
-	db.close()
 	t1 = []
 	t2 = []
-	
 	for i in tmp:
 		t1=[]
-		t1.append(i[1])
-		t1.append(str(i[2]))
+		t1.append(i[0])
+		t1.append(str(i[1]))
+		t1.append(i[2])
 		t1.append(i[3])
-		# t1.append(i[3])
-		# t1.append(i[4])
+		t1.append(i[4])
 		t2.append(t1)
 	tot2 = []
 	tot3 = []
-
-
 	for i in asset:
 		op4 = filter(lambda c:c[0]==i,operation_totals)
 		op5 = op4[0][1]  # Current operation
@@ -2884,25 +2970,18 @@ def ab1v_0519(request):
 				tot.append(i)
 				tot.append(j)
 				tot.append(k)
-				a3 = filter(lambda c:c[2]>st and c[2]<fi,t2)  
+				a3 = filter(lambda c:c[4]>st and c[4]<fi,t2)  
 				sum1 = len(a3)
 
 				a33 = sum1
 				op[op5] = op[op5] + sum1
-
 				tot.append(a33)
-
-
 				tot2.append(tot)
 				# if ctr > 2:
 				# 	r=3/0
 				st = st + 28800
-
 		tot3.append(tot2)
-
-
 	color_used = color2
-
 	for i in operation_totals:
 		i.append(op[i[1]])
 		if i[2] != 0:
@@ -2916,12 +2995,16 @@ def ab1v_0519(request):
 			a3 = filter(lambda c:c[0]==ii[0],operation_totals)  
 			a4=a3[0][4]
 			ii.append(a4)
+	count1 = int(a3[0][3])
+	week_time = 604800
+	pred1 = (count1 / float(week_time_todate))*week_time
+	goal_todate = int((goal / float(request.session['WL'])) * week_time_todate)  # Current Goal to date
 	request.session['totals_0519'] = tot3
 	request.session['shift_0519'] = shift2  #Need 
 	request.session['pdate_0519'] = pdate_week  #Need
 	request.session['op_totals_0519'] = op
 	request.session['op_span_0519'] = operation_totals
-	request.session['goal_0519'] = goal_todate
+	request.session['goal_0519'] = int(pred1)
 	inv_change =  int(operation_totals[0][3]) - int(goal_todate)
 	request.session['inv_change_0519'] = inv_change
 	return 
@@ -4601,7 +4684,7 @@ def prod_0455(request):
 	# ******************  Below data entered for each part  ******************************
 	color1 = '#96dbf8'  # Color for line 1
 	color2 = '#82BED7'  # Color for line 2
-	asset = ['1816']
+	asset = ['1812']
 	part  = ['50-0455']
 	operation = [10]
 	# ************************************************************************************
@@ -5126,7 +5209,7 @@ def prod_10R(request):
 	# gf6_3627(request)
 	# gf6_1731(request)
 	# gf6_3632(request)
-	ab1v_8670_2(request)
+	ab1v_8670(request)
 	ab1v_5401(request)
 	ab1v_5404(request)
 	ab1v_0450(request)

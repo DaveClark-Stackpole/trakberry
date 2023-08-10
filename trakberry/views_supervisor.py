@@ -2520,24 +2520,55 @@ def supervisor_schedule(request):
 	request.session['shift_schedule_area'] = ' Area 1'
 	request.session['shift_schedule'] = ' Area 1 Mid April 19,2023'
 	area1 = 'Area 1'
+	shift = 'Plant 1 Aft'
+	cont = 'A Days P1'
+
 	db, cur = db_set(request)
-	sql = "SELECT DISTINCT Job FROM tkb_allocation WHERE Area = '%s' ORDER BY %s %s " %(area1,'priority','ASC')
+	sql = "SELECT DISTINCT Job FROM tkb_allocation WHERE Area = '%s' ORDER BY %s %s " %(area1,'Id','ASC')
 	cur.execute(sql)
 	tmp = cur.fetchall()
 	count1 = len(tmp)
+
+
+	sql = "SELECT Employee FROM tkb_manpower WHERE Shift = '%s' OR Shift_Mod = '%s'" % (shift,cont)
+	cur.execute(sql)
+	tmp2 = cur.fetchall()
+
 	counta = int( count1 / float(2) + 2 )
 	j1 = []
 	j2 = []
 	ctr = 0
 	for i in tmp:
-		ctr = ctr + 1
-		if ctr < counta:
-			j1.append(i[0])
-		else:
-			j2.append(i[0])
+		if i[0] != 'Abs/Vac':
+			ctr = ctr + 1
+			if ctr < counta:
+				j1.append(i[0])
+			else:
+				j2.append(i[0])
 	j3=zip(j1,j2)
 	blank1 = [0,0,0,0,0,0,0,0]
 
-		
+
+
+	if request.POST:
+		selection1 = request.POST.get("emp1")
+		selection2 = request.POST.get("job1")
+		selection3 = request.POST.get("delete1")
+		selection4 = request.POST.get("new1")
+
+		return render(request,'supervisor_schedule.html')
+	
+
+	else:
+		form = sup_closeForm()
+	args = {}
+	args.update(csrf(request))
+	args['form'] = form
+
 	return render(request,'supervisor_schedule.html',{'j3':j3,'blank1':blank1})
+	#return render(request,'supervisor_schedule.html',{'j3':j3,'blank1':blank1,'manpower':tmp2,'args':args}}
+
+
+
+
 
