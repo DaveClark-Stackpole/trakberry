@@ -423,7 +423,7 @@
 	{% endfor %}
 	{% for x in request.session.op_span_8670 %}
 		{% if x.0 == i.0.0 and x.2 > 0 %} 
-			{% if x.3 < request.session.goal_8670 %}
+			{% if x.3 > request.session.goal_8670 %}
 				<td  bgcolor="#ffffff" rowspan="{{x.2}}"><center><b><font style="color:rgb(0, 0, 0);">{{request.session.final_count_8670}}</font></b></center></td>
 			{% else %}
 				<td  bgcolor="#ffffff" rowspan="{{x.2}}"><center><b>{{request.session.final_count_8670}}</b></center></td>
@@ -448,7 +448,7 @@
 		{% endfor %}
 		{% for x in request.session.op_span_0450 %}
 			{% if x.0 == i.0.0 and x.2 > 0 %} 
-				{% if x.3 < request.session.goal_0450 %}
+				{% if x.3 > request.session.goal_0450 %}
 					<td  bgcolor="#CDCDCD" rowspan="{{x.2}}"><center><b><font style="color:rgb(180, 0, 0);">{{x.3}}</font></b></center></td>
 				{% else %}
 					<td  bgcolor="#CDCDCD" rowspan="{{x.2}}"><center><b>{{x.3}}</b></center></td>
@@ -472,7 +472,7 @@
 		{% endfor %}
 		{% for x in request.session.op_span_5401 %}
 			{% if x.0 == i.0.0 and x.2 > 0 %} 
-				{% if x.3 < request.session.goal_5401 %}
+				{% if x.3 > request.session.goal_5401 %}
 					<td  bgcolor="#ffffff" rowspan="{{x.2}}"><center><b><font style="color:rgb(180, 0, 0);">{{x.3}}</font></b></center></td>
 				{% else %}
 					<td  bgcolor="#ffffff" rowspan="{{x.2}}"><center><b>{{x.3}}</b></center></td>
@@ -496,7 +496,7 @@
 		{% endfor %}
 		{% for x in request.session.op_span_0447 %}
 			{% if x.0 == i.0.0 and x.2 > 0 %} 
-				{% if x.3 < request.session.goal_0447 %}
+				{% if x.3 > request.session.goal_0447 %}
 				<td  bgcolor="#CDCDCD" rowspan="{{x.2}}"><center><b><font style="color:rgb(0, 0, 0);">{{request.session.final_count_0447}}</font></b></center></td>
 				{% else %}
 					<td  bgcolor="#CDCDCD" rowspan="{{x.2}}"><center><b>{{request.session.final_count_0447}}</b></center></td>
@@ -520,7 +520,7 @@
 		{% endfor %}
 		{% for x in request.session.op_span_5404 %}
 			{% if x.0 == i.0.0 and x.2 > 0 %} 
-				{% if x.3 < request.session.goal_5404 %}
+				{% if x.3 > request.session.goal_5404 %}
 					<td  bgcolor="#ffffff" rowspan="{{x.2}}"><center><b><font style="color:rgb(180, 0, 0);">{{x.3}}</font></b></center></td>
 				{% else %}
 					<td  bgcolor="#ffffff" rowspan="{{x.2}}"><center><b>{{x.3}}</b></center></td>
@@ -545,7 +545,7 @@
 		{% endfor %}
 		{% for x in request.session.op_span_0519 %}
 			{% if x.0 == i.0.0 and x.2 > 0 %} 
-				{% if x.3 < request.session.goal_0519 %}
+				{% if x.3 > request.session.goal_0519 %}
 					<td  bgcolor="#CDCDCD" rowspan="{{x.2}}"><center><b><font style="color:rgb(180, 0, 0);">{{x.3}}</font></b></center></td>
 				{% else %}
 					<td  bgcolor="#CDCDCD" rowspan="{{x.2}}"><center><b>{{x.3}}</b></center></td>
