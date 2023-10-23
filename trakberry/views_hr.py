@@ -6,6 +6,7 @@ from trakberry.forms import kiosk_dispForm1,kiosk_dispForm2,kiosk_dispForm3,kios
 from trakberry.forms import maint_closeForm, maint_loginForm, maint_searchForm, tech_loginForm, sup_downForm
 from trakberry.views import done
 from views2 import main_login_form
+from mod1 import hyphon_fix
 from views_mod1 import find_current_date, mgmt_display, mgmt_display_edit
 from views_mod2 import stamp_shift_start
 from trakberry.views2 import login_initial
@@ -89,3 +90,97 @@ def users1(request):
 	db.close()
 	request.session["users1"] = tmp
 	return 
+
+def hr_down(request):	
+
+	request.session['asset_down'] = 'Yes_Down'
+
+	if request.POST:
+
+		machinenum = request.POST.get("machine")
+		problem = request.POST.get("reason")
+		priority = request.POST.get("priority")
+		priority = 1
+		whoisonit = request.session["whoisonit"]
+		
+		# take comment into tx and ensure no "" exist.  If they do change them to ''
+		tx = problem
+		tx = ' ' + tx
+		tps = list(tx)
+	
+			
+		# Genius appostrophe fix
+		problem = hyphon_fix(tx)
+
+		# Add name of person entering job to description
+		try:
+			nm = request.session['login_name']
+		except:
+			nm=''
+		if len(nm)<2:
+			nm = request.session['login_tech']
+		problem = problem + ' (entered by '+nm+')'
+		# ***********************************************
+
+		
+		# call external function to produce datetime.datetime.now()
+		t = vacation_temp()
+		
+		db, cur = db_set(request)
+
+		asset_test = machinenum[:4]
+
+		side1 = '0'
+		location1='G'
+		side2 = '0'
+		try:
+			asset3 = machinenum[:4]
+			asset2 = machinenum[:3]
+			try:
+				int(asset3)
+				asset4 = asset3
+			except:
+				asset4 = asset2
+			aql = "SELECT * FROM vw_asset_eam_lp where left(Asset,4) = '%s'" %(asset4)
+			# aql = "SELECT * FROM vw_asset_eam_lp WHERE Asset LIKE '%s'" % ("%" + asset4 + "%")
+			cur.execute(aql)
+			tmp2 = cur.fetchall()
+			tmp3 = tmp2[0]
+			asset5 = tmp3[1] + " - " + tmp3[3]
+			location1 = tmp3[3]
+		except:
+			asset5 = machinenum
+
+		priority = 0
+		down7 = 'Yes_Down'
+			
+		
+# This will determine side of asset and put in breakdown
+		location_check = location1[:1]
+		if location_check < 'G':
+			side1 = '2'
+		elif location_check > 'G':
+			side1 = '1'
+		else:
+			side1 = '0'
+	
+
+		cur.execute('''INSERT INTO pr_downtime1(machinenum,problem,priority,whoisonit,called4helptime,side,down,changeovertime) VALUES(%s,%s,%s,%s,%s,%s,%s,%s)''', (asset5,problem,priority,whoisonit,t,side1,down7,t))
+		db.commit()
+		db.close()
+
+		# prioritize(request)
+		return render(request,'redirect_hr.html')
+		
+	else:
+		form = sup_downForm()
+	args = {}
+	args.update(csrf(request))
+	args['form'] = form
+
+
+	
+	# Old Method
+	rlist = machine_list_display()
+	
+	return render(request,'hr_down.html', {'List':rlist,'args':args})

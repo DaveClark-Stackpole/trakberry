@@ -4662,6 +4662,8 @@ def prod_9341(request):
 	request.session['totals_9341'] = tot3
 	request.session['shift_9341'] = shift2  #Need 
 	request.session['pdate_9341'] = pdate_week  #Need
+
+	rrrr=3/0
 	request.session['op_totals_9341'] = op
 	request.session['op_span_9341'] = operation_totals
 	request.session['goal_9341'] = int(pred1)
