@@ -99,9 +99,9 @@ def hr_down(request):
 
 		machinenum = request.POST.get("machine")
 		problem = request.POST.get("reason")
-		priority = request.POST.get("priority")
+		priority = 0
 		priority = 1
-		whoisonit = request.session["whoisonit"]
+		whoisonit = 'Millwright'
 		
 		# take comment into tx and ensure no "" exist.  If they do change them to ''
 		tx = problem
