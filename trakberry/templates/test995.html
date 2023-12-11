@@ -3,5 +3,24 @@
 
 
 <br><br>
-{{tmp}}
+
+
+<table>
+    {% for i in request.session.ttst %}
+
+<tr>
+    {% for ii in i %}
+
+    <td>{{ii}}</td>
+
+
+    {% endfor %}
+
+</tr>
+    {% endfor %}
+
+</table>
+
+
+
 </body></html>

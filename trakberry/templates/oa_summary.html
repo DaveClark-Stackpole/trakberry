@@ -1,0 +1,41 @@
+{% extends "mgmt.html" %}
+
+{% block content %}
+
+
+<div class ="mainset">
+    <div class="frame16"  bgcolor="{{request.session.main_body_menu_color}}">
+        <div class="head16">
+            <center><u><b><font color="#000000" style="font-size: 160%;">OA Summary</u></b></center>
+        </div>
+        <center><table id="mainline">
+        
+        <tr>
+        <td bgcolor="#E1E1E1" style="font-size:12px;width:15%;"><center><font style="font-weight:bolder;font-size:100%;">Line</font></center></td>
+        <td bgcolor="#E1E1E1" style="font-size:12px;width:15%;"><center><font style="font-weight:bolder;font-size:100%;">Availability %</font></center></td>
+        <td bgcolor="#E1E1E1" style="font-size:12px;width:15%;"><center><font style="font-weight:bolder;font-size:100%;">Performance %</font></center></td>
+        <td bgcolor="#E1E1E1" style="font-size:12px;width:15%;"><center><font style="font-weight:bolder;font-size:100%;">Quality %</font></center></td>
+        <td bgcolor="#E1E1E1" style="font-size:12px;width:15%;"><center><font style="font-weight:bolder;font-size:100%;">OA %</font></center></td>
+        </tr>
+        {% for i in request.session.oa_summary %}
+        <div class="body1">
+            <tr> <!-- OP60 -->
+                
+
+
+            {% for ii in i %}
+            <td bgcolor="#bdb4b3" style="font-size:12px;width:15%;"><center><font style="font-weight:bolder;font-size:100%;"> {{ii}}</font></center></td>
+
+            {% endfor %}
+            </tr>
+
+
+        </div>
+        {% endfor %}
+
+    </table>
+    </div>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,64 @@
+
+{% extends "mgmt.html" %}
+
+
+{% block content %}
+<style>
+  table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 36%;
+    border: 1px solid #000000;
+    border-radius: 30px;
+
+    
+  }
+  th, td {
+    text-align: left;
+    padding: 7px;
+  }
+  tr:nth-child(odd){background-color: #ccbc99}
+  tr:nth-child(even){background-color: #ccbc99}
+  a.blue:link {color: black;}
+  a.blue:active {color: black;}
+  a.blue:visited {color: black;}
+  a.blue:hover {color: black;background-color: rgb(10, 46, 29);border-radius: 10px;}
+</style>
+
+<style>
+label {
+display: block;
+font: 1rem 'Fira Sans', sans-serif;
+}
+
+input,
+label {
+margin: 0.4rem 0;
+}
+
+
+</style>
+
+<form action="" method="post">{% csrf_token %}
+<center>
+  <table style="overflow-x:auto;">
+    <tr><th nowrap>
+<tr><td>
+<input style="font-size:23px;width:200px;height:60px;text-align:center;" type="date" name="start_date" value={{Curr}}>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     <input style="font-size:23px;width:200px;height:60px;text-align:center;" type="date" name="end_date" value={{Curr}}></div>
+
+					<img src="/static/media/JELogo.gif?{{TCUR}}"  style="border-radius: 25px;" height="40" width="150">
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<!-- <button type="button" class="btn btn-primary" onclick="window.location.href = 'http://www.tsn.ca';">Save changes</button> -->
+
+						<!-- <button style="background-color: #AAAAAA;border-radius: 10px;width:60px;height:30px;font-weight: 500;font-size:16px;align=left;" type="button" onclick="window.location.href = '{{request.session.local_toggle}}/kiosk_menu';">Yes</button> -->
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+						<button style="background-color: #AAAAAA;border-radius: 10px;width:60px;height:30px;font-weight: 500;font-size:16px;align=left;" type="submit">OK</button>
+
+          </td></tr>
+        </table></center>
+        </form>
+{% endblock %}

@@ -357,7 +357,7 @@ def tech(request):
 	j = "tech"
 	jj = "Tech"
 	a1 = "Dave McLaren"
-	a2 = "Muoi Le"
+	a2 = "James Shipway"
 	a3 = "Jim Barker"
 	a4 = "Scott Smith"
 	a5 = "Toby Kuepfer"
@@ -464,7 +464,7 @@ def tech(request):
 	elif request.session["login_tech"] == "Ervin Kuepfer":
 		request.session["login_image"] = "/static/media/tech_training.jpg"
 		request.session["login_back"] = "/static/media/back_tech_training.jpg"			
-	elif request.session["login_tech"] == "Muoi Le":
+	elif request.session["login_tech"] == "James Shipway":
 		request.session["login_image"] = "/static/media/tech_training.jpg"
 		request.session["login_back"] = "/static/media/back_tech_training.jpg"
 	elif request.session["login_tech"] == "Scott Warner":
@@ -1105,6 +1105,8 @@ def tech_message_reply1(request):
 def job_call(request, index):	
 	tec = request.session["login_tech"]
 	t = datetime.datetime.now()
+
+
 	# Select prodrptdb db located in views_db
 	db, cur = db_set(request)  
 	sql =( 'update pr_downtime1 SET whoisonit="%s" WHERE idnumber="%s"' % (tec,index))
@@ -1278,6 +1280,8 @@ def tech_logout(request):
 					
 		tec = request.POST.get("user")
 		pwd = request.POST.get("pwd")
+
+		
 
 	
 		request.session["login_tech"] = tec

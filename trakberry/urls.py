@@ -196,6 +196,7 @@ from views_manpower import trained_email
 
 # *******************************************  HR Section ********************************************************************************************
 from views_hr import hr,hr_login_form,hr_down
+from views_hr import productline_dl,date_picker_productline,production_OA,date_picker_production_OA
 # ***********************************************************************************************************************************************************
 
 
@@ -872,6 +873,10 @@ urlpatterns = [
 	url(r'^temp_test1/', temp_test1),
 	url(r'^temp_ack/get/(?P<index>\w{0,50})/$', temp_ack),
 	url(r'^temp_ack_taken/', temp_ack_taken),
+    url(r'^productline_dl/', productline_dl),
+    url(r'^date_picker_productline/', date_picker_productline),
+    url(r'^production_OA/', production_OA),
+    url(r'^date_picker_production_OA/', date_picker_production_OA),
 	
 
 	# **************************************************************************
