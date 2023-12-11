@@ -1,0 +1,55 @@
+{% extends "mgmt.html" %}
+
+{% block content %}
+
+
+<div class ="mainset">
+    <div class="frame16"  bgcolor="{{request.session.main_body_menu_color}}">
+        <div class="head16">
+            <center><u><b><font color="#000000" style="font-size: 160%;">Buld vs Direct Labour</u></b></center>
+        </div>
+        <center><table id="mainline">
+        
+        <tr>
+        <td bgcolor="#E1E1E1" style="font-size:12px;width:15%;"><center><font style="font-weight:bolder;font-size:100%;">Product Line</font></center></td>
+        <td bgcolor="#E1E1E1" style="font-size:12px;width:15%;"><center><font style="font-weight:bolder;font-size:100%;">Produced</font></center></td>
+        <td bgcolor="#E1E1E1" style="font-size:12px;width:15%;"><center><font style="font-weight:bolder;font-size:100%;">Direct Hrs</font></center></td>
+        <td bgcolor="#E1E1E1" style="font-size:12px;width:15%;"><center><font style="font-weight:bolder;font-size:100%;">Sales $ Build</font></center></td>
+        <td bgcolor="#E1E1E1" style="font-size:12px;width:15%;"><center><font style="font-weight:bolder;font-size:100%;">Direct Cost $</font></center></td>
+        <td bgcolor="#E1E1E1" style="font-size:12px;width:15%;"><center><font style="font-weight:bolder;font-size:100%;">Margin DL / Sales $</font></center></td>
+        <td bgcolor="#E1E1E1" style="font-size:12px;width:15%;"><center><font style="font-weight:bolder;font-size:100%;">Compact % DL</font></center></td>
+        <td bgcolor="#E1E1E1" style="font-size:12px;width:15%;"><center><font style="font-weight:bolder;font-size:100%;">Sinter % DL</font></center></td>
+        <td bgcolor="#E1E1E1" style="font-size:12px;width:15%;"><center><font style="font-weight:bolder;font-size:100%;">Machining % DL</font></center></td>
+        <td bgcolor="#E1E1E1" style="font-size:12px;width:15%;"><center><font style="font-weight:bolder;font-size:100%;">Packing % DL</font></center></td>
+        <td bgcolor="#E1E1E1" style="font-size:12px;width:15%;"><center><font style="font-weight:bolder;font-size:100%;">Other % DL</font></center></td>
+
+        </tr>
+        {% for i in request.session.total %}
+        <div class="body1">
+            <tr> <!-- OP60 -->
+                
+
+
+            {% for ii in i %}
+            <td bgcolor="#bdb4b3" style="font-size:12px;width:15%;"><center><font style="font-weight:bolder;font-size:100%;"> {{ii}}</font></center></td>
+
+            {% endfor %}
+            </tr>
+
+
+        </div>
+        {% endfor %}
+        <tr>
+            <td bgcolor="#C9EEAC" style="font-size:12px;width:15%;"><center><font style="font-weight:bolder;font-size:100%;"> </font></center></td>
+            <td bgcolor="#C9EEAC" style="font-size:12px;width:15%;"><center><font style="font-weight:bolder;font-size:100%;"> </font></center></td>
+            <td bgcolor="#C9EEAC" style="font-size:12px;width:15%;"><center><font style="font-weight:bolder;font-size:100%;"> </font></center></td>
+            <td bgcolor="#C9EEAC" style="font-size:12px;width:15%;"><center><font style="font-weight:bolder;font-size:100%;">{{request.session.plant_build}}</font></center></td>
+            <td bgcolor="#C9EEAC" style="font-size:12px;width:15%;"><center><font style="font-weight:bolder;font-size:100%;">{{request.session.plant_cost}}</font></center></td>
+            <td bgcolor="#C9EEAC" style="font-size:12px;width:15%;"><center><font style="font-weight:bolder;font-size:100%;">{{request.session.plant_margin}}</font></center></td>
+            </tr>
+    </table>
+    </div>
+</div>
+
+
+{% endblock %}

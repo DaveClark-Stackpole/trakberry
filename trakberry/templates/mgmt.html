@@ -112,6 +112,7 @@
 		.wrapper_main {background:chartreuse;width:90%;margin-left: 10px;}
 		
 		.frame1 {color:black;text-align:center;float:left;width:32%;margin-bottom: 5px;}
+		.frame16 {color:black;text-align:center;float:left;width:50%;margin-bottom: 5px;}
 		.frame2a{color:black;text-align:center;background:rgb(202, 188, 83);float:left;width:32%;position:relative;left:5px;border-radius: 15px;margin-bottom: 5px;}
 
 		.frame2{color:black;text-align:center;background:rgb(83, 134, 202);float:left;width:32%;position:relative;left:5px;margin-bottom: 5px;}
@@ -120,6 +121,7 @@
 
 		.frame5{color:black;text-align:center;background:rgb(168, 168, 168);float:right;width:40%}
 		.head1{color:black;text-align:center;border: .4px solid rgb(0, 0, 0);background:rgb(114, 159, 243);width:85%}
+		.head16{color:black;text-align:center;border: .4px solid rgb(0, 0, 0);background:rgb(114, 159, 243);width:100%}
 		.head1_u{color:black;text-align:center;border: .4px solid rgb(0, 0, 0);background:rgb(226, 226, 226);width:100%}
 		.head2_u{color:black;text-align:center;float:left;font-size: 60%;border: .4px solid rgb(0, 0, 0);background: rgb(184, 167, 142);width:25%}
 		.body1_u{color:black;text-align:left;float: left;border: 1px solid rgb(0, 0, 0);width:25%}
@@ -245,7 +247,24 @@
 		color: white;
 	}
 </style>
-
+<style>
+	#mainline {
+		font-family: Arial, Helvetica, sans-serif;
+		border-collapse: collapse;
+		width: 100%;
+	}
+	#mainline td, #mainline th {
+		border: 1px solid rgb(136, 134, 134);
+		padding: 4px;
+	}
+	#mainline th {
+		padding-top: 5px;
+		padding-bottom: 5px;
+		text-align: left;
+		background-color: rgb(139, 128, 107);
+		color: white;
+	}
+	</style>
 {% block style8 %}
 {% endblock %}
 
@@ -293,8 +312,8 @@
 					
                     <li><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-stats"></span> Production<b class="caret"></b></a>
                          <ul class="dropdown-menu multi-level"  style="background-color:rgb(245, 237, 219)" >
-							<li><a href="http://pmdsdata12/prod-query/weekly-prod">Weekly Production Summary<b><mark>(** New ! **)</mark></b></a></li>
-							<li><a href="{{request.session.local_toggle}}/track_9341_history_date">10R Production History<b><mark>(** New ! **)</mark></b></a></li>
+							<li><a href="http://pmdsdata12/prod-query/weekly-prod">Weekly Production Summary</a></li>
+							<li><a href="{{request.session.local_toggle}}/track_9341_history_date">10R Production History</a></li>
 							<li><a href="#">Track the Week<b><mark></mark></b></a></li>
                             <!-- <li><a href="{{request.session.local_toggle}}/mgmt_track_week">Track the Week<b><mark></mark></b></a></li> -->
 							<li><a href="{{request.session.local_toggle}}/mgmt_goals">Enter Targets</a></li>
@@ -304,6 +323,7 @@
                             <li><a href="{{request.session.local_toggle}}/mgmt_production">Production Entries</a></li>
                             <!-- <li><a href="{{request.session.local_toggle}}/mgmt_production_hourly">Hourly Entries</a></li> -->
                             <li><a href="{{request.session.local_toggle}}/mgmt_cycletime">Cycle Times</a></li>
+							<li><a href="{{request.session.local_toggle}}/date_picker_production_OA">Production OA<b><mark>(** New ! **)</mark></b></a></li>
                         </ul>
                      </li>
 			    	<li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
@@ -329,6 +349,17 @@
                        </ul>
                     </li>
                    <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+
+				   <li><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-lock"></span> Finance<b class="caret"></b></a>
+					<ul class="dropdown-menu multi-level"  style="background-color:rgb(245, 237, 219)" >
+					   <li><a href="{{request.session.local_toggle}}/date_picker_productline">Product Line Margins</a></li>
+					   
+				   </ul>
+
+					
+
+				</li>
+			   <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
 
 			        </ul>	
 			

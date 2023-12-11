@@ -31,6 +31,7 @@ import datetime
 from time import strftime
 import time
 
+
 def hr(request):
 	request.session["main_screen_color"] = "#e4ddf4"  # Color of Background in APP
 	request.session["main_menu_color"] = "#fffbf0"    # Color of Menu Bar in APP
@@ -99,9 +100,8 @@ def hr_down(request):
 
 		machinenum = request.POST.get("machine")
 		problem = request.POST.get("reason")
-		priority = request.POST.get("priority")
-		priority = 1
-		whoisonit = request.session["whoisonit"]
+		priority = 0
+		whoisonit = 'Millwright'
 		
 		# take comment into tx and ensure no "" exist.  If they do change them to ''
 		tx = problem
@@ -184,3 +184,493 @@ def hr_down(request):
 	rlist = machine_list_display()
 	
 	return render(request,'hr_down.html', {'List':rlist,'args':args})
+
+def pdate_stamp2(pdate):
+	year1 = pdate[:4]
+	month1 = pdate[5:7]
+	day1 = pdate[-2:]
+	x=[]
+	x=[0 for i in range(9)] 
+	x[0] = int(year1)
+	x[1] = int(month1)
+	x[2] = int(day1)
+	x[3] = 0
+	x[4] = 0
+	x[5] = 0
+	y = time.mktime(x)
+	stamp = y +79200 - 86400
+	return stamp
+
+
+def production_OA(request):
+	b1 = str(request.session["start_date"])
+	b2 = str(request.session["end_date"])
+	a1 = pdate_stamp2(b1)+3600
+	a2 = pdate_stamp2(b2)+90000
+	d7 = a2 - a1
+	sched1 = a2-a1  # Time frame
+	breaks1 = (sched1 * .0833333)    # Break time in that timeframe
+
+
+	# Calculate Downtime for Interval group by Asset
+	c1 = 'Yes_Down'
+	t=int(time.time())
+	db, cur = db_set(request)
+
+	m1='1723'
+	m4='1533'
+	m5='650'
+	m6='769'
+	m7='1816'
+	m8='1617'
+	m9='797'
+
+	mm = ['1533','1716L','1716R','1717L']
+	cc = [9,62,62,62]
+	ss = ['10R80','AB1V Reaction','AB1V Overdrive','AB1V Input']
+
+	mc = zip(mm,cc,ss)
+	mm = tuple(mm)
+
+	machine1 = []
+	A1 = []
+	P1 = []
+	Q1 = []
+	OA1 = []
+	# sql="SELECT Machine, COUNT(*) FROM GFxPRoduction WHERE TimeStamp >='%s' and TimeStamp <= '%s' and Machine IN {} GROUP BY Machine".format(mm) % (a1,a2)
+	# cur.execute(sql)
+	# tmpX=cur.fetchall()
+	for j in mc:
+		m=j[0]
+		sql="SELECT Machine,TimeStamp FROM GFxPRoduction where  TimeStamp >='%s' and TimeStamp <= '%s' and Machine = '%s'" % (a1,a2,m)
+		cur.execute(sql)
+		tmpY=cur.fetchall()
+		sql="SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >='%s' and TimeStamp <= '%s' and Machine = '%s'" % (a1,a2,m)
+		cur.execute(sql)
+		tmpX=cur.fetchall()
+		sql="SELECT SUM(scrap_amount) FROM tkb_scrap WHERE LEFT(date_current,10) >='%s' and LEFT(date_current,10) <= '%s' and scrap_line = '%s'" % (b1,b2,j[2])
+		cur.execute(sql)
+		tmpZ=cur.fetchall()
+
+		ctr1 = 0
+		prev_time = 0
+		dt1 = 0
+		min_time = 100000
+		for i in tmpY:
+			calc1 = int(i[1]) - prev_time
+			if calc1 > 900:  # Using 15min to determine downtime
+				if ctr1 > 0:
+					dt1 = dt1 + (calc1)
+			ctr1 = 1
+			prev_time = int(i[1])
+
+		# Calculate Availability
+		A = 1-((dt1)/(sched1-breaks1))
+		
+
+		# Calculate Productivity
+		ct = j[1]   # Cycle time
+		qty = int(tmpX[0][0])  # Calculate Quantity Run
+		P = (ct * qty) / float(sched1 - breaks1 - dt1)
+
+		# Calculate Quality
+		try:
+			scrap_qty = int(tmpZ[0][0])
+		except:
+			scrap_qty = 0
+		Q = ( qty ) / float(qty + scrap_qty)
+		
+
+		OA = A * P * Q
+		OA = round((OA*100000)/float(1000),2)
+		A = round((A*100000)/float(1000),2)
+		P = round((P*100000)/float(1000),2)
+		Q = round((Q*100000)/float(1000),2)
+
+		machine1.append(j[2])
+		A1.append(A)
+		P1.append(P)
+		Q1.append(Q)
+		OA1.append(OA)
+
+
+
+	OA_Summary = zip(machine1,A1,P1,Q1,OA1)
+
+	request.session['oa_summary'] = OA_Summary
+		
+	
+
+	# rrr=3/0
+
+	
+	# sql_prod = "SELECT Part,COUNT(*) AS Total FROM GFxPRoduction WHERE TimeStamp >='%s' AND TimeStamp <='%s' AND (Machine ='%s' OR Machine ='%s' OR Machine ='%s' OR Machine ='%s' OR Machine ='%s' OR Machine ='%s' OR Machine ='%s') GROUP BY Part" % (a1,a2,m1,m4,m5,m6,m7,m8,m9)  
+	# cur.execute(sql_prod)
+	# tmp_prod=cur.fetchall()
+
+	# sql_test = "SELECT Asset,called4helptime,completedtime,Downtime,problem,remedy FROM OA_Availability WHERE (LEFT(called4helptime,10) >='%s' and LEFT(called4helptime,10) <='%s') OR (completedtime IS NULL) and down='%s'" % (b1,b2,c1)
+	# cur.execute(sql_test)
+	# tmp_test=cur.fetchall()
+	# a1 = []
+	# start1 = []
+	# end1 = []
+	# down1 = []
+	# problem1 = []
+	# remedy1 = []
+	# for i in tmp_test:
+	# 	s1 = (time.mktime(i[1].timetuple()))
+	# 	try:
+	# 		e1 = (time.mktime(i[2].timetuple()))
+	# 	except:
+	# 		e1 = t
+	# 	d1 = int(e1) - int(s1)
+	# 	a1.append(i[0])
+	# 	start1.append(s1)
+	# 	end1.append(e1)
+	# 	down1.append(d1)
+	# 	problem1.append(i[4])
+	# 	remedy1.append(i[5])
+	# data1=zip(a1,start1,end1,down1,problem1,remedy1)
+	# data2 = zip(a1,down1)
+	# data2 = sorted(data2,key=lambda x:x[0])
+	# time1 = 0
+	# a2 = []
+	# d2 = []
+	# c2 = []
+	# a = ''
+	# ch = 0
+	# for i in data2:
+	# 	if i[0] != a:
+	# 		if a != '':
+	# 			a2.append(a)
+	# 			if time1 > d7:
+	# 				time1 = int(d7)
+	# 				ch = 1
+	# 			d2.append(time1)
+	# 			c2.append(ch)
+	# 			time1 = i[1]
+	# 			a = i[0]
+	# 			ch = 0
+	# 		else:
+	# 			time1 = time1 + i[1]
+	# 			a = i[0]
+	# 	else:
+	# 		time1 = time1 + i[1]
+	# res = zip(a2,d2,c2)
+	# res = sorted(res,key=lambda x:x[0])   # List of Assets and how long in seconds down
+	
+
+
+	# Wrong address
+	return render(request,'oa_summary.html')
+
+
+
+
+	
+def productline_dl(request):
+
+	b1 = request.session["start_date"]
+	b2 = request.session["end_date"]
+
+
+
+	t=int(time.time())
+	tm = time.localtime(t)
+	shift_start = -2
+	if tm[3]<23 and tm[3]>=15:
+		shift_start = 14
+	elif tm[3]<15 and tm[3]>=7:
+		shift_start = 6
+	cur_hour = tm[3]
+	if cur_hour == 23:
+		cur_hour = -1
+	u = t - (((cur_hour-shift_start)*60*60)+(tm[4]*60)+tm[5])	 # Starting unix of shift
+	db, cur = db_set(request)
+
+	# b1 = '2023-07-01'
+	# b2 = '2023-07-03'
+	q1='Compacting'
+	q2='50-5214'
+	q3='50-3214'
+	q4='50-6114'
+	q5='50-6314'
+	q6='50-4314'
+
+	sql_test = "SELECT LEFT(partno,7) AS Part, machine AS Operation,MAX(shift_hours_length) AS Hrs FROM sc_production1 WHERE pdate >='%s' and pdate <='%s' and machine='%s' and (LEFT(partno,7)='%s' OR LEFT(partno,7)='%s' OR LEFT(partno,7)='%s' OR LEFT(partno,7)='%s' OR LEFT(partno,7)='%s') GROUP BY comments,machine,shift,pdate " % (b1,b2,q1,q2,q2,q4,q5,q6)
+	cur.execute(sql_test)
+	tmp_test=cur.fetchall()
+	ctr = 0
+	for i in tmp_test:
+		ctr = ctr + int(i[2])
+
+	
+	
+	# Create View in timeframe needed
+	sql_prem = "SELECT LEFT(partno,7) AS Part, machine AS Operation,MAX(shift_hours_length) AS Hrs FROM sc_production1 WHERE pdate >='%s' and pdate <='%s' GROUP BY comments,machine,shift,pdate " % (b1,b2)
+	cur.execute(sql_prem)
+	tmp_prem=cur.fetchall()
+	tmp_p = list(tmp_prem)
+	tmp_p = sorted(tmp_p,key=lambda x:(x[0],x,[2]))
+
+
+	part8=[]
+	oper8=[]
+	coun8=[]
+
+	tt=[]
+	a = tmp_p[0][0]
+	b = tmp_p[0][1]
+	c = int(tmp_p[0][2])
+	for i in tmp_p:
+		o = i[1]
+		if o!='Compacting':
+			if o!='Sintering':
+				if o!='Machining':
+					if o!='Packing':
+						o = 'Other'
+		ch = 0
+		if i[0] == a:
+			if o==b:
+				ch = 1
+		if ch == 0:
+			if a != '':
+				part8.append(a)
+				oper8.append(b)
+				coun8.append(c)
+			a=i[0]
+			b=o
+			c=c+int(i[2])
+	tst=zip(part8,oper8,coun8)
+
+
+
+   # Need to look at LEFT $ for compacts so you don't double count
+	part9=[]
+	oper9=[]
+	coun9=[]
+	ctr2 = 0
+	a = tmp_p[0][0]
+	b = tmp_p[0][1]
+	c = int(tmp_p[0][2])
+	for i in tmp_p:
+		
+		if a!= i[0]:
+			if b!=i[1]:
+				part9.append(a)
+				oper9.append(b)
+				coun9.append(ctr2)
+				a=i[0]
+				b=i[1]
+				c=int(i[2])
+				ctr2=0
+
+		ctr2 = ctr2 + int(i[2])
+	ttst = zip(part9,oper9,coun9)
+
+
+
+	a1 = pdate_stamp2(b1)
+	a2 = pdate_stamp2(b2)+86400
+
+
+	as1 = '900'
+	pt1 = '50-3627'
+	parts = ['50-1713','50-1731','50-3632','50-3627']
+	pparts = tuple(parts)
+
+	
+	machines = ['1750','1724','1725','1533','650L','650R','769','1816','1617','797'] 
+
+	mmachines = tuple(machines)
+	sql1="SELECT Part,COUNT(Machine) AS Total FROM GFxPRoduction WHERE TimeStamp >='%s' and TimeStamp <= '%s' and Machine IN  {} GROUP BY Part".format(mmachines) % (a1,a2) 
+	sql2="SELECT partno AS Part, SUM(actual_produced) AS Total FROM sc_production1 WHERE pdate >= '%s' AND pdate <= '%s' AND asset_num = '%s' AND partno IN {} GROUP BY partno".format(pparts) % (b1,b2,as1) 
+	sql3 ="Select DISTINCT(Line), LEFT(Part,7) From PartLines"
+	sql4 ="Select DISTINCT(Line) From PartLines"
+	#sql5="SELECT Part,SUM(Hrs) AS Total FROM tkb_scheduled WHERE Date1 >='%s' and Date1 <= '%s' GROUP BY Part" % (b1,b2) 
+
+	#sql5="SELECT Part,SUM(Hrs),Operation AS Hrs FROM view_employee_worked WHERE pdate >='%s' and pdate <= '%s' GROUP BY Part,Operation" % (b1,b2) 
+
+
+
+
+
+	cur.execute(sql1)
+	tmp1=cur.fetchall()
+	cur.execute(sql2)
+	tmp2=cur.fetchall()
+	cur.execute(sql3)
+	tmp3=cur.fetchall()
+	cur.execute(sql4)
+	tmp4=cur.fetchall()
+	#cur.execute(sql5)
+	#tmp5=cur.fetchall()
+
+
+	pl = []
+	pl_count = []
+	hr_count = []
+	hr_compact =[]
+	hr_sinter = []
+	hr_machine = []
+	hr_pack = []
+	hr_other = []
+
+
+	# Calculate Production in the interval and put in total1
+	for i in tmp4:
+		line1 = i[0]
+		cnt = 0
+		hrs = 0
+		hrs_compact = 0
+		hrs_sinter = 0
+		hrs_machine = 0
+		hrs_pack = 0
+		prt = []
+		for ii in tmp3:
+			if ii[0] == line1:
+				prt.append(ii[1])	
+		for iii in tmp1:
+			if iii[0] in prt:
+				cnt = cnt + int(iii[1])
+		for jjj in tmp2:
+			if jjj[0] in prt:
+				cnt = cnt + int(jjj[1])
+		for k in ttst:
+			p4 = k[0][:7]
+			if p4 in prt:
+				hrs = hrs + int(k[2])
+				if k[1] == 'Compacting':
+					hrs_compact = hrs_compact + int(k[2])
+				elif k[1] ==  'Packing':
+					hrs_pack = hrs_pack + int(k[2])
+				elif k[1] ==  'Machining':
+					hrs_machine = hrs_machine + int(k[2])
+				elif k[1] ==  'Sintering':
+					hrs_sinter = hrs_sinter + int(k[2])
+
+
+			
+		pl.append(line1)
+		pl_count.append(cnt)
+		hr_count.append(hrs)
+		hrs_other = hrs - (hrs_compact + hrs_pack + hrs_machine + hrs_sinter)
+		hr_compact.append(hrs_compact)
+		hr_sinter.append(hrs_sinter)
+		hr_machine.append(hrs_machine)
+		hr_pack.append(hrs_pack)
+		hr_other.append(hrs_other)
+
+	total1=zip(pl,pl_count,hr_count,hr_compact,hr_sinter,hr_machine,hr_pack,hr_other)
+
+
+	line_name = ['10R140','10R60','10R80','AB1V','GF6','GFx','Magna','9HP']
+	line_price = [32.97,13.7,12.84,29.07,13.95,11.72,14.1,13.47]
+	line_costing = zip(line_name,line_price)
+
+	sales1=[]
+	labour1=[]
+	labour_per = []
+	labour_compact = []
+	labour_sinter = []
+	labour_machine = []
+	labour_pack = []
+	labour_other = []
+
+	pl2=[]
+	pl_count2=[]
+	hr_count2=[]
+
+
+	for i in total1:
+		line1=''
+		line1 = i[0]
+		for j in line_costing:
+			if j[0] == line1:
+				pl2.append(i[0])
+				pl_count2.append(i[1])
+				hr_count2.append(i[2])
+				sales1.append(i[1] * j[1])
+				labour1.append(i[2] * 23)
+				try:
+					diff1 =round((((i[2]*23)/(i[1]*j[1]))*100),2)
+				except:
+					diff1 = 0
+				labour_per.append(diff1)
+				diff1 = round((i[3] / float(i[2]))*100,2)
+				labour_compact.append(diff1)
+
+				
+
+				diff1 = round((i[4] / float(i[2]))*100,2)
+				labour_sinter.append(diff1)
+				diff1 = round((i[5] / float(i[2]))*100,2)
+				labour_machine.append(diff1)
+				diff1 = round((i[6] / float(i[2]))*100,2)
+				labour_pack.append(diff1)
+				diff1 = round((i[7] / float(i[2]))*100,2)
+				labour_other.append(diff1)
+	
+
+
+				break
+	total2 = zip(pl2,pl_count2,hr_count2,sales1,labour1,labour_per,labour_compact,labour_sinter,labour_machine,labour_pack,labour_other)
+
+	plant_build = 0
+	plant_cost = 0
+	for i in total2:
+		plant_build = plant_build + i[3]
+		plant_cost = plant_cost + i[4]
+	plant1 = round((plant_cost / plant_build)*100,3)
+
+	# print out total2 columns
+	# also plant margin will be plant cost / plant build
+	request.session['plant_margin'] = plant1
+	request.session['plant_build'] = plant_build
+	request.session['plant_cost'] = plant_cost
+	request.session['total'] = total2
+	db.close()
+
+
+
+	
+	return render(request,'build_direct.html')
+
+
+def date_picker_productline(request):
+	if request.POST:
+		a= request.POST.get("start_date")
+		b = request.POST.get("end_date")
+		request.session['start_date'] = a
+		request.session['end_date'] = b
+		return render(request,'redirect_productline_dl.html')  # Need to bounce out to an html and redirect back into a module otherwise infinite loop
+	else:
+		form = tech_loginForm()
+	args = {}
+	args.update(csrf(request))
+	args['form'] = form
+	return render(request,'productionline_datepicker.html', {'args':args})
+
+
+def date_picker_production_OA(request):
+	if request.POST:
+		a= request.POST.get("start_date")
+		b = request.POST.get("end_date")
+		request.session['start_date'] = a
+		request.session['end_date'] = b
+		return render(request,'redirect_production_OA.html')  # Need to bounce out to an html and redirect back into a module otherwise infinite loop
+	else:
+		form = tech_loginForm()
+	args = {}
+	args.update(csrf(request))
+	args['form'] = form
+	return render(request,'production_OA_datepicker.html', {'args':args})
+
+
+
+
+
+
+
+
+
