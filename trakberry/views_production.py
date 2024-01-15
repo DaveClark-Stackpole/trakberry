@@ -279,7 +279,7 @@ def track_1703_initial(request,index):
 	# st1 = 1654311600
 	st1 = int(index)
 	fi1 = st1 + (60*60*8)
-	m1='1703R'
+	m1='1718'
 	id1=5
 	p1='50-9341'
 	pc1=5
@@ -5439,6 +5439,7 @@ def cell_track_9341_history2(request):
 			color1 = '#FF5E33'
 		op_color[ctr9] = color1
 		ctr9 = ctr9 + 1
+
 	return render(request,'cell_track_9341_date.html',{'t':t,'counts':counts1,'acolor1':acolor1,'op':op_total,'op_color':op_color})	
 
 def cell_track_9341(request):

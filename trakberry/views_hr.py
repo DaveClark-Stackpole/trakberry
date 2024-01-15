@@ -201,6 +201,114 @@ def pdate_stamp2(pdate):
 	stamp = y +79200 - 86400
 	return stamp
 
+def production_OA_24hrs(request):
+	t=int(time.time())
+	tm = time.localtime(t)
+	h1 = tm[3]
+	m1 = tm[4]
+	s1 = tm[5]
+
+	a2 = (t - (h1*60*60) - (m1*60) - s1) + (7*60*60)
+	a1 = a2 - (24*60*60)
+
+
+
+	d7 = a2 - a1
+	sched1 = a2-a1  # Time frame
+	breaks1 = (sched1 * .0833333)    # Break time in that timeframe
+
+
+	# Calculate Downtime for Interval group by Asset
+	c1 = 'Yes_Down'
+	t=int(time.time())
+	db, cur = db_set(request)
+
+	m1='1723'
+	m4='1533'
+	m5='650'
+	m6='769'
+	m7='1816'
+	m8='1617'
+	m9='797'
+
+	mm = ['1533','1716L','1716R','1717L','1507','1503','242','261','280','1718','1748','785','669']
+	cc = [9,62,62,62,36,18,9,9,9,204,204,204,56]
+	ss = ['10R80','AB1V Reaction','AB1V Overdrive','AB1V Input','1507','1503','242','261','280','1718','1748','785','669']
+
+	mc = zip(mm,cc,ss)
+	mm = tuple(mm)
+
+	machine1 = []
+	A1 = []
+	P1 = []
+	Q1 = []
+	OA1 = []
+	# sql="SELECT Machine, COUNT(*) FROM GFxPRoduction WHERE TimeStamp >='%s' and TimeStamp <= '%s' and Machine IN {} GROUP BY Machine".format(mm) % (a1,a2)
+	# cur.execute(sql)
+	# tmpX=cur.fetchall()
+	for j in mc:
+		m=j[0]
+		sql="SELECT Machine,TimeStamp FROM GFxPRoduction where  TimeStamp >='%s' and TimeStamp <= '%s' and Machine = '%s'" % (a1,a2,m)
+		cur.execute(sql)
+		tmpY=cur.fetchall()
+		sql="SELECT COUNT(*) FROM GFxPRoduction WHERE TimeStamp >='%s' and TimeStamp <= '%s' and Machine = '%s'" % (a1,a2,m)
+		cur.execute(sql)
+		tmpX=cur.fetchall()
+
+		# sql="SELECT SUM(scrap_amount) FROM tkb_scrap WHERE LEFT(date_current,10) >='%s' and LEFT(date_current,10) <= '%s' and scrap_line = '%s'" % (b1,b2,j[2])
+		# cur.execute(sql)
+		# tmpZ=cur.fetchall()
+
+		ctr1 = 0
+		prev_time = 0
+		dt1 = 0
+		min_time = 100000
+		for i in tmpY:
+			calc1 = int(i[1]) - prev_time
+			if calc1 > 900:  # Using 15min to determine downtime
+				if ctr1 > 0:
+					dt1 = dt1 + (calc1)
+			ctr1 = 1
+			prev_time = int(i[1])
+
+		# Calculate Availability
+		A = 1-((dt1)/(sched1-breaks1))
+		
+
+		# Calculate Productivity
+		ct = j[1]   # Cycle time
+		qty = int(tmpX[0][0])  # Calculate Quantity Run
+		P = (ct * qty) / float(sched1 - dt1)
+
+		# Calculate Quality
+		# try:
+		# 	scrap_qty = int(tmpZ[0][0])
+		# except:
+		# 	scrap_qty = 0
+		# Q = ( qty ) / float(qty + scrap_qty)
+		Q = 1
+		
+
+		OA = A * P * Q
+		OA = round((OA*100000)/float(1000),2)
+		A = round((A*100000)/float(1000),2)
+		P = round((P*100000)/float(1000),2)
+		Q = round((Q*100000)/float(1000),2)
+
+		machine1.append(j[2])
+		A1.append(A)
+		P1.append(P)
+		Q1.append(Q)
+		OA1.append(OA)
+
+
+
+	OA_Summary = zip(machine1,A1,P1,Q1,OA1)
+
+	request.session['oa_summary'] = OA_Summary
+
+
+	return render(request,'oa_summary.html')
 
 def production_OA(request):
 	b1 = str(request.session["start_date"])
@@ -225,9 +333,9 @@ def production_OA(request):
 	m8='1617'
 	m9='797'
 
-	mm = ['1533','1716L','1716R','1717L']
-	cc = [9,62,62,62]
-	ss = ['10R80','AB1V Reaction','AB1V Overdrive','AB1V Input']
+	mm = ['1533','1716L','1716R','1717L','1748','1718','785','261','280','1718','1748','785','669']
+	cc = [9,62,62,62,115,110,134,9,9,204,204,204,56]
+	ss = ['10R80','AB1V Reaction','AB1V Overdrive','AB1V Input','1748','1718','785','261','280','1718','1748','785','669']
 
 	mc = zip(mm,cc,ss)
 	mm = tuple(mm)
@@ -271,7 +379,7 @@ def production_OA(request):
 		# Calculate Productivity
 		ct = j[1]   # Cycle time
 		qty = int(tmpX[0][0])  # Calculate Quantity Run
-		P = (ct * qty) / float(sched1 - breaks1 - dt1)
+		P = (ct * qty) / float(sched1 - dt1)
 
 		# Calculate Quality
 		try:
@@ -358,8 +466,6 @@ def production_OA(request):
 	# 		time1 = time1 + i[1]
 	# res = zip(a2,d2,c2)
 	# res = sorted(res,key=lambda x:x[0])   # List of Assets and how long in seconds down
-	
-
 
 	# Wrong address
 	return render(request,'oa_summary.html')

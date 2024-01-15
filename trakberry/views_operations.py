@@ -5406,8 +5406,8 @@ def prod_10r_1529(request):
 	return
 
 def prod_ab1v_1704(request):
-	prt7 = '50-8670'
-	prt9 = '50-8670'
+	prt7 = '50-5404'
+	prt9 = '50-5404'
 	prt8 = prt7[-4:]
 	db, cur = db_set(request) 
 	try:
@@ -5423,8 +5423,8 @@ def prod_ab1v_1704(request):
 	# ******************  Below data entered for each part  ******************************
 	color1 = '#96dbf8'  # Color for line 1
 	color2 = '#82BED7'  # Color for line 2
-	asset = ['1704R']
-	part  = ['50-8670']
+	asset = ['1748']
+	part  = ['50-5404']
 	operation = [10]
 	# ************************************************************************************
 	shift = ['11pm-7am','7am-3pm','3pm-11pm']
@@ -5540,8 +5540,8 @@ def prod_ab1v_1704(request):
 	return
 
 def prod_ab1v_1703(request):
-	prt7 = '50-8670'
-	prt9 = '50-8670'
+	prt7 = '50-5404'
+	prt9 = '50-5404'
 	prt8 = prt7[-4:]
 	db, cur = db_set(request) 
 	try:
@@ -5557,8 +5557,8 @@ def prod_ab1v_1703(request):
 	# ******************  Below data entered for each part  ******************************
 	color1 = '#96dbf8'  # Color for line 1
 	color2 = '#82BED7'  # Color for line 2
-	asset = ['1703R']
-	part  = ['50-8670']
+	asset = ['1718']
+	part  = ['50-5404']
 	operation = [10]
 	# ************************************************************************************
 	shift = ['11pm-7am','7am-3pm','3pm-11pm']
@@ -5646,6 +5646,8 @@ def prod_ab1v_1703(request):
 				# 	r=3/0
 				st = st + 28800
 		tot3.append(tot2)
+
+		ppp=9/0
 
 
 	color_used = color2
