@@ -248,7 +248,9 @@ def supervisor_display(request):
 		if b == -3:
 			return done_elec(request)	
 		if b == -4:
-			return done_maint(request)		
+			return done_maint(request)	
+		if b == -5:
+			return render(request,'redirect_press_changeover_enter.html')		
 		request.session["index"] = b
 		#request.session["test"] = request.POST
 		return done_edit(request)
@@ -510,7 +512,118 @@ def supervisor_maint_call(request):
 	request.session['asset_down'] = 'Yes_Down'
 	return render(request,"supervisor_down_1.html")
 
+def press_changeover_start(request, index):	
+	t = vacation_temp()
+	db, cur = db_set(request)
+	sql = "SELECT * FROM pr_downtime1 where idnumber = '%s'" % (index)
+	cur.execute(sql)
+	tmp = cur.fetchall()
+	problem = tmp[0][1]
+	problem=problem.replace('Change','Build')
+	pql =( 'update pr_downtime1 SET problem="%s" WHERE idnumber="%s"' % (problem,index))
+	cur.execute(pql)
+	db.commit()
+
+	tql =( 'update pr_downtime1 SET updatedtime="%s" WHERE idnumber="%s"' % (t,index))
+	cur.execute(tql)
+	db.commit()
+	db.close()
+
+	return render(request,"redirect_press_changeover_enter.html")
+
+def press_changeover_setup(request, index):	
+	t = vacation_temp()
+	db, cur = db_set(request)
+	sql = "SELECT * FROM pr_downtime1 where idnumber = '%s'" % (index)
+	cur.execute(sql)
+	tmp = cur.fetchall()
+	problem = tmp[0][1]
+	problem=problem.replace('Build','Dial In')
+	pql =( 'update pr_downtime1 SET problem="%s" WHERE idnumber="%s"' % (problem,index))
+	cur.execute(pql)
+	db.commit()
+
+	tql =( 'update pr_downtime1 SET changeovertime="%s" WHERE idnumber="%s"' % (t,index))
+	cur.execute(tql)
+	db.commit()
+	db.close()
+
+	return render(request,"redirect_press_changeover_enter.html")
 	
+
+
+def press_changeover_complete(request, index):	
+	if request.POST:
+		comment = request.POST.get("comment")
+		var1 = -2
+		t = vacation_temp()
+		db, cur = db_set(request)
+		tql =( 'update pr_downtime1 SET completedtime="%s" WHERE idnumber="%s"' % (t,index))
+		cur.execute(tql)
+		db.commit()
+		tql =( 'update pr_downtime1 SET remedy="%s" WHERE idnumber="%s"' % (comment,index))
+		cur.execute(tql)
+		db.commit()
+		tql =( 'update pr_downtime1 SET priority="%s" WHERE idnumber="%s"' % (var1,index))
+		cur.execute(tql)
+		db.commit()
+		db.close()
+		return render(request,"redirect_press_changeover_enter.html")
+
+	else:
+		form = sup_downForm()
+	args = {}
+	args.update(csrf(request))
+	args['form'] = form
+	
+	return render(request,'press_changeover_close.html', {'args':args})
+
+def press_changeover_delete(request, index):
+	db, cur = db_set(request)
+	dql = ('DELETE FROM pr_downtime1 WHERE idnumber = "%s"' %(index))
+	cur.execute(dql)
+	db.commit()
+	return render(request,"redirect_press_changeover_enter.html")
+	
+
+def press_changeover_enter(request):	
+	if request.POST:
+		machinenum = request.POST.get("machine")
+		part = request.POST.get("part")
+		pwd1 = request.POST.get("pwd1")
+		priority = -1
+		problem = 'Change ' + machinenum + ' to ' + part
+		whoisonit = 'Setter'
+		down7 = 'No'
+
+		# call external function to produce datetime.datetime.now()
+
+		if pwd1 == 'stackpolepress':
+			t = vacation_temp()
+			db, cur = db_set(request)
+			cur.execute('''INSERT INTO pr_downtime1(machinenum,problem,priority,whoisonit,called4helptime,down,changeovertime) VALUES(%s,%s,%s,%s,%s,%s,%s)''', (machinenum,problem,priority,whoisonit,t,down7,t))
+			db.commit()
+			db.close()
+			return render(request,"redirect_press_changeover_enter.html")
+		else:
+			dummy1=0
+			return render(request,"redirect_press_changeover_enter.html")
+	else:
+		request.session["machinenum"] = "692"
+		form = sup_downForm()
+	args = {}
+	args.update(csrf(request))
+	args['form'] = form
+	
+
+	db, cur = db_set(request)
+	p = -1
+	sql = "SELECT machinenum,problem,whoisonit,idnumber FROM pr_downtime1 where priority = '%s'" % (p)
+	cur.execute(sql)
+	tmp = cur.fetchall()
+
+	return render(request,'press_changeover_enter.html', {'List':tmp,'args':args})
+
 def supervisor_down(request):	
 	try:
 		down7 = request.session['asset_down']
@@ -532,22 +645,6 @@ def supervisor_down(request):
 		tps = list(tx)
 		
 		
-
-#		hh = [ord(c) for c in tps]
-		
-			
-#		if tps[2] == "x":
-#			if(39 in hh):
-#				a = "Appostrophe 39"
-#				return render(request,'test_temp2.html', {'v1':a})	
-#			if(8217 in hh):
-#				a = "Appostrophe 8127"
-#				return render(request,'test_temp2.html', {'v1':a})		
-			
-#			return render(request,'test_temp2.html', {'v1':hh})	
-
-			
-			
 		# Genius appostrophe fix
 		problem = hyphon_fix(tx)
 

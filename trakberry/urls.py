@@ -79,7 +79,7 @@ from views_supervisor import vacation_display_jump, supervisor_edit, sup_close, 
 from views_supervisor import vacation_display_increment, vacation_display_decrement, vacation_edit, vacation_delete, sup_message_reply1,sup_message_reply0
 from views_supervisor import employee_vac_enter_init, employee_vac_enter_init2, vacation_month_fix, vacation_display_initial, resetcheck,sup_message
 from views_supervisor import check_email_problem, supervisor_down_no,supervisor_down_yes,supervisor_schedule
-from views_supervisor import trainer,trainer_initialize
+from views_supervisor import trainer,trainer_initialize,press_changeover_enter,press_changeover_start,press_changeover_setup,press_changeover_complete,press_changeover_delete
 # ***********************************************************************************************************************************************************
 
 
@@ -263,6 +263,13 @@ urlpatterns = [
 
 	url(r'^trainer/', trainer),
     url(r'^trainer_initialize/', trainer_initialize),
+    url(r'^press_changeover_enter/', press_changeover_enter),
+	url(r'^press_changeover_start/get/(?P<index>\d+)/$', press_changeover_start),
+	url(r'^press_changeover_setup/get/(?P<index>\d+)/$', press_changeover_setup),
+    url(r'^press_changeover_complete/get/(?P<index>\d+)/$', press_changeover_complete),
+    url(r'^press_changeover_delete/get/(?P<index>\d+)/$', press_changeover_delete),
+   
+
     	
 
 	

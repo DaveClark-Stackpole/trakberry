@@ -333,12 +333,34 @@ def production_OA(request):
 	m8='1617'
 	m9='797'
 
-	mm = ['1533','1716L','1716R','1717L','1748','1718','785','261','280','1718','1748','785','669']
-	cc = [9,62,62,62,115,110,134,9,9,204,204,204,56]
-	ss = ['10R80','AB1V Reaction','AB1V Overdrive','AB1V Input','1748','1718','785','261','280','1718','1748','785','669']
+	# mm = ['1533','1716L','1716R','1717L','1748','1718','785','261','280','1718','1748','785','669']
+	# cc = [9,62,62,62,115,110,134,9,9,204,204,204,56]
+	# ss = ['10R80','AB1V Reaction','AB1V Overdrive','AB1V Input','1748','1718','785','261','280','1718','1748','785','669']
 
+	# 3 is overall
+	# 4 is AB1V Input
+	# 1 is 10R80
+	
+	test1 = 1
+
+	sql="SELECT Asset,CycleTime,Operation FROM oa_analysis where  test ='%s'" % (test1)
+	cur.execute(sql)
+	tmpD=cur.fetchall()
+
+	mm = []
+	cc = []
+	ss = []
+	for i in tmpD:
+		mm.append(i[0])
+		cc.append(int(i[1]))
+		ss.append(i[2])
+
+	mm=list(mm)
+	cc=list(cc)
+	ss=list(ss)
 	mc = zip(mm,cc,ss)
 	mm = tuple(mm)
+
 
 	machine1 = []
 	A1 = []
@@ -771,12 +793,4 @@ def date_picker_production_OA(request):
 	args.update(csrf(request))
 	args['form'] = form
 	return render(request,'production_OA_datepicker.html', {'args':args})
-
-
-
-
-
-
-
-
 
