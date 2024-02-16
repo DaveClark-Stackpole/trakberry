@@ -21,6 +21,7 @@
                     <center><u><b><font color="#000000" style="font-size: 160%;">Maintenance Jobs</u></b></center>
             </div>
         {% for i in index %}
+		{% if i.0.3 != '-1' %}
 		{% if i.0.4 != '10r_tech' %}
         {% if i.0.4 = 'Electrician' %}
             <div class="body1">
@@ -63,6 +64,7 @@
             </div>
         {% endif %}
 
+		{% endif %}
 		{% endif %}
 		{% endfor %}
 

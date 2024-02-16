@@ -253,6 +253,8 @@ def login_initial(request,login_name):
 # Login for Main Program
 def main_login_form(request):	
 
+
+
 #	if request.POST:
 	if 'button1' in request.POST:
 		login_name = request.POST.get("login_name")

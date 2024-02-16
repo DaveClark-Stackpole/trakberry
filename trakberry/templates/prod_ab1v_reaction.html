@@ -184,7 +184,7 @@
 
 
         <table id="prodsum">
-			<td colspan="24" bgcolor="#343E45"><center><font style="font-weight:bolder;font-size:x-large;color:#fff;">1703 / 1704 Production</font>
+			<td colspan="24" bgcolor="#343E45"><center><font style="font-weight:bolder;font-size:x-large;color:#fff;">1718/1748 Production</font>
 				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				<button  style="background-color: #585858;border-radius: 10px;height:70%;font-size:10px;color:#fefffa;vertical-align:middle;" onclick="prod_10R_prev()"> << PREV WEEK </button> 
 				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -209,7 +209,7 @@
 
             {% for i in request.session.totals_5399x %}
             <tr>
-                    <td bgcolor="#ffffff"><center><b>50-8670 (1703)</b></center></td>
+                    <td bgcolor="#ffffff"><center><b>1718</b></center></td>
            		 {% for ii in i %}
                     <td bgcolor="#ffffff"><center>
                     <a href="{{request.session.local_toggle}}/track_1703_initial/get/{{ii.4}}" onclick="window.open('{{request.session.local_toggle}}/track_1703_initial/get/{{ii.4}}', 'newwindow', 'width=1400, height=600'); return false;">
@@ -229,7 +229,7 @@
 
           {% for i in request.session.totals_5399y %}
           <tr>
-                  <td bgcolor="#ffffff"><center><b>50-8670 (1704)</b></center></td>
+                  <td bgcolor="#ffffff"><center><b>1748</b></center></td>
                   {% for ii in i %}
                   <td bgcolor="#ffffff"><center>
                   <a href="{{request.session.local_toggle}}/track_1704_initial/get/{{ii.4}}" onclick="window.open('{{request.session.local_toggle}}/track_1704_initial/get/{{ii.4}}', 'newwindow', 'width=1400, height=600'); return false;">

@@ -208,6 +208,7 @@ def maint_mgmt(request):
 	new_tmp = zip(tmp,time4)
 
 
+
 	if request.session["maint_mgmt_main_switch"] == 0:
 		# Determine a list of names currently active
 		active1 = 0

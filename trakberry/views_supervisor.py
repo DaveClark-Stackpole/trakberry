@@ -248,7 +248,9 @@ def supervisor_display(request):
 		if b == -3:
 			return done_elec(request)	
 		if b == -4:
-			return done_maint(request)		
+			return done_maint(request)	
+		if b == -5:
+			return render(request,'redirect_press_changeover_enter.html')		
 		request.session["index"] = b
 		#request.session["test"] = request.POST
 		return done_edit(request)
@@ -510,7 +512,118 @@ def supervisor_maint_call(request):
 	request.session['asset_down'] = 'Yes_Down'
 	return render(request,"supervisor_down_1.html")
 
+def press_changeover_start(request, index):	
+	t = vacation_temp()
+	db, cur = db_set(request)
+	sql = "SELECT * FROM pr_downtime1 where idnumber = '%s'" % (index)
+	cur.execute(sql)
+	tmp = cur.fetchall()
+	problem = tmp[0][1]
+	problem=problem.replace('Change','Build')
+	pql =( 'update pr_downtime1 SET problem="%s" WHERE idnumber="%s"' % (problem,index))
+	cur.execute(pql)
+	db.commit()
+
+	tql =( 'update pr_downtime1 SET updatedtime="%s" WHERE idnumber="%s"' % (t,index))
+	cur.execute(tql)
+	db.commit()
+	db.close()
+
+	return render(request,"redirect_press_changeover_enter.html")
+
+def press_changeover_setup(request, index):	
+	t = vacation_temp()
+	db, cur = db_set(request)
+	sql = "SELECT * FROM pr_downtime1 where idnumber = '%s'" % (index)
+	cur.execute(sql)
+	tmp = cur.fetchall()
+	problem = tmp[0][1]
+	problem=problem.replace('Build','Dial In')
+	pql =( 'update pr_downtime1 SET problem="%s" WHERE idnumber="%s"' % (problem,index))
+	cur.execute(pql)
+	db.commit()
+
+	tql =( 'update pr_downtime1 SET changeovertime="%s" WHERE idnumber="%s"' % (t,index))
+	cur.execute(tql)
+	db.commit()
+	db.close()
+
+	return render(request,"redirect_press_changeover_enter.html")
 	
+
+
+def press_changeover_complete(request, index):	
+	if request.POST:
+		comment = request.POST.get("comment")
+		var1 = -2
+		t = vacation_temp()
+		db, cur = db_set(request)
+		tql =( 'update pr_downtime1 SET completedtime="%s" WHERE idnumber="%s"' % (t,index))
+		cur.execute(tql)
+		db.commit()
+		tql =( 'update pr_downtime1 SET remedy="%s" WHERE idnumber="%s"' % (comment,index))
+		cur.execute(tql)
+		db.commit()
+		tql =( 'update pr_downtime1 SET priority="%s" WHERE idnumber="%s"' % (var1,index))
+		cur.execute(tql)
+		db.commit()
+		db.close()
+		return render(request,"redirect_press_changeover_enter.html")
+
+	else:
+		form = sup_downForm()
+	args = {}
+	args.update(csrf(request))
+	args['form'] = form
+	
+	return render(request,'press_changeover_close.html', {'args':args})
+
+def press_changeover_delete(request, index):
+	db, cur = db_set(request)
+	dql = ('DELETE FROM pr_downtime1 WHERE idnumber = "%s"' %(index))
+	cur.execute(dql)
+	db.commit()
+	return render(request,"redirect_press_changeover_enter.html")
+	
+
+def press_changeover_enter(request):	
+	if request.POST:
+		machinenum = request.POST.get("machine")
+		part = request.POST.get("part")
+		pwd1 = request.POST.get("pwd1")
+		priority = -1
+		problem = 'Change ' + machinenum + ' to ' + part
+		whoisonit = 'Setter'
+		down7 = 'No'
+
+		# call external function to produce datetime.datetime.now()
+
+		if pwd1 == 'stackpolepress':
+			t = vacation_temp()
+			db, cur = db_set(request)
+			cur.execute('''INSERT INTO pr_downtime1(machinenum,problem,priority,whoisonit,called4helptime,down,changeovertime) VALUES(%s,%s,%s,%s,%s,%s,%s)''', (machinenum,problem,priority,whoisonit,t,down7,t))
+			db.commit()
+			db.close()
+			return render(request,"redirect_press_changeover_enter.html")
+		else:
+			dummy1=0
+			return render(request,"redirect_press_changeover_enter.html")
+	else:
+		request.session["machinenum"] = "692"
+		form = sup_downForm()
+	args = {}
+	args.update(csrf(request))
+	args['form'] = form
+	
+
+	db, cur = db_set(request)
+	p = -1
+	sql = "SELECT machinenum,problem,whoisonit,idnumber FROM pr_downtime1 where priority = '%s'" % (p)
+	cur.execute(sql)
+	tmp = cur.fetchall()
+
+	return render(request,'press_changeover_enter.html', {'List':tmp,'args':args})
+
 def supervisor_down(request):	
 	try:
 		down7 = request.session['asset_down']
@@ -532,22 +645,6 @@ def supervisor_down(request):
 		tps = list(tx)
 		
 		
-
-#		hh = [ord(c) for c in tps]
-		
-			
-#		if tps[2] == "x":
-#			if(39 in hh):
-#				a = "Appostrophe 39"
-#				return render(request,'test_temp2.html', {'v1':a})	
-#			if(8217 in hh):
-#				a = "Appostrophe 8127"
-#				return render(request,'test_temp2.html', {'v1':a})		
-			
-#			return render(request,'test_temp2.html', {'v1':hh})	
-
-			
-			
 		# Genius appostrophe fix
 		problem = hyphon_fix(tx)
 
@@ -1183,7 +1280,7 @@ def vacation_display(request):
 	# Call current datetime using external function because it would conflict with from datetime import datetime
 	t = vacation_temp()
 	month_st = t.month
-	year_st = 2023
+	year_st = 2024
 	day_st = t.day
 
 	# Asssign session variable to today's month
@@ -1217,7 +1314,7 @@ def vacation_display(request):
 	except:
 		month_pick = 1
 		A = 1
-		B = 2022
+		B = 2024
 		
 	try:
 		if request.session["month_pick"] == 1:
@@ -1288,7 +1385,7 @@ def vacation_display(request):
 	#return render(request,'test993.html',{'list':tmp})
 	
 	
-	if year_st == 2022:
+	if year_st == 2024:
 		dday, ctr, mnth = vacation_calander_init(month_st)
 	else:
 		dday, ctr, mnth = vacation_calander_init(month_st)
@@ -1412,7 +1509,7 @@ def vacation_display(request):
 			xy = int(xy)
 			jj = xy
 			if xy > 12:
-				request.session["year"] = 2023
+				request.session["year"] = 2024
 				request.session["month"] = xy - 12
 			else:
 				request.session["year"] = 2022
@@ -1549,7 +1646,7 @@ def vacation_display_increment(request):
 	tmp = cur.fetchall()
 	db.close()
 	
-	if year_st == 2021:
+	if year_st == 2024:
 		dday, ctr, mnth = vacation_calander_init(month_st)
 	else:
 		dday, ctr, mnth = vacation_calander_init(month_st)
@@ -1791,7 +1888,7 @@ def vacation_display_decrement(request):
 	tmp = cur.fetchall()
 	db.close()
 	
-	if year_st == 2021:
+	if year_st == 2024:
 		dday, ctr, mnth = vacation_calander_init(month_st)
 	else:
 		dday, ctr, mnth = vacation_calander_init(month_st)
@@ -2097,32 +2194,32 @@ def vacation_calander_init(month_st):
 	mnt = []
 		
 	dte.append([0])
-	dte.append([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]) # January
-	dte.append([0,0,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28]) # February
-	dte.append([0,0,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]) # March
-	dte.append([0,0,0,0,0,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]) #April
-	dte.append([0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]) # May
-	dte.append([0,0,0,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]) # June
-	dte.append([0,0,0,0,0,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]) #July
-	dte.append([0,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]) #August
-	dte.append([0,0,0,0,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]) #September
-	dte.append([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]) #October
-	dte.append([0,0,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]) #November
-	dte.append([0,0,0,0,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]) #December
+	dte.append([0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]) # January
+	dte.append([0,0,0,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29]) # February
+	dte.append([0,0,0,0,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]) # March
+	dte.append([0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]) #April
+	dte.append([0,0,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]) # May
+	dte.append([0,0,0,0,0,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]) # June
+	dte.append([0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]) #July
+	dte.append([0,0,0,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]) #August
+	dte.append([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]) #September
+	dte.append([0,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]) #October
+	dte.append([0,0,0,0,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]) #November
+	dte.append([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]) #December
 	
 	ctr.append([0])
-	ctr.append([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]) #jan		
-	ctr.append([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]) #February
-	ctr.append([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34]) #Mar
-	ctr.append([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36])#Apr
-	ctr.append([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32])#May
-	ctr.append([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34])#Jun
-	ctr.append([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37])#july		
-	ctr.append([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33])#aug	
-	ctr.append([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35])#Sep
-	ctr.append([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31])#Oct
-	ctr.append([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33])#nov	
-	ctr.append([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36])#dec
+	ctr.append([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32]) #jan		
+	ctr.append([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33]) #February
+	ctr.append([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36]) #Mar
+	ctr.append([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31])#Apr
+	ctr.append([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34])#May
+	ctr.append([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36])#Jun
+	ctr.append([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32])#july		
+	ctr.append([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35])#aug	
+	ctr.append([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30])#Sep
+	ctr.append([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33])#Oct
+	ctr.append([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35])#nov	
+	ctr.append([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31])#dec
 
 	
 	mnt.append( '')
