@@ -553,15 +553,29 @@ def press_changeover_setup(request, index):
 
 
 def press_changeover_complete(request, index):	
+	db, cur = db_set(request)
+	sql = "SELECT remedy FROM pr_downtime1 where idnumber = '%s'" % (index)
+	cur.execute(sql)
+	tmp = cur.fetchall()
+	try:
+		comment2 = tmp[0][0]
+	except:
+		comment2 = ''
+	db.close()
+
 	if request.POST:
 		comment = request.POST.get("comment")
+		try:
+			comment1=comment2 + ' (' + comment + ')'
+		except:
+			comment1 = ' (' + comment + ')'
 		var1 = -2
 		t = vacation_temp()
 		db, cur = db_set(request)
 		tql =( 'update pr_downtime1 SET completedtime="%s" WHERE idnumber="%s"' % (t,index))
 		cur.execute(tql)
 		db.commit()
-		tql =( 'update pr_downtime1 SET remedy="%s" WHERE idnumber="%s"' % (comment,index))
+		tql =( 'update pr_downtime1 SET remedy="%s" WHERE idnumber="%s"' % (comment1,index))
 		cur.execute(tql)
 		db.commit()
 		tql =( 'update pr_downtime1 SET priority="%s" WHERE idnumber="%s"' % (var1,index))
@@ -591,7 +605,10 @@ def press_changeover_comment(request, index):
 
 	if request.POST:
 		comment = request.POST.get("comment")
-		comment1=comment2 + ' (' + comment + ')'
+		try:
+			comment1=comment2 + ' (' + comment + ')'
+		except:
+			comment1 = ' (' + comment + ')'
 		db, cur = db_set(request)
 		tql =( 'update pr_downtime1 SET remedy="%s" WHERE idnumber="%s"' % (comment1,index))
 		cur.execute(tql)
