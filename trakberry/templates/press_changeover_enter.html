@@ -48,12 +48,21 @@
             <br><br><br>
         </div>
 
+
+
+
+
         <div class="frame2"> 
 
             {% for i in List %}
             {% if i.1|slice:"0:6" == "Change" %}
             <div class="comment4" style="font-size:20px;font-weight: bold;background-color: #8ee0f5;border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;">
-                <br>{{i.1}}<br><br></div>
+                <br>{{i.1}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <button type="button" style="font-size:10px;font-weight: bold;background-color: #D1CDC2;border-radius: 15px;border-style: solid;border-width: 1px;border-color: #000000;box-shadow: 0 5px #999;" onclick="window.location.href = '{{request.session.local_toggle}}/press_changeover_comment/get/{{ i.3 }}';">
+                    <font size="2"><b>Comments</b></font>
+                </button>
+
+                <br><br></div>
             <div class="comment4" style="font-size:20px;font-weight: bold;background-color: #003daf;border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;">
                 
                 <a href="{{request.session.local_toggle}}/press_changeover_start/get/{{ i.3 }}" style="color:rgb(255, 255, 255);">Start Change Over</a>
@@ -65,7 +74,12 @@
        
             {% elif i.1|slice:"0:5" == "Build" %}
             <div class="comment4" style="font-size:20px;font-weight: bold;background-color: #f5a3ee;border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;">
-                <br>{{i.1}}<br><br></div>
+                <br>{{i.1}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <button type="button" style="font-size:10px;font-weight: bold;background-color: #D1CDC2;border-radius: 15px;border-style: solid;border-width: 1px;border-color: #000000;box-shadow: 0 5px #999;" onclick="window.location.href = '{{request.session.local_toggle}}/press_changeover_comment/get/{{ i.3 }}';">
+                    <font size="2"><b>Comments</b></font>
+                </button>
+                
+                <br><br></div>
             <div class="comment4" style="font-size:20px;font-weight: bold;background-color: #774073;border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;">
             <a href="{{request.session.local_toggle}}/press_changeover_setup/get/{{ i.3 }}" style="color:rgb(255, 255, 255);">Mechanical Complete</a>
             </div>
@@ -73,7 +87,12 @@
 
             {% elif i.1|slice:"0:7" == "Dial In" %}
             <div class="comment4" style="font-size:20px;font-weight: bold;background-color: #97f58e;border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;">
-                <br>{{i.1}}<br><br></div>
+                <br>{{i.1}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <button type="button" style="font-size:10px;font-weight: bold;background-color: #D1CDC2;border-radius: 15px;border-style: solid;border-width: 1px;border-color: #000000;box-shadow: 0 5px #999;" onclick="window.location.href = '{{request.session.local_toggle}}/press_changeover_comment/get/{{ i.3 }}';">
+                    <font size="2"><b>Comments</b></font>
+                </button>
+                
+                <br><br></div>
             <div class="comment4" style="font-size:20px;font-weight: bold;background-color: #53d147;border-radius: 0px;border-style: solid;border-width: 1px;border-color: #000000;">
             <a href="{{request.session.local_toggle}}/press_changeover_complete/get/{{ i.3 }}" style="color:rgb(255, 255, 255);">Setup Complete</a>
             </div>
@@ -132,6 +151,7 @@
         <option value=50-0455-A>50-0455-A</option>
         <option value=50-0455-B>50-0455-B</option>
         <option value=50-0447-B>50-0447-B</option>
+	    <option value=50-0519-B>50-0519-B</option>
         <option value=50-6114-B>50-6114-B</option>
         <option value=50-9641-A>50-9641-A</option>
         <option value=50-9641-B>50-9641-B</option>
